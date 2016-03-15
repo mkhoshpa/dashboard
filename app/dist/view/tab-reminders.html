@@ -1,0 +1,14 @@
+<div ng-include="'dist/view/tab-reminders-form.html'"></div>
+
+<p ng-if="!vm.selected.reminders.length">No reminders for {{vm.selected.name}}, yet.</p>
+<md-content>
+  <md-card ng-repeat="reminder in vm.selected.reminders | orderBy: '-date':true">
+    <md-card-content>
+      <h3>{{reminder.title}}</h3>
+      <p>{{reminder.date | date:'MM/dd/yyyy'}}</p>
+    </md-card-content>
+    <md-card-actions layout="row" layout-align="end center">
+      <md-button ng-click="vm.removeReminder(reminder)">Remove</md-button>
+    </md-card-actions>
+  </md-card>
+</md-content>

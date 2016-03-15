@@ -22,26 +22,34 @@
 
   <body layout="row" ng-cloak ng-controller="MainController as vm">
     <div ng-include="'dist/view/sidenav.html'" layout="vertical"></div>
-    
+
     <div layout="column" flex id="wrapper">
       <div ng-include="'dist/view/toolbar-header.html'"></div>
-      
+
       <md-content flex id="content">
         <div ng-include="'dist/view/main-content.html'"></div>
-        
+
         <md-tabs md-dynamic-height="" md-border-bottom="" md-stretch-tabs="always" md-selected="vm.tabIndex">
-          
+
           <md-tab label="Bio">
-            <div ng-include="'dist/view/tab-bio.html'"></div>           
+            <div ng-include="'dist/view/tab-bio.html'"></div>
           </md-tab>
-          
+
           <md-tab label="Notes">
-            <div ng-include="'dist/view/tab-notes.html'"></div>            
+            <div ng-include="'dist/view/tab-notes.html'"></div>
           </md-tab>
-          
+
+          <md-tab label="Reminders">
+            <div ng-include="'dist/view/tab-reminders.html'"></div>
+          </md-tab>
+
+          <md-tab label="Surveys">
+            <div ng-include="'dist/view/tab-surveys.html'"></div>
+          </md-tab>
+
         </md-tabs>
       </md-content>
-           
+
     </div>
 
     <script src="./bower_components/angular/angular.js"></script>
@@ -53,6 +61,7 @@
 
     <script src="./dist/models.js"></script>
     <script src="./dist/services/userService.js"></script>
+    <script src="./dist/services/postMessage.js"></script>
     <script src="./dist/controllers/addUserDialogController.js"></script>
     <script src="./dist/controllers/contactPanelController.js"></script>
     <script src="./dist/controllers/mainController.js"></script>

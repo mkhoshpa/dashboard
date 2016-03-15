@@ -1,2 +1,8 @@
-<md-icon md-svg-icon="{{vm.selected.avatar}}" class="avatar"></md-icon>
-<h2>{{vm.selected.name}}</h2>
+<section>
+  <img ng-src="{{vm.selected.avatar}}" class="avatar"></md-icon>
+  <h2>{{vm.selected.name}}</h2>
+
+  <md-button class="md-fab md-mini" style="background-color: white;" ng-click="vm.slackMessage($event, vm.selected.name)">
+           <md-icon md-svg-src="assets/svg/slack.svg"></md-icon>
+  </md-button>
+</section>

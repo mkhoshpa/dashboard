@@ -1,12 +1,12 @@
 /// <reference path="_all.ts" />
 
 module ContactManagerApp {
-  
+
 angular
-  .module('contactManagerApp', ['ngMaterial', 'ngMdIcons', 'ngMessages'])  
+  .module('contactManagerApp', ['ngMaterial', 'ngMdIcons', 'ngMessages'])
   .service('userService', UserService)
   .controller('MainController', MainController)
-  .config(($mdThemingProvider : angular.material.IThemingProvider, 
+  .config(($mdThemingProvider : angular.material.IThemingProvider,
            $mdIconProvider    : angular.material.IIconProvider) => {
 
       $mdIconProvider
@@ -15,11 +15,12 @@ angular
           .icon("google_plus", "./assets/svg/google_plus.svg" , 512)
           .icon("hangouts"   , "./assets/svg/hangouts.svg"    , 512)
           .icon("twitter"    , "./assets/svg/twitter.svg"     , 512)
-          .icon("phone"      , "./assets/svg/phone.svg"       , 512);
+          .icon("phone"      , "./assets/svg/phone.svg"       , 512)
+          .icon("slack"      , "./assests/svg/slack.svg"      ,512);
 
       $mdThemingProvider.theme('default')
           .primaryPalette('blue')
           .accentPalette('red');
   });
-  
+
 }

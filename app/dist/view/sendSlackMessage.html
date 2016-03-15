@@ -1,0 +1,26 @@
+<md-dialog aria-label="Send Message To Slack">
+  <form name="slackForm" ng-submit="slack.send()">
+
+    <md-dialog-content>
+      <div layout="column" layout-padding>
+
+        <md-input-container class="md-block">
+         <label><b>{{slack.user}}</b></label>
+         <main>
+         <input ng-model="slack.message">
+         </main>
+       </md-input-container>
+
+      </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+      <md-button ng-click="slack.cancel()" >
+        Cancel
+      </md-button>
+      <md-button type="submit" class="md-primary md-raised" ng-disabled="userForm.$invalid">
+        Send
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

@@ -5,3 +5,4 @@
 /// <reference path="controllers/addUserDialogController.ts" />
 /// <reference path="controllers/contactPanelController.ts" />
 /// <reference path="services/userService.ts" />
+/// <reference path="services/postMessage.ts" />

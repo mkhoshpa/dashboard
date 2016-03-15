@@ -1,60 +1,111 @@
 /// <reference path="../_all.ts" />
 
 module ContactManagerApp {
-  
+
   export class MainController {
-    static $inject = ['userService', '$mdSidenav', '$mdBottomSheet', '$mdToast', '$mdDialog', '$mdMedia' ];    
-    
+    static $inject = ['userService', '$mdSidenav', '$mdBottomSheet', '$mdToast', '$mdDialog', '$mdMedia' ];
+
     constructor(
-      private userService: IUserService, 
-      private $mdSidenav: angular.material.ISidenavService, 
-      private $mdBottomSheet: angular.material.IBottomSheetService, 
-      private $mdToast: angular.material.IToastService, 
-      private $mdDialog: angular.material.IDialogService, 
+      private userService: IUserService,
+      private $mdSidenav: angular.material.ISidenavService,
+      private $mdBottomSheet: angular.material.IBottomSheetService,
+      private $mdToast: angular.material.IToastService,
+      private $mdDialog: angular.material.IDialogService,
       private $mdMedia: angular.material.IMedia) {
         var self = this;
-        
+
         this.userService
           .loadAllUsers()
           .then((users: User[]) => {
             self.users = users;
             self.selected = users[0];
             self.userService.selectedUser = self.selected;
-          });          
+          });
     }
-    
+
     searchText: string = '';
-    formScope: any;        
+    formScope: any;
     tabIndex: number = 0;
     selected: User = null;
-    users: User[] = [ ];    
+    users: User[] = [ ];
     newNote: Note = new Note('', null);
-    
+    newReminder: Reminder = new Reminder('', null);
+
     setFormScope(scope) {
       this.formScope = scope;
     }
 
     addUser($event) {
       var self = this;
-      
+
       var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
       this.$mdDialog.show({
         templateUrl: './dist/view/newUserDialog.html',
         parent: angular.element(document.body),
         targetEvent: $event,
         controller: AddUserDialogController,
-        controllerAs: "ctrl",      
+        controllerAs: "ctrl",
         clickOutsideToClose:true,
         fullscreen: useFullScreen
       }).then((user: CreateUser) => {
         var newUser: User = User.fromCreate(user);
         self.users.push(newUser);
         self.selectUser(newUser);
-        
+
         self.openToast("User added");
       }, () => {
         console.log('You cancelled the dialog.');
-      });    
+      });
+    }
+
+    slackMessage($event, user) {
+      var self = this;
+      this.userService.selectedUser = user;
+
+      console.log(user)
+      var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
+      this.$mdDialog.show({
+        templateUrl: './dist/view/sendSlackMessage.html',
+        parent: angular.element(document.body),
+        targetEvent: $event,
+        controller: PostMessage,
+        controllerAs: "slack",
+        clickOutsideToClose:true,
+        fullscreen: useFullScreen
+      })
+    }
+
+    addReminder() {
+      this.selected.reminders.push(this.newReminder);
+      this.newReminder = new Reminder('', null);
+
+      this.formScope.reminderForm.$setUntouched();
+      this.formScope.reminderForm.$setPristine();
+
+      this.openToast("Reminder added!");
+      console.log(this.selected);
+    }
+
+    removeReminder(reminder) {
+      var foundIndex = this.selected.reminders.indexOf(reminder);
+      this.selected.reminders.splice(foundIndex, 1);
+      this.openToast("Reminder removed");
+    }
+
+    clearReminders($event) {
+      var confirm = this.$mdDialog.confirm()
+        .title('Are you sure you want to delete all reminders?')
+        .textContent('All reminders will be deleted, you can\'t undo this action.')
+        .ariaLabel('Delete all reminders')
+        .targetEvent($event)
+        .ok('Yes')
+        .cancel('No');
+
+        var self = this;
+        this.$mdDialog.show(confirm).then(() => {
+          self.selected.reminders = [];
+          self.openToast("Cleared reminders");
+        });
     }
 
     removeNote(note) {
@@ -64,12 +115,12 @@ module ContactManagerApp {
     }
 
     addNote() {
-      this.selected.notes.push(this.newNote);      
+      this.selected.notes.push(this.newNote);
       this.newNote = new Note('', null);
 
       this.formScope.noteForm.$setUntouched();
       this.formScope.noteForm.$setPristine();
-      
+
       this.openToast("Note added");
     }
 
@@ -81,7 +132,7 @@ module ContactManagerApp {
         .targetEvent($event)
         .ok('Yes')
         .cancel('No');
-        
+
         var self = this;
         this.$mdDialog.show(confirm).then(() => {
           self.selected.notes = [];
@@ -105,16 +156,16 @@ module ContactManagerApp {
     selectUser ( user ) {
       this.selected = user;
       this.userService.selectedUser = user;
-      
+
       var sidebar = this.$mdSidenav('left');
       if (sidebar.isOpen()) {
         sidebar.close();
       }
-      
+
       this.tabIndex = 0;
     }
 
-    showContactOptions($event) {      
+    showContactOptions($event) {
       this.$mdBottomSheet.show({
         parent: angular.element(document.getElementById('wrapper')),
         templateUrl: './dist/view/contactSheet.html',

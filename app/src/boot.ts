@@ -20,7 +20,7 @@ angular
 
       $mdThemingProvider.theme('default')
           .primaryPalette('blue')
-          .accentPalette('red');
+          .accentPalette('pink');
   });
 
 }

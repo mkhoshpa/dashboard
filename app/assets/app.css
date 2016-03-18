@@ -24,7 +24,7 @@ md-toolbar h1 {
 
 md-toolbar .md-toolbar-tools h1 {
   font-size: 1.250em;
-  font-weight: 400;  
+  font-weight: 400;
 }
 
 /* Sidenav area */
@@ -91,4 +91,29 @@ span.name {
   left: 0px;
   width: 100%;
   overflow: auto;
+}
+
+div.nav-buttons ul {
+  list-style-type: none;
+
+}
+
+li {
+    display: inline;
+    padding-top:
+
+}
+
+div.nav-buttons ul li a{
+  padding-top: 24px;
+  padding-bottom: 21px;
+	padding-right: 10px;
+  padding-left: 10px;
+  height: 100%;
+  font-size: 16px;
+  font-weight: 300;
+}
+
+div.nav-buttons ul li a:hover{
+  background: #1976D2;
 }

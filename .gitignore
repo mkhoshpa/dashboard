@@ -1,4 +1,2 @@
 node_modules/
 app/bower_components/
-app/dist/**/*.js
-app/dist/**/*.js.map

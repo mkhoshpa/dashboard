@@ -3,11 +3,12 @@
 module ContactManagerApp {
 
 angular
-  .module('contactManagerApp', ['ngMaterial', 'ngMdIcons', 'ngMessages'])
+  .module('contactManagerApp', ['ngMaterial', 'ngMdIcons', 'ngMessages', 'ngRoute'])
   .service('userService', UserService)
   .controller('MainController', MainController)
   .config(($mdThemingProvider : angular.material.IThemingProvider,
-           $mdIconProvider    : angular.material.IIconProvider) => {
+           $mdIconProvider    : angular.material.IIconProvider,
+           $routeProvider: ng.route.IRouteProvider) => {
 
       $mdIconProvider
           .defaultIconSet("./assets/svg/avatars.svg", 128)
@@ -20,7 +21,20 @@ angular
 
       $mdThemingProvider.theme('default')
           .primaryPalette('blue')
-          .accentPalette('pink');
+          .accentPalette('red');
+
+      $routeProvider
+      .when("/",
+      {
+        templateUrl: "/dist/view/dashboard.html",
+        controller: "MainController as vm"
+      })
+      .when("/dashboard",
+      {
+        templateUrl: "/dist/view/dashboard.html",
+        controller: "MainController as vm"
+      })
+
   });
 
 }

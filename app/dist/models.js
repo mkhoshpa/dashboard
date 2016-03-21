@@ -1,4 +1,3 @@
-/// <reference path="_all.ts" />
 var ContactManagerApp;
 (function (ContactManagerApp) {
     var CreateUser = (function () {

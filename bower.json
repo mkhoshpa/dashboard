@@ -10,6 +10,7 @@
     "angular-material": "^1.0.0",
     "angular-material-icons": "~0.6.0",
     "angular-messages": "~1.4.8",
-    "angular-material-data-table": "^0.9.14"
+    "angular-material-data-table": "^0.9.14",
+    "angular-route": "^1.5.1"
   }
 }

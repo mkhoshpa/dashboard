@@ -1,4 +1,6 @@
- /// <reference path="_all.ts" />
+/// <reference path="_all.ts" />
+
+// Comment
 
 module ContactManagerApp {
   export class CreateUser {
@@ -60,5 +62,7 @@ module ContactManagerApp {
       public date: Date) {
     }
   }
+
+
 
 }

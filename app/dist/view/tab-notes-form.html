@@ -1,7 +1,7 @@
 <md-content layout-padding>
   <form name="noteForm" ng-submit="vm.addNote()" ng-init="vm.setFormScope(this)">
     <div layout-gt-xs="row">
-      <md-input-container class="md-block" flex-gt-xs>
+      <md-input-container class="md-block">
         <label>Title</label>
         <input required="" name="title" ng-model="vm.newNote.title">
         <div ng-messages="noteForm.title.$error">

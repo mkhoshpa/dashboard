@@ -1,20 +1,20 @@
-<md-toolbar>
+<md-toolbar ng-controller="MainController as vm">
   <div class="md-toolbar-tools">
     <md-button class="menu" hide-gt-sm ng-click="vm.toggleList()" aria-label="Show User List">
       <md-icon md-svg-icon="menu" ></md-icon>
     </md-button>
     <!-- Navbar Action/Menus-->
 
-    <div class="nav-buttons">
+    <!-- <div class="nav-buttons">
       <ul>
-        <li><a href="/"> Overview </a></li>
-        <li><a href="/"> Clients </a></li>
-        <li><a href="/"> Surveys </a></li>
-        <li><a href="/"> Reminders </a></li>
-        <li><a href="/"> Workouts </a></li>
-        <li><a href="/"> Notes </a></li>
+        <li><a href="#/overview"> Overview </a></li>
+        <li><a href="#/clients"> Clients </a></li>
+        <li><a href="#/surveys"> Surveys </a></li>
+        <li><a href="#/reminders"> Reminders </a></li>
+        <li><a href="#/workouts"> Workouts </a></li>
+        <li><a href="#/notes"> Notes </a></li>
       </ul>
-    </div>
+    </div> -->
 
     <md-fab-speed-dial md-direction="down" class="md-fling md-fab-top-right">
       <md-fab-trigger>

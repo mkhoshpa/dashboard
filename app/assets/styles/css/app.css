@@ -81,7 +81,7 @@ span.name {
 }
 
 .date-row {
- margin: 16px 0px;
+  margin: 16px 0px;
 }
 
 .scrollable-nav-content {
@@ -116,4 +116,8 @@ div.nav-buttons ul li a{
 
 div.nav-buttons ul li a:hover{
   background: #1976D2;
+}
+
+#view {
+  min-height: 100%;
 }

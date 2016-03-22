@@ -3,7 +3,7 @@
 
 // Set the 'development' environment configuration object
 module.exports = {
-	db: 'mongodb://admin:admin@ds015919.mlab.com:15919/fitpath-dashboard',
+	db: 'mongodb://localhost/mean-development',
 	sessionSecret: 'developmentSessionSecret',
 	facebook: {
 		clientID: 'Facebook Application ID',

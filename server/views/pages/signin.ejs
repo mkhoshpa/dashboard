@@ -17,8 +17,8 @@
             <form action="/signin" method="post">
               <div class="row">
                 <div class="col s12" id="login-input-container">
-                  <label class="left-align login-label" for="email">EMAIL</label>
-                  <input id="email" type="email" class="validate">
+                  <label class="left-align login-label" for="email">USERNAME</label>
+                  <input id="username" type="username" class="validate" name="username">
                 </div>
               </div>
 
@@ -26,12 +26,12 @@
                 <div class="col s12" id="login-input-container">
                   <label class="left-align login-label" for="password">PASSWORD</label>
                   <!-- <label class="right-align login-label">Forgot your password?</label> -->
-                  <input id="password" type="password" class="validate">
+                  <input id="password" type="password" class="validate" name="password">
                 </div>
               </div>
               <div class="row" id="login">
                 <div>
-                  <button id="full-width" class="btn waves-effect waves-light light-green" type="submit" name="action">Login
+                  <button id="full-width" class="btn waves-effect waves-light light-green" type="submit">Login
                   </button>
                 </div>
               </div>

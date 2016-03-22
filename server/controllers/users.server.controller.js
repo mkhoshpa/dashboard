@@ -85,7 +85,7 @@ exports.signup = function(req, res, next) {
 				req.flash('error', message);
 
 				// Redirect the user back to the signup page
-				return req.res.redirect('/signup');
+				res.redirect('/signup');
 			}
 
 			// If the user was created successfully use the Passport 'login' method to login

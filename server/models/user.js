@@ -72,14 +72,13 @@ UserSchema.pre('save', function(next) {
 	next();
 });
 
-// UserSchema.post('save', function(next) {
-//   if(this.isNew) {
-//     console.log('A new user was created');
-//   } else {
-//     console.log('A user updated, or there was an error');
-//   }
-//   next();
-// });
+UserSchema.post('save', function(next) {
+  if(this.isNew) {
+    console.log('A new user was created');
+  } else {
+    console.log('A user updated, or there was an error');
+  }
+});
 
 // Create an instance method for hashing a password
 UserSchema.methods.hashPassword = function(password) {

@@ -66,7 +66,7 @@ var mongoose = require('./config/mongoose'),
 // Create a new Mongoose connection instance
 var db = mongoose();
 
-console.log(db);
+//console.log(db);
 // Create a new Express application instance
 var app = express();
 

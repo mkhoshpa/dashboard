@@ -1,0 +1,175 @@
+/* Custom Stylesheet */
+/**
+ * Use this file to override Materialize files so you can update
+ * the core Materialize files in the future
+ *
+ * Made By MaterializeCSS.com
+ */
+
+nav ul a,
+nav .brand-logo {
+  color: #444;
+}
+
+#logo-container, #r2r {
+  font-weight: 900;
+}
+
+p {
+  line-height: 2rem;
+}
+
+.button-collapse {
+  color: #26a69a;
+}
+
+.parallax-container {
+  min-height: 380px;
+  line-height: 0;
+  height: auto;
+  color: rgba(255,255,255,.9);
+}
+  .parallax-container .section {
+    width: 100%;
+  }
+
+@media only screen and (max-width : 992px) {
+  .parallax-container .section {
+    position: absolute;
+    top: 40%;
+  }
+  #index-banner .section {
+    top: 10%;
+  }
+}
+
+@media only screen and (max-width : 600px) {
+  #index-banner .section {
+    top: 0;
+  }
+}
+
+.icon-block {
+  padding: 0 15px;
+}
+.icon-block .material-icons {
+  font-size: inherit;
+}
+
+footer.page-footer {
+  margin: 0;
+}
+
+#landing-footer {
+  margin-bottom: 0px !important;
+}
+
+#login, #register {
+  padding: 10px;
+  padding-left: 0px;
+  padding-right: 0px;
+  padding-bottom: 0px;
+  margin: 20px;
+  margin-bottom: 10px;
+  margin-top: -50px;
+}
+
+#full-width {
+  margin: 10px;
+  width: 100%;
+  margin-left: 0px;
+}
+
+#login-button {
+
+}
+
+#google-button {
+  /*margin-left: 20px;
+  margin-bottom: 20px;*/
+  width: 100%;
+}
+
+#google-button-login {
+  margin-left: 20px;
+  margin-bottom: 20px;
+}
+
+#twitter-button {
+  /*margin-left: 15px;
+  margin-bottom: 20px;
+  margin-right: 20px;*/
+  width: 100%;
+}
+
+#twitter-button-login {
+  margin-left: 15px;
+  margin-bottom: 20px;
+  margin-right: 20px;
+}
+
+#facebook-button {
+  margin: 10px;
+  width: 100%;
+  margin-left: 0px;
+  margin-bottom: 20px;
+}
+
+#password, #email, #first, #last, #username {
+  font-family: "Roboto Condensed", sans-serif;
+  outline: 0;
+  background: #f2f2f2;
+  width: 100%;
+  border: 0;
+  margin: 0 0 15px;
+  padding: 15px;
+  box-sizing: border-box;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+#password:hover, #email:hover {
+  background: #EEEEEE;
+}
+
+.twitter-blue, .twitter-blue:hover, .twitter-blue:focus {
+  background-color: #55acee;
+}
+
+.facebook-blue, .facebook-blue:hover, .facebook-blue:focus {
+  background-color: #3b5998;
+}
+
+.google-orange, .google-orange:hover, .google-orange:focus {
+  background-color: #dc4e41;
+}
+
+html#login-page, html#signup-page {
+  font-family: "Roboto Condensed", sans-serif;
+  font-weight: 300;
+  text-transform: capitalize;
+}
+
+#login-input-container {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.login-label {
+  font-size: 0.9rem;
+}
+
+.bottom-form-div {
+  margin: 10px;
+  width: 100%;
+  margin-left: 0px;
+  margin-top: 20px;
+}
+
+#first-name {
+  padding-left: 20px;
+}
+
+#last-name {
+  padding-right: 20px;
+}

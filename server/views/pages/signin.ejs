@@ -1,0 +1,77 @@
+<html id="login-page">
+  <% include ../partials/header.ejs %>
+  <body class="blue lighten-1 valign-wrapper">
+
+    <% for(var i in messages) { %>
+    <div class="flash"><%= messages[i] %></div>
+    <% } %>
+
+      <div class="row">
+        <div class="row s12 m7">
+          <div class="card">
+
+            <div class="row center-align">
+
+            </div>
+
+            <form action="/signin" method="post">
+              <div class="row">
+                <div class="col s12" id="login-input-container">
+                  <label class="left-align login-label" for="email">EMAIL</label>
+                  <input id="email" type="email" class="validate">
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col s12" id="login-input-container">
+                  <label class="left-align login-label" for="password">PASSWORD</label>
+                  <!-- <label class="right-align login-label">Forgot your password?</label> -->
+                  <input id="password" type="password" class="validate">
+                </div>
+              </div>
+              <div class="row" id="login">
+                <div>
+                  <button id="full-width" class="btn waves-effect waves-light light-green" type="submit" name="action">Login
+                  </button>
+                </div>
+              </div>
+            </form>
+
+            <div class="row center-align" style="text-transform: lowercase;">
+              or sign in through..
+            </div>
+
+            <div class="row">
+              <a href="/oauth/google" class="btn waves-effect waves-light google-orange" type="submit" name="action" id="google-button-login">Google
+               <i class="valign fa fa-google left"></i>
+              </a>
+              <a href="/oauth/twitter" class="btn waves-effect waves-light twitter-blue" type="submit" name="action" id="twitter-button-login">Twitter
+               <i class="valign fa fa-twitter left"></i>
+              </a>
+            </div>
+
+            <div class="row" id="login">
+              <div>
+                <a href="/oauth/facebook" id="facebook-button" class="btn waves-effect waves-light facebook-blue" type="submit" name="action" id="login-left">Facebook
+                   <i class="valign fa fa-facebook left"></i>
+                </a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="row" id="bottom-form-div">
+            <div class="row">
+                <a  href="/signup" class="btn waves-effect waves-light  blue-grey lighten-1" type="submit"  style="width: 100%;" name="action">Don't have an account?
+                </a>
+            </div>
+        </div>
+
+
+
+      </div>
+
+  </body>
+  <% include ../partials/scripts.ejs %>
+</html>

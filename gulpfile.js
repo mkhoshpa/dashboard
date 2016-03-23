@@ -21,7 +21,7 @@ var paths = {
 gulp.task('nodemon' /*,['sass']*/ , function (cb) {
 	var started = false;
 	return nodemon({
-		script: 'server/app.js'
+		script: 'app.js'
 	}).on('start', function () {
 		// to avoid nodemon being started multiple times
 		// thanks @matthisk

@@ -8,7 +8,8 @@ angular
   .controller('MainController', MainController)
   .config(($mdThemingProvider : angular.material.IThemingProvider,
            $mdIconProvider    : angular.material.IIconProvider,
-           $routeProvider: ng.route.IRouteProvider) => {
+           $routeProvider: ng.route.IRouteProvider,
+           $locationProvider: ng.ILocationProvider) => {
 
       $mdIconProvider
           .defaultIconSet("./assets/svg/avatars.svg", 128)
@@ -17,7 +18,7 @@ angular
           .icon("hangouts"   , "./assets/svg/hangouts.svg"    , 512)
           .icon("twitter"    , "./assets/svg/twitter.svg"     , 512)
           .icon("phone"      , "./assets/svg/phone.svg"       , 512)
-          .icon("slack"      , "./assests/svg/slack.svg"      ,512);
+          .icon("slack"      , "./assests/svg/slack.svg"      , 512);
 
       $mdThemingProvider.theme('default')
           .primaryPalette('blue')
@@ -29,12 +30,8 @@ angular
         templateUrl: "/dist/view/dashboard.html",
         controller: "MainController as vm"
       })
-      .when("/dashboard",
-      {
-        templateUrl: "/dist/view/dashboard.html",
-        controller: "MainController as vm"
-      })
 
+      $locationProvider.hashPrefix('!');
   });
 
 }

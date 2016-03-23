@@ -52,9 +52,10 @@ module.exports = function() {
 	// Load the routing files
 	require('../routes/index.server.routes.js')(app);
 	require('../routes/users.server.routes.js')(app);
+	require('../routes/dashboard.route.js')(app);
 
 	// Configure static file serving
-  //app.use(express.static(__dirname + '/app'));
+  app.use(express.static(__dirname + '/../../app'));
   app.use(express.static(__dirname + '/../views'));
 	console.log(__dirname);
 	// Return the Express application instance

@@ -36,6 +36,17 @@ var UserSchema = new Schema({
 			}, 'Password should be longer'
 		]
 	},
+  image: {
+    type: String,
+  },
+  role:{
+    type: String,
+    enum: ['coach', 'user', 'admin'],
+    default: 'user'
+  },
+  clients: [
+    { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+  ],
 	salt: {
 		type: String
 	},
@@ -70,14 +81,6 @@ UserSchema.pre('save', function(next) {
 	}
 
 	next();
-});
-
-UserSchema.post('save', function(next) {
-  if(this.isNew) {
-    console.log('A new user was created');
-  } else {
-    console.log('A user updated, or there was an error');
-  }
 });
 
 // Create an instance method for hashing a password

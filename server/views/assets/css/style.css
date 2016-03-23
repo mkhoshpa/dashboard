@@ -6,11 +6,13 @@
  * Made By MaterializeCSS.com
  */
 
-nav ul a,
-nav .brand-logo {
+nav ul a{
   color: #444;
 }
 
+nav .brand-logo {
+  color: #176785;
+}
 #logo-container, #r2r {
   font-weight: 900;
 }
@@ -172,4 +174,33 @@ html#login-page, html#signup-page {
 
 #last-name {
   padding-right: 20px;
+}
+
+.dropdown-content li > a, .dropdown-content li > span {
+  color: #444;
+  font-size: 14px;
+}
+
+.dropdown-content.active {
+  margin-top: 64px;
+}
+
+.fitpath-blue, .fitpath-blue:hover, .fitpath-blue:focus {
+  background-color: #176785;
+}
+
+.fitpath-fill-blue, .fitpath-fill-blue:hover, .fitpath-fill-blue:focus {
+  color: #176785;
+}
+
+.fitpath-light-blue, .fitpath-light-blue-blue:hover, .fitpath-light-blue-blue:focus {
+  background-color: #3FA2C6;
+}
+
+.fitpath-green, .fitpath-green:hover, .fitpath-green:focus {
+  background-color: #27AE60;
+}
+
+footer.page-footer {
+  background-color: #176785;
 }

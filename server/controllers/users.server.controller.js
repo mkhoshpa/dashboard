@@ -149,3 +149,9 @@ exports.signout = function(req, res) {
 	// Redirect the user back to the main application page
 	res.redirect('/');
 };
+
+exports.find = function(req, res) {
+	User.find({}, function(err, obj){
+		res.json(obj);
+	})
+}

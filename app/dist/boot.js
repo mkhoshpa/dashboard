@@ -4,7 +4,7 @@ var ContactManagerApp;
         .module('contactManagerApp', ['ngMaterial', 'ngMdIcons', 'ngMessages', 'ngRoute'])
         .service('userService', ContactManagerApp.UserService)
         .controller('MainController', ContactManagerApp.MainController)
-        .config(function ($mdThemingProvider, $mdIconProvider, $routeProvider) {
+        .config(function ($mdThemingProvider, $mdIconProvider, $routeProvider, $locationProvider) {
         $mdIconProvider
             .defaultIconSet("./assets/svg/avatars.svg", 128)
             .icon("menu", "./assets/svg/menu.svg", 24)
@@ -20,11 +20,8 @@ var ContactManagerApp;
             .when("/", {
             templateUrl: "/dist/view/dashboard.html",
             controller: "MainController as vm"
-        })
-            .when("/dashboard", {
-            templateUrl: "/dist/view/dashboard.html",
-            controller: "MainController as vm"
         });
+        $locationProvider.hashPrefix('!');
     });
 })(ContactManagerApp || (ContactManagerApp = {}));
 //# sourceMappingURL=boot.js.map

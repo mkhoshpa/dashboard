@@ -18,7 +18,12 @@ module.exports = function(app) {
 			successRedirect: '/',
 			failureRedirect: '/signin',
 			failureFlash: true,
-	   }));
+		}));
+
+		// function(req,res) {
+		// 	res.redirect(req.session.returnTo || '/');
+		// 	delete req.session.returnTo;
+		// }
 
 	// Set up the Facebook OAuth routes
 	app.get('/oauth/facebook', passport.authenticate('facebook', {
@@ -54,4 +59,7 @@ module.exports = function(app) {
 
 	// Set up the 'signout' route
 	app.get('/signout', users.signout);
+
+	app.get('/users', users.find);
+
 };

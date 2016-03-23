@@ -4,7 +4,7 @@ exports.render = function(req, res) {
   }
 
   req.session.lastVisit = new Date();
-
+  console.log(__dirname);
   res.render('pages/landing', {
     userFullName: req.user ? req.user.fullName : ''
   });

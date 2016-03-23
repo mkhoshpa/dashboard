@@ -39,7 +39,7 @@ module.exports = function() {
 	}));
 
 	// Set the application view engine and 'views' folder
-	app.set('views', './server/views');
+	app.set('views', '../server/views');
 	app.set('view engine', 'ejs');
 
 	// Configure the flash messages middleware

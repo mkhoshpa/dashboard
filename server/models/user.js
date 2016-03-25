@@ -36,6 +36,12 @@ var UserSchema = new Schema({
 			}, 'Password should be longer'
 		]
 	},
+  slackChannels : [
+    {
+      userId: {type: String},
+      channelId: {type: String}
+    }
+  ],
   image: {
     type: String,
   },
@@ -45,6 +51,9 @@ var UserSchema = new Schema({
     default: 'user'
   },
   clients: [
+    { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+  ],
+  coaches: [
     { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
   ],
 	salt: {

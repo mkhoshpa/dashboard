@@ -1,11 +1,16 @@
 'use strict'
 
 var mongoose = require('mongoose');
-var user = require('../../models/user.js');
+var User = require('../../models/user.js');
 
 
-exports.create = function(req, res) {
+exports.insert = function(req, res) {
+  // User.findByIdAndUpdate(
+  //   req.params.id,
+  //   {$push: {"client"}}
+  // );
 
+  console.log(req.user);
 }
 
 exports.read = function(req, res) {

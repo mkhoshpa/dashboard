@@ -53,6 +53,7 @@ module.exports = function() {
 	require('../routes/index.server.routes.js')(app);
 	require('../routes/users.server.routes.js')(app);
 	require('../routes/dashboard.route.js')(app);
+	require('../routes/api/client.js')(app);
 
 	// Configure static file serving
   app.use(express.static(__dirname + '/../../app'));

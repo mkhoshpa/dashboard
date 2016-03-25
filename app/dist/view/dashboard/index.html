@@ -1,0 +1,32 @@
+
+<div layout="row" ng-cloak flex>
+  <div ng-include="'/dist/view/dashboard/sidenav.html'" layout="vertical"></div>
+
+  <div flex id="wrapper" layout="row">
+    <md-content flex id="content">
+      <div ng-include="'/dist/view/dashboard/main-content.html'"></div>
+
+      <md-tabs md-dynamic-height="" md-border-bottom="" md-stretch-tabs="always" md-selected="vm.tabIndex">
+        <md-tab label="Bio">
+          <div ng-include="'/dist/view/dashboard/tab-bio.html'"></div>
+        </md-tab>
+
+        <md-tab label="Notes">
+          <div ng-include="'/dist/view/dashboard/tab-notes.html'">
+          </div>
+          <div id="template2" class="ng-cloak">{{current}}</div>
+          <div id="template2" class="ng-cloak"><p>--{{vm.username}}</p></div>
+        </md-tab>
+
+        <md-tab label="Reminders">
+          <div ng-include="'/dist/view/dashboard/tab-reminders.html'"></div>
+        </md-tab>
+
+        <md-tab label="Surveys">
+          <div ng-include="'/dist/view/dashboard/tab-surveys.html'"></div>
+        </md-tab>
+
+      </md-tabs>
+    </md-content>
+  </div>
+</div>

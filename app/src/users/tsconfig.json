@@ -1,0 +1,21 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "sourceMap": true,
+    "outDir": "../../dist/users"
+  },
+  "filesGlob": [
+    "./**/*.ts",
+    "!node_modules/**/*.ts"
+  ],
+  "files": [
+    "./_all.ts",
+    "./app.ts",
+    "./services/userService.ts"
+  ],
+  "atom": {
+    "rewriteTsconfig": true
+  }
+}

@@ -1,9 +1,9 @@
 /// <reference path="../../typings/tsd.d.ts" />
-/// <reference path="boot.ts" />
-/// <reference path="models.ts" />
-/// <reference path="controllers/mainController.ts" />
-/// <reference path="controllers/addUserDialogController.ts" />
-/// <reference path="controllers/contactPanelController.ts" />
-/// <reference path="services/userService.ts" />
-/// <reference path="services/postMessage.ts" />
+/// <reference path="./dashboard/_all.ts" />
+/// <reference path="./dashboard/controllers/addUserDialogController.ts"/>
+/// <reference path="./dashboard/controllers/mainController.ts"/>
+/// <reference path="./dashboard/controllers/contactPanelController.ts"/>
+/// <reference path="./dashboard/_all.ts" />
+/// <reference path="./dashboard/boot.ts" />
+/// <reference path="./dashboard/models.ts" />
 //# sourceMappingURL=_all.js.map

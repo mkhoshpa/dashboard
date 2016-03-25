@@ -1,0 +1,24 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "sourceMap": true,
+    "outDir": "../../dist/dashboard"
+  },
+  "filesGlob": [
+    "./**/*.ts",
+    "!node_modules/**/*.ts"
+  ],
+  "files": [
+    "./_all.ts",
+    "./boot.ts",
+    "./controllers/addUserDialogController.ts",
+    "./controllers/contactPanelController.ts",
+    "./controllers/mainController.ts",
+    "./models.ts"
+  ],
+  "atom": {
+    "rewriteTsconfig": true
+  }
+}

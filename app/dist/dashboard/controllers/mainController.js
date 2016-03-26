@@ -4,6 +4,7 @@ var app;
     (function (dashboard) {
         var MainController = (function () {
             function MainController(userService, $mdSidenav, $mdBottomSheet, $mdToast, $mdDialog, $mdMedia, $http) {
+                var _this = this;
                 this.userService = userService;
                 this.$mdSidenav = $mdSidenav;
                 this.$mdBottomSheet = $mdBottomSheet;
@@ -22,12 +23,11 @@ var app;
                 self.userService
                     .loadClients()
                     .then(function (clients) {
-                    self.clients = clients;
+                    _this.clients = clients;
                     self.selected = clients[0];
                     self.userService.selectedUser = self.selected;
                 });
                 this.name = this.current.username;
-                console.log('clients: ' + self.clients);
                 console.log('name: ' + this.name);
                 console.log('role: ' + this.current.role);
             }
@@ -35,6 +35,7 @@ var app;
                 this.formScope = scope;
             };
             MainController.prototype.addUser = function ($event) {
+                var _this = this;
                 var self = this;
                 var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
                 this.$mdDialog.show({
@@ -46,8 +47,9 @@ var app;
                     clickOutsideToClose: true,
                     fullscreen: useFullScreen
                 }).then(function (user) {
-                    var newUser = dashboard.User.fromCreate(user);
-                    self.users.push(newUser);
+                    console.log('this is user' + JSON.stringify(user));
+                    var newUser = _this.userService.insert(user.name);
+                    console.log(newUser);
                     self.selectUser(newUser);
                     self.openToast("User added");
                 }, function () {
@@ -117,7 +119,7 @@ var app;
                 this.$mdSidenav('left').toggle();
             };
             MainController.prototype.selectUser = function (user) {
-                this.selected = user;
+                this.userService.selectedUser = user;
                 var sidebar = this.$mdSidenav('left');
                 if (sidebar.isOpen()) {
                     sidebar.close();

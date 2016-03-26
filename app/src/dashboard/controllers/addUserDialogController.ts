@@ -10,7 +10,7 @@ module app.dashboard {
                 private $http) {}
 
     user: any;
-    creator: any = this.userService.get();
+    //creator: any = this.userService.get();
 
 
 
@@ -24,8 +24,6 @@ module app.dashboard {
 
     save(): void {
       this.$mdDialog.hide(this.user);
-      console.log(this.user.name + '--');
-
     }
   }
 

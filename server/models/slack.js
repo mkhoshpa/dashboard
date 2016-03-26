@@ -17,12 +17,23 @@ var SlackSchema = new Schema({
         name: {type: String}
       }
     ],
-    surveys: [
-        {type: mongoose.Schema.Types.ObjectId, ref: 'Surveys'}
+    reminders: [
+      {
+        title: {type: String},
+        response: {type: String},
+        time: {type: String},
+        daysOfWeek: {
+          monday: {type: Boolean},
+          tuesday: {type: Boolean},
+          wednesday: {type: Boolean},
+          thursday: {type: Boolean},
+          friday: {type: Boolean},
+          saturday: {type: Boolean},
+          sunday: {type: Boolean}
+        },
+        active:{type: Boolean}
+      }
     ],
-    habits: [
-      {type: mongoose.Schema.Types.ObjectId, ref: 'Habits'}
-    ]
 })
 
 var Slack = mongoose.model('Slack', SlackSchema);

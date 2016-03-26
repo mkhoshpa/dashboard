@@ -20,13 +20,11 @@ module app.dashboard {
         self.userService
           .loadClients()
           .then((clients: any) => {
-            self.clients = clients;
+            this.clients = clients;
             self.selected = clients[0];
             self.userService.selectedUser = self.selected;
           });
         this.name = this.current.username;
-        console.log('clients: ' +  self.clients);
-
         console.log('name: ' + this.name);
         console.log('role: ' + this.current.role);
     }
@@ -58,10 +56,11 @@ module app.dashboard {
         controllerAs: "ctrl",
         clickOutsideToClose:true,
         fullscreen: useFullScreen
-      }).then((user: CreateUser) => {
+      }).then((user: any) => {
         // Call user service
-        var newUser: User = User.fromCreate(user);
-        self.users.push(newUser);
+        console.log('this is user' + JSON.stringify(user));
+        var newUser: any = this.userService.insert(user.name);
+        console.log(newUser);
         self.selectUser(newUser);
 
         self.openToast("User added");
@@ -166,8 +165,7 @@ module app.dashboard {
     }
 
     selectUser ( user ) {
-      this.selected = user;
-      // this.userService.selectedUser = user;
+      this.userService.selectedUser = user;
 
       var sidebar = this.$mdSidenav('left');
       if (sidebar.isOpen()) {

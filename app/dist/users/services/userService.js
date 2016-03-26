@@ -12,6 +12,7 @@ var app;
                 this.name = this.user.username;
                 this.clients = this.user.clients;
                 this.role = this.user.role;
+                this.http = $http;
             }
             UserService.prototype.get = function () {
                 return this.user;
@@ -19,10 +20,9 @@ var app;
             UserService.prototype.loadClients = function () {
                 return this.$q.when(this.clients);
             };
-            UserService.prototype.insert = function (id) {
-                this.$http.post('/api/slack/' + id)
-                    .success(function (result) {
-                });
+            UserService.prototype.insert = function (params) {
+                return this.http.post('/api/slack/' + params)
+                    .then(function (response) { return response.data; });
             };
             UserService.$inject = ['$window', '$q', '$http'];
             return UserService;

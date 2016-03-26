@@ -20,6 +20,7 @@ module app.users {
     user: any;
     clients: any;
     role: any;
+    http: any;
 
     static $inject = ['$window', '$q', '$http'];
 
@@ -30,6 +31,7 @@ module app.users {
       this.name = this.user.username;
       this.clients = this.user.clients;
       this.role = this.user.role;
+      this.http = $http;
     }
 
     selectedUser: any = null;
@@ -42,14 +44,10 @@ module app.users {
       return this.$q.when(this.clients);
     }
 
-    insert(id: any): any {
-      this.$http.post('/api/slack/' + id)
-      .success(function(result) {
-
-      });
+    insert(params: any): ng.IPromise<any> {
+      return this.http.post('/api/slack/' + params)
+      .then(response => response.data);
     }
-
-
 
   }
 

@@ -10,14 +10,17 @@ var User = require('../../models/user.js');
 
 // Insert a slack connection into the current user's client object
 exports.insert = function(req, res) {
-
   User.findByIdAndUpdate(
      req.user.id,
-     {$push: {"clients": {user: req.params.id, slack: null}}},
+     {$push: {"clients": {username: req.params.id, slack: null, reminders: []}}},
      {safe: true, upsert: true, new : true},
      function(err, model) {
-       console.log(err);
-       console.log(model);
+       if(err) {
+
+       }
+       else {
+         res.send(req.params.id);
+       }
      }
   );
 

@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var User = require('./user.js');
 var Surveys = require('./surveys.js');
-var Reminders = require('./reminders.js');
+var Habits = require('./habits.js');
 
 var SlackSchema = new Schema({
     dashboardUser: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
@@ -20,8 +20,8 @@ var SlackSchema = new Schema({
     surveys: [
         {type: mongoose.Schema.Types.ObjectId, ref: 'Surveys'}
     ],
-    reminders: [
-      {type: mongoose.Schema.Types.ObjectId, ref: 'Reminders'}
+    habits: [
+      {type: mongoose.Schema.Types.ObjectId, ref: 'Habits'}
     ]
 })
 

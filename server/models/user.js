@@ -46,6 +46,23 @@ var UserSchema = new Schema({
       }
     ]
   },
+  reminders: [
+    {
+      title: {type: String},
+      response: {type: String},
+      time: {type: String},
+      daysOfWeek: {
+        monday: {type: Boolean},
+        tuesday: {type: Boolean},
+        wednesday: {type: Boolean},
+        thursday: {type: Boolean},
+        friday: {type: Boolean},
+        saturday: {type: Boolean},
+        sunday: {type: Boolean}
+      },
+      active:{type: Boolean}
+    }
+  ],
   image: {
     type: String,
   },

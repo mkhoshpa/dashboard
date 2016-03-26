@@ -19,14 +19,15 @@ var app;
                 this.newReminder = new dashboard.Reminder('', null);
                 var self = this;
                 this.current = this.userService.get();
-                this.userService
-                    .loadAllClients()
+                self.userService
+                    .loadClients()
                     .then(function (clients) {
                     self.clients = clients;
                     self.selected = clients[0];
                     self.userService.selectedUser = self.selected;
                 });
                 this.name = this.current.username;
+                console.log('clients: ' + self.clients);
                 console.log('name: ' + this.name);
                 console.log('role: ' + this.current.role);
             }

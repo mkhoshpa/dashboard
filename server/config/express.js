@@ -55,6 +55,7 @@ module.exports = function() {
 	require('../routes/dashboard.route.js')(app);
 	require('../routes/api/slack.js')(app);
 	require('../routes/api/willow.js')(app);
+	require('../routes/api/habits.js')(app);
 
 	// Configure static file serving
   app.use(express.static(__dirname + '/../../app'));

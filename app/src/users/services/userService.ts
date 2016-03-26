@@ -9,7 +9,7 @@ module app.users {
     role: any;
     name: any;
     get (): any;
-    loadAllClients(): ng.IPromise<any>;
+    loadClients(): ng.IPromise<any>;
     selectedUser: any;
   }
 
@@ -21,9 +21,11 @@ module app.users {
     clients: any;
     role: any;
 
-    static $inject = ['$window', '$q'];
+    static $inject = ['$window', '$q', '$http'];
 
-    constructor(private $window: ng.IWindowService, private $q: ng.IQService) {
+    constructor(private $window: ng.IWindowService,
+                private $q: ng.IQService,
+                private $http: ng.IHttpService) {
       this.user = window['user'];
       this.name = this.user.username;
       this.clients = this.user.clients;
@@ -36,11 +38,16 @@ module app.users {
       return this.user;
     }
 
-    loadAllClients(): ng.IPromise<any> {
+    loadClients(): ng.IPromise<any> {
       return this.$q.when(this.clients);
     }
 
+    insert(id: any): any {
+      this.$http.post('/api/slack/' + id)
+      .success(function(result) {
 
+      });
+    }
 
 
 

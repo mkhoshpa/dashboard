@@ -6,7 +6,6 @@ var ObjectId = mongoose.Schema.Types.ObjectId;
 var User = require('./user.js');
 
 var reminderSchema = new Schema({
-  _id: ObjectId,
   title: {type: String, required: true},
   description: {type: String},
   start: {type: Date, required: true, default: Date.now},
@@ -14,7 +13,9 @@ var reminderSchema = new Schema({
   timesOfDay: [String],
   daysOfWeek: [String],
   weeksOfMonth: [Number],
+  // Who the reminder is coming from
   client: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+  // Who the reminder is going too
   coach: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}
 })
 

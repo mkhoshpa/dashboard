@@ -1,12 +1,12 @@
-/// <reference path="../_all.ts" />
 var app;
 (function (app) {
     var users;
     (function (users) {
         var UserService = (function () {
-            function UserService($window, $q) {
+            function UserService($window, $q, $http) {
                 this.$window = $window;
                 this.$q = $q;
+                this.$http = $http;
                 this.selectedUser = null;
                 this.user = window['user'];
                 this.name = this.user.username;
@@ -16,10 +16,15 @@ var app;
             UserService.prototype.get = function () {
                 return this.user;
             };
-            UserService.prototype.loadAllClients = function () {
+            UserService.prototype.loadClients = function () {
                 return this.$q.when(this.clients);
             };
-            UserService.$inject = ['$window', '$q'];
+            UserService.prototype.insert = function (id) {
+                this.$http.post('/api/slack/' + id)
+                    .success(function (result) {
+                });
+            };
+            UserService.$inject = ['$window', '$q', '$http'];
             return UserService;
         }());
         users.UserService = UserService;

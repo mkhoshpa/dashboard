@@ -21,3 +21,7 @@ exports.create = function(req, res) {
     res.send(willow);
   })
 }
+
+exports.list = function(req, res) {
+
+}

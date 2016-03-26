@@ -11,7 +11,7 @@ module app.dashboard {
       //this.user = userService.selectedUser;
     }
 
-    user: User;
+    user: any;
 
     actions = [
       { name: 'Phone'       , icon: 'phone'       , icon_url: 'assets/svg/phone.svg'},

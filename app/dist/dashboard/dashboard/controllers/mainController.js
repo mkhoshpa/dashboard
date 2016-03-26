@@ -1,3 +1,4 @@
+/// <reference path="../_all.ts" />
 var app;
 (function (app) {
     var dashboard;
@@ -18,8 +19,16 @@ var app;
                 this.newReminder = new dashboard.Reminder('', null);
                 var self = this;
                 this.current = this.userService.get();
+                this.userService
+                    .loadAllClients()
+                    .then(function (clients) {
+                    self.clients = clients;
+                    self.selected = clients[0];
+                    self.userService.selectedUser = self.selected;
+                });
                 this.name = this.current.username;
                 console.log('name:' + this.name);
+                console.log(this.current.role);
             }
             MainController.prototype.setFormScope = function (scope) {
                 this.formScope = scope;
@@ -44,6 +53,22 @@ var app;
                     console.log('You cancelled the dialog.');
                 });
             };
+            // slackMessage($event, user) {
+            //   var self = this;
+            //   this.userService.selectedUser = user;
+            //
+            //   console.log(user)
+            //   var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
+            //   this.$mdDialog.show({
+            //     templateUrl: './dist/view/dashboard/sendSlackMessage.html',
+            //     parent: angular.element(document.body),
+            //     targetEvent: $event,
+            //     controller: PostMessage,
+            //     controllerAs: "slack",
+            //     clickOutsideToClose:true,
+            //     fullscreen: useFullScreen
+            //   })
+            // }
             MainController.prototype.addReminder = function () {
                 this.selected.reminders.push(this.newReminder);
                 this.newReminder = new dashboard.Reminder('', null);
@@ -108,6 +133,7 @@ var app;
             };
             MainController.prototype.selectUser = function (user) {
                 this.selected = user;
+                // this.userService.selectedUser = user;
                 var sidebar = this.$mdSidenav('left');
                 if (sidebar.isOpen()) {
                     sidebar.close();

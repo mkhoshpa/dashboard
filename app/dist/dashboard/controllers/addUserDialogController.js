@@ -1,11 +1,13 @@
-/// <reference path="../_all.ts" />
 var app;
 (function (app) {
     var dashboard;
     (function (dashboard) {
         var AddUserDialogController = (function () {
-            function AddUserDialogController($mdDialog) {
+            function AddUserDialogController($mdDialog, userService, $http) {
                 this.$mdDialog = $mdDialog;
+                this.userService = userService;
+                this.$http = $http;
+                this.creator = this.userService.get();
                 this.avatars = [
                     'svg-1', 'svg-2', 'svg-3', 'svg-4'
                 ];
@@ -15,8 +17,9 @@ var app;
             };
             AddUserDialogController.prototype.save = function () {
                 this.$mdDialog.hide(this.user);
+                console.log(this.user.name + '--');
             };
-            AddUserDialogController.$inject = ['$mdDialog'];
+            AddUserDialogController.$inject = ['$mdDialog', 'userService', '$http'];
             return AddUserDialogController;
         }());
         dashboard.AddUserDialogController = AddUserDialogController;

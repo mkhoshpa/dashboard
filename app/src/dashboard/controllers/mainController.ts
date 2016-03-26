@@ -3,7 +3,8 @@
 module app.dashboard {
 
   export class MainController {
-    static $inject = ['userService', '$mdSidenav', '$mdBottomSheet', '$mdToast', '$mdDialog', '$mdMedia'];
+    static $inject = ['userService', '$mdSidenav', '$mdBottomSheet',
+                      '$mdToast', '$mdDialog', '$mdMedia', '$http'];
 
     constructor(
       private userService: app.users.UserService,
@@ -11,12 +12,21 @@ module app.dashboard {
       private $mdBottomSheet: angular.material.IBottomSheetService,
       private $mdToast: angular.material.IToastService,
       private $mdDialog: angular.material.IDialogService,
-      private $mdMedia: angular.material.IMedia)
+      private $mdMedia: angular.material.IMedia,
+      private $http: angular.IHttpService)
       {
         var self = this;
         this.current = this.userService.get();
+        this.userService
+          .loadAllClients()
+          .then((clients: any) => {
+            self.clients = clients;
+            self.selected = clients[0];
+            self.userService.selectedUser = self.selected;
+          });
         this.name = this.current.username;
-        console.log('name:' + this.name);
+        console.log('name: ' + this.name);
+        console.log('role: ' + this.current.role);
     }
 
     current: any;
@@ -24,8 +34,8 @@ module app.dashboard {
     searchText: string = '';
     formScope: any;
     tabIndex: number = 0;
-    selected: User = null;
-    users: User[] = [ ];
+    selected: any = null;
+    users: any[] = [ ];
     clients: any;
     newNote: Note = new Note('', null);
     newReminder: Reminder = new Reminder('', null);
@@ -47,6 +57,7 @@ module app.dashboard {
         clickOutsideToClose:true,
         fullscreen: useFullScreen
       }).then((user: CreateUser) => {
+        // Call user service
         var newUser: User = User.fromCreate(user);
         self.users.push(newUser);
         self.selectUser(newUser);

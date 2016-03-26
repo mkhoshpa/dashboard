@@ -9,12 +9,14 @@ var surveySchema = new Schema({
   _id: ObjectId,
   title: {type: String, required: true },
   client: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
-  coach: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}
+  coach: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
   start: { type: Date, default: Date.now },
   end: Date,
   questions: [
-    question: {type: String},
-    response: {type: String}
+    {
+      question: {type: String},
+      response: {type: String}
+    }
   ]
 })
 

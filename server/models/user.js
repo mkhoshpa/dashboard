@@ -5,7 +5,8 @@
 // Load the module dependencies
 var mongoose = require('mongoose'),
   	crypto = require('crypto'),
-  	Schema = mongoose.Schema;
+  	Schema = mongoose.Schema,
+    Slack = require('./slack.js');
 
 // Define a new 'UserSchema'
 var UserSchema = new Schema({
@@ -36,12 +37,15 @@ var UserSchema = new Schema({
 			}, 'Password should be longer'
 		]
 	},
-  slackChannels : [
-    {
-      userId: {type: String},
-      channelId: {type: String}
-    }
-  ],
+  slack : {
+    username: String,
+    channels: [
+      {
+        name: {type: String},
+        id: {type: String}
+      }
+    ]
+  },
   image: {
     type: String,
   },
@@ -51,7 +55,10 @@ var UserSchema = new Schema({
     default: 'user'
   },
   clients: [
-    { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+    {
+      username: { type: String},
+      slack :{ type: mongoose.Schema.Types.ObjectId, ref: 'Slack' }
+    }
   ],
   coaches: [
     { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
@@ -134,4 +141,6 @@ UserSchema.set('toJSON', {
 });
 
 // Create the 'User' model out of the 'UserSchema'
-mongoose.model('User', UserSchema);
+var User = mongoose.model('User', UserSchema);
+
+module.exports = User;

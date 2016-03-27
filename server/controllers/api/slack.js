@@ -19,12 +19,10 @@ exports.insert = function(req, res) {
 
        }
        else {
-         res.send(req.params.id);
+         res.send((model.clients[(model.clients.length) - 1]));
        }
      }
   );
-
-  console.log(req.user);
 }
 
 exports.read = function(req, res) {

@@ -44,7 +44,7 @@ module app.users {
       return this.$q.when(this.clients);
     }
 
-    insert(params: any): ng.IPromise<any> {
+    insert(params: any, clients: any): ng.IPromise<any> {
       return this.http.post('/api/slack/' + params)
       .then(response => response.data);
     }

@@ -48,9 +48,10 @@ var app;
                     fullscreen: useFullScreen
                 }).then(function (user) {
                     console.log('this is user' + JSON.stringify(user));
-                    var newUser = _this.userService.insert(user.name);
-                    console.log(newUser);
-                    self.selectUser(newUser);
+                    var newUser = _this.userService.insert(user.name).then(function (result) {
+                        self.clients.push(result);
+                        self.selectUser(result);
+                    });
                     self.openToast("User added");
                 }, function () {
                     console.log('You cancelled the dialog.');
@@ -119,7 +120,7 @@ var app;
                 this.$mdSidenav('left').toggle();
             };
             MainController.prototype.selectUser = function (user) {
-                this.userService.selectedUser = user;
+                this.selected = user;
                 var sidebar = this.$mdSidenav('left');
                 if (sidebar.isOpen()) {
                     sidebar.close();

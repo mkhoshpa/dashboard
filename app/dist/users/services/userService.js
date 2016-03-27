@@ -20,7 +20,7 @@ var app;
             UserService.prototype.loadClients = function () {
                 return this.$q.when(this.clients);
             };
-            UserService.prototype.insert = function (params) {
+            UserService.prototype.insert = function (params, clients) {
                 return this.http.post('/api/slack/' + params)
                     .then(function (response) { return response.data; });
             };

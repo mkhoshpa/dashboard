@@ -59,9 +59,10 @@ module app.dashboard {
       }).then((user: any) => {
         // Call user service
         console.log('this is user' + JSON.stringify(user));
-        var newUser: any = this.userService.insert(user.name);
-        console.log(newUser);
-        self.selectUser(newUser);
+        var newUser: any = this.userService.insert(user.name).then(function(result) {
+          self.clients.push(result);
+          self.selectUser(result);
+        });
 
         self.openToast("User added");
       }, () => {
@@ -165,7 +166,7 @@ module app.dashboard {
     }
 
     selectUser ( user ) {
-      this.userService.selectedUser = user;
+      this.selected = user;
 
       var sidebar = this.$mdSidenav('left');
       if (sidebar.isOpen()) {

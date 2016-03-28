@@ -17,6 +17,7 @@ module app.dashboard {
       {
         var self = this;
         this.current = this.userService.get();
+
         self.userService
           .loadClients()
           .then((clients: any) => {
@@ -24,11 +25,22 @@ module app.dashboard {
             self.selected = clients[0];
             self.userService.selectedUser = self.selected;
           });
+
+        this.userService.slack().then((members: any) => {
+              this.members = members.members;
+              console.log("members: " + this.members);
+              console.log(members);
+        })
+
+        this.underscore = window['_'];
+        console.log(this.underscore);
+
         this.name = this.current.username;
         console.log('name: ' + this.name);
         console.log('role: ' + this.current.role);
     }
 
+    underscore: any;
     current: any;
     name: string;
     searchText: string = '';
@@ -39,6 +51,8 @@ module app.dashboard {
     clients: any;
     newNote: Note = new Note('', null);
     newReminder: Reminder = new Reminder('', null);
+    slack: any[];
+    members: any[];
 
     setFormScope(scope) {
       this.formScope = scope;
@@ -70,22 +84,38 @@ module app.dashboard {
       });
     }
 
-    // slackMessage($event, user) {
-    //   var self = this;
-    //   this.userService.selectedUser = user;
-    //
-    //   console.log(user)
-    //   var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
-    //   this.$mdDialog.show({
-    //     templateUrl: './dist/view/dashboard/sendSlackMessage.html',
-    //     parent: angular.element(document.body),
-    //     targetEvent: $event,
-    //     controller: PostMessage,
-    //     controllerAs: "slack",
-    //     clickOutsideToClose:true,
-    //     fullscreen: useFullScreen
-    //   })
-    // }
+    slackMessage($event, user) {
+      var self = this;
+      this.userService.selectedUser = user;
+
+      console.log(self.current);
+      var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
+      this.$mdDialog.show({
+        templateUrl: './dist/view/dashboard/sendSlackMessage.html',
+        parent: angular.element(document.body),
+        targetEvent: $event,
+        controller: SlackUsersController,
+        controllerAs: "slack",
+        clickOutsideToClose:true,
+        fullscreen: useFullScreen
+      }).then(() => {
+
+        var members: any = this.userService.slack().then(function(result) {
+          console.log(result);
+        });
+
+      }, () => {
+        console.log('You cancelled the dialog.');
+      });
+    }
+
+    slackList() {
+      var test = this.userService.slack().then((members: any) => {
+        console.log('here');
+        console.log(members);
+      });
+
+    }
 
     addReminder() {
       this.selected.reminders.push(this.newReminder);

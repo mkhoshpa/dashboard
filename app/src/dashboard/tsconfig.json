@@ -16,6 +16,7 @@
     "./controllers/addUserDialogController.ts",
     "./controllers/contactPanelController.ts",
     "./controllers/mainController.ts",
+    "./controllers/slackUsersController.ts",
     "./models.ts"
   ],
   "atom": {

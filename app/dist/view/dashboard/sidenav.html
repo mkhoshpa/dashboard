@@ -18,10 +18,10 @@
   </div>
   <md-content class="scrollable-nav-content">
     <md-list>
-      <md-list-item ng-repeat="it in vm.clients | filter:vm.searchText | orderBy:'name'">
+      <md-list-item ng-repeat="it in vm.members | filter:vm.searchText | orderBy:'name'">
           <md-button ng-click="vm.selectUser(it)" ng-class="{'selected' : it === vm.selected }">
-            <img ng-src="{{it.avatar}}" class="avatar"></md-icon>
-            {{it.username}}
+            <img ng-src="{{it.profile.image_72}}" class="avatar"></md-icon>
+            {{it.name}}
           </md-button>
       </md-list-item>
     </md-list>

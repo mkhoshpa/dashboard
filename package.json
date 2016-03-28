@@ -32,6 +32,7 @@
     "method-override": "^2.3.5",
     "mongoose": "^4.4.8",
     "morgan": "^1.7.0",
+    "nodemailer": "^2.3.0",
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.0",
     "passport-google-oauth": "^1.0.0",

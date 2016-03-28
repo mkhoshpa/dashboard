@@ -12,21 +12,24 @@ var mongoose = require('mongoose'),
 var UserSchema = new Schema({
 	firstName: String,
 	lastName: String,
-	email: {
-		type: String,
-		// Validate the email format
-    index: true,
-    unique: true,
-		match: [/.+\@.+\..+/, "Please fill a valid email address"]
-	},
+	// email: {
+	// 	type: String,
+	// 	// Validate the email format
+  //   index: true,
+  //   unique: true,
+	// 	match: [/.+\@.+\..+/, "Please fill a valid email address"]
+	// },
+
+  // Username is the unique itendifier,
 	username: {
 		type: String,
 		// Set a unique 'username' index
 		unique: true,
+    index: true,
 		// Validate 'username' value existance
-		required: 'Username is required',
+		required: 'Email is required',
 		// Trim the 'username' field
-		trim: true
+    match: [/.+\@.+\..+/, "Please fill a valid email address"]
 	},
 	password: {
 		type: String,
@@ -97,6 +100,9 @@ var UserSchema = new Schema({
   coaches: [
     { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
   ],
+  clients: [
+    { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+  ],
 	salt: {
 		type: String
 	},
@@ -144,29 +150,29 @@ UserSchema.methods.authenticate = function(password) {
 };
 
 // Find possible not used username
-UserSchema.statics.findUniqueUsername = function(username, suffix, callback) {
-	var _this = this;
-
-	// Add a 'username' suffix
-	var possibleUsername = username + (suffix || '');
-
-	// Use the 'User' model 'findOne' method to find an available unique username
-	_this.findOne({
-		username: possibleUsername
-	}, function(err, user) {
-		// If an error occurs call the callback with a null value, otherwise find find an available unique username
-		if (!err) {
-			// If an available unique username was found call the callback method, otherwise call the 'findUniqueUsername' method again with a new suffix
-			if (!user) {
-				callback(possibleUsername);
-			} else {
-				return _this.findUniqueUsername(username, (suffix || 0) + 1, callback);
-			}
-		} else {
-			callback(null);
-		}
-	});
-};
+// UserSchema.statics.findUniqueUsername = function(username, suffix, callback) {
+// 	var _this = this;
+//
+// 	// Add a 'username' suffix
+// 	var possibleUsername = username + (suffix || '');
+//
+// 	// Use the 'User' model 'findOne' method to find an available unique username
+// 	_this.findOne({
+// 		username: possibleUsername
+// 	}, function(err, user) {
+// 		// If an error occurs call the callback with a null value, otherwise find find an available unique username
+// 		if (!err) {
+// 			// If an available unique username was found call the callback method, otherwise call the 'findUniqueUsername' method again with a new suffix
+// 			if (!user) {
+// 				callback(possibleUsername);
+// 			} else {
+// 				return _this.findUniqueUsername(username, (suffix || 0) + 1, callback);
+// 			}
+// 		} else {
+// 			callback(null);
+// 		}
+// 	});
+// };
 
 // Configure the 'UserSchema' to use getters and virtuals when transforming to JSON
 UserSchema.set('toJSON', {

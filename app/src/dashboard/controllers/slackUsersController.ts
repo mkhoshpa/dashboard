@@ -2,7 +2,7 @@
 
 module app.dashboard {
 
-  export class AddUserDialogController {
+  export class SlackUsersController {
     static $inject = ['$mdDialog', 'userService'];
 
     constructor(private $mdDialog,
@@ -10,12 +10,6 @@ module app.dashboard {
 
     user: any = this.userService.get();
     //creator: any = this.userService.get();
-
-
-
-    avatars = [
-      'svg-1','svg-2','svg-3','svg-4'
-    ];
 
     cancel(): void {
       this.$mdDialog.cancel();

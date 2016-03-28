@@ -3,6 +3,7 @@
 /// <reference path="models.ts" />
 /// <reference path="controllers/mainController.ts" />
 /// <reference path="controllers/addUserDialogController.ts" />
+/// <reference path="controllers/slackUsersController.ts" />
 /// <reference path="controllers/contactPanelController.ts" />
 
 // Reference Users Namespace /  app.users module

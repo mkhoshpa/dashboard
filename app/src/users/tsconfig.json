@@ -13,6 +13,7 @@
   "files": [
     "./_all.ts",
     "./app.ts",
+    "./services/slackService.ts",
     "./services/userService.ts"
   ],
   "atom": {

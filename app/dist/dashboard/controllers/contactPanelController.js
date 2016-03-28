@@ -1,3 +1,4 @@
+/// <reference path="../_all.ts" />
 var app;
 (function (app) {
     var dashboard;
@@ -12,6 +13,7 @@ var app;
                     { name: 'Google+', icon: 'google_plus', icon_url: 'assets/svg/google_plus.svg' },
                     { name: 'Hangout', icon: 'hangouts', icon_url: 'assets/svg/hangouts.svg' }
                 ];
+                //this.user = userService.selectedUser;
             }
             DashboardController.prototype.submitContact = function (action) {
                 this.$mdBottomSheet.hide(action);

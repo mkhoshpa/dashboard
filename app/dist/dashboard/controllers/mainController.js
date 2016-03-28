@@ -1,3 +1,4 @@
+/// <reference path="../_all.ts" />
 var app;
 (function (app) {
     var dashboard;
@@ -27,6 +28,13 @@ var app;
                     self.selected = clients[0];
                     self.userService.selectedUser = self.selected;
                 });
+                this.userService.slack().then(function (members) {
+                    _this.members = members.members;
+                    console.log("members: " + _this.members);
+                    console.log(members);
+                });
+                this.underscore = window['_'];
+                console.log(this.underscore);
                 this.name = this.current.username;
                 console.log('name: ' + this.name);
                 console.log('role: ' + this.current.role);
@@ -47,6 +55,7 @@ var app;
                     clickOutsideToClose: true,
                     fullscreen: useFullScreen
                 }).then(function (user) {
+                    // Call user service
                     console.log('this is user' + JSON.stringify(user));
                     var newUser = _this.userService.insert(user.name).then(function (result) {
                         self.clients.push(result);
@@ -55,6 +64,34 @@ var app;
                     self.openToast("User added");
                 }, function () {
                     console.log('You cancelled the dialog.');
+                });
+            };
+            MainController.prototype.slackMessage = function ($event, user) {
+                var _this = this;
+                var self = this;
+                this.userService.selectedUser = user;
+                console.log(self.current);
+                var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
+                this.$mdDialog.show({
+                    templateUrl: './dist/view/dashboard/sendSlackMessage.html',
+                    parent: angular.element(document.body),
+                    targetEvent: $event,
+                    controller: dashboard.SlackUsersController,
+                    controllerAs: "slack",
+                    clickOutsideToClose: true,
+                    fullscreen: useFullScreen
+                }).then(function () {
+                    var members = _this.userService.slack().then(function (result) {
+                        console.log(result);
+                    });
+                }, function () {
+                    console.log('You cancelled the dialog.');
+                });
+            };
+            MainController.prototype.slackList = function () {
+                var test = this.userService.slack().then(function (members) {
+                    console.log('here');
+                    console.log(members);
                 });
             };
             MainController.prototype.addReminder = function () {

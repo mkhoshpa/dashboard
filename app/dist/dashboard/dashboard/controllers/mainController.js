@@ -4,13 +4,15 @@ var app;
     var dashboard;
     (function (dashboard) {
         var MainController = (function () {
-            function MainController(userService, $mdSidenav, $mdBottomSheet, $mdToast, $mdDialog, $mdMedia) {
+            function MainController(userService, $mdSidenav, $mdBottomSheet, $mdToast, $mdDialog, $mdMedia, $http) {
+                var _this = this;
                 this.userService = userService;
                 this.$mdSidenav = $mdSidenav;
                 this.$mdBottomSheet = $mdBottomSheet;
                 this.$mdToast = $mdToast;
                 this.$mdDialog = $mdDialog;
                 this.$mdMedia = $mdMedia;
+                this.$http = $http;
                 this.searchText = '';
                 this.tabIndex = 0;
                 this.selected = null;
@@ -19,21 +21,29 @@ var app;
                 this.newReminder = new dashboard.Reminder('', null);
                 var self = this;
                 this.current = this.userService.get();
-                this.userService
-                    .loadAllClients()
+                self.userService
+                    .loadClients()
                     .then(function (clients) {
-                    self.clients = clients;
+                    _this.clients = clients;
                     self.selected = clients[0];
                     self.userService.selectedUser = self.selected;
                 });
+                this.userService.slack().then(function (members) {
+                    _this.members = members.members;
+                    console.log("members: " + _this.members);
+                    console.log(members);
+                });
+                this.underscore = window['_'];
+                console.log(this.underscore);
                 this.name = this.current.username;
-                console.log('name:' + this.name);
-                console.log(this.current.role);
+                console.log('name: ' + this.name);
+                console.log('role: ' + this.current.role);
             }
             MainController.prototype.setFormScope = function (scope) {
                 this.formScope = scope;
             };
             MainController.prototype.addUser = function ($event) {
+                var _this = this;
                 var self = this;
                 var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
                 this.$mdDialog.show({
@@ -45,30 +55,45 @@ var app;
                     clickOutsideToClose: true,
                     fullscreen: useFullScreen
                 }).then(function (user) {
-                    var newUser = dashboard.User.fromCreate(user);
-                    self.users.push(newUser);
-                    self.selectUser(newUser);
+                    // Call user service
+                    console.log('this is user' + JSON.stringify(user));
+                    var newUser = _this.userService.insert(user.name).then(function (result) {
+                        self.clients.push(result);
+                        self.selectUser(result);
+                    });
                     self.openToast("User added");
                 }, function () {
                     console.log('You cancelled the dialog.');
                 });
             };
-            // slackMessage($event, user) {
-            //   var self = this;
-            //   this.userService.selectedUser = user;
-            //
-            //   console.log(user)
-            //   var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
-            //   this.$mdDialog.show({
-            //     templateUrl: './dist/view/dashboard/sendSlackMessage.html',
-            //     parent: angular.element(document.body),
-            //     targetEvent: $event,
-            //     controller: PostMessage,
-            //     controllerAs: "slack",
-            //     clickOutsideToClose:true,
-            //     fullscreen: useFullScreen
-            //   })
-            // }
+            MainController.prototype.slackMessage = function ($event, user) {
+                var _this = this;
+                var self = this;
+                this.userService.selectedUser = user;
+                console.log(self.current);
+                var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
+                this.$mdDialog.show({
+                    templateUrl: './dist/view/dashboard/sendSlackMessage.html',
+                    parent: angular.element(document.body),
+                    targetEvent: $event,
+                    controller: dashboard.SlackUsersController,
+                    controllerAs: "slack",
+                    clickOutsideToClose: true,
+                    fullscreen: useFullScreen
+                }).then(function () {
+                    var members = _this.userService.slack().then(function (result) {
+                        console.log(result);
+                    });
+                }, function () {
+                    console.log('You cancelled the dialog.');
+                });
+            };
+            MainController.prototype.slackList = function () {
+                var test = this.userService.slack().then(function (members) {
+                    console.log('here');
+                    console.log(members);
+                });
+            };
             MainController.prototype.addReminder = function () {
                 this.selected.reminders.push(this.newReminder);
                 this.newReminder = new dashboard.Reminder('', null);
@@ -133,7 +158,6 @@ var app;
             };
             MainController.prototype.selectUser = function (user) {
                 this.selected = user;
-                // this.userService.selectedUser = user;
                 var sidebar = this.$mdSidenav('left');
                 if (sidebar.isOpen()) {
                     sidebar.close();
@@ -152,7 +176,8 @@ var app;
                     clickedItem && console.log(clickedItem.name + ' clicked!');
                 });
             };
-            MainController.$inject = ['userService', '$mdSidenav', '$mdBottomSheet', '$mdToast', '$mdDialog', '$mdMedia'];
+            MainController.$inject = ['userService', '$mdSidenav', '$mdBottomSheet',
+                '$mdToast', '$mdDialog', '$mdMedia', '$http'];
             return MainController;
         }());
         dashboard.MainController = MainController;

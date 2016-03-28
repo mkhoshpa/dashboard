@@ -7,8 +7,10 @@ var WillowSurvey = require('../../models/willow-survey.js');
 exports.create = function(req, res) {
   console.log(req.body);
   var survey = new WillowSurvey(req.body);
-  survey.save(function(err) {
-    console.log("error: " + err);
+  survey.save(function(err, survey) {
+    if(!err) {
+      res.send(survey);
+    }
   });
 }
 

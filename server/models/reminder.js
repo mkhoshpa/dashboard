@@ -8,8 +8,8 @@ var User = require('./user.js');
 var reminderSchema = new Schema({
   title: {type: String, required: true},
   description: {type: String},
-  start: {type: Date, required: true, default: Date.now},
-  end: {type: Date, required: true},
+  start: {type: Date, default: Date.now},
+  end: {type: Date},
   timesOfDay: [String],
   daysOfWeek: [String],
   weeksOfMonth: [Number],

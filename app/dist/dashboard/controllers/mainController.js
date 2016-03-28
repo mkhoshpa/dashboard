@@ -44,13 +44,16 @@ var app;
                             });
                         }
                     });
-                    console.log(self.slack);
+                    _this.convertToUsers(self.slack);
                 });
                 this._ = window['_'];
                 this.name = this.current.username;
                 console.log('name: ' + this.name);
                 console.log('role: ' + this.current.role);
             }
+            MainController.prototype.convertToUsers = function (slack) {
+                console.log('convertToUsers: ' + this.slack);
+            };
             MainController.prototype.setFormScope = function (scope) {
                 this.formScope = scope;
             };

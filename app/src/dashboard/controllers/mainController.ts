@@ -43,9 +43,10 @@ module app.dashboard {
                   });
                 }
               });
-
-              console.log(self.slack);
+              this.convertToUsers(self.slack);
         });
+
+
 
 
 
@@ -70,6 +71,10 @@ module app.dashboard {
     newReminder: Reminder = new Reminder('', null);
     slack: any[];
     members: any[];
+
+    convertToUsers(slack: any) {
+      console.log('convertToUsers: ' + this.slack);
+    }
 
     setFormScope(scope) {
       this.formScope = scope;
@@ -137,12 +142,14 @@ module app.dashboard {
     testButton(email: any, slack: any) {
       console.log('test-button');
       var test = this.userService.create(email, slack)
-      .then(function(result: any)  {
-        console.log(result);
-      },
-          function(err) {
-            console.log(err);
-          })
+      .then(
+        function(result: any)  {
+          console.log(result);
+        },
+        function(err) {
+          console.log(err);
+        }
+      )
     }
 
     addReminder() {

@@ -1,8 +1,9 @@
 <section>
-  <img ng-src="{{vm.selected.profile.image_72}}" class="avatar"></md-icon>
-  <h2>{{vm.selected.yname}}</h2>
+  <img ng-src="{{vm.selected.img}}" class="avatar"></md-icon>
   <h1>{{vm.selected.name}}</h1>
   <md-button aria-label="Slack" class="md-fab md-mini" style="background-color: white;" ng-click="vm.slackList()">
            <md-icon md-svg-src="assets/svg/slack.svg"></md-icon>
   </md-button>
+
+  <md-button aria-label="test" class="md-raised md-primary" ng-click="vm.testButton('test1@test.com', 'empty')">Tset</md-button>
 </section>

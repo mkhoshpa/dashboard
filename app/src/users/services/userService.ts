@@ -43,6 +43,16 @@ module app.users {
       return this.user;
     }
 
+    create(email: any, slack: any): ng.IPromise<any> {
+      console.log('create');
+      return this.http.post('/generate', {
+        username: email,
+        slack: slack
+      })
+      .then(response => response.data, function(err) {
+        console.log('create:' + err)
+      });
+    }
     loadClients(): ng.IPromise<any> {
       return this.$q.when(this.clients);
     }

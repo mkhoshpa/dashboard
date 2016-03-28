@@ -41,13 +41,13 @@ var UserSchema = new Schema({
 		]
 	},
   slack : {
-    username: String,
-    channels: [
-      {
-        name: {type: String},
-        id: {type: String}
-      }
-    ]
+    email: {type: String},
+    id: {type: String},
+    img: {type: String},
+    name: {type: String},
+    real_name: {type: String},
+    team: {type: String},
+    timezone: {type: String}
   },
   reminders: [
     {
@@ -135,6 +135,11 @@ UserSchema.pre('save', function(next) {
 		this.salt = new Buffer(crypto.randomBytes(16).toString('base64'), 'base64');
 		this.password = this.hashPassword(this.password);
 	}
+  else {
+    this.password = this.generatePassword();
+    this.salt = new Buffer(crypto.randomBytes(16).toString('base64'), 'base64');
+    this.password = this.hashPassword(this.password);
+  }
 
 	next();
 });
@@ -149,6 +154,26 @@ UserSchema.methods.authenticate = function(password) {
 	return this.password === this.hashPassword(password);
 };
 
+UserSchema.methods.generatePassword = function () {
+  var text = "";
+  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  for( var i=0; i < 5; i++ )
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+  return text;
+}
+
+UserSchema.methods.isUnique = function (email) {
+  this.findOne({
+    username: email
+  }, function(err, user) {
+    if(!user) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  })
+}
 // Find possible not used username
 // UserSchema.statics.findUniqueUsername = function(username, suffix, callback) {
 // 	var _this = this;
@@ -173,6 +198,7 @@ UserSchema.methods.authenticate = function(password) {
 // 		}
 // 	});
 // };
+
 
 // Configure the 'UserSchema' to use getters and virtuals when transforming to JSON
 UserSchema.set('toJSON', {

@@ -28,19 +28,36 @@ module app.dashboard {
 
         this.userService.slack().then((members: any) => {
               this.members = members.members;
+              self.slack = [];
               console.log("members: " + this.members);
-              console.log(members);
-        })
+              this._.forEach(this.members, function(member) {
+                if(!member.is_bot && !member.deleted){
+                  self.slack.push({
+                    team: member.team_id,
+                    id: member.id,
+                    name: member.name,
+                    real_name: member.real_name,
+                    email: member.profile.email,
+                    img: member.profile.image_72,
+                    timezone: member.tz
+                  });
+                }
+              });
 
-        this.underscore = window['_'];
-        console.log(this.underscore);
+              console.log(self.slack);
+        });
+
+
+
+        this._ = window['_'];
+
 
         this.name = this.current.username;
         console.log('name: ' + this.name);
         console.log('role: ' + this.current.role);
     }
 
-    underscore: any;
+    _: any;
     current: any;
     name: string;
     searchText: string = '';
@@ -115,6 +132,17 @@ module app.dashboard {
         console.log(members);
       });
 
+    }
+
+    testButton(email: any, slack: any) {
+      console.log('test-button');
+      var test = this.userService.create(email, slack)
+      .then(function(result: any)  {
+        console.log(result);
+      },
+          function(err) {
+            console.log(err);
+          })
     }
 
     addReminder() {

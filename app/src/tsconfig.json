@@ -6,11 +6,27 @@
     "sourceMap": true,
     "outDir": "../dist/"
   },
-  "files":[
-    "_all.ts",
-    "app.ts"
+  "filesGlob": [
+    "**/*.ts",
+    "**/*.tsx",
+    "!node_modules/**"
   ],
   "atom": {
     "rewriteTsconfig": true
-  }
+  },
+  "files": [
+    "_all.ts",
+    "app.ts",
+    "dashboard/_all.ts",
+    "dashboard/boot.ts",
+    "dashboard/controllers/addUserDialogController.ts",
+    "dashboard/controllers/contactPanelController.ts",
+    "dashboard/controllers/mainController.ts",
+    "dashboard/controllers/slackUsersController.ts",
+    "dashboard/models.ts",
+    "users/_all.ts",
+    "users/app.ts",
+    "users/services/slackService.ts",
+    "users/services/userService.ts"
+  ]
 }

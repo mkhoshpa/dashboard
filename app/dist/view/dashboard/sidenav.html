@@ -16,11 +16,11 @@
       </md-not-found>
     </md-autocomplete>
   </div>
-  <md-content class="scrollable-nav-content">
+  <md-content class="scrollable-nav-content" style="margin-top: -65px;">
     <md-list>
-      <md-list-item ng-repeat="it in vm.members | filter:vm.searchText | orderBy:'name'">
+      <md-list-item ng-repeat="it in vm.slack | filter:vm.searchText | orderBy:'name'">
           <md-button ng-click="vm.selectUser(it)" ng-class="{'selected' : it === vm.selected }">
-            <img ng-src="{{it.profile.image_72}}" class="avatar"></md-icon>
+            <img ng-src="{{it.img}}" class="avatar"></md-icon>
             {{it.name}}
           </md-button>
       </md-list-item>

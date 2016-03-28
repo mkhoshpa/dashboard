@@ -1,4 +1,3 @@
-/// <reference path="../_all.ts" />
 var app;
 (function (app) {
     var users;
@@ -19,6 +18,16 @@ var app;
             }
             UserService.prototype.get = function () {
                 return this.user;
+            };
+            UserService.prototype.create = function (email, slack) {
+                console.log('create');
+                return this.http.post('/generate', {
+                    username: email,
+                    slack: slack
+                })
+                    .then(function (response) { return response.data; }, function (err) {
+                    console.log('create:' + err);
+                });
             };
             UserService.prototype.loadClients = function () {
                 return this.$q.when(this.clients);

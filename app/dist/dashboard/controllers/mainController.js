@@ -1,4 +1,3 @@
-/// <reference path="../_all.ts" />
 var app;
 (function (app) {
     var dashboard;
@@ -30,11 +29,24 @@ var app;
                 });
                 this.userService.slack().then(function (members) {
                     _this.members = members.members;
+                    self.slack = [];
                     console.log("members: " + _this.members);
-                    console.log(members);
+                    _this._.forEach(_this.members, function (member) {
+                        if (!member.is_bot && !member.deleted) {
+                            self.slack.push({
+                                team: member.team_id,
+                                id: member.id,
+                                name: member.name,
+                                real_name: member.real_name,
+                                email: member.profile.email,
+                                img: member.profile.image_72,
+                                timezone: member.tz
+                            });
+                        }
+                    });
+                    console.log(self.slack);
                 });
-                this.underscore = window['_'];
-                console.log(this.underscore);
+                this._ = window['_'];
                 this.name = this.current.username;
                 console.log('name: ' + this.name);
                 console.log('role: ' + this.current.role);
@@ -55,7 +67,6 @@ var app;
                     clickOutsideToClose: true,
                     fullscreen: useFullScreen
                 }).then(function (user) {
-                    // Call user service
                     console.log('this is user' + JSON.stringify(user));
                     var newUser = _this.userService.insert(user.name).then(function (result) {
                         self.clients.push(result);
@@ -92,6 +103,15 @@ var app;
                 var test = this.userService.slack().then(function (members) {
                     console.log('here');
                     console.log(members);
+                });
+            };
+            MainController.prototype.testButton = function (email, slack) {
+                console.log('test-button');
+                var test = this.userService.create(email, slack)
+                    .then(function (result) {
+                    console.log(result);
+                }, function (err) {
+                    console.log(err);
                 });
             };
             MainController.prototype.addReminder = function () {

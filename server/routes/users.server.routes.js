@@ -20,6 +20,7 @@ module.exports = function(app) {
 			failureFlash: true,
 		}));
 
+	app.post('/generate', users.generateUser);
 		// function(req,res) {
 		// 	res.redirect(req.session.returnTo || '/');
 		// 	delete req.session.returnTo;

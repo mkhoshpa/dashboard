@@ -67,7 +67,8 @@ exports.renderSignup = function(req, res, next) {
 // Create a new controller method that creates new 'regular' users
 exports.signup = function(req, res, next) {
 	// If user is not connected, create and login a new user, otherwise redirect the user back to the main application page
-	console.log(req.body);
+	console.log("req:" + req.body);
+	console.log(req.user);
 	if (!req.user) {
 		// Create a new 'User' model instance
 		var user = new User(req.body);
@@ -99,9 +100,35 @@ exports.signup = function(req, res, next) {
 			});
 		});
 	} else {
+		console.log("No request.user")
 		return res.redirect('/');
 	}
 };
+
+exports.generateUser = function(req, res, next) {
+	if (req.user) {
+		// Create a new 'User' model instance
+
+		var user = new User(req.body);
+		var message = null;
+		// Set the user provider property
+		user.provider = 'local';
+		user.coaches.push(req.user.id);
+		// Try saving the new user document
+		user.save(function(err) {
+			// If an error occurs, use flash messages to report the error
+			if (err) {
+				// Use the error handling method to get the error message
+				var message = getErrorMessage(err);
+				// Set the flash messages
+				req.flash('Error auto generating from slack', message);
+			}
+		});
+	} else {
+		console.log("Access Denied.")
+		return res.redirect('/');
+	}
+}
 
 // Create a new controller method that creates new 'OAuth' users
 exports.saveOAuthUserProfile = function(req, profile, done) {

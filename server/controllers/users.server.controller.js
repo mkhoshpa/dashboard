@@ -105,28 +105,41 @@ exports.signup = function(req, res, next) {
 	}
 };
 
+// Generate and Check if Exists
 exports.generateUser = function(req, res, next) {
-	if (req.user) {
+	if (req.body.coach) {
 		// Create a new 'User' model instance
+		if(true) {
+			User.findOne({
+				username: req.body.username
+			}, function(err, person) {
+				if(!err && !person) {
 
-		var user = new User(req.body);
-		var message = null;
-		// Set the user provider property
-		user.provider = 'local';
-		user.coaches.push(req.user.id);
-		// Try saving the new user document
-		user.save(function(err) {
-			// If an error occurs, use flash messages to report the error
-			if (err) {
-				// Use the error handling method to get the error message
-				var message = getErrorMessage(err);
-				// Set the flash messages
-				req.flash('Error auto generating from slack', message);
-			}
-		});
+					var user = new User(req.body);
+					var message = null;
+					// Set the user provider property
+					user.provider = 'local';
+					// Try saving the new user document
+					user.save(function(err) {
+						// If an error occurs, use flash messages to report the error
+						if (err) {
+							// Use the error handling method to get the error message
+							var message = getErrorMessage(err);
+							console.log(err);
+							console.log(message);
+							// Set the flash messages
+							req.flash('Error auto generating from slack', message);
+						}
+					});
+				} else {
+					console.log('user exists');
+					return;
+				}
+			});
+		}
 	} else {
 		console.log("Access Denied.")
-		return res.redirect('/');
+		res.send('Access Denied')
 	}
 }
 

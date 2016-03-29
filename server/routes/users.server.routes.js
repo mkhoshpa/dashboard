@@ -2,8 +2,9 @@
 
 // Load the module dependencies
 var users    = require('../controllers/users.server.controller'),
-	  passport = require('passport');
-
+	  passport = require('passport'),
+		request = require('request'),
+		_ = require('underscore');
 // Define the routes module' method
 module.exports = function(app) {
 	// Set up the 'signup' routes
@@ -14,11 +15,82 @@ module.exports = function(app) {
 	// Set up the 'signin' routes
 	app.route('/signin')
 	   .get(users.renderSignin)
-	   .post(passport.authenticate('local', {
-			successRedirect: '/',
-			failureRedirect: '/signin',
-			failureFlash: true,
-		}));
+	   .post(function(req,res,next) {
+			 passport.authenticate('local', function(err, user, info) {
+	    		if (err) {
+						return next(err);
+					}
+	    		if (!user) {
+						return res.redirect('/signin');
+					}
+			    req.logIn(user, function(err) {
+			      if (err) {
+							console.log('err');
+							console.log(err);
+							return next(err);
+						}
+						else {
+
+							// Setup Slack API call
+							var slack = [];
+
+							var headers = {
+							    'User-Agent':       'Super Agent/0.0.1',
+							    'Content-Type':     'application/x-www-form-urlencoded'
+							}
+
+							var options = {
+							    url: 'https://slack.com/api/users.list',
+							    method: 'GET',
+							    headers: headers,
+							    qs:	{
+										'token': 'xoxp-21143396339-21148553634-24144454581-f6d7e3347d',
+									}
+							}
+
+							request(options, function (error, response, body) {
+									console.log('request is here');
+							    if (!error && response.statusCode == 200) {
+							        	var members = JSON.parse(body).members;
+											_.forEach(members, function(member) {
+												if(!member.is_bot && !member.deleted){
+				                  slack.push({
+				                    team: member.team_id,
+				                    id: member.id,
+				                    name: member.name,
+				                    real_name: member.real_name,
+				                    email: member.profile.email,
+				                    img: member.profile.image_72,
+				                    timezone: member.tz
+				                  });
+												}
+											});
+
+											_.forEach(slack, function(member) {
+												console.log('hello');
+												request.post('http://localhost:3000/generate',{
+													form: {
+															coach: req.user.id,
+															username: member.email,
+															slack: member
+														}
+												}, function(err,httpResponse,body){
+													if(err) {
+														//console.log(err);
+													}
+													else {
+														console.log(body);
+													}
+												})
+											})
+
+							    }
+							});
+						}
+			      return res.redirect('/');
+			    });
+				})(req,res,next);
+		});
 
 	app.post('/generate', users.generateUser);
 		// function(req,res) {

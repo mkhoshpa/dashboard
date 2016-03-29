@@ -18,6 +18,7 @@ module app.dashboard {
         var self = this;
         this.current = this.userService.get();
 
+
         self.userService
           .loadClients()
           .then((clients: any) => {
@@ -26,28 +27,41 @@ module app.dashboard {
             self.userService.selectedUser = self.selected;
           });
 
-        this.userService.slack().then((members: any) => {
-              this.members = members.members;
-              self.slack = [];
-              console.log("members: " + this.members);
-              this._.forEach(this.members, function(member) {
-                if(!member.is_bot && !member.deleted){
-                  self.slack.push({
-                    team: member.team_id,
-                    id: member.id,
-                    name: member.name,
-                    real_name: member.real_name,
-                    email: member.profile.email,
-                    img: member.profile.image_72,
-                    timezone: member.tz
-                  });
-                }
-              });
-              this.convertToUsers(self.slack);
+        // self.userService.slack()
+        // .then(function (members: any)  {
+        //       this.members = members.members;
+        //       var slack = [];
+        //       console.log("members: " + this.members);
+        //       this._.forEach(this.members, function(member) {
+        //         if(!member.is_bot && !member.deleted){
+        //             slack.push({
+        //             team: member.team_id,
+        //             id: member.id,
+        //             name: member.name,
+        //             real_name: member.real_name,
+        //             email: member.profile.email,
+        //             img: member.profile.image_72,
+        //             timezone: member.tz
+        //           });
+        //         }
+        //       });
+        //     return slack;
+        // })
+        // .then(function (slack: any) {
+        //   this._.forEach(slack, function(member) {
+        //     self.userService.create(member.email, member)
+        //     .then(function(result) {
+        //       console.log(result);
+        //     });
+        //   })
+        // });
+
+
+       this.userService.loadClients()
+        .then(function(result) {
+          self.users = result;
+          console.log(self.users);
         });
-
-
-
 
 
         this._ = window['_'];
@@ -65,16 +79,18 @@ module app.dashboard {
     formScope: any;
     tabIndex: number = 0;
     selected: any = null;
-    users: any[] = [ ];
     clients: any;
     newNote: Note = new Note('', null);
     newReminder: Reminder = new Reminder('', null);
     slack: any[];
+    slack_emails: any[];
     members: any[];
+    users: any[];
 
-    convertToUsers(slack: any) {
-      console.log('convertToUsers: ' + this.slack);
-    }
+    // convertToUsers(slack: any[]) {
+    //   console.log('convertToUsers: ' + this.slack);
+    //   this.userService.
+    // }
 
     setFormScope(scope) {
       this.formScope = scope;

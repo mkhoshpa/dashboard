@@ -15,7 +15,6 @@ var app;
                 this.searchText = '';
                 this.tabIndex = 0;
                 this.selected = null;
-                this.users = [];
                 this.newNote = new dashboard.Note('', null);
                 this.newReminder = new dashboard.Reminder('', null);
                 var self = this;
@@ -27,33 +26,16 @@ var app;
                     self.selected = clients[0];
                     self.userService.selectedUser = self.selected;
                 });
-                this.userService.slack().then(function (members) {
-                    _this.members = members.members;
-                    self.slack = [];
-                    console.log("members: " + _this.members);
-                    _this._.forEach(_this.members, function (member) {
-                        if (!member.is_bot && !member.deleted) {
-                            self.slack.push({
-                                team: member.team_id,
-                                id: member.id,
-                                name: member.name,
-                                real_name: member.real_name,
-                                email: member.profile.email,
-                                img: member.profile.image_72,
-                                timezone: member.tz
-                            });
-                        }
-                    });
-                    _this.convertToUsers(self.slack);
+                this.userService.loadClients()
+                    .then(function (result) {
+                    self.users = result;
+                    console.log(self.users);
                 });
                 this._ = window['_'];
                 this.name = this.current.username;
                 console.log('name: ' + this.name);
                 console.log('role: ' + this.current.role);
             }
-            MainController.prototype.convertToUsers = function (slack) {
-                console.log('convertToUsers: ' + this.slack);
-            };
             MainController.prototype.setFormScope = function (scope) {
                 this.formScope = scope;
             };

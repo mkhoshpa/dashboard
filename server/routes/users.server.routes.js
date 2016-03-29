@@ -70,9 +70,12 @@ module.exports = function(app) {
 												console.log('hello');
 												request.post('http://localhost:3000/generate',{
 													form: {
-															coach: req.user.id,
-															username: member.email,
-															slack: member
+															user: req.user,
+															client: {
+																coach: req.user.id,
+																username: member.email,
+																slack: member
+															}
 														}
 												}, function(err,httpResponse,body){
 													if(err) {

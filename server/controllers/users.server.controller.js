@@ -67,8 +67,6 @@ exports.renderSignup = function(req, res, next) {
 // Create a new controller method that creates new 'regular' users
 exports.signup = function(req, res, next) {
 	// If user is not connected, create and login a new user, otherwise redirect the user back to the main application page
-	console.log("req:" + req.body);
-	console.log(req.user);
 	if (!req.user) {
 		// Create a new 'User' model instance
 		var user = new User(req.body);
@@ -107,15 +105,17 @@ exports.signup = function(req, res, next) {
 
 // Generate and Check if Exists
 exports.generateUser = function(req, res, next) {
-	if (req.body.coach) {
+	var currentId;
+	if (req.body.client) {
 		// Create a new 'User' model instance
 		if(true) {
+
 			User.findOne({
-				username: req.body.username
+				username: req.body.client.username
 			}, function(err, person) {
 				if(!err && !person) {
 
-					var user = new User(req.body);
+					var user = new User(req.body.client);
 					var message = null;
 					// Set the user provider property
 					user.provider = 'local';
@@ -130,12 +130,18 @@ exports.generateUser = function(req, res, next) {
 							// Set the flash messages
 							req.flash('Error auto generating from slack', message);
 						}
+						// Success, update Coach Model with new Client ID
+						else {
+							//User.findByIdAndUpdate
+						}
 					});
 				} else {
 					console.log('user exists');
 					return;
 				}
 			});
+
+
 		}
 	} else {
 		console.log("Access Denied.")

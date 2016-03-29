@@ -8,12 +8,6 @@ var app;
                 this.$http = $http;
                 this.http = $http;
             }
-            SlackService.prototype.userList = function (token) {
-                return this.http.get('https://slack.com/api/users.list?token=' + token)
-                    .then(function (response) { return response.data; });
-            };
-            SlackService.prototype.parseSlack = function (members) {
-            };
             SlackService.$inject = ['$http'];
             return SlackService;
         }());

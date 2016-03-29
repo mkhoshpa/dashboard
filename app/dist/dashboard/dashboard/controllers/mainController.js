@@ -5,7 +5,6 @@ var app;
     (function (dashboard) {
         var MainController = (function () {
             function MainController(userService, $mdSidenav, $mdBottomSheet, $mdToast, $mdDialog, $mdMedia, $http) {
-                var _this = this;
                 this.userService = userService;
                 this.$mdSidenav = $mdSidenav;
                 this.$mdBottomSheet = $mdBottomSheet;
@@ -16,29 +15,63 @@ var app;
                 this.searchText = '';
                 this.tabIndex = 0;
                 this.selected = null;
-                this.users = [];
                 this.newNote = new dashboard.Note('', null);
                 this.newReminder = new dashboard.Reminder('', null);
                 var self = this;
                 this.current = this.userService.get();
-                self.userService
-                    .loadClients()
-                    .then(function (clients) {
-                    _this.clients = clients;
-                    self.selected = clients[0];
-                    self.userService.selectedUser = self.selected;
-                });
-                this.userService.slack().then(function (members) {
-                    _this.members = members.members;
-                    console.log("members: " + _this.members);
-                    console.log(members);
-                });
-                this.underscore = window['_'];
-                console.log(this.underscore);
+                this.coach = this.current.coach;
+                this.clients = this.current.clients;
+                self.selected = this.clients[0];
+                self.userService.selectedUser = self.selected;
+                // self.userService
+                //   .loadClients()
+                //   .then((clients: any) => {
+                //     this.clients = clients;
+                //     self.selected = clients[0];
+                //     self.userService.selectedUser = self.selected;
+                //   });
+                // self.userService.slack()
+                // .then(function (members: any)  {
+                //       this.members = members.members;
+                //       var slack = [];
+                //       console.log("members: " + this.members);
+                //       this._.forEach(this.members, function(member) {
+                //         if(!member.is_bot && !member.deleted){
+                //             slack.push({
+                //             team: member.team_id,
+                //             id: member.id,
+                //             name: member.name,
+                //             real_name: member.real_name,
+                //             email: member.profile.email,
+                //             img: member.profile.image_72,
+                //             timezone: member.tz
+                //           });
+                //         }
+                //       });
+                //     return slack;
+                // })
+                // .then(function (slack: any) {
+                //   this._.forEach(slack, function(member) {
+                //     self.userService.create(member.email, member)
+                //     .then(function(result) {
+                //       console.log(result);
+                //     });
+                //   })
+                // });
+                //  this.userService.loadClients()
+                //   .then(function(result) {
+                //     self.users = result;
+                //     console.log(self.users);
+                //   });
+                this._ = window['_'];
                 this.name = this.current.username;
                 console.log('name: ' + this.name);
                 console.log('role: ' + this.current.role);
             }
+            // convertToUsers(slack: any[]) {
+            //   console.log('convertToUsers: ' + this.slack);
+            //   this.userService.
+            // }
             MainController.prototype.setFormScope = function (scope) {
                 this.formScope = scope;
             };
@@ -67,7 +100,6 @@ var app;
                 });
             };
             MainController.prototype.slackMessage = function ($event, user) {
-                var _this = this;
                 var self = this;
                 this.userService.selectedUser = user;
                 console.log(self.current);
@@ -81,17 +113,26 @@ var app;
                     clickOutsideToClose: true,
                     fullscreen: useFullScreen
                 }).then(function () {
-                    var members = _this.userService.slack().then(function (result) {
-                        console.log(result);
-                    });
+                    // var members: any = this.userService.slack().then(function(result) {
+                    //   console.log(result);
+                    // });
                 }, function () {
                     console.log('You cancelled the dialog.');
                 });
             };
             MainController.prototype.slackList = function () {
-                var test = this.userService.slack().then(function (members) {
-                    console.log('here');
-                    console.log(members);
+                // var test = this.userService.slack().then((members: any) => {
+                //   console.log('here');
+                //   console.log(members);
+                // });
+            };
+            MainController.prototype.testButton = function (email, slack) {
+                console.log('test-button');
+                var test = this.userService.create(email, slack)
+                    .then(function (result) {
+                    console.log(result);
+                }, function (err) {
+                    console.log(err);
                 });
             };
             MainController.prototype.addReminder = function () {
@@ -158,11 +199,20 @@ var app;
             };
             MainController.prototype.selectUser = function (user) {
                 this.selected = user;
+                console.log(this.selected);
                 var sidebar = this.$mdSidenav('left');
                 if (sidebar.isOpen()) {
                     sidebar.close();
                 }
                 this.tabIndex = 0;
+            };
+            MainController.prototype.hasReal = function (user) {
+                if (user.slack.real_name) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
             };
             MainController.prototype.showContactOptions = function ($event) {
                 this.$mdBottomSheet.show({

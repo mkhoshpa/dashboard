@@ -1,6 +1,11 @@
 <section>
   <img ng-src="{{vm.selected.slack.img}}" class="avatar"></md-icon>
-  <h1>{{vm.selected.slack.name}}</h1>
+  <h1 ng-show="vm.hasReal(vm.selected)">
+    {{vm.selected.slack.real_name}}
+  </h1>
+  <h1 ng-show="!vm.hasReal(vm.selected)">
+    {{vm.selected.slack.name}}
+  </h1>
   <md-button aria-label="Slack" class="md-fab md-mini" style="background-color: white;" ng-click="vm.slackList()">
            <md-icon md-svg-src="assets/svg/slack.svg"></md-icon>
   </md-button>

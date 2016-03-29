@@ -13,14 +13,7 @@ module app.users {
                   this.http = $http;
                 }
 
-    userList(token: string): ng.IPromise<any> {
-      return this.http.get('https://slack.com/api/users.list?token=' + token)
-      .then(response => response.data);
-    }
-
-    parseSlack (members: any) {
-
-    }
+                
 
   }
 

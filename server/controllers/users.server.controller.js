@@ -2,7 +2,10 @@
 
 // Load the module dependencies
 var User 		 = require('mongoose').model('User'),
-		passport = require('passport');
+		passport = require('passport'),
+		ObjectId = require('mongoose').Types.ObjectId;
+
+
 
 // Create a new error handling controller method
 var getErrorMessage = function(err) {
@@ -105,16 +108,13 @@ exports.signup = function(req, res, next) {
 
 // Generate and Check if Exists
 exports.generateUser = function(req, res, next) {
-	var currentId;
 	if (req.body.client) {
 		// Create a new 'User' model instance
 		if(true) {
-
 			User.findOne({
 				username: req.body.client.username
 			}, function(err, person) {
 				if(!err && !person) {
-
 					var user = new User(req.body.client);
 					var message = null;
 					// Set the user provider property
@@ -132,7 +132,22 @@ exports.generateUser = function(req, res, next) {
 						}
 						// Success, update Coach Model with new Client ID
 						else {
-							//User.findByIdAndUpdate
+							// Instead of querying the server each time, once finished
+							// creating users, push the new user id's onto the req.user
+							// (coach) and update at the very end
+							User.findByIdAndUpdate(
+								req.body.coach,
+								{$push: {"clients": user._id}},
+								{safe: true},
+								function(err, model) {
+									if(err) {
+										console.log(err);
+									}
+									else {
+										//console.log(model);
+									}
+								}
+							);
 						}
 					});
 				} else {

@@ -53,7 +53,7 @@ module.exports = function(app) {
 							    if (!error && response.statusCode == 200) {
 							        	var members = JSON.parse(body).members;
 											_.forEach(members, function(member) {
-												if(!member.is_bot && !member.deleted){
+												if(member.profile.email && !member.deleted){
 				                  slack.push({
 				                    team: member.team_id,
 				                    id: member.id,
@@ -66,13 +66,14 @@ module.exports = function(app) {
 												}
 											});
 
+											// Combine each forEach statement O(n^2)
 											_.forEach(slack, function(member) {
 												console.log('hello');
 												request.post('http://localhost:3000/generate',{
 													form: {
-															user: req.user,
+															coach: req.user.id,
 															client: {
-																coach: req.user.id,
+																coaches: req.user.id,
 																username: member.email,
 																slack: member
 															}
@@ -88,6 +89,9 @@ module.exports = function(app) {
 											})
 
 							    }
+									else if(error) {
+										console.log(error);
+									}
 							});
 						}
 			      return res.redirect('/');

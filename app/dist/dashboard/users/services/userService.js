@@ -18,19 +18,31 @@ var app;
                 this.slackService = slackService;
             }
             UserService.prototype.get = function () {
-                return this.user;
+                return {
+                    coach: this.user,
+                    clients: this.clients
+                };
             };
-            UserService.prototype.loadClients = function () {
-                return this.$q.when(this.clients);
+            // Email is the passport ID
+            UserService.prototype.create = function (email, slack) {
+                return this.http.post('/generate', {
+                    username: email,
+                    // Contains slack info
+                    slack: slack
+                })
+                    .then(function (user) {
+                    console.log(Date.now());
+                    return user;
+                });
             };
+            // loadClients(): ng.IPromise<any> {
+            //   return this.$http.get('/users')
+            //   .then(response => response.data);
+            // }
+            // Inserts uses id into a coach's client array
             UserService.prototype.insert = function (params) {
                 return this.http.post('/api/slack/' + params)
                     .then(function (response) { return response.data; });
-            };
-            UserService.prototype.slack = function () {
-                console.log('hit');
-                return this.slackService.userList("xoxp-21143396339-21148553634-24144454581-f6d7e3347d")
-                    .then(function (response) { return response; });
             };
             UserService.$inject = ['$window', '$q', '$http', 'slackService'];
             return UserService;

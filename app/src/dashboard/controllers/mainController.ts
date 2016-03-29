@@ -16,16 +16,20 @@ module app.dashboard {
       private $http: angular.IHttpService)
       {
         var self = this;
+
         this.current = this.userService.get();
+        this.coach = this.current.coach;
+        this.clients = this.current.clients;
+        self.selected = this.clients[0];
+        self.userService.selectedUser = self.selected;
 
-
-        self.userService
-          .loadClients()
-          .then((clients: any) => {
-            this.clients = clients;
-            self.selected = clients[0];
-            self.userService.selectedUser = self.selected;
-          });
+        // self.userService
+        //   .loadClients()
+        //   .then((clients: any) => {
+        //     this.clients = clients;
+        //     self.selected = clients[0];
+        //     self.userService.selectedUser = self.selected;
+        //   });
 
         // self.userService.slack()
         // .then(function (members: any)  {
@@ -57,11 +61,11 @@ module app.dashboard {
         // });
 
 
-       this.userService.loadClients()
-        .then(function(result) {
-          self.users = result;
-          console.log(self.users);
-        });
+      //  this.userService.loadClients()
+      //   .then(function(result) {
+      //     self.users = result;
+      //     console.log(self.users);
+      //   });
 
 
         this._ = window['_'];
@@ -79,9 +83,13 @@ module app.dashboard {
     formScope: any;
     tabIndex: number = 0;
     selected: any = null;
+
+    coach: any;
     clients: any;
+
     newNote: Note = new Note('', null);
     newReminder: Reminder = new Reminder('', null);
+
     slack: any[];
     slack_emails: any[];
     members: any[];
@@ -138,9 +146,9 @@ module app.dashboard {
         fullscreen: useFullScreen
       }).then(() => {
 
-        var members: any = this.userService.slack().then(function(result) {
-          console.log(result);
-        });
+        // var members: any = this.userService.slack().then(function(result) {
+        //   console.log(result);
+        // });
 
       }, () => {
         console.log('You cancelled the dialog.');
@@ -148,10 +156,10 @@ module app.dashboard {
     }
 
     slackList() {
-      var test = this.userService.slack().then((members: any) => {
-        console.log('here');
-        console.log(members);
-      });
+      // var test = this.userService.slack().then((members: any) => {
+      //   console.log('here');
+      //   console.log(members);
+      // });
 
     }
 
@@ -248,13 +256,22 @@ module app.dashboard {
 
     selectUser ( user ) {
       this.selected = user;
-
+      console.log(this.selected);
       var sidebar = this.$mdSidenav('left');
       if (sidebar.isOpen()) {
         sidebar.close();
       }
 
       this.tabIndex = 0;
+    }
+
+    hasReal(user) {
+      if(user.slack.real_name) {
+        return true;
+      }
+      else {
+        return false;
+      }
     }
 
     showContactOptions($event) {

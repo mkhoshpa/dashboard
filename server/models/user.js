@@ -75,27 +75,25 @@ var UserSchema = new Schema({
     default: 'user'
   },
   clients: [
-    {
-      username: { type: String},
-      slack :{ type: mongoose.Schema.Types.ObjectId, ref: 'Slack' },
-      reminders: [
-        {
-          title: {type: String},
-          response: {type: String},
-          time: {type: String},
-          daysOfWeek: {
-            monday: {type: Boolean},
-            tuesday: {type: Boolean},
-            wednesday: {type: Boolean},
-            thursday: {type: Boolean},
-            friday: {type: Boolean},
-            saturday: {type: Boolean},
-            sunday: {type: Boolean}
-          },
-          active:{type: Boolean}
-        }
-      ]
-    }
+      { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+      // slack :{ type: mongoose.Schema.Types.ObjectId, ref: 'Slack' },
+      // reminders: [
+      //   {
+      //     title: {type: String},
+      //     response: {type: String},
+      //     time: {type: String},
+      //     daysOfWeek: {
+      //       monday: {type: Boolean},
+      //       tuesday: {type: Boolean},
+      //       wednesday: {type: Boolean},
+      //       thursday: {type: Boolean},
+      //       friday: {type: Boolean},
+      //       saturday: {type: Boolean},
+      //       sunday: {type: Boolean}
+      //     },
+      //     active:{type: Boolean}
+      //   }
+      // ]
   ],
   coaches: [
     { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
@@ -174,6 +172,8 @@ UserSchema.methods.isUnique = function (email) {
     }
   })
 }
+
+
 // Find possible not used username
 // UserSchema.statics.findUniqueUsername = function(username, suffix, callback) {
 // 	var _this = this;

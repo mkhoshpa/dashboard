@@ -9,7 +9,7 @@ module app.users {
     role: any;
     name: any;
     get (): any;
-    loadClients(): ng.IPromise<any>;
+    // loadClients(): ng.IPromise<any>;
     selectedUser: any;
   }
 
@@ -24,26 +24,27 @@ module app.users {
     resource: any;
 
 
-    static $inject = ['$window', '$q', '$http', 'slackService', '$resource'];
+    static $inject = ['$window', '$q', '$http', 'slackService'];
 
     constructor(private $window: ng.IWindowService,
                 private $q: ng.IQService,
                 private $http: ng.IHttpService,
-                private slackService: SlackService,
-                private $resource: ng.resource.IResource<any>) {
+                private slackService: SlackService) {
       this.user = window['user'];
       this.name = this.user.username;
       this.clients = this.user.clients;
       this.role = this.user.role;
       this.http = $http;
       this.slackService = slackService;
-      this.resource = $resource;
     }
 
     selectedUser: any = null;
 
     get (): any {
-      return this.user;
+      return {
+        coach: this.user,
+        clients: this.clients
+      }
     }
 
     // Email is the passport ID
@@ -59,21 +60,21 @@ module app.users {
       });
     }
 
-    loadClients(): ng.IPromise<any> {
-      return this.$http.get('/users')
-      .then(response => response.data);
-    }
+    // loadClients(): ng.IPromise<any> {
+    //   return this.$http.get('/users')
+    //   .then(response => response.data);
+    // }
     // Inserts uses id into a coach's client array
     insert(params: any): ng.IPromise<any> {
       return this.http.post('/api/slack/' + params)
       .then(response => response.data);
     }
 
-    slack(): ng.IPromise<any> {
-      console.log('hit');
-      return this.slackService.userList("xoxp-21143396339-21148553634-24144454581-f6d7e3347d")
-        .then(response => response);
-    }
+    // slack(): ng.IPromise<any> {
+    //   console.log('hit');
+    //   return this.slackService.userList("xoxp-21143396339-21148553634-24144454581-f6d7e3347d")
+    //     .then(response => response);
+    // }
 
   }
 

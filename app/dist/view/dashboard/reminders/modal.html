@@ -1,31 +1,34 @@
 <md-dialog aria-label="Send Message To Slack">
-  <form name="reminderForm" ng-submit="ctrl.save()">
+  <!-- <md-card style="margin: 0px;"> -->
 
-    <md-dialog-content>
-      <div layout="column" layout-padding>
-        <div layout="row">
-          <md-datepicker ng-model="start"></md-datepicker>
-          <md-datepicker ng-model="end"></md-datepicker>
-        </div>
-
-        <div layout="row" layout-wrap="" flex="">
-            <div flex="50" ng-repeat="item in ctrl.items" layout="row">
-              <md-checkbox ng-checked="ctrl.exists(item, ctrl.selected)" ng-click="ctrl.toggle(item, ctrl.selected)">
-                {{ item }}
-              </md-checkbox>
-            </div>
+    <form name="reminderForm" ng-submit="ctrl.save()">
+      <md-dialog-content>
+        <div layout="row" layout-padding>
+          <div layout="column">
+            <md-datepicker ng-model="start"></md-datepicker>
+            <md-datepicker ng-model="end"></md-datepicker>
           </div>
+          <div layout="columm" layout-wrap="" flex="50">
+            <md-content>
+              <md-input-container>
+               <md-select multiple ng-model="ctrl.selected" placeholder="please select">
+                 <md-option ng-repeat="day in ctrl.items" value="{{day}} ">{{day}}</md-option>
+               </md-select>
+             </md-input-container>
+            </md-content>
+          </div>
+        </div>
+      </md-dialog-content>
 
-      </div>
-    </md-dialog-content>
+      <md-dialog-actions layout="row">
+        <md-button ng-click="ctrl.close()" >
+          Cancel
+        </md-button>
+        <md-button type="submit" class="md-primary md-raised" ng-disabled="userForm.$invalid">
+          Send
+        </md-button>
+      </md-dialog-actions>
+    </form>
 
-    <md-dialog-actions layout="row">
-      <md-button ng-click="ctrl.close()" >
-        Cancel
-      </md-button>
-      <md-button type="submit" class="md-primary md-raised" ng-disabled="userForm.$invalid">
-        Send
-      </md-button>
-    </md-dialog-actions>
-  </form>
+  <!-- </md-card> -->
 </md-dialog>

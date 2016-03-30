@@ -4,7 +4,7 @@ var app;
     var dashboard;
     (function (dashboard) {
         angular
-            .module('dashboard', ['ngMaterial', 'ngMdIcons', 'ngMessages', 'ngRoute', 'users', 'md.data.table', 'mdPickers'])
+            .module('dashboard', ['ngMaterial', 'ngMdIcons', 'ngMessages', 'ngRoute', 'users', 'md.data.table', 'mdPickers', 'md.chips.select'])
             .controller('MainController', dashboard.MainController)
             .config(function ($mdThemingProvider, $mdIconProvider, $routeProvider, $locationProvider) {
             $mdIconProvider

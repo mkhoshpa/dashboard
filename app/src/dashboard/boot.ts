@@ -3,7 +3,7 @@
 module app.dashboard {
 
   angular
-    .module('dashboard', ['ngMaterial', 'ngMdIcons', 'ngMessages', 'ngRoute', 'users', 'md.data.table','mdPickers'])
+    .module('dashboard', ['ngMaterial', 'ngMdIcons', 'ngMessages', 'ngRoute', 'users', 'md.data.table','mdPickers', 'md.chips.select'])
     .controller('MainController', MainController)
     .config(($mdThemingProvider : angular.material.IThemingProvider,
              $mdIconProvider    : angular.material.IIconProvider,

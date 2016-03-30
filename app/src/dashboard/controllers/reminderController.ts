@@ -9,7 +9,8 @@ module app.dashboard {
     constructor(private $mdDialog,
                 private $mdpDatePicker,
                 private $mdpTimePicker,
-                private userService
+                private userService,
+                private chips
                 ){
                   this.items = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
                   this.selected = [];

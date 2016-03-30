@@ -1,15 +1,15 @@
-/// <reference path="../_all.ts" />
 var app;
 (function (app) {
     var dashboard;
     (function (dashboard) {
         var ReminderController = (function () {
-            function ReminderController($mdDialog, $mdpDatePicker, $mdpTimePicker, userService) {
+            function ReminderController($mdDialog, $mdpDatePicker, $mdpTimePicker, userService, chips) {
                 this.$mdDialog = $mdDialog;
                 this.$mdpDatePicker = $mdpDatePicker;
                 this.$mdpTimePicker = $mdpTimePicker;
                 this.userService = userService;
-                this.items = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'];
+                this.chips = chips;
+                this.items = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
                 this.selected = [];
             }
             ReminderController.prototype.addReminder = function ($event) {

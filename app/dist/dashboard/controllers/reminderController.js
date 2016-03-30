@@ -1,3 +1,4 @@
+/// <reference path="../_all.ts" />
 var app;
 (function (app) {
     var dashboard;
@@ -8,9 +9,23 @@ var app;
                 this.$mdpDatePicker = $mdpDatePicker;
                 this.$mdpTimePicker = $mdpTimePicker;
                 this.userService = userService;
+                this.items = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'];
+                this.selected = [];
             }
             ReminderController.prototype.addReminder = function ($event) {
             };
+            ReminderController.prototype.toggle = function (item, list) {
+                var idx = list.indexOf(item);
+                if (idx > -1)
+                    list.splice(idx, 1);
+                else
+                    list.push(item);
+            };
+            ;
+            ReminderController.prototype.exists = function (item, list) {
+                return list.indexOf(item) > -1;
+            };
+            ;
             ReminderController.prototype.close = function () {
                 this.$mdDialog.cancel();
             };

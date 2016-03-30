@@ -3,9 +3,18 @@
 
     <md-dialog-content>
       <div layout="column" layout-padding>
+        <div layout="row">
+          <md-datepicker ng-model="start"></md-datepicker>
+          <md-datepicker ng-model="end"></md-datepicker>
+        </div>
 
-        <mdp-date-picker mdp-placeholder="Start date..." ng-model="start"></mdp-date-picker>
-        <mdp-date-picker mdp-placeholder="End date..." ng-model="end"></mdp-date-picker>
+        <div layout="row" layout-wrap="" flex="">
+            <div flex="50" ng-repeat="item in ctrl.items" layout="row">
+              <md-checkbox ng-checked="ctrl.exists(item, ctrl.selected)" ng-click="ctrl.toggle(item, ctrl.selected)">
+                {{ item }}
+              </md-checkbox>
+            </div>
+          </div>
 
       </div>
     </md-dialog-content>

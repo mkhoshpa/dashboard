@@ -4,6 +4,7 @@
 
 // Set the 'NODE_ENV' variable
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+console.log(process.env.NODE_ENV);
 
 // Load the module dependencies
 var mongoose = require('./server/config/mongoose'),

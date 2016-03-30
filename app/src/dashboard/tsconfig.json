@@ -4,7 +4,7 @@
     "target": "es5",
     "module": "commonjs",
     "sourceMap": true,
-    "outDir": "../../dist/dashboard"
+    "outDir": "../../dist/"
   },
   "filesGlob": [
     "./**/*.ts",
@@ -16,6 +16,7 @@
     "./controllers/addUserDialogController.ts",
     "./controllers/contactPanelController.ts",
     "./controllers/mainController.ts",
+    "./controllers/reminderController.ts",
     "./controllers/slackUsersController.ts",
     "./models.ts"
   ],

@@ -1,6 +1,6 @@
 
 <div layout="row" ng-cloak flex>
-  <div ng-include="'/dist/view/dashboard/sidenav.html'" layout="vertical"></div>
+  <div ng-include="'/dist/view/sidenav/sidenav.html'" layout="vertical"></div>
 
   <div flex id="wrapper" layout="row">
     <md-content flex id="content">
@@ -8,20 +8,20 @@
 
       <md-tabs md-dynamic-height="" md-border-bottom="" md-stretch-tabs="always" md-selected="vm.tabIndex">
         <md-tab label="Bio">
-          <div ng-include="'/dist/view/dashboard/tab-bio.html'"></div>
+          <div ng-include="'/dist/view/dashboard/bio/tab-bio.html'"></div>
         </md-tab>
 
         <md-tab label="Notes">
-          <div ng-include="'/dist/view/dashboard/tab-notes.html'">
+          <div ng-include="'/dist/view/dashboard/notes/tab-notes.html'">
           </div>
         </md-tab>
 
         <md-tab label="Reminders">
-          <div ng-include="'/dist/view/dashboard/tab-reminders.html'"></div>
+          <div ng-include="'/dist/view/dashboard/reminders/tab-reminders.html'"></div>
         </md-tab>
 
         <md-tab label="Surveys">
-          <div ng-include="'/dist/view/dashboard/tab-surveys.html'"></div>
+          <div ng-include="'/dist/view/dashboard/surveys/tab-surveys.html'"></div>
         </md-tab>
 
       </md-tabs>

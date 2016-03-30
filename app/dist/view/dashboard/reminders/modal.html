@@ -1,21 +1,17 @@
 <md-dialog aria-label="Send Message To Slack">
-  <form name="slackForm" ng-submit="ctrl.save()">
+  <form name="reminderForm" ng-submit="ctrl.save()">
 
     <md-dialog-content>
       <div layout="column" layout-padding>
 
-        <md-input-container class="md-block">
-         <label><b>{{slack.current.username}}</b></label>
-         <main>
-         <input ng-model="slack.message">
-         </main>
-       </md-input-container>
+        <mdp-date-picker mdp-placeholder="Start date..." ng-model="start"></mdp-date-picker>
+        <mdp-date-picker mdp-placeholder="End date..." ng-model="end"></mdp-date-picker>
 
       </div>
     </md-dialog-content>
 
     <md-dialog-actions layout="row">
-      <md-button ng-click="ctrl.cancel()" >
+      <md-button ng-click="ctrl.close()" >
         Cancel
       </md-button>
       <md-button type="submit" class="md-primary md-raised" ng-disabled="userForm.$invalid">

@@ -44,6 +44,15 @@ var app;
                 return this.http.post('/api/slack/' + params)
                     .then(function (response) { return response.data; });
             };
+            // slack(): ng.IPromise<any> {
+            //   console.log('hit');
+            //   return this.slackService.userList("xoxp-21143396339-21148553634-24144454581-f6d7e3347d")
+            //     .then(response => response);
+            // }
+            UserService.prototype.remind = function (reminder) {
+                return this.http.post('/api/reminder/' + reminder.user)
+                    .then(function (response) { return response.data; });
+            };
             UserService.$inject = ['$window', '$q', '$http', 'slackService'];
             return UserService;
         }());

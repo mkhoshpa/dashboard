@@ -76,6 +76,11 @@ module app.users {
     //     .then(response => response);
     // }
 
+    remind(reminder: any) {
+      return this.http.post('/api/reminder/' + reminder.user)
+      .then(response => response.data);
+    }
+
   }
 
 }

@@ -109,7 +109,7 @@ module app.dashboard {
 
       var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
       this.$mdDialog.show({
-        templateUrl: './dist/view/dashboard/newUserDialog.html',
+        templateUrl: './dist/view/dashboard/user/newUserDialog.html',
         parent: angular.element(document.body),
         targetEvent: $event,
         controller: AddUserDialogController,
@@ -130,26 +130,27 @@ module app.dashboard {
       });
     }
 
-    slackMessage($event, user) {
+    addReminder($event) {
       var self = this;
-      this.userService.selectedUser = user;
 
-      console.log(self.current);
       var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
       this.$mdDialog.show({
-        templateUrl: './dist/view/dashboard/sendSlackMessage.html',
+        templateUrl: './dist/view/dashboard/reminders/modal.html',
         parent: angular.element(document.body),
         targetEvent: $event,
-        controller: SlackUsersController,
-        controllerAs: "slack",
+        controller: ReminderController,
+        controllerAs: "ctrl",
         clickOutsideToClose:true,
         fullscreen: useFullScreen
-      }).then(() => {
+      }).then((user: any) => {
+        // Call user service
+        console.log('this is user' + JSON.stringify(user));
+        var newUser: any = this.userService.insert(user.name).then(function(result) {
+          self.clients.push(result);
+          self.selectUser(result);
+        });
 
-        // var members: any = this.userService.slack().then(function(result) {
-        //   console.log(result);
-        // });
-
+        self.openToast("User added");
       }, () => {
         console.log('You cancelled the dialog.');
       });
@@ -176,16 +177,7 @@ module app.dashboard {
       )
     }
 
-    addReminder() {
-      this.selected.reminders.push(this.newReminder);
-      this.newReminder = new Reminder('', null);
 
-      this.formScope.reminderForm.$setUntouched();
-      this.formScope.reminderForm.$setPristine();
-
-      this.openToast("Reminder added!");
-      console.log(this.selected);
-    }
 
     removeReminder(reminder) {
       var foundIndex = this.selected.reminders.indexOf(reminder);

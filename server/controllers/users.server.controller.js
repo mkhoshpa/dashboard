@@ -155,8 +155,6 @@ exports.generateUser = function(req, res, next) {
 					return;
 				}
 			});
-
-
 		}
 	} else {
 		console.log("Access Denied.")

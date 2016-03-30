@@ -1,4 +1,3 @@
-/// <reference path="../_all.ts" />
 var app;
 (function (app) {
     var dashboard;
@@ -23,55 +22,11 @@ var app;
                 this.clients = this.current.clients;
                 self.selected = this.clients[0];
                 self.userService.selectedUser = self.selected;
-                // self.userService
-                //   .loadClients()
-                //   .then((clients: any) => {
-                //     this.clients = clients;
-                //     self.selected = clients[0];
-                //     self.userService.selectedUser = self.selected;
-                //   });
-                // self.userService.slack()
-                // .then(function (members: any)  {
-                //       this.members = members.members;
-                //       var slack = [];
-                //       console.log("members: " + this.members);
-                //       this._.forEach(this.members, function(member) {
-                //         if(!member.is_bot && !member.deleted){
-                //             slack.push({
-                //             team: member.team_id,
-                //             id: member.id,
-                //             name: member.name,
-                //             real_name: member.real_name,
-                //             email: member.profile.email,
-                //             img: member.profile.image_72,
-                //             timezone: member.tz
-                //           });
-                //         }
-                //       });
-                //     return slack;
-                // })
-                // .then(function (slack: any) {
-                //   this._.forEach(slack, function(member) {
-                //     self.userService.create(member.email, member)
-                //     .then(function(result) {
-                //       console.log(result);
-                //     });
-                //   })
-                // });
-                //  this.userService.loadClients()
-                //   .then(function(result) {
-                //     self.users = result;
-                //     console.log(self.users);
-                //   });
                 this._ = window['_'];
                 this.name = this.current.username;
                 console.log('name: ' + this.name);
                 console.log('role: ' + this.current.role);
             }
-            // convertToUsers(slack: any[]) {
-            //   console.log('convertToUsers: ' + this.slack);
-            //   this.userService.
-            // }
             MainController.prototype.setFormScope = function (scope) {
                 this.formScope = scope;
             };
@@ -80,7 +35,7 @@ var app;
                 var self = this;
                 var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
                 this.$mdDialog.show({
-                    templateUrl: './dist/view/dashboard/newUserDialog.html',
+                    templateUrl: './dist/view/dashboard/user/newUserDialog.html',
                     parent: angular.element(document.body),
                     targetEvent: $event,
                     controller: dashboard.AddUserDialogController,
@@ -88,7 +43,6 @@ var app;
                     clickOutsideToClose: true,
                     fullscreen: useFullScreen
                 }).then(function (user) {
-                    // Call user service
                     console.log('this is user' + JSON.stringify(user));
                     var newUser = _this.userService.insert(user.name).then(function (result) {
                         self.clients.push(result);
@@ -99,32 +53,30 @@ var app;
                     console.log('You cancelled the dialog.');
                 });
             };
-            MainController.prototype.slackMessage = function ($event, user) {
+            MainController.prototype.addReminder = function ($event) {
+                var _this = this;
                 var self = this;
-                this.userService.selectedUser = user;
-                console.log(self.current);
                 var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
                 this.$mdDialog.show({
-                    templateUrl: './dist/view/dashboard/sendSlackMessage.html',
+                    templateUrl: './dist/view/dashboard/reminders/modal.html',
                     parent: angular.element(document.body),
                     targetEvent: $event,
-                    controller: dashboard.SlackUsersController,
-                    controllerAs: "slack",
+                    controller: dashboard.ReminderController,
+                    controllerAs: "ctrl",
                     clickOutsideToClose: true,
                     fullscreen: useFullScreen
-                }).then(function () {
-                    // var members: any = this.userService.slack().then(function(result) {
-                    //   console.log(result);
-                    // });
+                }).then(function (user) {
+                    console.log('this is user' + JSON.stringify(user));
+                    var newUser = _this.userService.insert(user.name).then(function (result) {
+                        self.clients.push(result);
+                        self.selectUser(result);
+                    });
+                    self.openToast("User added");
                 }, function () {
                     console.log('You cancelled the dialog.');
                 });
             };
             MainController.prototype.slackList = function () {
-                // var test = this.userService.slack().then((members: any) => {
-                //   console.log('here');
-                //   console.log(members);
-                // });
             };
             MainController.prototype.testButton = function (email, slack) {
                 console.log('test-button');
@@ -134,14 +86,6 @@ var app;
                 }, function (err) {
                     console.log(err);
                 });
-            };
-            MainController.prototype.addReminder = function () {
-                this.selected.reminders.push(this.newReminder);
-                this.newReminder = new dashboard.Reminder('', null);
-                this.formScope.reminderForm.$setUntouched();
-                this.formScope.reminderForm.$setPristine();
-                this.openToast("Reminder added!");
-                console.log(this.selected);
             };
             MainController.prototype.removeReminder = function (reminder) {
                 var foundIndex = this.selected.reminders.indexOf(reminder);

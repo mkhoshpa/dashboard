@@ -22,6 +22,7 @@
     "dashboard/controllers/addUserDialogController.ts",
     "dashboard/controllers/contactPanelController.ts",
     "dashboard/controllers/mainController.ts",
+    "dashboard/controllers/reminderController.ts",
     "dashboard/controllers/slackUsersController.ts",
     "dashboard/models.ts",
     "users/_all.ts",

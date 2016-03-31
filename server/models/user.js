@@ -6,7 +6,12 @@
 var mongoose = require('mongoose'),
   	crypto = require('crypto'),
   	Schema = mongoose.Schema,
-    Slack = require('./slack.js');
+    Slack = require('./slack.js'),
+    reminder = require('./reminder.js');
+
+
+
+
 
 // Define a new 'UserSchema'
 var UserSchema = new Schema({
@@ -50,21 +55,8 @@ var UserSchema = new Schema({
     timezone: {type: String}
   },
   reminders: [
-    {
-      title: {type: String},
-      response: {type: String},
-      time: {type: String},
-      daysOfWeek: {
-        monday: {type: Boolean},
-        tuesday: {type: Boolean},
-        wednesday: {type: Boolean},
-        thursday: {type: Boolean},
-        friday: {type: Boolean},
-        saturday: {type: Boolean},
-        sunday: {type: Boolean}
-      },
-      active:{type: Boolean}
-    }
+    {type: mongoose.Schema.Types.ObjectId, ref: 'Reminder'}
+
   ],
   image: {
     type: String,

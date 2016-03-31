@@ -124,7 +124,12 @@ module app.dashboard {
         // this.$http.post('uri').then((response) => response.data)
         // after promise is succesful add to
         // reminder.assigne.reminders.push()
-        this.selected.reminders.push(reminder);
+        this.$http.post('/api/reminder', reminder
+        ).then(function successCallback(response) {
+           self.selected.reminders.push(response.data);
+           console.log(response.data);
+        })
+
 
         self.openToast("Remminder added");
       }, () => {

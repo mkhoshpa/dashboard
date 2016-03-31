@@ -12,11 +12,10 @@ module app.dashboard {
                   this.days = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'];
                   this.selected = [];
                   this.author = this.userService.get();
-                  this.author = {
-                    slack: this.author.coach.username,
-                    dashboard: this.author.coach.id
-                  }
+                  this.author = this.author.coach.id;
+
                   this.assignee = this.userService.selectedUser;
+                  this.assignee = this.assignee.id;
                 }
 
 
@@ -106,14 +105,15 @@ module app.dashboard {
 
       var reminder = {
         title: this.reminder,
-        time: this.time,
+        // Will this be set to server time or user's local time?
+        timeOfDay: this.time.toLocaleTimeString(),
         selectedDates: this.selected,
-        daysOfWeek: dates,
-        active: true,
-        date: Date.now(),
+        daysOfTheWeek: dates,
         author: this.author,
         assignee: this.assignee
       }
+
+      console.log(reminder);
 
       this.$mdDialog.hide(reminder);
 

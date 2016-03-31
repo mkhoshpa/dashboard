@@ -1,4 +1,3 @@
-/// <reference path="_all.ts" />
 var app;
 (function (app) {
     var dashboard;
@@ -34,7 +33,7 @@ var app;
                 'A700': '176785'
             });
             $mdThemingProvider.theme('default')
-                .primaryPalette('fitpath')
+                .primaryPalette('blue')
                 .accentPalette('red');
             $routeProvider
                 .when("/", {

@@ -11,17 +11,17 @@ var reminderSchema = new Schema({
   description: {type: String},
   start: {type: Date, default: Date.now},
   timeOfDay: {
-    type: String,
-      validate:{
-        validator: function(v) {
-          return formatTime(v);
-
-        },
-        message: '{value} is not a valid time'
-      },
-      required: [true, 'you gotta tell us when to remind you !']
+    type: String
+      // validate:{
+      //   validator: function(v) {
+      //     return formatTime(v);
+      //
+      //   },
+      //   message: '{value} is not a valid time'
+      // },
+      // required: [true, 'you gotta tell us when to remind you !']
     },
-
+  selectedDates: [String],
   daysOfTheWeek: {
     monday: {type: Boolean},
     tuesday: {type: Boolean},
@@ -50,10 +50,10 @@ function formatTime(time) {
     }
     return result;
 }
-console.log(formatTime(" 1:00"));
-console.log(formatTime("1:00 "));
-console.log(formatTime("1:00"));
-console.log(formatTime("2100"));
-console.log(formatTime("90:00"));
+// console.log(formatTime(" 1:00"));
+// console.log(formatTime("1:00 "));
+// console.log(formatTime("1:00"));
+// console.log(formatTime("2100"));
+// console.log(formatTime("90:00"));
 
 module.exports = Reminder;

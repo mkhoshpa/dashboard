@@ -1,4 +1,3 @@
-/// <reference path="../_all.ts" />
 var app;
 (function (app) {
     var dashboard;
@@ -11,11 +10,9 @@ var app;
                 this.days = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'];
                 this.selected = [];
                 this.author = this.userService.get();
-                this.author = {
-                    slack: this.author.coach.username,
-                    dashboard: this.author.coach.id
-                };
+                this.author = this.author.coach.id;
                 this.assignee = this.userService.selectedUser;
+                this.assignee = this.assignee.id;
             }
             ReminderController.prototype.addReminder = function ($event) {
             };
@@ -86,14 +83,13 @@ var app;
                 }
                 var reminder = {
                     title: this.reminder,
-                    time: this.time,
+                    timeOfDay: this.time.toLocaleTimeString(),
                     selectedDates: this.selected,
-                    daysOfWeek: dates,
-                    active: true,
-                    date: Date.now(),
+                    daysOfTheWeek: dates,
                     author: this.author,
                     assignee: this.assignee
                 };
+                console.log(reminder);
                 this.$mdDialog.hide(reminder);
             };
             ReminderController.$inject = ['$mdDialog', 'userService'];

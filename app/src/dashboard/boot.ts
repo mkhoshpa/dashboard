@@ -39,7 +39,7 @@ module app.dashboard {
         });
 
         $mdThemingProvider.theme('default')
-            .primaryPalette('fitpath')
+            .primaryPalette('blue')
             .accentPalette('red');
 
         $routeProvider

@@ -9,7 +9,7 @@ var app;
                 this.$mdpTimePicker = $mdpTimePicker;
                 this.userService = userService;
                 this.chips = chips;
-                this.items = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+                this.items = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'];
                 this.selected = [];
             }
             ReminderController.prototype.addReminder = function ($event) {

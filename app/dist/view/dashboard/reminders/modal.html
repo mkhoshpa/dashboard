@@ -2,23 +2,23 @@
   <!-- <md-card style="margin: 0px;"> -->
 
     <form name="reminderForm" ng-submit="ctrl.save()">
-      <md-dialog-content>
-        <div layout="row" layout-padding>
-          <div layout="column">
-            <md-datepicker ng-model="start"></md-datepicker>
-            <md-datepicker ng-model="end"></md-datepicker>
+
+        <div layout="column" layout-padding>
+          <div layout="row">
+            <md-datepicker ng-model="start" style="margin: 0px;" md-placeholder="Start date"></md-datepicker>
+            <md-datepicker ng-model="end" style="margin: 0px;" md-placeholder="End date"></md-datepicker>
           </div>
-          <div layout="columm" layout-wrap="" flex="50">
-            <md-content>
-              <md-input-container>
-               <md-select multiple ng-model="ctrl.selected" placeholder="please select">
+          <div layout="row" layout-wrap="">
+            <md-content flex="75"  layout-align="center center">
+              <md-input-container flex="75" layout-fill>
+               <md-select multiple ng-model="ctrl.selected" placeholder="" style="margin: 0 15px 0 15px;">
                  <md-option ng-repeat="day in ctrl.items" value="{{day}} ">{{day}}</md-option>
                </md-select>
              </md-input-container>
             </md-content>
           </div>
         </div>
-      </md-dialog-content>
+
 
       <md-dialog-actions layout="row">
         <md-button ng-click="ctrl.close()" >

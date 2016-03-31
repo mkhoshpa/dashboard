@@ -121,3 +121,40 @@ div.nav-buttons ul li a:hover{
 #view {
   min-height: 100%;
 }
+
+md-select-menu[multiple] md-option {
+  padding-left: 48px;
+}
+md-select-menu[multiple] md-option:before {
+  transition: 240ms;
+  position: absolute;
+  top: 15px;
+  left: 16px;
+  width: 18px;
+  height: 18px;
+  border: 2px solid;
+  border-radius: 2px;
+  content: ' ';
+  border-color: rgba(0, 0, 0, 0.54);
+  z-index: 1;
+}
+md-select-menu[multiple] md-option[selected]:before {
+  background-color: rgba(30, 136, 229, 0.87);
+  border-color: rgba(30, 136, 229, 0.87);
+}
+md-select-menu[multiple] md-option[selected]:after {
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
+  position: absolute;
+  top: 17px;
+  left: 22px;
+  display: table;
+  width: 6px;
+  height: 12px;
+  border: 2px solid;
+  border-top: 0;
+  border-left: 0;
+  content: ' ';
+  z-index: 2;
+  border-color: #ffffff;
+}

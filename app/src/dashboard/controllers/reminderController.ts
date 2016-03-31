@@ -12,7 +12,7 @@ module app.dashboard {
                 private userService,
                 private chips
                 ){
-                  this.items = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+                  this.items = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'];
                   this.selected = [];
                 }
 

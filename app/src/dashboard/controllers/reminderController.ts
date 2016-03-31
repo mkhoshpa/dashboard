@@ -4,7 +4,7 @@ module app.dashboard {
 
   export class ReminderController {
 
-    static $inject = ['$mdDialog', '$mdpDatePicker', '$mdpTimePicker', 'userService'];
+    static $inject = ['$mdDialog', 'userService'];
 
     constructor(private $mdDialog,
                 private $mdpDatePicker,

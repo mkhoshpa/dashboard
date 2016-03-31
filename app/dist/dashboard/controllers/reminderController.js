@@ -32,7 +32,7 @@ var app;
             ReminderController.prototype.save = function () {
                 this.$mdDialog.hide();
             };
-            ReminderController.$inject = ['$mdDialog', '$mdpDatePicker', '$mdpTimePicker', 'userService'];
+            ReminderController.$inject = ['$mdDialog', 'userService'];
             return ReminderController;
         }());
         dashboard.ReminderController = ReminderController;

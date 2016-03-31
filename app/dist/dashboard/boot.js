@@ -1,10 +1,9 @@
-/// <reference path="_all.ts" />
 var app;
 (function (app) {
     var dashboard;
     (function (dashboard) {
         angular
-            .module('dashboard', ['ngMaterial', 'ngMdIcons', 'ngMessages', 'ngRoute', 'users', 'md.data.table', 'mdPickers', 'md.chips.select'])
+            .module('dashboard', ['ngMaterial', 'ngMdIcons', 'ngMessages', 'ngRoute', 'users', 'md.data.table'])
             .controller('MainController', dashboard.MainController)
             .config(function ($mdThemingProvider, $mdIconProvider, $routeProvider, $locationProvider) {
             $mdIconProvider

@@ -41,9 +41,16 @@ module app.users {
     selectedUser: any = null;
 
     get (): any {
-      return {
-        coach: this.user,
-        clients: this.clients
+      if(this.user.role == "coach") {
+        return {
+          coach: this.user,
+          clients: this.clients
+        }
+      }
+      else {
+        return {
+          user: this.user
+        }
       }
     }
 

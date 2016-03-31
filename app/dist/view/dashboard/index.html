@@ -1,6 +1,7 @@
 
 <div layout="row" ng-cloak flex>
-  <div ng-include="'/dist/view/sidenav/sidenav.html'" layout="vertical"></div>
+
+  <div ng-if="vm.isCoach" ng-include="'/dist/view/sidenav/sidenav.html'" layout="vertical"></div>
 
   <div flex id="wrapper" layout="row">
     <md-content flex id="content">

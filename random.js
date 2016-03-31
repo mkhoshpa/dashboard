@@ -50,3 +50,9 @@ request(options, function (error, response, body) {
 
     }
 });
+
+
+db.users.update(
+  {username:'colinhryniowski@gmail.com'},
+  {$set: {role: 'coach'}}
+);

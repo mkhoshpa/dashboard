@@ -1,16 +1,21 @@
+/// <reference path="../_all.ts" />
 var app;
 (function (app) {
     var dashboard;
     (function (dashboard) {
         var ReminderController = (function () {
-            function ReminderController($mdDialog, $mdpDatePicker, $mdpTimePicker, userService, chips) {
+            function ReminderController($mdDialog, userService) {
                 this.$mdDialog = $mdDialog;
-                this.$mdpDatePicker = $mdpDatePicker;
-                this.$mdpTimePicker = $mdpTimePicker;
                 this.userService = userService;
-                this.chips = chips;
-                this.items = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'];
+                this.response = "";
+                this.days = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'];
                 this.selected = [];
+                this.author = this.userService.get();
+                this.author = {
+                    slack: this.author.coach.username,
+                    dashboard: this.author.coach.id
+                };
+                this.assignee = this.userService.selectedUser;
             }
             ReminderController.prototype.addReminder = function ($event) {
             };
@@ -26,11 +31,70 @@ var app;
                 return list.indexOf(item) > -1;
             };
             ;
+            ReminderController.prototype.toggleAll = function () {
+                if (this.selected.length === this.days.length) {
+                    this.selected = [];
+                }
+                else if (this.selected.length === 0 || this.selected.length > 0) {
+                    this.selected = this.days.slice(0);
+                }
+            };
+            ;
+            ReminderController.prototype.isChecked = function () {
+                return this.selected.length === this.days.length;
+            };
+            ;
+            ReminderController.prototype.isIndeterminate = function () {
+                return (this.selected.length !== 0 &&
+                    this.selected.length !== this.days.length);
+            };
+            ;
             ReminderController.prototype.close = function () {
                 this.$mdDialog.cancel();
             };
             ReminderController.prototype.save = function () {
-                this.$mdDialog.hide();
+                console.log(this.time);
+                var dates = {
+                    monday: false,
+                    tuesday: false,
+                    wednesday: false,
+                    thursday: false,
+                    friday: false,
+                    saturday: false,
+                    sunday: false
+                };
+                if (this.selected.indexOf('Sun') != -1) {
+                    dates.sunday = true;
+                }
+                if (this.selected.indexOf('Mon') != -1) {
+                    dates.monday = true;
+                }
+                if (this.selected.indexOf('Tues') != -1) {
+                    dates.tuesday = true;
+                }
+                if (this.selected.indexOf('Wed') != -1) {
+                    dates.wednesday = true;
+                }
+                if (this.selected.indexOf('Thurs') != -1) {
+                    dates.thursday = true;
+                }
+                if (this.selected.indexOf('Fri') != -1) {
+                    dates.friday = true;
+                }
+                if (this.selected.indexOf('Sat') != -1) {
+                    dates.saturday = true;
+                }
+                var reminder = {
+                    title: this.reminder,
+                    time: this.time,
+                    selectedDates: this.selected,
+                    daysOfWeek: dates,
+                    active: true,
+                    date: Date.now(),
+                    author: this.author,
+                    assignee: this.assignee
+                };
+                this.$mdDialog.hide(reminder);
             };
             ReminderController.$inject = ['$mdDialog', 'userService'];
             return ReminderController;

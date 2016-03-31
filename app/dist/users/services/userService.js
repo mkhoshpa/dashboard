@@ -18,10 +18,17 @@ var app;
                 this.slackService = slackService;
             }
             UserService.prototype.get = function () {
-                return {
-                    coach: this.user,
-                    clients: this.clients
-                };
+                if (this.user.role == "coach") {
+                    return {
+                        coach: this.user,
+                        clients: this.clients
+                    };
+                }
+                else {
+                    return {
+                        user: this.user
+                    };
+                }
             };
             // Email is the passport ID
             UserService.prototype.create = function (email, slack) {

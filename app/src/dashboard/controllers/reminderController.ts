@@ -7,13 +7,16 @@ module app.dashboard {
     static $inject = ['$mdDialog', 'userService'];
 
     constructor(private $mdDialog,
-                private $mdpDatePicker,
-                private $mdpTimePicker,
-                private userService,
-                private chips
+                private userService
                 ){
-                  this.items = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'];
+                  this.days = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'];
                   this.selected = [];
+                  this.author = this.userService.get();
+                  this.author = {
+                    slack: this.author.coach.username,
+                    dashboard: this.author.coach.id
+                  }
+                  this.assignee = this.userService.selectedUser;
                 }
 
 
@@ -22,8 +25,17 @@ module app.dashboard {
 
     }
 
-    items: any;
+
+    author: any;
+    assignee: any;
+
+    time: any;
     selected: any;
+    reminder: any;
+    response: string = "";
+
+    start: any;
+    days: any;
 
     toggle(item, list) {
       var idx = list.indexOf(item);
@@ -35,12 +47,76 @@ module app.dashboard {
       return list.indexOf(item) > -1;
     };
 
+    toggleAll() {
+      if (this.selected.length === this.days.length) {
+        this.selected = [];
+      } else if (this.selected.length === 0 || this.selected.length > 0) {
+        this.selected = this.days.slice(0);
+      }
+    };
+
+    isChecked() {
+      return this.selected.length === this.days.length;
+    };
+
+    isIndeterminate() {
+      return (this.selected.length !== 0 &&
+          this.selected.length !== this.days.length);
+    };
+
     close(): void {
       this.$mdDialog.cancel();
     }
 
     save(): void {
-      this.$mdDialog.hide();
+
+      console.log(this.time);
+
+      var dates = {
+        monday: false,
+        tuesday: false,
+        wednesday: false,
+        thursday: false,
+        friday: false,
+        saturday: false,
+        sunday: false
+      }
+
+      if(this.selected.indexOf('Sun') != -1){
+        dates.sunday = true;
+      }
+      if(this.selected.indexOf('Mon') != -1) {
+        dates.monday = true;
+      }
+      if(this.selected.indexOf('Tues') != -1) {
+        dates.tuesday = true;
+      }
+      if(this.selected.indexOf('Wed') != -1) {
+        dates.wednesday = true;
+      }
+      if(this.selected.indexOf('Thurs') != -1) {
+        dates.thursday = true;
+      }
+      if(this.selected.indexOf('Fri') != -1) {
+        dates.friday = true;
+      }
+      if(this.selected.indexOf('Sat') != -1) {
+        dates.saturday = true;
+      }
+
+      var reminder = {
+        title: this.reminder,
+        time: this.time,
+        selectedDates: this.selected,
+        daysOfWeek: dates,
+        active: true,
+        date: Date.now(),
+        author: this.author,
+        assignee: this.assignee
+      }
+
+      this.$mdDialog.hide(reminder);
+
     }
   }
 }

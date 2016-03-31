@@ -122,7 +122,7 @@ div.nav-buttons ul li a:hover{
   min-height: 100%;
 }
 
-md-select-menu[multiple] md-option {
+/*md-select-menu[multiple] md-option {
   padding-left: 48px;
 }
 md-select-menu[multiple] md-option:before {
@@ -157,4 +157,4 @@ md-select-menu[multiple] md-option[selected]:after {
   content: ' ';
   z-index: 2;
   border-color: #ffffff;
-}
+}*/

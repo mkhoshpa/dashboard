@@ -1,14 +1,30 @@
 <div ng-include="'dist/view/dashboard/reminders/tab-reminders-form.html'"></div>
 
-<p ng-if="!vm.selected.reminders.length">No reminders for {{vm.selected.name}}, yet.</p>
+<p ng-if="!vm.selected.reminders.length">No reminders for {{vm.selected.slack.name}}, yet.</p>
 <md-content>
-  <md-card ng-repeat="reminder in vm.selected.reminders | orderBy: '-date':true">
-    <md-card-content>
-      <h3>{{reminder.title}}</h3>
-      <p>{{reminder.date | date:'MM/dd/yyyy'}}</p>
+  <md-card ng-repeat="reminder in vm.selected.reminders | orderBy: '-date':true" >
+  <div layout="row">
+    <md-card-content flex="80">
+      <div layout="row">
+        <md-card-content>
+          <h3 style="margin-top: 0px;">{{reminder.title}}</h3>
+          <p>{{reminder.date | date:'MM/dd/yyyy'}}</p>
+        </md-card-content>
+        <md-card-content>
+          <p>{{reminder.selectedDates}}</p>
+          <p>{{reminder.author.slack}}</p>
+          <p>{{reminder.time | date: "HH:mm:ss"}}</p>
+        </md-card-content>
+      </div>
     </md-card-content>
-    <md-card-actions layout="row" layout-align="end center">
-      <md-button ng-click="vm.removeReminder(reminder)">Remove</md-button>
-    </md-card-actions>
+    <div layout="column">
+      <md-card-actions flex="20" layout-align="end right">
+        <md-button ng-click="vm.removeReminder(reminder)">Remove</md-button>
+      </md-card-actions>
+      <md-card-actions flex="20" layout-align="end right">
+        <md-button ng-click="vm.removeReminder(reminder)">Edit</md-button>
+      </md-card-actions>
+    </div>
+  </div>
   </md-card>
 </md-content>

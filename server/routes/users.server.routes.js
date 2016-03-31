@@ -29,9 +29,8 @@ module.exports = function(app) {
 							console.log(err);
 							return next(err);
 						}
-						else {
-
-							// Setup Slack API call
+						
+						else if(user.role == "coach") {
 							var slack = [];
 
 							var headers = {
@@ -93,6 +92,9 @@ module.exports = function(app) {
 										console.log(error);
 									}
 							});
+						}
+						else {
+							return res.redirect('/');
 						}
 			      return res.redirect('/');
 			    });

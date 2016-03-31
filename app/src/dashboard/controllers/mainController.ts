@@ -18,47 +18,21 @@ module app.dashboard {
         var self = this;
 
         this.current = this.userService.get();
-        this.coach = this.current.coach;
-        this.clients = this.current.clients;
-        self.selected = this.clients[0];
+        if(this.current.user) {
+          this.isUser = true;
+          self.selected = this.current.user;
+          console.log('is a user');
+        }
+        else if(this.current.coach) {
+          this.isCoach=true;
+          this.coach = this.current.coach;
+          this.clients = this.current.clients;
+          self.selected = this.clients[0];
+          console.log('is a coach');
+        }
         self.userService.selectedUser = self.selected;
 
-        // self.userService
-        //   .loadClients()
-        //   .then((clients: any) => {
-        //     this.clients = clients;
-        //     self.selected = clients[0];
-        //     self.userService.selectedUser = self.selected;
-        //   });
 
-        // self.userService.slack()
-        // .then(function (members: any)  {
-        //       this.members = members.members;
-        //       var slack = [];
-        //       console.log("members: " + this.members);
-        //       this._.forEach(this.members, function(member) {
-        //         if(!member.is_bot && !member.deleted){
-        //             slack.push({
-        //             team: member.team_id,
-        //             id: member.id,
-        //             name: member.name,
-        //             real_name: member.real_name,
-        //             email: member.profile.email,
-        //             img: member.profile.image_72,
-        //             timezone: member.tz
-        //           });
-        //         }
-        //       });
-        //     return slack;
-        // })
-        // .then(function (slack: any) {
-        //   this._.forEach(slack, function(member) {
-        //     self.userService.create(member.email, member)
-        //     .then(function(result) {
-        //       console.log(result);
-        //     });
-        //   })
-        // });
 
 
       //  this.userService.loadClients()
@@ -83,6 +57,9 @@ module app.dashboard {
     formScope: any;
     tabIndex: number = 0;
     selected: any = null;
+
+    isCoach: boolean;
+    isUser: boolean;
 
     coach: any;
     clients: any;
@@ -142,15 +119,14 @@ module app.dashboard {
         controllerAs: "ctrl",
         clickOutsideToClose:true,
         fullscreen: useFullScreen
-      }).then((user: any) => {
-        // Call user service
-        console.log('this is user' + JSON.stringify(user));
-        var newUser: any = this.userService.insert(user.name).then(function(result) {
-          self.clients.push(result);
-          self.selectUser(result);
-        });
+      }).then((reminder: any) => {
+        // Post request, and push onto users local list of reminders
+        // this.$http.post('uri').then((response) => response.data)
+        // after promise is succesful add to
+        // reminder.assigne.reminders.push()
+        this.selected.reminders.push(reminder);
 
-        self.openToast("User added");
+        self.openToast("Remminder added");
       }, () => {
         console.log('You cancelled the dialog.');
       });

@@ -1,4 +1,3 @@
-/// <reference path="../_all.ts" />
 var app;
 (function (app) {
     var dashboard;
@@ -32,20 +31,11 @@ var app;
                     console.log('is a coach');
                 }
                 self.userService.selectedUser = self.selected;
-                //  this.userService.loadClients()
-                //   .then(function(result) {
-                //     self.users = result;
-                //     console.log(self.users);
-                //   });
                 this._ = window['_'];
                 this.name = this.current.username;
                 console.log('name: ' + this.name);
                 console.log('role: ' + this.current.role);
             }
-            // convertToUsers(slack: any[]) {
-            //   console.log('convertToUsers: ' + this.slack);
-            //   this.userService.
-            // }
             MainController.prototype.setFormScope = function (scope) {
                 this.formScope = scope;
             };
@@ -62,7 +52,6 @@ var app;
                     clickOutsideToClose: true,
                     fullscreen: useFullScreen
                 }).then(function (user) {
-                    // Call user service
                     console.log('this is user' + JSON.stringify(user));
                     var newUser = _this.userService.insert(user.name).then(function (result) {
                         self.clients.push(result);
@@ -84,23 +73,46 @@ var app;
                     controller: dashboard.ReminderController,
                     controllerAs: "ctrl",
                     clickOutsideToClose: true,
-                    fullscreen: useFullScreen
+                    fullscreen: useFullScreen,
+                    locals: {
+                        selected: null
+                    }
                 }).then(function (reminder) {
-                    // Post request, and push onto users local list of reminders
-                    // this.$http.post('uri').then((response) => response.data)
-                    // after promise is succesful add to
-                    // reminder.assigne.reminders.push()
-                    _this.selected.reminders.push(reminder);
+                    _this.$http.post('/api/reminder', reminder).then(function successCallback(response) {
+                        self.selected.reminders.push(response.data);
+                        console.log(response.data);
+                    });
                     self.openToast("Remminder added");
                 }, function () {
                     console.log('You cancelled the dialog.');
                 });
             };
+            MainController.prototype.editReminder = function ($event, reminder) {
+                var _this = this;
+                var self = this;
+                var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
+                this.$mdDialog.show({
+                    templateUrl: './dist/view/dashboard/reminders/modal.html',
+                    parent: angular.element(document.body),
+                    targetEvent: $event,
+                    controller: dashboard.ReminderController,
+                    controllerAs: "ctrl",
+                    clickOutsideToClose: true,
+                    fullscreen: useFullScreen,
+                    locals: {
+                        selected: reminder
+                    },
+                }).then(function (reminder) {
+                    _this.$http.post('/api/reminder/' + reminder._id, reminder).then(function successCallback(reminder) {
+                        console.log('success');
+                        console.log(reminder.data);
+                    });
+                    self.openToast("Reminder Edited");
+                }, function () {
+                    console.log('You cancelled the dialog.');
+                });
+            };
             MainController.prototype.slackList = function () {
-                // var test = this.userService.slack().then((members: any) => {
-                //   console.log('here');
-                //   console.log(members);
-                // });
             };
             MainController.prototype.testButton = function (email, slack) {
                 console.log('test-button');

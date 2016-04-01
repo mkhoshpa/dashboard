@@ -46,7 +46,7 @@
              <span ng-if="ctrl.isChecked()">Un-</span>Select
            </md-checkbox>
 
-          <md-checkbox ng-repeat="item in ctrl.days" ng-checked="ctrl.exists(item, ctrl.selected)" ng-click="ctrl.toggle(item, ctrl.selected)" >
+          <md-checkbox ng-repeat="item in ctrl.days" ng-checked="ctrl.exists(item, ctrl.selectedDays)" ng-click="ctrl.toggle(item, ctrl.selectedDays)" >
                 {{item}}
            </md-checkbox>
 
@@ -59,7 +59,7 @@
           Cancel
         </md-button>
         <md-button type="submit" class="md-primary md-raised" ng-disabled="userForm.$invalid">
-          Send
+          Save
         </md-button>
       </md-dialog-actions>
     </form>

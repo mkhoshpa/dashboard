@@ -118,15 +118,57 @@ module app.dashboard {
         controller: ReminderController,
         controllerAs: "ctrl",
         clickOutsideToClose:true,
-        fullscreen: useFullScreen
+        fullscreen: useFullScreen,
+        locals : {
+          selected: null
+        }
       }).then((reminder: any) => {
         // Post request, and push onto users local list of reminders
         // this.$http.post('uri').then((response) => response.data)
         // after promise is succesful add to
         // reminder.assigne.reminders.push()
-        this.selected.reminders.push(reminder);
+        this.$http.post('/api/reminder', reminder
+        ).then(function successCallback(response) {
+           self.selected.reminders.push(response.data);
+           console.log(response.data);
+        })
+
 
         self.openToast("Remminder added");
+      }, () => {
+        console.log('You cancelled the dialog.');
+      });
+    }
+
+    editReminder($event, reminder) {
+      var self = this;
+      var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
+      this.$mdDialog.show({
+        templateUrl: './dist/view/dashboard/reminders/modal.html',
+        parent: angular.element(document.body),
+        targetEvent: $event,
+        controller: ReminderController,
+        controllerAs: "ctrl",
+        clickOutsideToClose:true,
+        fullscreen: useFullScreen,
+        locals : {
+          selected: reminder
+        },
+      }).then((reminder: any) => {
+        // Post request, and push onto users local list of reminders
+        // this.$http.post('uri').then((response) => response.data)
+        // after promise is succesful add to
+        // reminder.assigne.reminders.push()
+        this.$http.post('/api/reminder/' + reminder._id, reminder
+        ).then(function successCallback(reminder) {
+          //  self.selected.reminders.push(response.data);
+          console.log('success');
+           console.log(reminder.data);
+        })
+
+
+
+        self.openToast("Reminder Edited");
       }, () => {
         console.log('You cancelled the dialog.');
       });

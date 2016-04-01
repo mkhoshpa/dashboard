@@ -6,9 +6,10 @@ var reminder = require('../../controllers/api/reminder.js');
 
 // Define the routes module' method
 module.exports = function(app) {
-  app.post('/willow/reminder', reminder.create);
-  app.get('/willow/reminder', reminder.list);
-  app.get('/willow/reminder/now', reminder.listNow);
+  app.post('/api/reminder', reminder.create);
+  app.get('/api/reminder', reminder.list);
+  app.get('/api/reminder/now', reminder.listNow);
+  app.post('/api/reminder/:id', reminder.update);
 
 //  app.get('/willow/reminder/now', reminder.now);
 }

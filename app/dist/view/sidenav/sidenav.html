@@ -18,6 +18,17 @@
   </div>
   <md-content class="scrollable-nav-content" style="margin-top: -65px;">
     <md-list>
+      <md-list-item>
+        <!-- <md-button ng-click="vm.selectUser(it)" ng-class="{'selected' : it === vm.selected }">
+          <img ng-src="{{it.slack.img}}" class="avatar">
+            <span ng-show="vm.hasReal(it)">
+              {{it.slack.real_name}}
+            </span>
+            <span ng-show="!vm.hasReal(it)">
+              {{it.slack.name}}
+            </span>
+        </md-button> -->
+      </md-list-item>
       <md-list-item ng-repeat="it in vm.clients | filter:vm.searchText | orderBy:'name'">
           <md-button ng-click="vm.selectUser(it)" ng-class="{'selected' : it === vm.selected }">
             <img ng-src="{{it.slack.img}}" class="avatar">

@@ -11,7 +11,7 @@ var reminderSchema = new Schema({
   description: {type: String},
   start: {type: Date, default: Date.now},
   timeOfDay: {
-    type: String
+    type: Date
       // validate:{
       //   validator: function(v) {
       //     return formatTime(v);

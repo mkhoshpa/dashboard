@@ -4,18 +4,34 @@ module app.dashboard {
 
   export class ReminderController {
 
-    static $inject = ['$mdDialog', 'userService'];
+    static $inject = ['$mdDialog', 'userService', 'selected'];
 
     constructor(private $mdDialog,
-                private userService
+                private userService,
+                private selected
                 ){
                   this.days = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'];
-                  this.selected = [];
+                  this.selectedDays = [];
                   this.author = this.userService.get();
-                  this.author = this.author.coach.id;
+                  if(this.author.coach) {
+                    this.author = this.author.coach.id;
+                    this.assignee = this.userService.selectedUser;
+                    this.assignee = this.assignee.id;
+                  }
+                  else if (this.author.user) {
+                    this.author = this.author.user.id;
+                    this.assignee = this.author;
+                  }
 
-                  this.assignee = this.userService.selectedUser;
-                  this.assignee = this.assignee.id;
+                  if(selected) {
+                    console.log(selected);
+                    this._id = selected._id,
+                    console.log(this._id),
+                    this.selectedDays = selected.selectedDates,
+                    this.reminder = selected.title,
+                    this.time = new Date(selected.timeOfDay);
+                  }
+
                 }
 
 
@@ -24,17 +40,26 @@ module app.dashboard {
 
     }
 
+    editRemidner(selected) {
+      this.selectedDays = selected.selectedDates,
+      this.reminder = selected.tite,
+      this.time = selected.timeOfDay
+      console.log(selected);
+    }
 
+    _id: any;
     author: any;
     assignee: any;
 
     time: any;
-    selected: any;
+    selectedDays: any;
     reminder: any;
     response: string = "";
 
     start: any;
     days: any;
+
+    // selectedDays reminder
 
     toggle(item, list) {
       var idx = list.indexOf(item);
@@ -47,21 +72,25 @@ module app.dashboard {
     };
 
     toggleAll() {
-      if (this.selected.length === this.days.length) {
-        this.selected = [];
-      } else if (this.selected.length === 0 || this.selected.length > 0) {
-        this.selected = this.days.slice(0);
+      if (this.selectedDays.length === this.days.length) {
+        this.selectedDays = [];
+      } else if (this.selectedDays.length === 0 || this.selectedDays.length > 0) {
+        this.selectedDays = this.days.slice(0);
       }
     };
 
     isChecked() {
-      return this.selected.length === this.days.length;
+      return this.selectedDays.length === this.days.length;
     };
 
     isIndeterminate() {
-      return (this.selected.length !== 0 &&
-          this.selected.length !== this.days.length);
+      return (this.selectedDays.length !== 0 &&
+          this.selectedDays.length !== this.days.length);
     };
+
+    select(): void {
+
+    }
 
     close(): void {
       this.$mdDialog.cancel();
@@ -81,39 +110,41 @@ module app.dashboard {
         sunday: false
       }
 
-      if(this.selected.indexOf('Sun') != -1){
+      if(this.selectedDays.indexOf('Sun') != -1){
         dates.sunday = true;
       }
-      if(this.selected.indexOf('Mon') != -1) {
+      if(this.selectedDays.indexOf('Mon') != -1) {
         dates.monday = true;
       }
-      if(this.selected.indexOf('Tues') != -1) {
+      if(this.selectedDays.indexOf('Tues') != -1) {
         dates.tuesday = true;
       }
-      if(this.selected.indexOf('Wed') != -1) {
+      if(this.selectedDays.indexOf('Wed') != -1) {
         dates.wednesday = true;
       }
-      if(this.selected.indexOf('Thurs') != -1) {
+      if(this.selectedDays.indexOf('Thurs') != -1) {
         dates.thursday = true;
       }
-      if(this.selected.indexOf('Fri') != -1) {
+      if(this.selectedDays.indexOf('Fri') != -1) {
         dates.friday = true;
       }
-      if(this.selected.indexOf('Sat') != -1) {
+      if(this.selectedDays.indexOf('Sat') != -1) {
         dates.saturday = true;
       }
 
       var reminder = {
+        _id: this._id,
         title: this.reminder,
         // Will this be set to server time or user's local time?
-        timeOfDay: this.time.toLocaleTimeString(),
-        selectedDates: this.selected,
+        //toLocaleTimeString(),
+        timeOfDay: this.time,
+        selectedDates: this.selectedDays,
         daysOfTheWeek: dates,
         author: this.author,
         assignee: this.assignee
       }
 
-      console.log(reminder);
+      //console.log(reminder);
 
       this.$mdDialog.hide(reminder);
 

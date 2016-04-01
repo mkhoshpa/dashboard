@@ -73,13 +73,41 @@ var app;
                     controller: dashboard.ReminderController,
                     controllerAs: "ctrl",
                     clickOutsideToClose: true,
-                    fullscreen: useFullScreen
+                    fullscreen: useFullScreen,
+                    locals: {
+                        selected: null
+                    }
                 }).then(function (reminder) {
                     _this.$http.post('/api/reminder', reminder).then(function successCallback(response) {
                         self.selected.reminders.push(response.data);
                         console.log(response.data);
                     });
                     self.openToast("Remminder added");
+                }, function () {
+                    console.log('You cancelled the dialog.');
+                });
+            };
+            MainController.prototype.editReminder = function ($event, reminder) {
+                var _this = this;
+                var self = this;
+                var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
+                this.$mdDialog.show({
+                    templateUrl: './dist/view/dashboard/reminders/modal.html',
+                    parent: angular.element(document.body),
+                    targetEvent: $event,
+                    controller: dashboard.ReminderController,
+                    controllerAs: "ctrl",
+                    clickOutsideToClose: true,
+                    fullscreen: useFullScreen,
+                    locals: {
+                        selected: reminder
+                    },
+                }).then(function (reminder) {
+                    _this.$http.post('/api/reminder/' + reminder._id, reminder).then(function successCallback(reminder) {
+                        console.log('success');
+                        console.log(reminder.data);
+                    });
+                    self.openToast("Reminder Edited");
                 }, function () {
                     console.log('You cancelled the dialog.');
                 });

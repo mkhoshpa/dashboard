@@ -3,18 +3,39 @@ var app;
     var dashboard;
     (function (dashboard) {
         var ReminderController = (function () {
-            function ReminderController($mdDialog, userService) {
+            function ReminderController($mdDialog, userService, selected) {
                 this.$mdDialog = $mdDialog;
                 this.userService = userService;
+                this.selected = selected;
                 this.response = "";
                 this.days = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'];
-                this.selected = [];
+                this.selectedDays = [];
                 this.author = this.userService.get();
-                this.author = this.author.coach.id;
-                this.assignee = this.userService.selectedUser;
-                this.assignee = this.assignee.id;
+                if (this.author.coach) {
+                    this.author = this.author.coach.id;
+                    this.assignee = this.userService.selectedUser;
+                    this.assignee = this.assignee.id;
+                }
+                else if (this.author.user) {
+                    this.author = this.author.user.id;
+                    this.assignee = this.author;
+                }
+                if (selected) {
+                    console.log(selected);
+                    this._id = selected._id,
+                        console.log(this._id),
+                        this.selectedDays = selected.selectedDates,
+                        this.reminder = selected.title,
+                        this.time = new Date(selected.timeOfDay);
+                }
             }
             ReminderController.prototype.addReminder = function ($event) {
+            };
+            ReminderController.prototype.editRemidner = function (selected) {
+                this.selectedDays = selected.selectedDates,
+                    this.reminder = selected.tite,
+                    this.time = selected.timeOfDay;
+                console.log(selected);
             };
             ReminderController.prototype.toggle = function (item, list) {
                 var idx = list.indexOf(item);
@@ -29,23 +50,25 @@ var app;
             };
             ;
             ReminderController.prototype.toggleAll = function () {
-                if (this.selected.length === this.days.length) {
-                    this.selected = [];
+                if (this.selectedDays.length === this.days.length) {
+                    this.selectedDays = [];
                 }
-                else if (this.selected.length === 0 || this.selected.length > 0) {
-                    this.selected = this.days.slice(0);
+                else if (this.selectedDays.length === 0 || this.selectedDays.length > 0) {
+                    this.selectedDays = this.days.slice(0);
                 }
             };
             ;
             ReminderController.prototype.isChecked = function () {
-                return this.selected.length === this.days.length;
+                return this.selectedDays.length === this.days.length;
             };
             ;
             ReminderController.prototype.isIndeterminate = function () {
-                return (this.selected.length !== 0 &&
-                    this.selected.length !== this.days.length);
+                return (this.selectedDays.length !== 0 &&
+                    this.selectedDays.length !== this.days.length);
             };
             ;
+            ReminderController.prototype.select = function () {
+            };
             ReminderController.prototype.close = function () {
                 this.$mdDialog.cancel();
             };
@@ -60,39 +83,39 @@ var app;
                     saturday: false,
                     sunday: false
                 };
-                if (this.selected.indexOf('Sun') != -1) {
+                if (this.selectedDays.indexOf('Sun') != -1) {
                     dates.sunday = true;
                 }
-                if (this.selected.indexOf('Mon') != -1) {
+                if (this.selectedDays.indexOf('Mon') != -1) {
                     dates.monday = true;
                 }
-                if (this.selected.indexOf('Tues') != -1) {
+                if (this.selectedDays.indexOf('Tues') != -1) {
                     dates.tuesday = true;
                 }
-                if (this.selected.indexOf('Wed') != -1) {
+                if (this.selectedDays.indexOf('Wed') != -1) {
                     dates.wednesday = true;
                 }
-                if (this.selected.indexOf('Thurs') != -1) {
+                if (this.selectedDays.indexOf('Thurs') != -1) {
                     dates.thursday = true;
                 }
-                if (this.selected.indexOf('Fri') != -1) {
+                if (this.selectedDays.indexOf('Fri') != -1) {
                     dates.friday = true;
                 }
-                if (this.selected.indexOf('Sat') != -1) {
+                if (this.selectedDays.indexOf('Sat') != -1) {
                     dates.saturday = true;
                 }
                 var reminder = {
+                    _id: this._id,
                     title: this.reminder,
-                    timeOfDay: this.time.toLocaleTimeString(),
-                    selectedDates: this.selected,
+                    timeOfDay: this.time,
+                    selectedDates: this.selectedDays,
                     daysOfTheWeek: dates,
                     author: this.author,
                     assignee: this.assignee
                 };
-                console.log(reminder);
                 this.$mdDialog.hide(reminder);
             };
-            ReminderController.$inject = ['$mdDialog', 'userService'];
+            ReminderController.$inject = ['$mdDialog', 'userService', 'selected'];
             return ReminderController;
         }());
         dashboard.ReminderController = ReminderController;

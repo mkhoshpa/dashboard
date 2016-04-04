@@ -34,7 +34,7 @@ module.exports = function() {
 
 	// Configure the 'session' middleware
 	app.use(session({
-		cookie: { maxAge: 60000 },
+		// cookie: { maxAge: 60000 },
 		saveUninitialized: true,
 		resave: true,
 		secret: config.sessionSecret

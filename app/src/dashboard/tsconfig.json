@@ -17,9 +17,9 @@
     "./controllers/contactPanelController.ts",
     "./controllers/mainController.ts",
     "./controllers/reminderController.ts",
-    "./controllers/reminderService.ts",
     "./controllers/slackUsersController.ts",
-    "./models.ts"
+    "./models.ts",
+    "./services/reminderService.ts"
   ],
   "atom": {
     "rewriteTsconfig": true

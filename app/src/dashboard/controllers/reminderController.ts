@@ -16,6 +16,9 @@ module app.dashboard {
                   if(this.author.coach) {
                     this.author = this.author.coach.id;
                     console.log('is coach');
+                    this.assignee = this.userService.selectedUser;
+                    this.assignee = this.assignee._id;
+                    console.log(this.assignee);
                   }
                   else if (this.author.user) {
                     this.author = this.author.user.id;
@@ -143,7 +146,7 @@ module app.dashboard {
         selectedDates: this.selectedDays,
         daysOfTheWeek: dates,
         author: this.author,
-        assignee: this.userService.selectedUser
+        assignee: this.assignee
       }
 
       console.log('check assingee');

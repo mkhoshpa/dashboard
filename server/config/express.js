@@ -58,6 +58,7 @@ module.exports = function() {
 	require('../routes/api/habits.js')(app);
 	require('../routes/api/willow-survey.js')(app);
 	require('../routes/api/reminders.js')(app);
+	require('../routes/user.profile.routes.js')(app);
 
 	// Configure static file serving
   app.use(express.static(__dirname + '/../../app'));

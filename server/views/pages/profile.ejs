@@ -1,0 +1,58 @@
+<html>
+  <% include ../partials/header.ejs %>
+  <body>
+  <% include ../partials/nav.ejs %>
+
+  <div class="container">
+    <div class="section">
+
+        <div class="row">
+          <div class="col s12 m4 l2"><p></p></div>
+          <div class="col s12 m4 l8 center-align">
+            <div class="card">
+
+              <ul class="collection">
+                <li class="collection-item avatar" style="background: #176785">
+                  <img src="assets/img/profile.jpeg" alt="" class="circle">
+                </li>
+              </ul>
+              <!-- <div class="card-action fitpath-blue white-text">
+                <%=email%>
+              </div> -->
+              <div class="card-content">
+                <div class="row">
+                  <form class="col s12">
+                    <div class="row">
+                      <div class="input-field col s6">
+                        <i class="material-icons prefix" style="color: #444; margin-top: 10px;">account_circle</i>
+                        <input id="first-profile" type="text" class="validate">
+                        <label for="first-profile">First Name</label>
+                      </div>
+                      <div class="input-field col s6">
+                        <i class="material-icons prefix" style="color: #444; margin-top: 10px;">account_circle</i>
+                        <input id="last-profile" type="text" class="validate">
+                        <label for="last-profile">Last Name</label>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <div class="card-action">
+                <a href="#" style="color: #444;">Save</a>
+              </div>
+
+
+            </div>
+          </div>
+          <div class="col s12 m4 l2"><p></p></div>
+        </div>
+
+
+
+    </div>
+  </div>
+
+  <% include ../partials/footer.ejs %>
+  <% include ../partials/scripts.ejs %>
+  </body>
+</html>

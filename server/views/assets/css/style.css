@@ -201,6 +201,10 @@ html#login-page, html#signup-page {
   background-color: #27AE60;
 }
 
+.fitpath-fill-green, .fitpath-fill-green:hover, .fitpath-fill-green:focus {
+  color: #27AE60;
+}
+
 footer.page-footer {
   background-color: #176785;
 }

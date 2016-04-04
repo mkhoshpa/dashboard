@@ -104,13 +104,26 @@ var app;
                     },
                 }).then(function (reminder) {
                     _this.$http.post('/api/reminder/' + reminder._id, reminder).then(function successCallback(reminder) {
-                        console.log('success');
-                        console.log(reminder.data);
+                        if (self.updateReminder(reminder.data)) {
+                            self.openToast("Reminder Edited");
+                        }
+                        else {
+                            self.openToast("Reminder Not Found!");
+                        }
                     });
-                    self.openToast("Reminder Edited");
                 }, function () {
                     console.log('You cancelled the dialog.');
                 });
+            };
+            MainController.prototype.updateReminder = function (reminder) {
+                console.log(this.selected.reminders);
+                for (var i = 0; i < this.selected.reminders.length; i++) {
+                    if (reminder._id == this.selected.reminders[i]._id) {
+                        this.selected.reminders[i] = reminder;
+                        return true;
+                    }
+                }
+                return false;
             };
             MainController.prototype.slackList = function () {
             };

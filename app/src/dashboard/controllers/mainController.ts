@@ -162,16 +162,27 @@ module app.dashboard {
         this.$http.post('/api/reminder/' + reminder._id, reminder
         ).then(function successCallback(reminder) {
           //  self.selected.reminders.push(response.data);
-          console.log('success');
-           console.log(reminder.data);
+         if(self.updateReminder(reminder.data)) {
+           self.openToast("Reminder Edited");
+         }
+         else {
+           self.openToast("Reminder Not Found!");
+         }
         })
-
-
-
-        self.openToast("Reminder Edited");
       }, () => {
         console.log('You cancelled the dialog.');
       });
+    }
+
+    updateReminder(reminder) {
+      console.log(this.selected.reminders);
+      for(var i = 0; i < this.selected.reminders.length; i++) {
+        if (reminder._id == this.selected.reminders[i]._id) {
+          this.selected.reminders[i] = reminder;
+          return true;
+        }
+      }
+      return false;
     }
 
     slackList() {

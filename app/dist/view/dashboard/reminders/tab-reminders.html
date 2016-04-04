@@ -20,7 +20,7 @@
     </md-card-content>
     <div layout="column">
       <md-card-actions flex="20" layout-align="end right">
-        <md-button ng-click="vm.removeReminder(reminder)">Remove</md-button>
+        <md-button ng-click="vm.removeReminder($event, reminder)">Remove</md-button>
       </md-card-actions>
       <md-card-actions flex="20" layout-align="end right">
         <md-button ng-click="vm.editReminder($event,reminder)">Edit</md-button>

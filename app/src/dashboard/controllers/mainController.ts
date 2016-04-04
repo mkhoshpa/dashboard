@@ -174,6 +174,36 @@ module app.dashboard {
       });
     }
 
+    removeReminder($event, reminder) {
+      var confirm = this.$mdDialog.confirm()
+        .textContent('Are you sure you want to remove this reminder?')
+        .ariaLabel('Remove')
+        .targetEvent($event)
+        .ok('Yes')
+        .cancel('No');
+
+        var self = this;
+        this.$mdDialog.show(confirm).then((result: any) => {
+          console.log(reminder);
+          if(result) {
+            this.$http.post('/api/reminder/remove/' + reminder._id, reminder)
+            .then(function successCallback(success) {
+                if(success) {
+                  console.log(success);
+                  self.deleteReminder(reminder);
+                }
+                else {
+                  //err
+                }
+            });
+          }
+          else {
+
+          }
+          self.openToast("Reminder Removed.");
+        });
+    }
+
     updateReminder(reminder) {
       console.log(this.selected.reminders);
       for(var i = 0; i < this.selected.reminders.length; i++) {
@@ -183,6 +213,11 @@ module app.dashboard {
         }
       }
       return false;
+    }
+
+    deleteReminder(reminder) {
+      var foundIndex = this.selected.reminders.indexOf(reminder);
+      this.selected.reminders.splice(foundIndex, 1);
     }
 
     slackList() {
@@ -208,11 +243,11 @@ module app.dashboard {
 
 
 
-    removeReminder(reminder) {
-      var foundIndex = this.selected.reminders.indexOf(reminder);
-      this.selected.reminders.splice(foundIndex, 1);
-      this.openToast("Reminder removed");
-    }
+    // removeReminder(reminder) {
+    //   var foundIndex = this.selected.reminders.indexOf(reminder);
+    //   this.selected.reminders.splice(foundIndex, 1);
+    //   this.openToast("Reminder removed");
+    // }
 
     clearReminders($event) {
       var confirm = this.$mdDialog.confirm()
@@ -277,6 +312,7 @@ module app.dashboard {
 
     selectUser ( user ) {
       this.selected = user;
+      this.userService.selectedUser = this.selected;
       console.log(this.selected);
       var sidebar = this.$mdSidenav('left');
       if (sidebar.isOpen()) {

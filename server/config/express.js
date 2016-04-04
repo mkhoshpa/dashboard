@@ -3,14 +3,15 @@
 
 // Load the module dependencies
 var config = require('./config'),
-	express = require('express'),
-	morgan = require('morgan'),
-	compress = require('compression'),
-	bodyParser = require('body-parser'),
-	methodOverride = require('method-override'),
-	session = require('express-session'),
-	flash = require('connect-flash'),
-	passport = require('passport');
+		express = require('express'),
+		morgan = require('morgan'),
+		compress = require('compression'),
+		bodyParser = require('body-parser'),
+		methodOverride = require('method-override'),
+		cookieParser = require('cookie-parser'),
+		session = require('express-session'),
+		flash = require('connect-flash'),
+		passport = require('passport');
 
 // Define the Express configuration method
 module.exports = function() {
@@ -33,6 +34,7 @@ module.exports = function() {
 
 	// Configure the 'session' middleware
 	app.use(session({
+		// cookie: { maxAge: 60000 },
 		saveUninitialized: true,
 		resave: true,
 		secret: config.sessionSecret
@@ -59,6 +61,20 @@ module.exports = function() {
 	require('../routes/api/willow-survey.js')(app);
 	require('../routes/api/reminders.js')(app);
 	require('../routes/user.profile.routes.js')(app);
+
+	app.all('/test', function(req, res){
+		req.flash('info', 'it worked')
+  	res.render('pages/test', {messages: req.flash('info')});
+		console.log(req.flash());
+	});
+
+	app.all('/profile/test', function(req, res) {
+		res.render('pages/profile',
+		{	email: 'test',
+			userFullName: 'test',
+			messages: '',
+		});
+	})
 
 	// Configure static file serving
   app.use(express.static(__dirname + '/../../app'));

@@ -7,6 +7,7 @@ var moment = require('moment');
 
 
 exports.create = function(req, res) {
+  console.log('create -req.body');
   console.log(req.body);
   var reminder = new Reminder(req.body);
   reminder.save(function(err, reminder) {
@@ -58,7 +59,6 @@ exports.update = function(req, res) {
       assignee: req.body.assignee
     }},{new: true}, function(err, reminder) {
       if(reminder) {
-        // It updates but sends back old reminder?
         res.send(reminder);
       }
       else{
@@ -69,7 +69,17 @@ exports.update = function(req, res) {
 }
 
 exports.delete = function(req, res) {
+  Reminder.findByIdAndRemove(
+    req.params.id,
+    function(err, success) {
+      if(success) {
+        res.send('success');
+      }
+      else{
 
+      }
+    }
+  );
 }
 
 exports.listNow = function(req,res) {

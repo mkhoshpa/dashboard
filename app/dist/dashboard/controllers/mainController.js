@@ -115,6 +115,33 @@ var app;
                     console.log('You cancelled the dialog.');
                 });
             };
+            MainController.prototype.removeReminder = function ($event, reminder) {
+                var _this = this;
+                var confirm = this.$mdDialog.confirm()
+                    .textContent('Are you sure you want to remove this reminder?')
+                    .ariaLabel('Remove')
+                    .targetEvent($event)
+                    .ok('Yes')
+                    .cancel('No');
+                var self = this;
+                this.$mdDialog.show(confirm).then(function (result) {
+                    console.log(reminder);
+                    if (result) {
+                        _this.$http.post('/api/reminder/remove/' + reminder._id, reminder)
+                            .then(function successCallback(success) {
+                            if (success) {
+                                console.log(success);
+                                self.deleteReminder(reminder);
+                            }
+                            else {
+                            }
+                        });
+                    }
+                    else {
+                    }
+                    self.openToast("Reminder Removed.");
+                });
+            };
             MainController.prototype.updateReminder = function (reminder) {
                 console.log(this.selected.reminders);
                 for (var i = 0; i < this.selected.reminders.length; i++) {
@@ -124,6 +151,10 @@ var app;
                     }
                 }
                 return false;
+            };
+            MainController.prototype.deleteReminder = function (reminder) {
+                var foundIndex = this.selected.reminders.indexOf(reminder);
+                this.selected.reminders.splice(foundIndex, 1);
             };
             MainController.prototype.slackList = function () {
             };
@@ -135,11 +166,6 @@ var app;
                 }, function (err) {
                     console.log(err);
                 });
-            };
-            MainController.prototype.removeReminder = function (reminder) {
-                var foundIndex = this.selected.reminders.indexOf(reminder);
-                this.selected.reminders.splice(foundIndex, 1);
-                this.openToast("Reminder removed");
             };
             MainController.prototype.clearReminders = function ($event) {
                 var confirm = this.$mdDialog.confirm()
@@ -192,6 +218,7 @@ var app;
             };
             MainController.prototype.selectUser = function (user) {
                 this.selected = user;
+                this.userService.selectedUser = this.selected;
                 console.log(this.selected);
                 var sidebar = this.$mdSidenav('left');
                 if (sidebar.isOpen()) {

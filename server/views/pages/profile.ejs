@@ -3,13 +3,17 @@
   <body>
   <% include ../partials/nav.ejs %>
 
+  <% for(var i in messages) { %>
+  <div class="flash"><%= messages[i] %></div>
+  <% } %>
+
   <div class="container">
     <div class="section">
 
         <div class="row">
-          <div class="col s12 m4 l2"><p></p></div>
-          <div class="col s12 m4 l8 center-align">
-            <div class="card">
+          <div class="col s12 m2 l2"><p></p></div>
+          <div class="col s12 m8 l8 center-align">
+            <div class="card hoverable">
 
               <ul class="collection">
                 <li class="collection-item avatar" style="background: #176785">
@@ -21,7 +25,7 @@
               </div> -->
               <div class="card-content">
                 <div class="row">
-                  <form class="col s12">
+                  <form class="col s12" style="font-size: 14px;">
                     <div class="row">
                       <div class="input-field col s6">
                         <i class="material-icons prefix" style="color: #444; margin-top: 10px;">account_circle</i>
@@ -34,25 +38,72 @@
                         <label for="last-profile">Last Name</label>
                       </div>
                     </div>
+                    <div class="row">
+                      <div class="input-field col s12" style="padding-left: 22px;">
+                        <div class="file-field input-field">
+                            <div class="btn fitpath-green">
+                              <span>Picture</span>
+                              <input type="file">
+                            </div>
+                            <div class="file-path-wrapper">
+                              <input class="file-path validate" type="text" style="margin-left: 10px;">
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+
+
+                        <div class="input-field col s12">
+                          <i class="material-icons prefix" style="color: #444; margin-top: 10px;">account_circle</i>
+                          <input id="email-profile" type="text" class="validate">
+                          <label for="email-profile">Email</label>
+                        </div>
+
+                    </div>
+
                   </form>
                 </div>
               </div>
               <div class="card-action">
-                <a href="#" style="color: #444;">Save</a>
-              </div>
+                <div class="left-align">
+                  <a href="#" class="left-align" style="color: #444;">Forgot Password?</a>
+                  <a href="#" style="color: #444;">Save</a>
 
-
+                </div>
+             </div>
             </div>
+
+            <div class="card hoverable">
+              <ul class="collection">
+                <li class="collection-item avatar">
+                  <img src="../assets/img/social/slack.svg" alt="" class="circle">
+                </li>
+                <li class="collection-item avatar">
+                  <img src="../assets/img/social/facebook.png" alt="" class="circle">
+                </li>
+                <li class="collection-item avatar">
+                  <img src="../assets/img/social/google.png" alt="" class="circle">
+                </li>
+                <li class="collection-item avatar">
+                  <img src="../assets/img/social/twitter.png" alt="" class="circle">
+                </li>
+              </ul>
+              <div class="card-content">
+
+              </div>
+            </div>
+
           </div>
-          <div class="col s12 m4 l2"><p></p></div>
+        </div>
+          <div class="col s12 m2 l2"><p></p></div>
         </div>
 
 
 
     </div>
   </div>
-
-  <% include ../partials/footer.ejs %>
-  <% include ../partials/scripts.ejs %>
   </body>
+  <% include ../partials/scripts.ejs %>
+  <!-- <% include ../partials/footer.ejs %> -->
 </html>

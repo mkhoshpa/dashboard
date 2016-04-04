@@ -13,12 +13,14 @@ var app;
                 this.author = this.userService.get();
                 if (this.author.coach) {
                     this.author = this.author.coach.id;
-                    this.assignee = this.userService.selectedUser;
-                    this.assignee = this.assignee.id;
+                    console.log('is coach');
                 }
                 else if (this.author.user) {
                     this.author = this.author.user.id;
                     this.assignee = this.author;
+                    console.log('is user');
+                    console.log('assignee');
+                    console.log(this.assignee);
                 }
                 if (selected) {
                     console.log(selected);
@@ -111,8 +113,10 @@ var app;
                     selectedDates: this.selectedDays,
                     daysOfTheWeek: dates,
                     author: this.author,
-                    assignee: this.assignee
+                    assignee: this.userService.selectedUser
                 };
+                console.log('check assingee');
+                console.log(reminder.assignee);
                 this.$mdDialog.hide(reminder);
             };
             ReminderController.$inject = ['$mdDialog', 'userService', 'selected'];

@@ -10,6 +10,7 @@ module.exports = function(app) {
   app.get('/api/reminder', reminder.list);
   app.get('/api/reminder/now', reminder.listNow);
   app.post('/api/reminder/:id', reminder.update);
+  app.post('/api/reminder/remove/:id', reminder.delete);
 
 //  app.get('/willow/reminder/now', reminder.now);
 }

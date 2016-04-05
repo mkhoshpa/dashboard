@@ -1,6 +1,6 @@
 <html>
   <% include ../partials/header.ejs %>
-  <body>
+  <body style="background-color: #eceff1">
   <% include ../partials/nav.ejs %>
 
   <% for(var i in messages) { %>
@@ -17,7 +17,7 @@
 
               <ul class="collection">
                 <li class="collection-item avatar" style="background: #176785">
-                  <img src="assets/img/profile.jpeg" alt="" class="circle">
+                      <i id="profile-pic" class="material-icons prefix circle">face</i>
                 </li>
               </ul>
               <!-- <div class="card-action fitpath-blue white-text">
@@ -25,81 +25,105 @@
               </div> -->
               <div class="card-content">
                 <div class="row">
-                  <form class="col s12" style="font-size: 14px;">
+
+                  <form id="update" action="/profile/update" method="post" class="col s12" style="font-size: 14px;">
                     <div class="row">
                       <div class="input-field col s6">
                         <i class="material-icons prefix" style="color: #444; margin-top: 10px;">account_circle</i>
-                        <input id="first-profile" type="text" class="validate">
+                        <input id="first-profile" type="text" class="validate" name="first">
                         <label for="first-profile">First Name</label>
                       </div>
                       <div class="input-field col s6">
                         <i class="material-icons prefix" style="color: #444; margin-top: 10px;">account_circle</i>
-                        <input id="last-profile" type="text" class="validate">
+                        <input id="last-profile" type="text" class="validate" name="last">
                         <label for="last-profile">Last Name</label>
                       </div>
                     </div>
+
+                    <div class="row">
+                        <div class="input-field col s12">
+                          <i class="material-icons prefix" style="color: #444; margin-top: 10px;">account_circle</i>
+                          <input id="email-profile" type="text" class="validate" name="email">
+                          <label for="email-profile">Email</label>
+                        </div>
+                    </div>
+
                     <div class="row">
                       <div class="input-field col s12" style="padding-left: 22px;">
                         <div class="file-field input-field">
-                            <div class="btn fitpath-green">
-                              <span>Picture</span>
-                              <input type="file">
-                            </div>
-                            <div class="file-path-wrapper">
-                              <input class="file-path validate" type="text" style="margin-left: 10px;">
-                            </div>
-                        </div>
+                         <div class="btn picture-submit">
+                           <span>Picture</span>
+                           <input type="file">
+                         </div>
+                         <div class="file-path-wrapper">
+                           <input class="file-path validate" type="text">
+                         </div>
+                       </div>
                       </div>
-                    </div>
-                    <div class="row">
-
-
-                        <div class="input-field col s12">
-                          <i class="material-icons prefix" style="color: #444; margin-top: 10px;">account_circle</i>
-                          <input id="email-profile" type="text" class="validate">
-                          <label for="email-profile">Email</label>
-                        </div>
-
                     </div>
 
                   </form>
+
                 </div>
               </div>
-              <div class="card-action">
+              <div class="card-action" style="padding-bottom: 10px;">
                 <div class="left-align">
-                  <a href="#" class="left-align" style="color: #444;">Forgot Password?</a>
-                  <a href="#" style="color: #444;">Save</a>
-
+                  <!-- <a href="#" class="left-align" style="color: #444;">Forgot Password?</a> -->
+                  <button class="profile-submit btn waves-effect waves-light" form="update" type="submit" name="action">Submit
+                    <i class="material-icons right">check</i>
+                  </button>
+                  <button class="forgot-password btn waves-effect waves-light" form="update" type="submit" name="action">Forgot Your Password?
+                    <i class="material-icons right">search</i>
+                  </button>
+                  <!-- <a href="#" form="update" class="left-align" type="submit" style="color: #444;">Save</a> -->
                 </div>
              </div>
             </div>
 
             <div class="card hoverable">
               <ul class="collection">
-                <li class="collection-item avatar">
+                <li class="collection-item avatar left-align dismissable">
                   <img src="../assets/img/social/slack.svg" alt="" class="circle">
+                  <span class="title">Title</span>
+                  <p>First Line <br>
+                     Second Line
+                  </p>
+                  <a href="#!" class="secondary-content" style="color: #444"><i class="material-icons">close</i></a>
                 </li>
-                <li class="collection-item avatar">
+                <li class="collection-item avatar left-align dismissable">
                   <img src="../assets/img/social/facebook.png" alt="" class="circle">
+                  <span class="title">Title</span>
+                  <p>First Line <br>
+                     Second Line
+                  </p>
+                  <a href="#!" class="secondary-content" style="color: #444"><i class="material-icons">close</i></a>
+
                 </li>
-                <li class="collection-item avatar">
+                <li class="collection-item avatar left-align dismissable">
                   <img src="../assets/img/social/google.png" alt="" class="circle">
+                  <span class="title">Title</span>
+                  <p>First Line <br>
+                     Second Line
+                  </p>
+                  <a href="#!" class="secondary-content" style="color: #444"><i class="material-icons">close</i></a>
+
                 </li>
-                <li class="collection-item avatar">
+                <li class="collection-item avatar left-align dismissable">
                   <img src="../assets/img/social/twitter.png" alt="" class="circle">
+                  <span class="title">Title</span>
+                  <p>First Line <br>
+                     Second Line
+                  </p>
+                  <a href="#!" class="secondary-content" style="color: #444"><i class="material-icons">close</i></a>
+
                 </li>
               </ul>
-              <div class="card-content">
-
-              </div>
-            </div>
 
           </div>
+
         </div>
           <div class="col s12 m2 l2"><p></p></div>
         </div>
-
-
 
     </div>
   </div>

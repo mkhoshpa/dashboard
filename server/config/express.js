@@ -11,7 +11,9 @@ var config = require('./config'),
 		cookieParser = require('cookie-parser'),
 		session = require('express-session'),
 		flash = require('connect-flash'),
-		passport = require('passport');
+		passport = require('passport'),
+		cloudinary = require('cloudinary'),
+		nodemailer = require('nodemailer');
 
 // Define the Express configuration method
 module.exports = function() {

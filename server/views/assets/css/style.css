@@ -214,3 +214,44 @@ footer.page-footer {
   height: 50px;
   margin-top: 8px;
 }
+
+.profile-submit{
+  background: white;
+  color: #444;
+  box-shadow: none;
+  margin-bottom: 10px;
+}
+
+.forgot-password {
+  background: white;
+  color: #444;
+  box-shadow: none;
+  padding-right: 10px;
+  padding-left: 10px;
+  margin-bottom: 10px;
+}
+
+.profile-submit:hover, .forgot-password:hover {
+  background-color: white;
+  color: #444;
+  padding: none;
+}
+
+#profile-pic {
+  color: white;
+  background-color: transparent;
+  margin-top: 10px;
+  font-size: 48px;
+}
+
+/*#profile-pic:hover {
+  color: #27AE60;
+}*/
+
+.picture-submit {
+  /*background-color: #444;*/
+}
+
+form#update input {
+  padding-left: 10px;
+}

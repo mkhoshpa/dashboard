@@ -117,7 +117,7 @@ footer.page-footer {
   margin-bottom: 20px;
 }
 
-#password, #email, #first, #last, #username {
+#password, #email, #first, #last, #username, #confirm_password {
   font-family: "Roboto Condensed", sans-serif;
   outline: 0;
   background: #f2f2f2;

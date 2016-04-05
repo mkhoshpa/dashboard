@@ -2,16 +2,28 @@
   <% include ../partials/header.ejs %>
   <body class="fitpath-blue valign-wrapper">
 
-    <% for(var i in messages) { %>
-    <div class="flash"><%= messages[i] %></div>
-    <% } %>
 
       <div class="row">
         <div class="row s12 m7">
-          <div class="card">
+          <div class="card" style="margin-right: 25px; margin-left: 25px;">
 
-            <div class="row center-align">
+            <div class="row center-align" style="margin-bottom: 0px;">
+              <ul class="collection">
+               <li class="collection-item avatar">
+                 <img src="../assets/img/willow.png" alt="" class="circle">
+                 <!-- <span class="title">Title</span> -->
 
+                 <% if(message.length > 0) { %>
+                 <p class='left-align' style="margin-top: 20px;"><%= message %></p>
+                 <% } else { %>
+                 <p class='left-align' style="margin-top: 20px;">
+                 Welcome To FitPath!
+                 </p>
+                 <% } %>
+
+                 <!-- <a href="#!" class="secondary-content"><i class="material-icons" style="color: #444; margin-top: 15px">arrow_back</i></a> -->
+               </li>
+             </ul>
             </div>
 
             <form action="/signin" method="post">
@@ -24,14 +36,18 @@
 
               <div class="row">
                 <div class="col s12" id="login-input-container">
-                  <label class="left-align login-label" for="password">PASSWORD</label>
-                  <!-- <label class="right-align login-label">Forgot your password?</label> -->
+                  <div>
+                    <label class="left-align login-label" for="password">PASSWORD</label>
+                    <a href="/forgot" class="right-align login-label" for="password" style="margin-left: 104px;">FORGOT YOUR PASSWORD?</a>
+
+                  </div>
                   <input id="password" type="password" class="validate" name="password">
+
                 </div>
               </div>
               <div class="row" id="login">
                 <div>
-                  <button id="full-width" class="btn waves-effect waves-light light-green" type="submit">Login
+                  <button id="full-width" class="btn waves-effect waves-light fitpath-green" type="submit">Login
                   </button>
                 </div>
               </div>
@@ -41,13 +57,26 @@
               or sign in through..
             </div>
 
-            <div class="row">
+            <!-- <div class="row">
               <a href="/oauth/google" class="btn waves-effect waves-light google-orange" type="submit" name="action" id="google-button-login">Google
                <i class="valign fa fa-google left"></i>
               </a>
               <a href="/oauth/twitter" class="btn waves-effect waves-light twitter-blue" type="submit" name="action" id="twitter-button-login">Twitter
                <i class="valign fa fa-twitter left"></i>
               </a>
+            </div> -->
+
+            <div class="row">
+              <div class="col s6 " style="padding-left: 20px;">
+                <a href="/oauth/google" class="btn waves-effect waves-light google-orange" type="submit" name="action" id="google-button">Google
+                 <i class="valign fa fa-google left"></i>
+                </a>
+              </div>
+              <div class="col s6" style="padding-right: 20px;">
+                <a href="/oauth/twitter" class="btn waves-effect waves-light twitter-blue" type="submit" name="action" id="twitter-button">Twitter
+                 <i class="valign fa fa-twitter left" style="color: white;"></i>
+                </a>
+              </div>
             </div>
 
             <div class="row" id="login">
@@ -61,7 +90,7 @@
           </div>
         </div>
 
-        <div class="row" id="bottom-form-div">
+        <div class="row" id="bottom-form-div" style="margin-right: 25px; margin-left: 25px;">
             <div class="row">
                 <a  href="/signup" class="btn waves-effect waves-light  blue-grey lighten-1" type="submit"  style="width: 100%;" name="action">Don't have an account?
                 </a>

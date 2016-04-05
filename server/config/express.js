@@ -13,7 +13,10 @@ var config = require('./config'),
 		flash = require('connect-flash'),
 		passport = require('passport'),
 		cloudinary = require('cloudinary'),
-		nodemailer = require('nodemailer');
+		nodemailer = require('nodemailer'),
+		crypto = require('crypto'),
+		async = require('async');
+
 
 // Define the Express configuration method
 module.exports = function() {
@@ -62,11 +65,11 @@ module.exports = function() {
 	require('../routes/api/habits.js')(app);
 	require('../routes/api/willow-survey.js')(app);
 	require('../routes/api/reminders.js')(app);
-	require('../routes/user.profile.routes.js')(app);
+	require('../routes/user.info.routes.js')(app);
 
 	app.all('/test', function(req, res){
 		req.flash('info', 'it worked')
-  	res.render('pages/test', {messages: req.flash('info')});
+  	res.render('pages/edit-password', {message: req.flash('info')});
 		console.log(req.flash());
 	});
 

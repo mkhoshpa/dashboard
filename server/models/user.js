@@ -9,10 +9,6 @@ var mongoose = require('mongoose'),
     Slack = require('./slack.js'),
     reminder = require('./reminder.js');
 
-
-
-
-
 // Define a new 'UserSchema'
 var UserSchema = new Schema({
 	firstName: String,
@@ -96,6 +92,12 @@ var UserSchema = new Schema({
 	salt: {
 		type: String
 	},
+  resetPasswordToken: {
+    type: String
+  },
+  resetPasswordExpires: {
+    type: Date
+  },
 	provider: {
 		type: String,
 		// Validate 'provider' value existance

@@ -11,15 +11,16 @@ var app;
                 this.days = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'];
                 this.selectedDays = [];
                 this.author = this.userService.get();
-                if (this.author.coach) {
-                    this.author = this.author.coach.id;
+                console.log(this.author);
+                if (this.author.role == "coach") {
+                    this.author = this.author.id;
                     console.log('is coach');
                     this.assignee = this.userService.selectedUser;
                     this.assignee = this.assignee._id;
                     console.log(this.assignee);
                 }
-                else if (this.author.user) {
-                    this.author = this.author.user.id;
+                else if (this.author.role == "user") {
+                    this.author = this.author.id;
                     this.assignee = this.author;
                     console.log('is user');
                     console.log('assignee');

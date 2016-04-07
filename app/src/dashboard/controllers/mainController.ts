@@ -17,16 +17,15 @@ module app.dashboard {
       {
         var self = this;
 
-        this.current = this.userService.get();
-        if(this.current.user) {
-          this.isUser = true;
-          self.selected = this.current.user;
+        this.user = this.userService.get();
+        console.log(this.user);
+
+        if(this.user.role == "user") {
+          self.selected = this.user;
           console.log('is a user');
         }
-        else if(this.current.coach) {
-          this.isCoach=true;
-          this.coach = this.current.coach;
-          this.clients = this.current.clients;
+        else if(this.user.role == "coach") {
+          this.clients = this.user.clients;
           self.selected = this.clients[0];
           console.log('is a coach');
         }
@@ -45,12 +44,12 @@ module app.dashboard {
         this._ = window['_'];
 
 
-        this.name = this.current.username;
-        console.log('name: ' + this.name);
-        console.log('role: ' + this.current.role);
+        console.log(this.current);
+
     }
 
     _: any;
+    user: any;
     current: any;
     name: string;
     searchText: string = '';
@@ -58,7 +57,6 @@ module app.dashboard {
     tabIndex: number = 0;
     selected: any = null;
 
-    isCoach: boolean;
     isUser: boolean;
 
     coach: any;
@@ -297,6 +295,40 @@ module app.dashboard {
         });
     }
 
+    addSurvey($event) {
+      var self = this;
+      console.log('addSurvey()');
+      var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
+      this.$mdDialog.show({
+        templateUrl: './dist/view/dashboard/surveys/modal.html',
+        parent: angular.element(document.body),
+        targetEvent: $event,
+        controller: SurveyController,
+        controllerAs: "vm",
+        clickOutsideToClose:true,
+        fullscreen: useFullScreen,
+        locals : {
+          selected: null
+        }
+      }).then((survey: any) => {
+        // Post request, and push onto users local list of reminders
+        // this.$http.post('uri').then((response) => response.data)
+        // after promise is succesful add to
+        // reminder.assigne.reminders.push()
+
+        this.$http.post('/api/survey', survey
+        ).then(function successCallback(survey) {
+           self.selected.surveys.push(survey.data);
+           console.log(survey.data);
+        })
+
+
+        self.openToast("Survey added");
+      }, () => {
+        console.log('You cancelled the dialog.');
+      });
+    }
+
     openToast(message): void {
       this.$mdToast.show(
         this.$mdToast.simple()
@@ -324,6 +356,15 @@ module app.dashboard {
 
     hasReal(user) {
       if(user.slack.real_name) {
+        return true;
+      }
+      else {
+        return false;
+      }
+    }
+
+    isCoach(user) {
+      if(user.role == "coach") {
         return true;
       }
       else {

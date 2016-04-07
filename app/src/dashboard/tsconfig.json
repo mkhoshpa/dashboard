@@ -18,6 +18,7 @@
     "./controllers/mainController.ts",
     "./controllers/reminderController.ts",
     "./controllers/slackUsersController.ts",
+    "./controllers/surveyController.ts",
     "./models.ts",
     "./services/reminderService.ts"
   ],

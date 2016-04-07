@@ -74,7 +74,7 @@ module.exports = function(app) {
 												console.log('hello');
 												request.post('http://localhost:3000/generate',{
 													form: {
-															coach: req.user.id,
+															user: req.user.id,
 															client: {
 																coaches: req.user.id,
 																username: member.email,

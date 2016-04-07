@@ -17,24 +17,20 @@ var app;
                 this.newNote = new dashboard.Note('', null);
                 this.newReminder = new dashboard.Reminder('', null);
                 var self = this;
-                this.current = this.userService.get();
-                if (this.current.user) {
-                    this.isUser = true;
-                    self.selected = this.current.user;
+                this.user = this.userService.get();
+                console.log(this.user);
+                if (this.user.role == "user") {
+                    self.selected = this.user;
                     console.log('is a user');
                 }
-                else if (this.current.coach) {
-                    this.isCoach = true;
-                    this.coach = this.current.coach;
-                    this.clients = this.current.clients;
+                else if (this.user.role == "coach") {
+                    this.clients = this.user.clients;
                     self.selected = this.clients[0];
                     console.log('is a coach');
                 }
                 self.userService.selectedUser = self.selected;
                 this._ = window['_'];
-                this.name = this.current.username;
-                console.log('name: ' + this.name);
-                console.log('role: ' + this.current.role);
+                console.log(this.current);
             }
             MainController.prototype.setFormScope = function (scope) {
                 this.formScope = scope;
@@ -207,6 +203,32 @@ var app;
                     self.openToast("Cleared notes");
                 });
             };
+            MainController.prototype.addSurvey = function ($event) {
+                var _this = this;
+                var self = this;
+                console.log('addSurvey()');
+                var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
+                this.$mdDialog.show({
+                    templateUrl: './dist/view/dashboard/surveys/modal.html',
+                    parent: angular.element(document.body),
+                    targetEvent: $event,
+                    controller: dashboard.SurveyController,
+                    controllerAs: "vm",
+                    clickOutsideToClose: true,
+                    fullscreen: useFullScreen,
+                    locals: {
+                        selected: null
+                    }
+                }).then(function (survey) {
+                    _this.$http.post('/api/survey', survey).then(function successCallback(survey) {
+                        self.selected.surveys.push(survey.data);
+                        console.log(survey.data);
+                    });
+                    self.openToast("Survey added");
+                }, function () {
+                    console.log('You cancelled the dialog.');
+                });
+            };
             MainController.prototype.openToast = function (message) {
                 this.$mdToast.show(this.$mdToast.simple()
                     .textContent(message)
@@ -228,6 +250,14 @@ var app;
             };
             MainController.prototype.hasReal = function (user) {
                 if (user.slack.real_name) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            };
+            MainController.prototype.isCoach = function (user) {
+                if (user.role == "coach") {
                     return true;
                 }
                 else {

@@ -137,7 +137,7 @@ exports.generateUser = function(req, res, next) {
 							// creating users, push the new user id's onto the req.user
 							// (coach) and update at the very end
 							User.findByIdAndUpdate(
-								req.body.coach,
+								req.body.user,
 								{$push: {"clients": user._id}},
 								{safe: true},
 								function(err, model) {

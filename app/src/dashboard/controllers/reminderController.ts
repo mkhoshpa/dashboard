@@ -148,7 +148,8 @@ module app.dashboard {
         author: this.author,
         assignee: this.assignee
       }
-
+      console.log('check time');
+      console.log(reminder.timeOfDay);
       console.log('check assingee');
       console.log(reminder.assignee);
 

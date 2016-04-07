@@ -1,3 +1,4 @@
+/// <reference path="../_all.ts" />
 var app;
 (function (app) {
     var dashboard;
@@ -31,11 +32,20 @@ var app;
                     console.log('is a coach');
                 }
                 self.userService.selectedUser = self.selected;
+                //  this.userService.loadClients()
+                //   .then(function(result) {
+                //     self.users = result;
+                //     console.log(self.users);
+                //   });
                 this._ = window['_'];
                 this.name = this.current.username;
                 console.log('name: ' + this.name);
                 console.log('role: ' + this.current.role);
             }
+            // convertToUsers(slack: any[]) {
+            //   console.log('convertToUsers: ' + this.slack);
+            //   this.userService.
+            // }
             MainController.prototype.setFormScope = function (scope) {
                 this.formScope = scope;
             };
@@ -52,6 +62,7 @@ var app;
                     clickOutsideToClose: true,
                     fullscreen: useFullScreen
                 }).then(function (user) {
+                    // Call user service
                     console.log('this is user' + JSON.stringify(user));
                     var newUser = _this.userService.insert(user.name).then(function (result) {
                         self.clients.push(result);
@@ -78,6 +89,10 @@ var app;
                         selected: null
                     }
                 }).then(function (reminder) {
+                    // Post request, and push onto users local list of reminders
+                    // this.$http.post('uri').then((response) => response.data)
+                    // after promise is succesful add to
+                    // reminder.assigne.reminders.push()
                     _this.$http.post('/api/reminder', reminder).then(function successCallback(response) {
                         self.selected.reminders.push(response.data);
                         console.log(response.data);
@@ -103,7 +118,12 @@ var app;
                         selected: reminder
                     },
                 }).then(function (reminder) {
+                    // Post request, and push onto users local list of reminders
+                    // this.$http.post('uri').then((response) => response.data)
+                    // after promise is succesful add to
+                    // reminder.assigne.reminders.push()
                     _this.$http.post('/api/reminder/' + reminder._id, reminder).then(function successCallback(reminder) {
+                        //  self.selected.reminders.push(response.data);
                         if (self.updateReminder(reminder.data)) {
                             self.openToast("Reminder Edited");
                         }
@@ -157,6 +177,10 @@ var app;
                 this.selected.reminders.splice(foundIndex, 1);
             };
             MainController.prototype.slackList = function () {
+                // var test = this.userService.slack().then((members: any) => {
+                //   console.log('here');
+                //   console.log(members);
+                // });
             };
             MainController.prototype.testButton = function (email, slack) {
                 console.log('test-button');
@@ -167,6 +191,11 @@ var app;
                     console.log(err);
                 });
             };
+            // removeReminder(reminder) {
+            //   var foundIndex = this.selected.reminders.indexOf(reminder);
+            //   this.selected.reminders.splice(foundIndex, 1);
+            //   this.openToast("Reminder removed");
+            // }
             MainController.prototype.clearReminders = function ($event) {
                 var confirm = this.$mdDialog.confirm()
                     .title('Are you sure you want to delete all reminders?')

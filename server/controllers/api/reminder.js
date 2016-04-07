@@ -83,10 +83,40 @@ exports.delete = function(req, res) {
 }
 
 exports.listNow = function(req,res) {
-  Reminder.find({}, function(err, obj) {
-    res.json(obj);
-  })
+    console.log("testing how soon is now");
+    //test virtuals 
+   // var reminder = Reminder.makeDefaultReminder();
+   // console.log("this is a reminder");
+   // console.log(reminder.hour);
+   // console.log(reminder.minute);
+   // console.log(reminder.days);
+    
+    
+   var now = new Date();
+   console.log(now);
+   var hoursNow = now.getHours();
+   console.log("the hours now are" + hoursNow);
+   var minutesNow = now.getMinutes();
+   
+  
+   var dayNow = now.getDay();
+   console.log(dayNow);
+   console.log("the day now is " + dayNow);
+   
+   
+   Reminder.find({days: dayNow})
+        .where('hour').equals(hoursNow)
+        .where('minute').equals(minutesNow)
+        .exec(function(err, docs){
+            console.log(err);  //returns Null
+            console.log(docs); 
+             //returns Null.
+             
+             res.json(docs);
+    });
+
 }
+
 exports.list = function(req, res) {
   Reminder.find({}, function(err, obj) {
     res.json(obj);

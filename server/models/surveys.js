@@ -10,10 +10,16 @@ var surveySchema = new Schema({
   author: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
   assignee: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
   start: { type: Date, default: Date.now },
-  status: Boolean,
-  improvements: [String],
-  reminders: [
-    {type: mongoose.Schema.Types.ObjectId, ref: 'Reminder'}
+  status: {
+    type: String,
+    enum: ['red', 'yellow', 'green'],
+    default: 'green'
+  },
+  goals: [
+    {
+      goal: {type: String},
+      reminder: {type: mongoose.Schema.Types.ObjectId, ref: 'Reminder'}  
+    }
   ]
 })
 

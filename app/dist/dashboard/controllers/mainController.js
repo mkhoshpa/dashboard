@@ -222,6 +222,7 @@ var app;
                 }).then(function (survey) {
                     _this.$http.post('/api/survey', survey).then(function successCallback(survey) {
                         self.selected.surveys.push(survey.data);
+                        console.log('angular');
                         console.log(survey.data);
                     });
                     self.openToast("Survey added");

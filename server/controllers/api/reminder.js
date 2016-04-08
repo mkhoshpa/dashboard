@@ -7,37 +7,34 @@ var moment = require('moment');
 
 
 exports.create = function(req, res) {
-  console.log('create -req.body');
-  console.log(req.body);
   var reminder = new Reminder(req.body);
   reminder.save(function(err, reminder) {
     if(!err) {
-      res.send(reminder);
-      console.log(reminder);
       User.findByIdAndUpdate(
         reminder.assignee,
         {$push: {"reminders": reminder._id}},
         {safe: true},
-        function(err, reminder) {
+        function(err, user) {
           if(err) {
             console.log(err);
           }
           else {
-            console.log(reminder);
           }
         }
       );
-      User.populate(
-        reminder.assignee,
-        {path: 'reminders'}, function(err, reminder) {
-          if(err) {
-            // Do something
-          }
-          else {
-            // Do Nothing?
-          }
-        }
-      );
+
+      // User.populate(
+      //   reminder.assignee,
+      //   {path: 'reminders'}, function(err, user) {
+      //     if(err) {
+      //       // Do something
+      //     }
+      //     else {
+      //     }
+      //   }
+      // );
+
+      res.send(reminder);
     }
   });
 }
@@ -71,12 +68,21 @@ exports.update = function(req, res) {
 exports.delete = function(req, res) {
   Reminder.findByIdAndRemove(
     req.params.id,
-    function(err, success) {
-      if(success) {
+    function(err, reminder) {
+      if(reminder) {
+        console.log(reminder);
+        console.log(reminder.assingee);
+        User.findByIdAndUpdate(reminder.assignee,
+          {$pull : {'reminders': reminder._id}},
+          function(err, model) {
+          if(err) {
+            // Do some flash message
+          }
+        });
         res.send('success');
       }
       else{
-
+        res.send('failure');
       }
     }
   );

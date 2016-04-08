@@ -52,7 +52,9 @@ var UserSchema = new Schema({
   },
   reminders: [
     {type: mongoose.Schema.Types.ObjectId, ref: 'Reminder'}
-
+  ],
+  surveys: [
+    {type: mongoose.Schema.Types.ObjectId, ref: 'Survey'}
   ],
   image: {
     type: String,

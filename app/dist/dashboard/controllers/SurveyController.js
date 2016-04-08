@@ -30,25 +30,38 @@ var app;
                 this.$mdDialog.cancel();
             };
             SurveyController.prototype.save = function () {
-                var survey = {
-                    author: this.author,
-                    assignee: this.assignee,
-                    status: true,
-                    improvements: [
-                        this.first.improvement,
-                        this.second.improvement,
-                    ],
-                    reminders: [
-                        {
-                            action: this.first.action,
-                            time: this.first.time,
-                        },
-                        {
-                            action: this.second.action,
-                            time: this.second.time
-                        }
-                    ]
-                };
+                var survey;
+                if (this.another) {
+                    survey = {
+                        author: this.author,
+                        assignee: this.assignee,
+                        goals: [
+                            {
+                                goal: this.first.goal,
+                                action: this.first.action,
+                                time: this.first.time,
+                            },
+                            {
+                                goal: this.second.goal,
+                                action: this.second.action,
+                                time: this.second.time
+                            }
+                        ]
+                    };
+                }
+                else {
+                    survey = {
+                        author: this.author,
+                        assignee: this.assignee,
+                        goals: [
+                            {
+                                goal: this.first.goal,
+                                action: this.first.action,
+                                time: this.first.time,
+                            }
+                        ]
+                    };
+                }
                 this.$mdDialog.hide(survey);
             };
             SurveyController.$inject = ['$mdDialog', 'userService', '$http'];

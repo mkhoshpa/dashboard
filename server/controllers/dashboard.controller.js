@@ -7,13 +7,33 @@ var User 		 = require('mongoose').model('User'),
 exports.render = function(req, res, next) {
   if (req.user) {
     if(req.user.role == "coach") {
-      User.populate(req.user,
+
+      var opts = [
         {
           path: 'clients',
           populate: {path: 'reminders'}
         },
+        {
+          path: 'clients',
+          populate: {path: 'surveys'}
+        },
+        {
+          path: 'clients.surveys.goals',
+          populate: {path: 'reminder'}
+        },
+        {
+          path: 'surveys'
+          populate: {path: 'reminder'}
+        },
+        {
+          path: 'reminders'
+        }
+      ]
+
+      User.populate(req.user, opts ,
         function(err, user) {
         if(user) {
+          console.log(user);
           res.render(path.resolve('app/index'), {
             user: JSON.stringify(user)
           });

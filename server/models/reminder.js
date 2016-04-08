@@ -37,6 +37,7 @@ var reminderSchema = new Schema({
   author: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}
 })
 
+
 var Reminder = mongoose.model('Reminder', reminderSchema);
 
 // Original JavaScript code by Chirp Internet: www.chirp.com.au

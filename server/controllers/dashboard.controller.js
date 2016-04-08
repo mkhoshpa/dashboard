@@ -22,7 +22,7 @@ exports.render = function(req, res, next) {
           populate: {path: 'reminder'}
         },
         {
-          path: 'surveys'
+          path: 'surveys',
           populate: {path: 'reminder'}
         },
         {

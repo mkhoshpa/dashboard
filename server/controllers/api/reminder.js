@@ -70,8 +70,6 @@ exports.delete = function(req, res) {
     req.params.id,
     function(err, reminder) {
       if(reminder) {
-        console.log(reminder);
-        console.log(reminder.assingee);
         User.findByIdAndUpdate(reminder.assignee,
           {$pull : {'reminders': reminder._id}},
           function(err, model) {

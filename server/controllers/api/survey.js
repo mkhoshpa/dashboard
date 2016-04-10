@@ -19,13 +19,11 @@ exports.create = function(req, res) {
   // Push those to the survey object, and save
 
   _.forEach(goals, function(goal) {
-    console.log('exectued');
-    console.log(goal);
     request.post('http://localhost:3000/api/reminder', {
       form: {
         title: goal.action,
-        time: goal.time,
-        selectedDates: ['Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Satudray'],
+        timeOfDay: goal.time,
+        selectedDates: ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'],
         daysOfTheWeek: {
           monday: true,
           tuesday: true,
@@ -43,14 +41,10 @@ exports.create = function(req, res) {
         console.log(err);
       }
       else {
-        console.log(reminder);
-
         var reminder = JSON.parse(reminder);
-
-        console.log('body');
         var temp = {
           goal: goal.goal,
-          reminder: reminder._id
+          reminder: reminder
         }
         survey.goals.push(temp);
         index++;
@@ -62,7 +56,14 @@ exports.create = function(req, res) {
             }
             else {
               attach(survey._id, survey.assignee);
-              res.send(survey);
+              Survey.populate(survey, {
+                path: 'goals',
+                populate: {
+                  path: 'reminder'
+                }
+              }, function(err, survey) {
+                res.send(survey);
+              });
             }
           });
         }
@@ -90,15 +91,41 @@ exports.create = function(req, res) {
 }
 
 exports.read = function(req, res) {
-  
+
 }
 
 exports.update = function(req, res) {
+  // Survey.findByIdAndUpdate(
+  //   req.params.id,
+  //   {$set: {
+  //
+  //   }}, {new: true}, function(err, survey) {
+  //     if(survey) {
+  //       res.send(survey);
+  //     }
+  //   }
+  // );
+  console.log('exports . update');
+  console.log(req.body);
+  // For goal, update
+  for(var i = 0; i < req.body.goals.length; i++ ){
 
+  }
+  var survey = new Survey(req.body);
+  survey.save(function(err, survey) {
+      if(!err) {
+        console.log(survey);
+      }
+  });
 }
 
 exports.delete = function(req, res) {
-
+  var survey = new Survey(req.body);
+  survey.remove(function(err, survey){
+    if(!err) {
+      res.send(survey);
+    }
+  });
 }
 
 exports.list = function(req, res) {

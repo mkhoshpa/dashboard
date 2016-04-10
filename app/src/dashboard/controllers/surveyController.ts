@@ -4,10 +4,9 @@ module app.dashboard {
 
   export class SurveyController {
 
-    static $inject = ['$mdDialog', 'userService', '$http'];
+    static $inject = ['$mdDialog', 'userService', '$http', 'selected'];
 
     user: any;
-    selected: any[];
     assignee: any;
     author: any;
 
@@ -27,11 +26,18 @@ module app.dashboard {
       time: any,
     }
 
+        status: any;
+
+    green = '#66BB6A';
+    yellow = '#FDD835';
+    red = '#e53935';
+
     another: any;
 
     constructor(private $mdDialog,
                 private userService,
-                private $http
+                private $http,
+                private selected
                 ){
                   this.author = this.userService.get();
                   if(this.author.role == "coach") {
@@ -49,7 +55,34 @@ module app.dashboard {
                     console.log(this.assignee);
                   }
 
+                  if(selected) {
+                    if(selected.goals.length > 1) {
+                      this.another = true;
+                      this.first = {
+                        goal: selected.goals[0].goal,
+                        action:selected.goals[0].reminder.title,
+                        time: new Date(selected.goals[0].reminder.timeOfDay)
+                      }
+
+                      this.second = {
+                        goal: selected.goals[1].goal,
+                        action: selected.goals[1].reminder.title,
+                        time: new Date(selected.goals[1].reminder.timeOfDay)
+                      }
+                    }
+                    else {
+                      this.first = {
+                        goal: selected.goals[0].goal,
+                        action: selected.goals[0].reminder.title,
+                        time: new Date(selected.goals[0].reminder.timeOfDay)
+                      }
+                    }
+                  }
                 }
+
+    editSurvey(survey) {
+      console.log('here');
+    }
 
     close(): void {
       this.$mdDialog.cancel();

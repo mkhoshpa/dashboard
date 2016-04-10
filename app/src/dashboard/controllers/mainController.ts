@@ -16,36 +16,16 @@ module app.dashboard {
       private $http: angular.IHttpService)
       {
         var self = this;
-
         this.user = this.userService.get();
-        console.log(this.user);
-
         if(this.user.role == "user") {
           self.selected = this.user;
-          console.log('is a user');
         }
         else if(this.user.role == "coach") {
           this.clients = this.user.clients;
           self.selected = this.clients[0];
-          console.log('is a coach');
         }
         self.userService.selectedUser = self.selected;
-
-
-
-
-      //  this.userService.loadClients()
-      //   .then(function(result) {
-      //     self.users = result;
-      //     console.log(self.users);
-      //   });
-
-
         this._ = window['_'];
-
-
-        console.log(this.current);
-
     }
 
     _: any;
@@ -139,6 +119,7 @@ module app.dashboard {
     }
 
     editReminder($event, reminder) {
+      console.log('main controller edit reminder');
       var self = this;
       var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
       this.$mdDialog.show({
@@ -319,8 +300,12 @@ module app.dashboard {
         this.$http.post('/api/survey', survey
         ).then(function successCallback(survey) {
            self.selected.surveys.push(survey.data);
-           console.log('angular');
            console.log(survey.data);
+
+           for(var i = 0; i < survey.data.goals.length; i++){
+              self.selected.reminders.push(survey.data.goals[i].reminder);
+           }
+
         })
 
 
@@ -328,6 +313,98 @@ module app.dashboard {
       }, () => {
         console.log('You cancelled the dialog.');
       });
+    }
+
+    editSurvey($event, survey) {
+      var self = this;
+      var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
+      this.$mdDialog.show({
+        templateUrl: './dist/view/dashboard/surveys/modal.html',
+        parent: angular.element(document.body),
+        targetEvent: $event,
+        controller: SurveyController,
+        controllerAs: "vm",
+        clickOutsideToClose:true,
+        fullscreen: useFullScreen,
+        locals : {
+          selected: survey
+        },
+      }).then((survey: any) => {
+        this.$http.post('/api/survey/' + survey._id, survey
+        ).then(function successCallback(survey) {
+          //  self.selected.reminders.push(response.data);
+          console.log('survey edited');
+          console.log(survey);
+         if(self.updateSurvey(survey.data)) {
+           self.openToast("Survey Edited");
+         }
+         else {
+           self.openToast("Survey Not Found!");
+         }
+        })
+
+        console.log(survey);
+      }, () => {
+        console.log('You cancelled the dialog.');
+      });
+    }
+
+    removeSurvey($event, survey) {
+      var self = this;
+      var confirm = this.$mdDialog.confirm()
+        .textContent('Are you sure you want to remove this reminder?')
+        .ariaLabel('Remove')
+        .targetEvent($event)
+        .ok('Yes')
+        .cancel('No');
+
+        this.$mdDialog.show(confirm).then((result: any) => {
+          console.log(survey);
+          if(result) {
+            console.log(result);
+            this.$http.post('/api/survey/remove/' + survey._id, survey)
+            .then(function successCallback(success) {
+                if(success) {
+                  console.log('success');
+                  console.log(success);
+                  console.log('survey');
+                  console.log(survey)
+                  self.deleteSurvey(survey);
+                }
+                else {
+                  //err
+                }
+            });
+          }
+          else {
+
+          }
+          self.openToast("Reminder Removed.");
+        });
+    }
+
+    updateSurvey(survey){
+      for(var i = 0; i < this.selected.surveys.length; i++) {
+        if (survey._id == this.selected.surveys[i]._id) {
+          this.selected.surveys[i] = survey;
+          return true;
+        }
+      }
+      return false;
+    }
+
+    deleteSurvey(survey) {
+      var index;
+      console.log(survey);
+
+      for(var i = 0; i < survey.goals.length; i++) {
+          index = this.selected.reminders.indexOf(survey.goals[i].reminder);
+          this.selected.reminders.splice(index, 1);
+      }
+
+      index = this.selected.surveys.indexOf(survey);
+      console.log(index);
+      this.selected.surveys.splice(index, 1);
     }
 
     openToast(message): void {

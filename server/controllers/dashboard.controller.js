@@ -11,15 +11,25 @@ exports.render = function(req, res, next) {
       var opts = [
         {
           path: 'clients',
-          populate: {path: 'reminders'}
+          model: 'User',
+          populate: {
+            path: 'reminders'
+          }
         },
         {
           path: 'clients',
-          populate: {path: 'surveys'}
-        },
-        {
-          path: 'clients.surveys.goals',
-          populate: {path: 'reminder'}
+          model: 'User',
+          populate: {
+            path: 'surveys',
+            model: 'Survey',
+            populate: {
+              path: 'goals',
+              populate: {
+                path: 'reminder',
+                model: 'Reminder'
+              }
+            }
+          }
         },
         {
           path: 'surveys',
@@ -30,10 +40,9 @@ exports.render = function(req, res, next) {
         }
       ]
 
-      User.populate(req.user, opts ,
+      User.populate(req.user, opts,
         function(err, user) {
         if(user) {
-          console.log(user);
           res.render(path.resolve('app/index'), {
             user: JSON.stringify(user)
           });
@@ -48,12 +57,10 @@ exports.render = function(req, res, next) {
         }
       });
     } else if (req.user.role == "user")  {
-      console.log(req.user);
       User.populate(req.user,
         {path: 'reminders'}, function(err, user) {
           if(user) {
             console.log('has user');
-            console.log(user);
             res.render(path.resolve('app/index'), {
               user: JSON.stringify(user)
             });

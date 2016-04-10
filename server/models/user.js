@@ -20,7 +20,6 @@ var UserSchema = new Schema({
   //   unique: true,
 	// 	match: [/.+\@.+\..+/, "Please fill a valid email address"]
 	// },
-
   // Username is the unique itendifier,
 	username: {
 		type: String,

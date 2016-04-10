@@ -16,41 +16,20 @@ module app.dashboard {
       private $http: angular.IHttpService)
       {
         var self = this;
-
-        this.current = this.userService.get();
-        if(this.current.user) {
-          this.isUser = true;
-          self.selected = this.current.user;
-          console.log('is a user');
+        this.user = this.userService.get();
+        if(this.user.role == "user") {
+          self.selected = this.user;
         }
-        else if(this.current.coach) {
-          this.isCoach=true;
-          this.coach = this.current.coach;
-          this.clients = this.current.clients;
+        else if(this.user.role == "coach") {
+          this.clients = this.user.clients;
           self.selected = this.clients[0];
-          console.log('is a coach');
         }
         self.userService.selectedUser = self.selected;
-
-
-
-
-      //  this.userService.loadClients()
-      //   .then(function(result) {
-      //     self.users = result;
-      //     console.log(self.users);
-      //   });
-
-
         this._ = window['_'];
-
-
-        this.name = this.current.username;
-        console.log('name: ' + this.name);
-        console.log('role: ' + this.current.role);
     }
 
     _: any;
+    user: any;
     current: any;
     name: string;
     searchText: string = '';
@@ -58,7 +37,6 @@ module app.dashboard {
     tabIndex: number = 0;
     selected: any = null;
 
-    isCoach: boolean;
     isUser: boolean;
 
     coach: any;
@@ -141,6 +119,7 @@ module app.dashboard {
     }
 
     editReminder($event, reminder) {
+      console.log('main controller edit reminder');
       var self = this;
       var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
       this.$mdDialog.show({
@@ -297,6 +276,137 @@ module app.dashboard {
         });
     }
 
+    addSurvey($event) {
+      var self = this;
+      console.log('addSurvey()');
+      var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
+      this.$mdDialog.show({
+        templateUrl: './dist/view/dashboard/surveys/modal.html',
+        parent: angular.element(document.body),
+        targetEvent: $event,
+        controller: SurveyController,
+        controllerAs: "vm",
+        clickOutsideToClose:true,
+        fullscreen: useFullScreen,
+        locals : {
+          selected: null
+        }
+      }).then((survey: any) => {
+        // Post request, and push onto users local list of reminders
+        // this.$http.post('uri').then((response) => response.data)
+        // after promise is succesful add to
+        // reminder.assigne.reminders.push()
+
+        this.$http.post('/api/survey', survey
+      ).then(function successCallback(survey: any) {
+           self.selected.surveys.push(survey.data);
+           console.log(survey.data);
+
+           for(var i = 0; i < survey.data.goals.length; i++){
+              self.selected.reminders.push(survey.data.goals[i].reminder);
+           }
+
+        })
+
+
+        self.openToast("Survey added");
+      }, () => {
+        console.log('You cancelled the dialog.');
+      });
+    }
+
+    editSurvey($event, survey) {
+      var self = this;
+      var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
+      this.$mdDialog.show({
+        templateUrl: './dist/view/dashboard/surveys/modal.html',
+        parent: angular.element(document.body),
+        targetEvent: $event,
+        controller: SurveyController,
+        controllerAs: "vm",
+        clickOutsideToClose:true,
+        fullscreen: useFullScreen,
+        locals : {
+          selected: survey
+        },
+      }).then((survey: any) => {
+        this.$http.post('/api/survey/' + survey._id, survey
+        ).then(function successCallback(survey) {
+          //  self.selected.reminders.push(response.data);
+          console.log('survey edited');
+          console.log(survey);
+         if(self.updateSurvey(survey.data)) {
+           self.openToast("Survey Edited");
+         }
+         else {
+           self.openToast("Survey Not Found!");
+         }
+        })
+
+        console.log(survey);
+      }, () => {
+        console.log('You cancelled the dialog.');
+      });
+    }
+
+    removeSurvey($event, survey) {
+      var self = this;
+      var confirm = this.$mdDialog.confirm()
+        .textContent('Are you sure you want to remove this reminder?')
+        .ariaLabel('Remove')
+        .targetEvent($event)
+        .ok('Yes')
+        .cancel('No');
+
+        this.$mdDialog.show(confirm).then((result: any) => {
+          console.log(survey);
+          if(result) {
+            console.log(result);
+            this.$http.post('/api/survey/remove/' + survey._id, survey)
+            .then(function successCallback(success) {
+                if(success) {
+                  console.log('success');
+                  console.log(success);
+                  console.log('survey');
+                  console.log(survey)
+                  self.deleteSurvey(survey);
+                }
+                else {
+                  //err
+                }
+            });
+          }
+          else {
+
+          }
+          self.openToast("Reminder Removed.");
+        });
+    }
+
+    updateSurvey(survey){
+      for(var i = 0; i < this.selected.surveys.length; i++) {
+        if (survey._id == this.selected.surveys[i]._id) {
+          this.selected.surveys[i] = survey;
+          return true;
+        }
+      }
+      return false;
+    }
+
+    deleteSurvey(survey) {
+      var index;
+      console.log(survey);
+
+      for(var i = 0; i < survey.goals.length; i++) {
+          index = this.selected.reminders.indexOf(survey.goals[i].reminder);
+          this.selected.reminders.splice(index, 1);
+      }
+
+      index = this.selected.surveys.indexOf(survey);
+      console.log(index);
+      this.selected.surveys.splice(index, 1);
+    }
+
     openToast(message): void {
       this.$mdToast.show(
         this.$mdToast.simple()
@@ -324,6 +434,15 @@ module app.dashboard {
 
     hasReal(user) {
       if(user.slack.real_name) {
+        return true;
+      }
+      else {
+        return false;
+      }
+    }
+
+    isCoach(user) {
+      if(user.role == "coach") {
         return true;
       }
       else {

@@ -117,7 +117,7 @@ footer.page-footer {
   margin-bottom: 20px;
 }
 
-#password, #email, #first, #last, #username {
+#password, #email, #first, #last, #username, #confirm_password {
   font-family: "Roboto Condensed", sans-serif;
   outline: 0;
   background: #f2f2f2;
@@ -213,4 +213,45 @@ footer.page-footer {
   width: 50px;
   height: 50px;
   margin-top: 8px;
+}
+
+.profile-submit{
+  background: white;
+  color: #444;
+  box-shadow: none;
+  margin-bottom: 10px;
+}
+
+.forgot-password {
+  background: white;
+  color: #444;
+  box-shadow: none;
+  padding-right: 10px;
+  padding-left: 10px;
+  margin-bottom: 10px;
+}
+
+.profile-submit:hover, .forgot-password:hover {
+  background-color: white;
+  color: #444;
+  padding: none;
+}
+
+#profile-pic {
+  color: white;
+  background-color: transparent;
+  margin-top: 10px;
+  font-size: 48px;
+}
+
+/*#profile-pic:hover {
+  color: #27AE60;
+}*/
+
+.picture-submit {
+  /*background-color: #444;*/
+}
+
+form#update input {
+  padding-left: 10px;
 }

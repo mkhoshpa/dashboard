@@ -18,18 +18,22 @@ module.exports = function(app) {
 	   .post(function(req,res,next) {
 			 passport.authenticate('local', function(err, user, info) {
 	    		if (err) {
+						console.log('passport authentication eror');
 						return next(err);
 					}
 	    		if (!user) {
+						req.flash('status', 'Information Entered Incorrect');
+						console.log('user not found');
 						return res.redirect('/signin');
 					}
 			    req.logIn(user, function(err) {
+						console.log(user);
 			      if (err) {
 							console.log('err');
 							console.log(err);
 							return next(err);
 						}
-						
+
 						else if(user.role == "coach") {
 							var slack = [];
 
@@ -70,7 +74,7 @@ module.exports = function(app) {
 												console.log('hello');
 												request.post('http://localhost:3000/generate',{
 													form: {
-															coach: req.user.id,
+															user: req.user.id,
 															client: {
 																coaches: req.user.id,
 																username: member.email,

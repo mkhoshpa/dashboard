@@ -44,7 +44,7 @@ exports.renderSignin = function(req, res, next) {
 			// Set the page title variable
 			title: 'Sign-in Form',
 			// Set the flash message variable
-			messages: req.flash('error') || req.flash('info')
+			message: req.flash('status')
 		});
 	} else {
 		return res.redirect('/');
@@ -60,7 +60,7 @@ exports.renderSignup = function(req, res, next) {
 			// Set the page title variable
 			title: 'Sign-up Form',
 			// Set the flash message variable
-			messages: req.flash('error')
+			message: req.flash('error')
 		});
 	} else {
 		return res.redirect('/');
@@ -94,6 +94,7 @@ exports.signup = function(req, res, next) {
 			req.login(user, function(err) {
 				console.log('logged in');
 				// If a login error occurs move to the next middleware
+				console.log(err);
 				if (err) return next(err);
 
 				// Redirect the user back to the main application page
@@ -101,7 +102,7 @@ exports.signup = function(req, res, next) {
 			});
 		});
 	} else {
-		console.log("No request.user")
+		console.log("Already logged in");
 		return res.redirect('/');
 	}
 };
@@ -128,7 +129,7 @@ exports.generateUser = function(req, res, next) {
 							console.log(err);
 							console.log(message);
 							// Set the flash messages
-							req.flash('Error auto generating from slack', message);
+							// req.flash('Error auto generating from slack', message);
 						}
 						// Success, update Coach Model with new Client ID
 						else {
@@ -136,7 +137,7 @@ exports.generateUser = function(req, res, next) {
 							// creating users, push the new user id's onto the req.user
 							// (coach) and update at the very end
 							User.findByIdAndUpdate(
-								req.body.coach,
+								req.body.user,
 								{$push: {"clients": user._id}},
 								{safe: true},
 								function(err, model) {

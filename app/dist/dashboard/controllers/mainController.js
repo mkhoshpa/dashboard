@@ -18,29 +18,16 @@ var app;
                 this.newNote = new dashboard.Note('', null);
                 this.newReminder = new dashboard.Reminder('', null);
                 var self = this;
-                this.current = this.userService.get();
-                if (this.current.user) {
-                    this.isUser = true;
-                    self.selected = this.current.user;
-                    console.log('is a user');
+                this.user = this.userService.get();
+                if (this.user.role == "user") {
+                    self.selected = this.user;
                 }
-                else if (this.current.coach) {
-                    this.isCoach = true;
-                    this.coach = this.current.coach;
-                    this.clients = this.current.clients;
+                else if (this.user.role == "coach") {
+                    this.clients = this.user.clients;
                     self.selected = this.clients[0];
-                    console.log('is a coach');
                 }
                 self.userService.selectedUser = self.selected;
-                //  this.userService.loadClients()
-                //   .then(function(result) {
-                //     self.users = result;
-                //     console.log(self.users);
-                //   });
                 this._ = window['_'];
-                this.name = this.current.username;
-                console.log('name: ' + this.name);
-                console.log('role: ' + this.current.role);
             }
             // convertToUsers(slack: any[]) {
             //   console.log('convertToUsers: ' + this.slack);
@@ -104,6 +91,7 @@ var app;
             };
             MainController.prototype.editReminder = function ($event, reminder) {
                 var _this = this;
+                console.log('main controller edit reminder');
                 var self = this;
                 var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
                 this.$mdDialog.show({
@@ -236,6 +224,122 @@ var app;
                     self.openToast("Cleared notes");
                 });
             };
+            MainController.prototype.addSurvey = function ($event) {
+                var _this = this;
+                var self = this;
+                console.log('addSurvey()');
+                var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
+                this.$mdDialog.show({
+                    templateUrl: './dist/view/dashboard/surveys/modal.html',
+                    parent: angular.element(document.body),
+                    targetEvent: $event,
+                    controller: dashboard.SurveyController,
+                    controllerAs: "vm",
+                    clickOutsideToClose: true,
+                    fullscreen: useFullScreen,
+                    locals: {
+                        selected: null
+                    }
+                }).then(function (survey) {
+                    // Post request, and push onto users local list of reminders
+                    // this.$http.post('uri').then((response) => response.data)
+                    // after promise is succesful add to
+                    // reminder.assigne.reminders.push()
+                    _this.$http.post('/api/survey', survey).then(function successCallback(survey) {
+                        self.selected.surveys.push(survey.data);
+                        console.log(survey.data);
+                        for (var i = 0; i < survey.data.goals.length; i++) {
+                            self.selected.reminders.push(survey.data.goals[i].reminder);
+                        }
+                    });
+                    self.openToast("Survey added");
+                }, function () {
+                    console.log('You cancelled the dialog.');
+                });
+            };
+            MainController.prototype.editSurvey = function ($event, survey) {
+                var _this = this;
+                var self = this;
+                var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
+                this.$mdDialog.show({
+                    templateUrl: './dist/view/dashboard/surveys/modal.html',
+                    parent: angular.element(document.body),
+                    targetEvent: $event,
+                    controller: dashboard.SurveyController,
+                    controllerAs: "vm",
+                    clickOutsideToClose: true,
+                    fullscreen: useFullScreen,
+                    locals: {
+                        selected: survey
+                    },
+                }).then(function (survey) {
+                    _this.$http.post('/api/survey/' + survey._id, survey).then(function successCallback(survey) {
+                        //  self.selected.reminders.push(response.data);
+                        console.log('survey edited');
+                        console.log(survey);
+                        if (self.updateSurvey(survey.data)) {
+                            self.openToast("Survey Edited");
+                        }
+                        else {
+                            self.openToast("Survey Not Found!");
+                        }
+                    });
+                    console.log(survey);
+                }, function () {
+                    console.log('You cancelled the dialog.');
+                });
+            };
+            MainController.prototype.removeSurvey = function ($event, survey) {
+                var _this = this;
+                var self = this;
+                var confirm = this.$mdDialog.confirm()
+                    .textContent('Are you sure you want to remove this reminder?')
+                    .ariaLabel('Remove')
+                    .targetEvent($event)
+                    .ok('Yes')
+                    .cancel('No');
+                this.$mdDialog.show(confirm).then(function (result) {
+                    console.log(survey);
+                    if (result) {
+                        console.log(result);
+                        _this.$http.post('/api/survey/remove/' + survey._id, survey)
+                            .then(function successCallback(success) {
+                            if (success) {
+                                console.log('success');
+                                console.log(success);
+                                console.log('survey');
+                                console.log(survey);
+                                self.deleteSurvey(survey);
+                            }
+                            else {
+                            }
+                        });
+                    }
+                    else {
+                    }
+                    self.openToast("Reminder Removed.");
+                });
+            };
+            MainController.prototype.updateSurvey = function (survey) {
+                for (var i = 0; i < this.selected.surveys.length; i++) {
+                    if (survey._id == this.selected.surveys[i]._id) {
+                        this.selected.surveys[i] = survey;
+                        return true;
+                    }
+                }
+                return false;
+            };
+            MainController.prototype.deleteSurvey = function (survey) {
+                var index;
+                console.log(survey);
+                for (var i = 0; i < survey.goals.length; i++) {
+                    index = this.selected.reminders.indexOf(survey.goals[i].reminder);
+                    this.selected.reminders.splice(index, 1);
+                }
+                index = this.selected.surveys.indexOf(survey);
+                console.log(index);
+                this.selected.surveys.splice(index, 1);
+            };
             MainController.prototype.openToast = function (message) {
                 this.$mdToast.show(this.$mdToast.simple()
                     .textContent(message)
@@ -257,6 +361,14 @@ var app;
             };
             MainController.prototype.hasReal = function (user) {
                 if (user.slack.real_name) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            };
+            MainController.prototype.isCoach = function (user) {
+                if (user.role == "coach") {
                     return true;
                 }
                 else {

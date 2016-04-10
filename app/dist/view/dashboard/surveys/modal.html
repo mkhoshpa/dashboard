@@ -1,0 +1,118 @@
+<md-dialog aria-label="Send Message To Slack">
+  <!-- <md-card style="margin: 0px;"> -->
+  <md-toolbar>
+      <div class="md-toolbar-tools">
+        <md-button aria-label="Go Back" ng-click="vm.close()">
+          Go Back
+        </md-button>
+        <h2>
+          <span>Wellness CheckIn</span>
+        </h2>
+        <md-button style="margin-left: 20px;" class="md-fab md-mini" aria-label="Favorite">
+          <md-icon md-font-set="material-icons">favorite</md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <form name="surveyForm" ng-submit="vm.save()">
+
+        <div layout="column" layout-padding>
+
+          <div ng-hide="vm.another">
+            <div>
+              <span>What are somethings you want to improve on?</span>
+            </div>
+
+            <div layout="row">
+              <md-input-container style="margin-right: 10px; margin-top: 0px;" flex="grow">
+               <md-select ng-model="vm.first.goal">
+                 <md-option ng-repeat="option in vm.options" value="{{option}}">{{option}}</md-option>
+               </md-select>
+             </md-input-container>
+            </div>
+
+            <div ng-if="vm.first">
+                <md-input-container class="md-block" flex-gt-sm>
+                  <label>What small change could you make to help?</label>
+                  <input ng-model="vm.first.action">
+                </md-input-container>
+                <md-input-container class="md-block"  style="margin-bottom: 0px;" flex-gt-sm>
+                  <label>What time could you do it?</label>
+                  <input type="time" ng-model="vm.first.time">
+                </md-input-container>
+            </div>
+
+            <div ng-if="vm.first.time">
+              <md-checkbox ng-model="vm.another" aria-label="another">
+                Add another?
+              </md-checkbox>
+            </div>
+          </div>
+
+          <div ng-if="vm.another">
+            <div>
+              <span>What else do you want to improve?</span>
+            </div>
+
+            <div layout="row">
+              <md-input-container style="margin-right: 10px; margin-top: 0px;" flex="grow">
+               <md-select ng-model="vm.second.goal">
+                 <md-option ng-repeat="option in vm.options" value="{{option}}">{{option}}</md-option>
+               </md-select>
+             </md-input-container>
+            </div>
+
+            <div ng-if="vm.second">
+                <md-input-container class="md-block" flex-gt-sm>
+                  <label>What small change could you make to help?</label>
+                  <input ng-model="vm.second.action">
+                </md-input-container>
+                <md-input-container class="md-block" style="margin-bottom: 0px;" flex-gt-sm>
+                  <label>What time could you do it?</label>
+                  <input ng-model="vm.second.time" type="time">
+                </md-input-container>
+            </div>
+
+          </div>
+
+
+
+
+
+
+          <!-- <div layout="row">
+            <md-datepicker ng-model="start" style="margin: 0px;" md-placeholder="Start date"></md-datepicker>
+            <md-datepicker ng-model="end" style="margin: 0px;" md-placeholder="End date"></md-datepicker>
+          </div> -->
+          <!-- <div layout="row" layout-wrap=""> -->
+
+
+              <!-- <md-input-container flex="grow" layout-fill>
+               <md-select multiple ng-model="vm.selected" placeholder="" style="margin: 0 15px 0 15px;">
+                 <md-option ng-repeat="day in vm.days" value="{{day}} ">{{day}}</md-option>
+               </md-select>
+             </md-input-container> -->
+          <!-- </div> -->
+
+          <!-- <div layout="row" style="margin: 0 16px 0 9px;">
+
+
+
+
+          </div> -->
+
+        </div>
+
+
+      <md-dialog-actions layout="row">
+        <md-button ng-click="vm.close()" >
+          Cancel
+        </md-button>
+        <md-button type="submit" class="md-primary md-raised" ng-disabled="userForm.$invalid">
+          Save
+        </md-button>
+      </md-dialog-actions>
+    </form>
+
+  <!-- </md-card> -->
+</md-dialog>

@@ -42,10 +42,7 @@ module app.users {
 
     get (): any {
       if(this.user.role == "coach") {
-        return {
-          coach: this.user,
-          clients: this.clients
-        }
+        return this.user;
       }
       else {
         return {

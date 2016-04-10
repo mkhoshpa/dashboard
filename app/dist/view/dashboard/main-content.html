@@ -1,6 +1,11 @@
 <section>
-  <img ng-src="{{vm.selected.slack.img}}" class="avatar"></md-icon>
-  <div ng-if="vm.isCoach">
+  <div ng-if="vm.isCoach(vm.selected)">
+    <a class="secondary-content"><i class="material-icons" style="color: #444; margin-top: 15px; font-size: 60px;">face</i></a>
+    <h1>{{vm.selected.username}}</h1>
+  </div>
+
+  <div ng-if="!vm.isCoach(vm.selected)">
+    <img ng-src="{{vm.selected.slack.img}}" class="avatar"></md-icon>
     <h1 ng-if="vm.hasReal(vm.selected)">
       {{vm.selected.slack.real_name}}
     </h1>
@@ -8,12 +13,14 @@
       {{vm.selected.slack.name}}
     </h1>
   </div>
-  
+
   <h1 ng-if="vm.isUser">{{vm.selected.username}}</h1>
 
   <md-button aria-label="Slack" class="md-fab md-mini" style="background-color: white;" ng-click="vm.addReminder()">
            <md-icon md-svg-src="assets/svg/slack.svg"></md-icon>
   </md-button>
+  <md-button aria-label="Reminder" class="md-fab md-mini" style="background-color: white;" ng-click="vm.addSurvey()">
+      <md-icon md-font-set="material-icons" style="color: #444">create</md-icon>
+  </md-button>
 
-  <md-button aria-label="test" class="md-raised md-primary" ng-click="vm.testButton('test1@test.com', 'empty')">Tset</md-button>
 </section>

@@ -9,10 +9,6 @@ var mongoose = require('mongoose'),
     Slack = require('./slack.js'),
     reminder = require('./reminder.js');
 
-
-
-
-
 // Define a new 'UserSchema'
 var UserSchema = new Schema({
 	firstName: String,
@@ -24,7 +20,6 @@ var UserSchema = new Schema({
   //   unique: true,
 	// 	match: [/.+\@.+\..+/, "Please fill a valid email address"]
 	// },
-
   // Username is the unique itendifier,
 	username: {
 		type: String,
@@ -56,7 +51,9 @@ var UserSchema = new Schema({
   },
   reminders: [
     {type: mongoose.Schema.Types.ObjectId, ref: 'Reminder'}
-
+  ],
+  surveys: [
+    {type: mongoose.Schema.Types.ObjectId, ref: 'Survey'}
   ],
   image: {
     type: String,
@@ -96,6 +93,12 @@ var UserSchema = new Schema({
 	salt: {
 		type: String
 	},
+  resetPasswordToken: {
+    type: String
+  },
+  resetPasswordExpires: {
+    type: Date
+  },
 	provider: {
 		type: String,
 		// Validate 'provider' value existance

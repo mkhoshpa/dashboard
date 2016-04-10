@@ -30,8 +30,8 @@ var reminderSchema = new Schema({
     friday: {type: Boolean},
     saturday: {type: Boolean},
     sunday: {type: Boolean}
-  }, 
-  
+  },
+
    // Who the reminder is coming from
   days: [{type: Number, min: 0, max: 6}],
   hour: {type: Number, min: 0, max: 23},
@@ -48,7 +48,7 @@ reminderSchema.statics.makeDefaultReminder = function () {
         if (err) return err;
     })
     return reminder;
-        
+
 };
 reminderSchema.pre('save', function(next) {
     if(true){
@@ -78,7 +78,7 @@ reminderSchema.pre('save', function(next) {
         console.log("DAYS FOR DAYS");
         console.log(this.days);
     };
-    
+
     if(true){
         this.hour = this.timeOfDay.getHours();
         console.log(this.hour + "this is the hour");
@@ -89,21 +89,10 @@ reminderSchema.pre('save', function(next) {
     }
     next();
 });
-    
-    //
-
-
-
-
-
-
-
-
-
 
 var Reminder = mongoose.model('Reminder', reminderSchema);
 
-//lets make making reminders a piece of cake ! 
+//lets make making reminders a piece of cake !
 
 //create a static method to make a default reminders object
 

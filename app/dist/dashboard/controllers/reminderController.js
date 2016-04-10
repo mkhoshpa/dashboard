@@ -12,37 +12,22 @@ var app;
                 this.days = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'];
                 this.selectedDays = [];
                 this.author = this.userService.get();
-                if (this.author.coach) {
-                    this.author = this.author.coach.id;
-                    console.log('is coach');
+                if (this.author.role == "coach") {
+                    this.author = this.author.id;
                     this.assignee = this.userService.selectedUser;
                     this.assignee = this.assignee._id;
-                    console.log(this.assignee);
                 }
-                else if (this.author.user) {
-                    this.author = this.author.user.id;
+                else if (this.author.role == "user") {
+                    this.author = this.author.id;
                     this.assignee = this.author;
-                    console.log('is user');
-                    console.log('assignee');
-                    console.log(this.assignee);
                 }
                 if (selected) {
-                    console.log(selected);
                     this._id = selected._id,
-                        console.log(this._id),
                         this.selectedDays = selected.selectedDates,
                         this.reminder = selected.title,
                         this.time = new Date(selected.timeOfDay);
                 }
             }
-            ReminderController.prototype.addReminder = function ($event) {
-            };
-            ReminderController.prototype.editRemidner = function (selected) {
-                this.selectedDays = selected.selectedDates,
-                    this.reminder = selected.tite,
-                    this.time = selected.timeOfDay;
-                console.log(selected);
-            };
             // selectedDays reminder
             ReminderController.prototype.toggle = function (item, list) {
                 var idx = list.indexOf(item);
@@ -122,6 +107,8 @@ var app;
                     author: this.author,
                     assignee: this.assignee
                 };
+                console.log('check time');
+                console.log(reminder.timeOfDay);
                 console.log('check assingee');
                 console.log(reminder.assignee);
                 //console.log(reminder);

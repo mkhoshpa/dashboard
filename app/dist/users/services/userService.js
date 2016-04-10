@@ -19,10 +19,7 @@ var app;
             }
             UserService.prototype.get = function () {
                 if (this.user.role == "coach") {
-                    return {
-                        coach: this.user,
-                        clients: this.clients
-                    };
+                    return this.user;
                 }
                 else {
                     return {

@@ -6,6 +6,7 @@
 /// <reference path="controllers/reminderController.ts" />
 /// <reference path="controllers/slackUsersController.ts" />
 /// <reference path="controllers/contactPanelController.ts" />
+/// <reference path="controllers/surveyController.ts" />
 // Reference Users Namespace /  app.users module
 /// <reference path="../users/services/userService.ts"/>
 /// <reference path="../users/_all.ts"/>

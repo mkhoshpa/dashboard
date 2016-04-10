@@ -1,18 +1,65 @@
 
-<p ng-if="!vm.selected.surveys.length">No reminders for {{vm.selected.name}}, yet.</p>
+<p ng-if="!vm.selected.surveys.length">No Surveys for {{vm.selected.name}}, yet.</p>
 <md-content>
   <md-card ng-repeat="survey in vm.selected.surveys | orderBy: '-date':true">
-    <md-card-content>
-      <h3>{{survey.title}}</h3>
-      <p><p><b>How is your week going? :</b></p> {{survey.first}}</p>
-      <p><p><b>What are you proudest about this week? :</b></p> {{survey.second}}</p>
-      <p><p><b>So what do you want to get better at? :</b></p> {{survey.third}}</p>
-      <p><p><b>Have you noticed any improvements in your general well being due to taking better care of yourself? :</b></p> {{survey.fourth}}</p>
-      <p><p><b>On a scale from 1 - 5, how well do you think you're doing? :</b></p> {{survey.fifth}}</p>
-      <p><p><b>Do you have any questions or comments you want to forward to Thom? :</b></p> {{survey.sixth}}</p>
-      <p><b></b> {{survey.date | date:'MM/dd/yyyy'}}</p>
-    </md-card-content>
-    <md-card-actions layout="row" layout-align="end center">
-    </md-card-actions>
+    <md-card-header ng-style="{'background-color': survey.status}">
+      <md-card-avatar>
+        <md-icon class="md-avatar-icon" md-svg-icon="img/icons/menu.svg"></md-icon>
+      </md-card-avatar>
+      <md-card-header-text>
+        <div layout="row">
+
+          <div flex=90>
+            <span class="md-title">{{survey.author}}</span>
+          </br>
+            <span class="md-subhead">subhead</span>
+          </div>
+
+          <div ng-if="survey.status=='green'" flex=10>
+            <i class="material-icons" style="font-size: 32px; color:white;">check</i>
+          </div>
+          <div ng-if="survey.status=='yellow'" flex=10>
+            <i class="material-icons" style="font-size: 32px; color:#444;">warning</i>
+          </div>
+          <div ng-if="survey.status=='red'" flex=10>
+            <i class="material-icons" style="font-size: 32px; color:white;">priority_high</i>
+          </div>
+
+        </div>
+      </md-card-header-text>
+    </md-card-header>
+  <div layout="column" flex=grow>
+    <div layout="row" flex=grow>
+      <div layout="column" flex=80>
+      <md-card-content>
+        <div layout="row">
+          <md-card-content ng-repeat="goal in survey.goals" flex=50>
+            <p>
+              {{goal.goal}}
+            </p>
+            <span> <b> Reminder: </b> </span>
+            <p>
+              {{goal.reminder.title}}
+            </p>
+            <p>
+              {{goal.reminder.timeOfDay | date:'h:mma'}}
+            </p>
+          </md-card-content>
+        </div>
+      </md-card-content>
+      </div>
+        <div layout="column">
+          <md-card-actions flex="20" layout-align="end right">
+            <md-button ng-click="vm.removeSurvey($event, survey)">Remove</md-button>
+          </md-card-actions>
+          <md-card-actions flex="20" layout-align="end right">
+            <md-button ng-click="vm.editSurvey($event, survey)">Edit</md-button>
+          </md-card-actions>
+        </div>
+    </div>
+    <!-- <md-card-content flex=grow>
+      <p>{{survey.status}}</p>
+    </md-card-content> -->
+  </div>
   </md-card>
 </md-content>

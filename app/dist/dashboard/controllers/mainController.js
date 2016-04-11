@@ -113,6 +113,10 @@ var app;
                     _this.$http.post('/api/reminder/' + reminder._id, reminder).then(function successCallback(reminder) {
                         //  self.selected.reminders.push(response.data);
                         if (self.updateReminder(reminder.data)) {
+                            if (reminder.data.parent.id) {
+                                var id = reminder.data.parent.id.slice(1, 25);
+                                self.updateReminderInSurvey(id, reminder.data);
+                            }
                             self.openToast("Reminder Edited");
                         }
                         else {
@@ -245,6 +249,7 @@ var app;
                     // this.$http.post('uri').then((response) => response.data)
                     // after promise is succesful add to
                     // reminder.assigne.reminders.push()
+                    console.log(survey);
                     _this.$http.post('/api/survey', survey).then(function successCallback(survey) {
                         self.selected.surveys.push(survey.data);
                         console.log(survey.data);
@@ -333,6 +338,18 @@ var app;
                     }
                 }
                 return false;
+            };
+            MainController.prototype.updateReminderInSurvey = function (surveyId, reminder) {
+                for (var i = 0; i < this.selected.surveys.length; i++) {
+                    if (surveyId == this.selected.surveys[i]._id) {
+                        // Update Reminder
+                        for (var k = 0; k < this.selected.surveys[i].goals.length; k++) {
+                            if (this.selected.surveys[i].goals[k].reminder._id == reminder._id) {
+                                this.selected.surveys[i].goals[k].reminder = reminder;
+                            }
+                        }
+                    }
+                }
             };
             MainController.prototype.deleteSurvey = function (survey) {
                 var index;

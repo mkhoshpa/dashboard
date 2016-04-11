@@ -104,9 +104,11 @@ module app.dashboard {
         this.first.reminder.timeOfDay = this.first.time;
         this.second.reminder.title = this.second.action;
         this.second.reminder.timeOfDay = this.second.time;
+        this.id = this.selected._id;
+        this.another = true;
       }
 
-      if(this.another || this.selected.goals.length > 1) {
+      if(this.another) {
         survey = {
           _id: this.id,
           author: this.author,

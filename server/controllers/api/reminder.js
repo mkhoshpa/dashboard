@@ -5,9 +5,9 @@ var Reminder = require('../../models/reminder.js');
 var User = require('../../models/user.js');
 var moment = require('moment');
 
-
 exports.create = function(req, res) {
   var reminder = new Reminder(req.body);
+  console.log(reminder);
   reminder.save(function(err, reminder) {
     if(!err) {
       User.findByIdAndUpdate(
@@ -45,6 +45,32 @@ exports.read = function(req, res) {
 }
 
 exports.update = function(req, res) {
+
+  // Reminder.findById(req.params.id, function(err, reminder) {
+  //   if(reminder.parent.id) {
+  //     // Counts "" as characters in the string, need to remove to convert to ObjectId
+  //     var id = mongoose.Types.ObjectId(reminder.parent.id.slice(1,25));
+  //     var Model = require('../../models/' + reminder.parent.model + '.js');
+  //     Model.findById(id, function(err, model) {
+  //       if(err) {
+  //         console.log('error - reminder');
+  //         console.log(err);
+  //       }
+  //       else {
+  //         for(var i = 0; i < model.goals.length; i++) {
+  //           if(model.goals[i].reminder == reminder._id) {
+  //             model.goals[i]
+  //           }
+  //         }
+  //       }
+  //     });
+  //   }
+  //   else {
+  //     //err
+  //   }
+  //
+  // });
+
   Reminder.findByIdAndUpdate(
     req.params.id,
     {$set: {
@@ -55,6 +81,7 @@ exports.update = function(req, res) {
       assignee: req.body.assignee
     }},{new: true}, function(err, reminder) {
       if(reminder) {
+        console.log(reminder);
         res.send(reminder);
       }
       else{

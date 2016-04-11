@@ -30,10 +30,15 @@ var reminderSchema = new Schema({
     friday: {type: Boolean},
     saturday: {type: Boolean},
     sunday: {type: Boolean}
-  },  // Who the reminder is coming from
-
+  },
+  // Owner of the object, which models
+  parent: {
+    id: {type: String},
+    model: {type: String}
+  },
+    // Who the reminder is going too
   assignee: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
-  // Who the reminder is going too
+  // Who the reminder is coming from
   author: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}
 })
 

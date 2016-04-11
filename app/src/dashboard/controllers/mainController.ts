@@ -298,7 +298,7 @@ module app.dashboard {
         // reminder.assigne.reminders.push()
 
         this.$http.post('/api/survey', survey
-        ).then(function successCallback(survey) {
+        ).then(function successCallback(survey: any) {
            self.selected.surveys.push(survey.data);
            console.log(survey.data);
 
@@ -384,6 +384,11 @@ module app.dashboard {
     }
 
     updateSurvey(survey){
+      // Update Survey's Reminders
+      for(var i = 0; i < survey.goals.length; i++) {
+        this.updateReminder(survey.goals[i].reminder);
+      }
+      // Find Matching Id's, Replace whole object
       for(var i = 0; i < this.selected.surveys.length; i++) {
         if (survey._id == this.selected.surveys[i]._id) {
           this.selected.surveys[i] = survey;

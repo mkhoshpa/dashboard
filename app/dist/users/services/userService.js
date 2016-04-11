@@ -1,3 +1,4 @@
+/// <reference path="../_all.ts" />
 var app;
 (function (app) {
     var users;
@@ -26,9 +27,11 @@ var app;
                     };
                 }
             };
+            // Email is the passport ID
             UserService.prototype.create = function (email, slack) {
                 return this.http.post('/generate', {
                     username: email,
+                    // Contains slack info
                     slack: slack
                 })
                     .then(function (user) {
@@ -36,10 +39,20 @@ var app;
                     return user;
                 });
             };
+            // loadClients(): ng.IPromise<any> {
+            //   return this.$http.get('/users')
+            //   .then(response => response.data);
+            // }
+            // Inserts uses id into a coach's client array
             UserService.prototype.insert = function (params) {
                 return this.http.post('/api/slack/' + params)
                     .then(function (response) { return response.data; });
             };
+            // slack(): ng.IPromise<any> {
+            //   console.log('hit');
+            //   return this.slackService.userList("xoxp-21143396339-21148553634-24144454581-f6d7e3347d")
+            //     .then(response => response);
+            // }
             UserService.prototype.remind = function (reminder) {
                 return this.http.post('/api/reminder/' + reminder.user)
                     .then(function (response) { return response.data; });

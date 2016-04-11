@@ -1,3 +1,4 @@
+/// <reference path="../_all.ts" />
 var app;
 (function (app) {
     var dashboard;
@@ -30,24 +31,27 @@ var app;
                     console.log(this.assignee);
                 }
                 if (selected) {
+                    this.id = selected._id;
                     if (selected.goals.length > 1) {
-                        this.another = true;
                         this.first = {
                             goal: selected.goals[0].goal,
                             action: selected.goals[0].reminder.title,
-                            time: new Date(selected.goals[0].reminder.timeOfDay)
+                            time: new Date(selected.goals[0].reminder.timeOfDay),
+                            reminder: selected.goals[0].reminder
                         };
                         this.second = {
                             goal: selected.goals[1].goal,
                             action: selected.goals[1].reminder.title,
-                            time: new Date(selected.goals[1].reminder.timeOfDay)
+                            time: new Date(selected.goals[1].reminder.timeOfDay),
+                            reminder: selected.goals[1].reminder
                         };
                     }
                     else {
                         this.first = {
                             goal: selected.goals[0].goal,
                             action: selected.goals[0].reminder.title,
-                            time: new Date(selected.goals[0].reminder.timeOfDay)
+                            time: new Date(selected.goals[0].reminder.timeOfDay),
+                            reminder: selected.goals[0].reminder
                         };
                     }
                 }
@@ -59,9 +63,16 @@ var app;
                 this.$mdDialog.cancel();
             };
             SurveyController.prototype.save = function () {
-                var survey;
-                if (this.another) {
+                var survey = {};
+                if (this.selected) {
+                    this.first.reminder.title = this.first.action;
+                    this.first.reminder.timeOfDay = this.first.time;
+                    this.second.reminder.title = this.second.action;
+                    this.second.reminder.timeOfDay = this.second.time;
+                }
+                if (this.another || this.selected.goals.length > 1) {
                     survey = {
+                        _id: this.id,
                         author: this.author,
                         assignee: this.assignee,
                         goals: [
@@ -69,17 +80,20 @@ var app;
                                 goal: this.first.goal,
                                 action: this.first.action,
                                 time: this.first.time,
+                                reminder: this.first.reminder
                             },
                             {
                                 goal: this.second.goal,
                                 action: this.second.action,
-                                time: this.second.time
+                                time: this.second.time,
+                                reminder: this.second.reminder
                             }
                         ]
                     };
                 }
                 else {
                     survey = {
+                        _id: this.id,
                         author: this.author,
                         assignee: this.assignee,
                         goals: [

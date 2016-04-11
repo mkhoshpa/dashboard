@@ -1,3 +1,4 @@
+/// <reference path="../_all.ts" />
 var app;
 (function (app) {
     var dashboard;
@@ -27,6 +28,7 @@ var app;
                         this.time = new Date(selected.timeOfDay);
                 }
             }
+            // selectedDays reminder
             ReminderController.prototype.toggle = function (item, list) {
                 var idx = list.indexOf(item);
                 if (idx > -1)
@@ -97,6 +99,8 @@ var app;
                 var reminder = {
                     _id: this._id,
                     title: this.reminder,
+                    // Will this be set to server time or user's local time?
+                    //toLocaleTimeString(),
                     timeOfDay: this.time,
                     selectedDates: this.selectedDays,
                     daysOfTheWeek: dates,
@@ -105,6 +109,7 @@ var app;
                 };
                 console.log('check assingee');
                 console.log(reminder.assignee);
+                //console.log(reminder);
                 this.$mdDialog.hide(reminder);
             };
             ReminderController.$inject = ['$mdDialog', 'userService', 'selected'];

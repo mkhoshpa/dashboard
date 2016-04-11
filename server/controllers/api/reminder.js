@@ -45,7 +45,6 @@ exports.read = function(req, res) {
 }
 
 exports.update = function(req, res) {
-  console.log(req.params);
   Reminder.findByIdAndUpdate(
     req.params.id,
     {$set: {

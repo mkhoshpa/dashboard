@@ -95,27 +95,43 @@ exports.read = function(req, res) {
 }
 
 exports.update = function(req, res) {
-  // Survey.findByIdAndUpdate(
-  //   req.params.id,
-  //   {$set: {
-  //
-  //   }}, {new: true}, function(err, survey) {
-  //     if(survey) {
-  //       res.send(survey);
-  //     }
-  //   }
-  // );
-  console.log('exports . update');
-  console.log(req.body);
-  // For goal, update
-  for(var i = 0; i < req.body.goals.length; i++ ){
 
-  }
-  var survey = new Survey(req.body);
-  survey.save(function(err, survey) {
-      if(!err) {
-        console.log(survey);
+  var goals = req.body.goals;
+  console.log(req.body);
+    // Update Referenced Reminders
+  _.forEach(goals, function(goal) {
+    request.post('http://localhost:3000/api/reminder/' + goal.reminder._id, {
+      form: goal.reminder
+    }, function(err, response, reminder) {
+      console.log(reminder);
+    })
+  });
+
+  Survey.findById(req.params.id, function(err,survey) {
+    if(survey) {
+      for (var i = 0; i < goals.length; i++) {
+        survey.goals[i].goal = goals[i].goal;
       }
+      console.log('found and updated');
+      console.log('=============================')
+      console.log(survey);
+      survey.save(function(err) {
+        if(err) {
+          return handleError(err);
+        }
+        Survey.populate(survey, {
+          path: 'goals',
+          populate: {
+            path: 'reminder'
+          }
+        }, function(err, survey) {
+          res.send(survey);
+        });
+      })
+    }
+    else {
+      // Send flash message
+    }
   });
 }
 

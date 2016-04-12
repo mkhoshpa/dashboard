@@ -107,6 +107,8 @@ exports.listNow = function(req,res) {
    Reminder.find({days: dayNow})
         .where('hour').equals(hoursNow)
         .where('minute').equals(minutesNow)
+        .populate('assignee')
+        .populate('slack')
         .exec(function(err, docs){
             console.log(err);  //returns Null
             console.log(docs); 

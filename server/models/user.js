@@ -45,6 +45,7 @@ var UserSchema = new Schema({
 			}, 'Password should be longer'
 		]
 	},
+  slack_id : {type: String},
   slack : {
     email: {type: String},
     id: {type: String},
@@ -130,6 +131,8 @@ UserSchema.pre('save', function(next) {
     this.salt = new Buffer(crypto.randomBytes(16).toString('base64'), 'base64');
     this.password = this.hashPassword(this.password);
   }
+    //popping the slack id up a level so it's easy to get 
+    this.slack_id = this.slack.id;
 
 	next();
 });

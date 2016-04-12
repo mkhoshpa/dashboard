@@ -1,7 +1,7 @@
 'use strict'
 
 var mongoose = require('mongoose');
-var Survey = require('../../models/surveys.js');
+var Survey = require('../../models/survey.js');
 var _ = require('underscore');
 var request = require('request');
 var User = require('../../models/user.js');
@@ -17,6 +17,8 @@ exports.create = function(req, res) {
 
   // Create a reminder object to associat with each goal
   // Push those to the survey object, and save
+  console.log(survey);
+  console.log(goals);
 
   _.forEach(goals, function(goal) {
     request.post('http://localhost:3000/api/reminder', {
@@ -33,12 +35,17 @@ exports.create = function(req, res) {
           saturday: true,
           sunday: true
         },
+        parent: {
+          id: JSON.stringify(survey._id),
+          model: 'survey'
+        },
         assignee: req.body.assignee,
         author: req.body.author
       }
     }, function(err, response, reminder) {
       if(err) {
         console.log(err);
+        console.log(reminder);
       }
       else {
         var reminder = JSON.parse(reminder);
@@ -90,32 +97,46 @@ exports.create = function(req, res) {
 
 }
 
+
 exports.read = function(req, res) {
 
 }
 
 exports.update = function(req, res) {
-  // Survey.findByIdAndUpdate(
-  //   req.params.id,
-  //   {$set: {
-  //
-  //   }}, {new: true}, function(err, survey) {
-  //     if(survey) {
-  //       res.send(survey);
-  //     }
-  //   }
-  // );
-  console.log('exports . update');
-  console.log(req.body);
-  // For goal, update
-  for(var i = 0; i < req.body.goals.length; i++ ){
 
-  }
-  var survey = new Survey(req.body);
-  survey.save(function(err, survey) {
-      if(!err) {
-        console.log(survey);
+  var goals = req.body.goals;
+  console.log(req.body);
+    // Update Referenced Reminders
+  _.forEach(goals, function(goal) {
+    request.post('http://localhost:3000/api/reminder/' + goal.reminder._id, {
+      form: goal.reminder
+    }, function(err, response, reminder) {
+      console.log(reminder);
+    })
+  });
+
+  Survey.findById(req.params.id, function(err,survey) {
+    if(survey) {
+      for (var i = 0; i < goals.length; i++) {
+        survey.goals[i].goal = goals[i].goal;
       }
+      survey.save(function(err) {
+        if(err) {
+          return handleError(err);
+        }
+        Survey.populate(survey, {
+          path: 'goals',
+          populate: {
+            path: 'reminder'
+          }
+        }, function(err, survey) {
+          res.send(survey);
+        });
+      })
+    }
+    else {
+      // Send flash message
+    }
   });
 }
 

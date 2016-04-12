@@ -31,24 +31,44 @@ var app;
                     console.log(this.assignee);
                 }
                 if (selected) {
+<<<<<<< HEAD
                     if (selected.goals.length > 1) {
                         this.another = true;
                         this.first = {
                             goal: selected.goals[0].goal,
                             action: selected.goals[0].reminder.title,
                             time: new Date(selected.goals[0].reminder.timeOfDay)
+=======
+                    this.id = selected._id;
+                    if (selected.goals.length > 1) {
+                        this.first = {
+                            goal: selected.goals[0].goal,
+                            action: selected.goals[0].reminder.title,
+                            time: new Date(selected.goals[0].reminder.timeOfDay),
+                            reminder: selected.goals[0].reminder
+>>>>>>> profile
                         };
                         this.second = {
                             goal: selected.goals[1].goal,
                             action: selected.goals[1].reminder.title,
+<<<<<<< HEAD
                             time: new Date(selected.goals[1].reminder.timeOfDay)
+=======
+                            time: new Date(selected.goals[1].reminder.timeOfDay),
+                            reminder: selected.goals[1].reminder
+>>>>>>> profile
                         };
                     }
                     else {
                         this.first = {
                             goal: selected.goals[0].goal,
                             action: selected.goals[0].reminder.title,
+<<<<<<< HEAD
                             time: new Date(selected.goals[0].reminder.timeOfDay)
+=======
+                            time: new Date(selected.goals[0].reminder.timeOfDay),
+                            reminder: selected.goals[0].reminder
+>>>>>>> profile
                         };
                     }
                 }
@@ -60,9 +80,24 @@ var app;
                 this.$mdDialog.cancel();
             };
             SurveyController.prototype.save = function () {
+<<<<<<< HEAD
                 var survey;
                 if (this.another) {
                     survey = {
+=======
+                var survey = {};
+                if (this.selected) {
+                    this.first.reminder.title = this.first.action;
+                    this.first.reminder.timeOfDay = this.first.time;
+                    this.second.reminder.title = this.second.action;
+                    this.second.reminder.timeOfDay = this.second.time;
+                    this.id = this.selected._id;
+                    this.another = true;
+                }
+                if (this.another) {
+                    survey = {
+                        _id: this.id,
+>>>>>>> profile
                         author: this.author,
                         assignee: this.assignee,
                         goals: [
@@ -70,17 +105,30 @@ var app;
                                 goal: this.first.goal,
                                 action: this.first.action,
                                 time: this.first.time,
+<<<<<<< HEAD
+=======
+                                reminder: this.first.reminder
+>>>>>>> profile
                             },
                             {
                                 goal: this.second.goal,
                                 action: this.second.action,
+<<<<<<< HEAD
                                 time: this.second.time
+=======
+                                time: this.second.time,
+                                reminder: this.second.reminder
+>>>>>>> profile
                             }
                         ]
                     };
                 }
                 else {
                     survey = {
+<<<<<<< HEAD
+=======
+                        _id: this.id,
+>>>>>>> profile
                         author: this.author,
                         assignee: this.assignee,
                         goals: [

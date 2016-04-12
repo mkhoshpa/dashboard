@@ -139,9 +139,13 @@ module app.dashboard {
         // after promise is succesful add to
         // reminder.assigne.reminders.push()
         this.$http.post('/api/reminder/' + reminder._id, reminder
-        ).then(function successCallback(reminder) {
+      ).then(function successCallback(reminder: any) {
           //  self.selected.reminders.push(response.data);
          if(self.updateReminder(reminder.data)) {
+            if(reminder.data.parent.id) {
+              var id = reminder.data.parent.id.slice(1,25);
+              self.updateReminderInSurvey(id, reminder.data);
+            }
            self.openToast("Reminder Edited");
          }
          else {
@@ -296,9 +300,10 @@ module app.dashboard {
         // this.$http.post('uri').then((response) => response.data)
         // after promise is succesful add to
         // reminder.assigne.reminders.push()
-
+        console.log(survey);
         this.$http.post('/api/survey', survey
       ).then(function successCallback(survey: any) {
+
            self.selected.surveys.push(survey.data);
            console.log(survey.data);
 
@@ -384,6 +389,11 @@ module app.dashboard {
     }
 
     updateSurvey(survey){
+      // Update Survey's Reminders
+      for(var i = 0; i < survey.goals.length; i++) {
+        this.updateReminder(survey.goals[i].reminder);
+      }
+      // Find Matching Id's, Replace whole object
       for(var i = 0; i < this.selected.surveys.length; i++) {
         if (survey._id == this.selected.surveys[i]._id) {
           this.selected.surveys[i] = survey;
@@ -391,6 +401,19 @@ module app.dashboard {
         }
       }
       return false;
+    }
+
+    updateReminderInSurvey(surveyId, reminder) {
+      for(var i = 0; i < this.selected.surveys.length; i++) {
+        if (surveyId == this.selected.surveys[i]._id) {
+          // Update Reminder
+          for(var k = 0; k < this.selected.surveys[i].goals.length; k++) {
+            if(this.selected.surveys[i].goals[k].reminder._id == reminder._id) {
+              this.selected.surveys[i].goals[k].reminder = reminder;
+            }
+          }
+        }
+      }
     }
 
     deleteSurvey(survey) {

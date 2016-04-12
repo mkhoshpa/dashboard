@@ -107,8 +107,11 @@ var app;
                     author: this.author,
                     assignee: this.assignee
                 };
+<<<<<<< HEAD
                 console.log('check time');
                 console.log(reminder.timeOfDay);
+=======
+>>>>>>> profile
                 console.log('check assingee');
                 console.log(reminder.assignee);
                 //console.log(reminder);

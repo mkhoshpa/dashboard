@@ -3,7 +3,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var User = require('./user.js');
-var Surveys = require('./surveys.js');
+var Surveys = require('./survey.js');
 var Habits = require('./habits.js');
 
 var SlackSchema = new Schema({

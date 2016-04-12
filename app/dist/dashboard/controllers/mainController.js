@@ -1,4 +1,3 @@
-/// <reference path="../_all.ts" />
 var app;
 (function (app) {
     var dashboard;
@@ -29,10 +28,6 @@ var app;
                 self.userService.selectedUser = self.selected;
                 this._ = window['_'];
             }
-            // convertToUsers(slack: any[]) {
-            //   console.log('convertToUsers: ' + this.slack);
-            //   this.userService.
-            // }
             MainController.prototype.setFormScope = function (scope) {
                 this.formScope = scope;
             };
@@ -49,7 +44,6 @@ var app;
                     clickOutsideToClose: true,
                     fullscreen: useFullScreen
                 }).then(function (user) {
-                    // Call user service
                     console.log('this is user' + JSON.stringify(user));
                     var newUser = _this.userService.insert(user.name).then(function (result) {
                         self.clients.push(result);
@@ -76,10 +70,6 @@ var app;
                         selected: null
                     }
                 }).then(function (reminder) {
-                    // Post request, and push onto users local list of reminders
-                    // this.$http.post('uri').then((response) => response.data)
-                    // after promise is succesful add to
-                    // reminder.assigne.reminders.push()
                     _this.$http.post('/api/reminder', reminder).then(function successCallback(response) {
                         self.selected.reminders.push(response.data);
                         console.log(response.data);
@@ -106,13 +96,12 @@ var app;
                         selected: reminder
                     },
                 }).then(function (reminder) {
-                    // Post request, and push onto users local list of reminders
-                    // this.$http.post('uri').then((response) => response.data)
-                    // after promise is succesful add to
-                    // reminder.assigne.reminders.push()
                     _this.$http.post('/api/reminder/' + reminder._id, reminder).then(function successCallback(reminder) {
-                        //  self.selected.reminders.push(response.data);
                         if (self.updateReminder(reminder.data)) {
+                            if (reminder.data.parent.id) {
+                                var id = reminder.data.parent.id.slice(1, 25);
+                                self.updateReminderInSurvey(id, reminder.data);
+                            }
                             self.openToast("Reminder Edited");
                         }
                         else {
@@ -165,10 +154,6 @@ var app;
                 this.selected.reminders.splice(foundIndex, 1);
             };
             MainController.prototype.slackList = function () {
-                // var test = this.userService.slack().then((members: any) => {
-                //   console.log('here');
-                //   console.log(members);
-                // });
             };
             MainController.prototype.testButton = function (email, slack) {
                 console.log('test-button');
@@ -179,11 +164,6 @@ var app;
                     console.log(err);
                 });
             };
-            // removeReminder(reminder) {
-            //   var foundIndex = this.selected.reminders.indexOf(reminder);
-            //   this.selected.reminders.splice(foundIndex, 1);
-            //   this.openToast("Reminder removed");
-            // }
             MainController.prototype.clearReminders = function ($event) {
                 var confirm = this.$mdDialog.confirm()
                     .title('Are you sure you want to delete all reminders?')
@@ -233,7 +213,7 @@ var app;
                     templateUrl: './dist/view/dashboard/surveys/modal.html',
                     parent: angular.element(document.body),
                     targetEvent: $event,
-                    controller: dashboard.SurveyController,
+                    controller: SurveyController,
                     controllerAs: "vm",
                     clickOutsideToClose: true,
                     fullscreen: useFullScreen,
@@ -241,10 +221,7 @@ var app;
                         selected: null
                     }
                 }).then(function (survey) {
-                    // Post request, and push onto users local list of reminders
-                    // this.$http.post('uri').then((response) => response.data)
-                    // after promise is succesful add to
-                    // reminder.assigne.reminders.push()
+                    console.log(survey);
                     _this.$http.post('/api/survey', survey).then(function successCallback(survey) {
                         self.selected.surveys.push(survey.data);
                         console.log(survey.data);
@@ -265,7 +242,7 @@ var app;
                     templateUrl: './dist/view/dashboard/surveys/modal.html',
                     parent: angular.element(document.body),
                     targetEvent: $event,
-                    controller: dashboard.SurveyController,
+                    controller: SurveyController,
                     controllerAs: "vm",
                     clickOutsideToClose: true,
                     fullscreen: useFullScreen,
@@ -274,7 +251,6 @@ var app;
                     },
                 }).then(function (survey) {
                     _this.$http.post('/api/survey/' + survey._id, survey).then(function successCallback(survey) {
-                        //  self.selected.reminders.push(response.data);
                         console.log('survey edited');
                         console.log(survey);
                         if (self.updateSurvey(survey.data)) {
@@ -321,6 +297,9 @@ var app;
                 });
             };
             MainController.prototype.updateSurvey = function (survey) {
+                for (var i = 0; i < survey.goals.length; i++) {
+                    this.updateReminder(survey.goals[i].reminder);
+                }
                 for (var i = 0; i < this.selected.surveys.length; i++) {
                     if (survey._id == this.selected.surveys[i]._id) {
                         this.selected.surveys[i] = survey;
@@ -328,6 +307,17 @@ var app;
                     }
                 }
                 return false;
+            };
+            MainController.prototype.updateReminderInSurvey = function (surveyId, reminder) {
+                for (var i = 0; i < this.selected.surveys.length; i++) {
+                    if (surveyId == this.selected.surveys[i]._id) {
+                        for (var k = 0; k < this.selected.surveys[i].goals.length; k++) {
+                            if (this.selected.surveys[i].goals[k].reminder._id == reminder._id) {
+                                this.selected.surveys[i].goals[k].reminder = reminder;
+                            }
+                        }
+                    }
+                }
             };
             MainController.prototype.deleteSurvey = function (survey) {
                 var index;

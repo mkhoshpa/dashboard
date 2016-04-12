@@ -15,6 +15,7 @@ var config = require('./config'),
 		cloudinary = require('cloudinary'),
 		nodemailer = require('nodemailer'),
 		crypto = require('crypto'),
+		client = require('twilio')('AC3408c09dc79f2d5c0bc09342ae5c0fde', '7c139025f034ae9e3e66854a0d3a152f'),
 		async = require('async');
 
 
@@ -67,24 +68,13 @@ module.exports = function() {
 	require('../routes/api/reminders.js')(app);
 	require('../routes/user.info.routes.js')(app);
 	require('../routes/api/survey.js')(app);
-
-	app.all('/test', function(req, res){
-		req.flash('info', 'it worked')
-  	res.render('pages/edit-password', {message: req.flash('info')});
-		console.log(req.flash());
-	});
-
-	app.all('/profile/test', function(req, res) {
-		res.render('pages/profile',
-		{	email: 'test',
-			userFullName: 'test',
-			messages: '',
-		});
-	})
+	require('../routes/twilio.js')(app, client);
+	require('../routes/triangular.routes.js')(app);
 
 	// Configure static file serving
   app.use(express.static(__dirname + '/../../app'));
   app.use(express.static(__dirname + '/../views'));
+	app.use(express.static(__dirname + '/../../app/dist/triangular'));
 	console.log(__dirname);
 	// Return the Express application instance
 	return app;

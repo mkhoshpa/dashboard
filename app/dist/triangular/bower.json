@@ -1,0 +1,27 @@
+{
+  "name": "triangular-seed",
+  "version": "0.0.0",
+  "authors": [
+    "John Langan <john.langan@oxygenna.com>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "Themeforest",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "resolutions": {
+    "angular": "1.4.7",
+    "angular-material": "1.0.0-rc1"
+  },
+  "devDependencies": {
+    "triangular": "git@github.com:oxygenna/triangular-bower.git#~2.3.0"
+  }
+}

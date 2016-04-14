@@ -75,38 +75,56 @@ var app;
                     saturday: false,
                     sunday: false
                 };
+
+                var days = [];
+                var hour = this.time.getHours();
+                var minute = this.time.getMinutes();
+
+
                 if (this.selectedDays.indexOf('Sun') != -1) {
                     dates.sunday = true;
+                    days.splice(this.days.length,0,0);
                 }
                 if (this.selectedDays.indexOf('Mon') != -1) {
                     dates.monday = true;
+                    days.splice(this.days.length,0,1);
                 }
                 if (this.selectedDays.indexOf('Tues') != -1) {
                     dates.tuesday = true;
+                    days.splice(this.days.length,0,2);
                 }
                 if (this.selectedDays.indexOf('Wed') != -1) {
                     dates.wednesday = true;
+                    days.splice(this.days.length,0,3);
                 }
                 if (this.selectedDays.indexOf('Thurs') != -1) {
                     dates.thursday = true;
+                    days.splice(this.days.length,0,4);
                 }
                 if (this.selectedDays.indexOf('Fri') != -1) {
                     dates.friday = true;
+                    days.splice(this.days.length,0,5);
                 }
                 if (this.selectedDays.indexOf('Sat') != -1) {
                     dates.saturday = true;
+                    days.splice(this.days.length,0,6);
                 }
                 var reminder = {
                     _id: this._id,
                     title: this.reminder,
+                    days: days,
+
                     // Will this be set to server time or user's local time?
                     //toLocaleTimeString(),
                     timeOfDay: this.time,
+                    hour: hour,
+                    minute: minute,
                     selectedDates: this.selectedDays,
                     daysOfTheWeek: dates,
                     author: this.author,
                     assignee: this.assignee
                 };
+                
                 console.log('check time');
                 console.log(reminder.timeOfDay);
                 console.log('check assingee');

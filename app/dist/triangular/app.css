@@ -8,3 +8,10 @@
     color: white;
   }
 }
+
+div.sidebar-left-logo img {
+
+  margin-left: 7px;
+  height: 30px;
+  width: auto;
+}

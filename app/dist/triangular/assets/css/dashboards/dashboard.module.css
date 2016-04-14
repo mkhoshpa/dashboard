@@ -1,0 +1,21 @@
+.dashboard-container .layout-margin {
+  margin: 0px; }
+
+.dashboard-fullwidth-chart .chart-container {
+  position: relative;
+  left: -5px;
+  bottom: -5px;
+  width: calc(100% + 10px); }
+
+.dashboard-no-bar-tabs md-tabs-wrapper {
+  display: none; }
+
+.google-chart {
+  height: 100%;
+  width: 100%; }
+
+.tabs-tall md-pagination-wrapper, .tabs-tall md-tabs-canvas {
+  height: 72px; }
+
+.md-table tbody tr td {
+  border-bottom: 0px; }

@@ -31,7 +31,24 @@
              </md-input-container>
             </div>
 
-            <div ng-if="vm.first">
+            <div ng-if="vm.first.goal == 'Other'">
+              <md-input-container class="md-block" flex-gt-sm>
+                <label>Awesome, what do you want to work on?</label>
+                <input ng-model="vm.first.custom">
+              </md-input-container>
+              <div ng-if="vm.first.custom">
+                <md-input-container class="md-block" flex-gt-sm>
+                  <label>What small change could you make to help?</label>
+                  <input ng-model="vm.first.action">
+                </md-input-container>
+                <md-input-container class="md-block"  style="margin-bottom: 0px;" flex-gt-sm>
+                  <label>What time could you do it?</label>
+                  <input type="time" ng-model="vm.first.time">
+                </md-input-container>
+              </div>
+            </div>
+
+            <div ng-if="!vm.first.goal == 'Other'">
                 <md-input-container class="md-block" flex-gt-sm>
                   <label>What small change could you make to help?</label>
                   <input ng-model="vm.first.action">

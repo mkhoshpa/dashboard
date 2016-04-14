@@ -1,4 +1,3 @@
-<div ng-include="'dist/view/dashboard/reminders/tab-reminders-form.html'"></div>
 
 <p ng-if="!vm.selected.reminders.length">No reminders for {{vm.selected.slack.name}}, yet.</p>
 <md-content>
@@ -28,4 +27,7 @@
     </div>
   </div>
   </md-card>
+  <md-button class="md-fab md-fab-top-right" aria-label="Add" ng-click="vm.addReminder($event)" style="right: 10px;">
+    <ng-md-icon icon="add"></ng-md-icon>
+  </md-button>
 </md-content>

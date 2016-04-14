@@ -25,11 +25,21 @@
 
         <!-- load app css file -->
         <link rel="stylesheet" href="dist/triangular/app.css" />
+
+        <!-- load dashboard css -->
+        <!-- <link rel="stylesheet" href="dist/triangular/dashboards/dashboard.module." /> -->
+
     </head>
 
     <body translate-cloak ng-class="bodyClasses">
         <!-- main app view  -->
+        <script type="text/javascript">
+          window.user = <%- user || 'null' %>;
+        </script>
+
         <div class="full-height" ui-view></div>
+
+        <!-- load user -->
 
         <!-- load external bower js -->
         <script src="../../bower_components/jquery/dist/jquery.js"></script>
@@ -87,6 +97,9 @@
         <script src="dist/triangular/config.triangular.settings.js"></script>
         <script src="dist/triangular/config.triangular.themes.js"></script>
 
+        <!-- load common module js -->
+        <script src="dist/common/app.js"></script>
+
         <!-- load dashboard module js -->
         <script src="dist/triangular/dashboards/dashboards.module.js"></script>
         <script src="dist/triangular/dashboards/dashboards.config.js"></script>
@@ -95,8 +108,7 @@
         <script src="dist/triangular/dashboards/analytics/dashboard-analytics.controller.js"></script>
         <script src="dist/triangular/dashboards/server/dashboard-server.controller.js"></script>
         <script src="dist/triangular/dashboards/dashboard-draggable-controller.js"></script>
-        <script src="dist/triangular/dashboards/overview/fitpath-overview.controller.js"></script>
-
+        <script src="dist/triangular/dashboards/overview/client-overview.controller.js"></script>
 
         <!-- load widget js -->
         <script src="dist/triangular/dashboards/widgets/widget-calendar.directive.js"></script>

@@ -15,7 +15,7 @@
             <span class="md-subhead">subhead</span>
           </div>
 
-          <div ng-if="survey.status=='green'" flex=10>
+          <!-- <div ng-if="survey.status=='green'" flex=10>
             <i class="material-icons" style="font-size: 32px; color:white;">check</i>
           </div>
           <div ng-if="survey.status=='yellow'" flex=10>
@@ -23,7 +23,7 @@
           </div>
           <div ng-if="survey.status=='red'" flex=10>
             <i class="material-icons" style="font-size: 32px; color:white;">priority_high</i>
-          </div>
+          </div> -->
 
         </div>
       </md-card-header-text>
@@ -62,4 +62,7 @@
     </md-card-content> -->
   </div>
   </md-card>
+  <md-button class="md-fab md-fab-top-right" aria-label="Add" ng-click="vm.addSurvey($event)" style="top: 10px;">
+    <ng-md-icon icon="add"></ng-md-icon>
+  </md-button>
 </md-content>

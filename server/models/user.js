@@ -64,27 +64,15 @@ var UserSchema = new Schema({
     enum: ['coach', 'user', 'admin'],
     default: 'user'
   },
-  clients: [
-      { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
-      // slack :{ type: mongoose.Schema.Types.ObjectId, ref: 'Slack' },
-      // reminders: [
-      //   {
-      //     title: {type: String},
-      //     response: {type: String},
-      //     time: {type: String},
-      //     daysOfWeek: {
-      //       monday: {type: Boolean},
-      //       tuesday: {type: Boolean},
-      //       wednesday: {type: Boolean},
-      //       thursday: {type: Boolean},
-      //       friday: {type: Boolean},
-      //       saturday: {type: Boolean},
-      //       sunday: {type: Boolean}
-      //     },
-      //     active:{type: Boolean}
-      //   }
-      // ]
-  ],
+  status: {
+    type: String,
+    enum: ['red', 'yellow', 'green'],
+    default: 'green'
+  },
+  mostRecentActivity: {
+    reminder: {type: mongoose.Schema.Types.ObjectId, ref: 'Reminder'},
+    survey: {type: mongoose.Schema.Types.ObjectId, ref: 'Survey'}
+  },
   coaches: [
     { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
   ],
@@ -134,7 +122,7 @@ UserSchema.pre('save', function(next) {
     this.salt = new Buffer(crypto.randomBytes(16).toString('base64'), 'base64');
     this.password = this.hashPassword(this.password);
   }
-    //popping the slack id up a level so it's easy to get 
+    //popping the slack id up a level so it's easy to get
     this.slack_id = this.slack.id;
 
 	next();

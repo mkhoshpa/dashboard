@@ -12,13 +12,15 @@
         $translatePartialLoaderProvider.addPart('dashboards');
         console.log('inside state function');
         $stateProvider
+        .state('fitpath.client-overview', {
+            url: '/overview',
+            templateUrl: 'dashboards/overview/client-overview.tmpl.html',
+            controller: 'ClientOverviewController',
+            controllerAs: 'vm'
+        })
         .state('triangular.admin-default.dashboard-general', {
             url: '/',
             templateUrl: 'dashboards/general/dashboard-general.tmpl.html'
-        })
-        .state('triangular.admin-default.dashboard-fitpath', {
-            url: '/overview',
-            templateUrl: 'dashboards/overview/fitpath-overview.tmpl.html'
         })
         .state('triangular.admin-default.dashboard-analytics', {
             url: '/analytics',
@@ -64,11 +66,14 @@
                 name: 'MENU.DASHBOARDS.DRAGGABLE',
                 state: 'triangular.admin-default.dashboard-draggable',
                 type: 'link'
-            },{
-                name: 'MENU.DASHBOARDS.OVERVIEW',
-                state: 'triangular.admin-default.dashboard-fitpath',
-                type: 'link'
             }]
+        });
+
+        triMenuProvider.addMenu({
+          name: 'Overview',
+          icon: 'zmdi zmdi-home',
+          type: 'link',
+          state: 'fitpath.client-overview',
         });
 
     }

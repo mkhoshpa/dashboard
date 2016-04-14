@@ -219,6 +219,6 @@
         /**
          *  SET DEFAULT SKIN
          */
-        triSkinsProvider.setSkin('cyan-cloud');
+        triSkinsProvider.setSkin('indigo-island');
     }
 })();

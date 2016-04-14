@@ -4,9 +4,11 @@
     angular
         .module('app', [
             'triangular',
-            'ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngMessages', 'ngMaterial',
-            'ui.router', 'pascalprecht.translate', 'LocalStorageModule', 'googlechart', 'chart.js', 'linkify', 'ui.calendar', 'angularMoment', 'textAngular', 'hljs', 'md.data.table', angularDragula(angular),
-            'dashboards'
+            'ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngMessages',
+            'ngMaterial',  'ui.router', 'pascalprecht.translate', 'LocalStorageModule',
+            'googlechart',   'chart.js', 'linkify', 'ui.calendar', 'angularMoment',
+            'textAngular', 'hljs', 'md.data.table', angularDragula(angular),
+            'dashboards', 'common'
         ])
         // create a constant for languages so they can be added to both triangular & translate
         .constant('APP_LANGUAGES', [{

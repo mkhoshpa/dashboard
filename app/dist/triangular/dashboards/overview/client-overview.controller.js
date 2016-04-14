@@ -5,14 +5,16 @@
     .module('dashboards')
     .controller('ClientOverviewController', ClientOverviewController);
 
-    ClientOverviewController.$inject = ['user'];
+    ClientOverviewController.$inject = ['user', '$scope'];
 
-    function ClientOverviewController(user) {
+    function ClientOverviewController(user, $scope) {
       var vm = this;
+      vm.bookmark;
       vm.user = user.current;
       vm.clients = vm.user.clients;
       //vm.contents = contents(vm.clients);
       vm.selected = [];
+
       vm.columns = {
            avatar: '',
            name: 'Name',
@@ -20,23 +22,49 @@
            recent: 'Most Recent Activity'
           //  id: 'TABLE.COLUMNS.ID'
        };
+
       vm.query = {
+        filter: '',
         order: 'username',
         limit: 10,
         page: 1
       }
 
-      function contents(clients) {
-        var contents = [];
-        for(var i = 0; i < clients.length; i++) {
-          var current = {
-            thumb: clients[i].slack.img,
-            name: clients[i].username
-          }
-          contents.push(current);
-        }
-        return contents;
+      vm.removeFilter = function () {
+        vm.filter.show = false;
+         vm.query.filter = '';
+
+         if(vm.filter.form.$dirty) {
+           vm.filter.form.$setPristine();
+         }
+      };
+
+      // $scope.$watch('vm.query.filter', function (newValue, oldValue) {
+      //   if(!oldValue) {
+      //     vm.bookmark = vm.query.page;
+      //   }
+      //
+      //   if(newValue !== oldValue) {
+      //     vm.query.page = 1;
+      //   }
+      //
+      //   if(!newValue)  {
+      //     vm.query.page = vm.bookmark;
+      //   }
+      //
+      //   vm.getClients();
+      // });
+
+      // Get list of clients that match query
+      function getClients() {
+
       }
+
+      // Apply the getClients result to vm
+      function success(clients) {
+        vm.clients = clients
+      }
+      
     }
 
 })();

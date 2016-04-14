@@ -80,7 +80,7 @@ var app;
                 var hour = this.time.getHours();
                 var minute = this.time.getMinutes();
 
-
+                
                 if (this.selectedDays.indexOf('Sun') != -1) {
                     dates.sunday = true;
                     days.splice(this.days.length,0,0);
@@ -124,7 +124,7 @@ var app;
                     author: this.author,
                     assignee: this.assignee
                 };
-                
+
                 console.log('check time');
                 console.log(reminder.timeOfDay);
                 console.log('check assingee');

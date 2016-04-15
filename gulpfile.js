@@ -1,3 +1,6 @@
+// Fix browserSync
+// Fix Watch / Restart
+
 var gulp = require('gulp');
 var nodemon = require('gulp-nodemon');
 var sass = require('gulp-sass');

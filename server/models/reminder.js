@@ -31,6 +31,12 @@ var reminderSchema = new Schema({
     saturday: {type: Boolean},
     sunday: {type: Boolean}
   },
+  response : [
+    {
+      contents: {type: String},
+      responseTime: {type: Date}
+    }
+  ],
    // Who the reminder is coming from
   days: [{type: Number, min: 0, max: 6}],
   hour: {type: Number, min: 0, max: 23},
@@ -54,6 +60,12 @@ reminderSchema.statics.makeDefaultReminder = function () {
     return reminder;
 
 };
+
+reminderSchema.post('findOneAndUpdate', function(doc) {
+  console.log('reminde updated');
+  console.log(doc);
+});
+
 reminderSchema.pre('save', function(next) {
     if(true){
         console.log("hello");

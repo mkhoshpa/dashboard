@@ -11,6 +11,7 @@ module.exports = function(app) {
   app.get('/api/reminder/now', reminder.listNow);
   app.post('/api/reminder/:id', reminder.update);
   app.post('/api/reminder/remove/:id', reminder.delete);
+  app.post('/api/reminder/response/:id', reminder.response);
 
 //  app.get('/willow/reminder/now', reminder.now);
 }

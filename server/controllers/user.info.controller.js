@@ -76,7 +76,7 @@ exports.reset = function(req,res,next) {
       );
 
       var mailOptions = {
-        to: '', //user.username,
+        to: user.username, //user.username,
         from: 'fitpathmailer@gmail.com',
         subject: 'Fitpath.me Password Reset',
         text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +

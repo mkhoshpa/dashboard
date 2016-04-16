@@ -91,6 +91,31 @@ exports.update = function(req, res) {
   );
 }
 
+exports.response = function(req, res) {
+  var contents = req.body.contents;
+  var responseTime = Date.now();
+  Reminder.findOneAndUpdate(
+    {_id: req.params.id},
+    {
+      $push: {
+        "response": {
+          contents: contents,
+          responseTime: responseTime
+        }
+      }
+    },
+    {
+      safe: true,
+      new: true
+    },
+    function(err, doc) {
+      if(doc) {
+        res.send('success');
+      }
+    }
+  );
+}
+
 exports.delete = function(req, res) {
   Reminder.findByIdAndRemove(
     req.params.id,

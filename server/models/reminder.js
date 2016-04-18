@@ -33,8 +33,8 @@ var reminderSchema = new Schema({
   },
   response : [
     {
-      contents: {type: String},
-      responseTime: {type: Date}
+      contents: {type: mongoose.Schema.Types.Mixed},
+      responseTime: {type: Date},
     }
   ],
    // Who the reminder is coming from
@@ -46,7 +46,7 @@ var reminderSchema = new Schema({
     id: {type: String},
     model: {type: String}
   },
-    // Who the reminder is going too
+  // Who the reminder is going too
   assignee: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
   // Who the reminder is coming from
   author: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}

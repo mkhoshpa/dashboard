@@ -59,7 +59,7 @@ module.exports = function() {
 
 	// Load the routing files
 	require('../routes/index.server.routes.js')(app);
-	require('../routes/users.server.routes.js')(app);
+	require('../routes/users.login.routes.js')(app);
 	require('../routes/dashboard.route.js')(app);
 	require('../routes/api/slack.js')(app);
 	require('../routes/api/willow.js')(app);

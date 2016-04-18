@@ -1,7 +1,7 @@
 'use strict';
 
 // Load the module dependencies
-var users    = require('../controllers/users.server.controller'),
+var users    = require('../controllers/users.login.controller'),
 	  passport = require('passport'),
 		request = require('request'),
 		_ = require('underscore');
@@ -23,11 +23,9 @@ module.exports = function(app) {
 					}
 	    		if (!user) {
 						req.flash('status', 'Information Entered Incorrect');
-						console.log('user not found');
 						return res.redirect('/signin');
 					}
 			    req.logIn(user, function(err) {
-						console.log('signin - generate');
 						console.log(user);
 			      if (err) {
 							console.log('err');
@@ -36,7 +34,6 @@ module.exports = function(app) {
 						}
 
 						else if(user.role == 'coach') {
-							console.log('slack generation attempted');
 							var slack = [];
 
 							var headers = {
@@ -54,8 +51,6 @@ module.exports = function(app) {
 							}
 
 							request(options, function (error, response, body) {
-									console.log('request is here');
-									console.log(body);
 							    if (!error && response.statusCode == 200) {
 							        	var members = JSON.parse(body).members;
 											_.forEach(members, function(member) {
@@ -73,7 +68,6 @@ module.exports = function(app) {
 											});
 											// Combine each forEach statement O(n^2)
 											_.forEach(slack, function(member) {
-												console.log('hello');
 												request.post('http://localhost:3000/generate',{
 													form: {
 															user: req.user.id,

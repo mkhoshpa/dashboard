@@ -1,3 +1,7 @@
+#TODO
+  * Add Validator To Reminder Response Mixed Type?
+
+
 1. Install GIT
 2. Install Ruby [Windows]
 // Add ^ to PATH [Windows]

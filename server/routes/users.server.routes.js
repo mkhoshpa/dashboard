@@ -27,6 +27,7 @@ module.exports = function(app) {
 						return res.redirect('/signin');
 					}
 			    req.logIn(user, function(err) {
+						console.log('signin - generate');
 						console.log(user);
 			      if (err) {
 							console.log('err');
@@ -34,7 +35,8 @@ module.exports = function(app) {
 							return next(err);
 						}
 
-						else if(user.role == "coach") {
+						else if(user.role == 'coach') {
+							console.log('slack generation attempted');
 							var slack = [];
 
 							var headers = {
@@ -47,12 +49,13 @@ module.exports = function(app) {
 							    method: 'GET',
 							    headers: headers,
 							    qs:	{
-										'token': 'xoxp-21143396339-21148553634-24144454581-f6d7e3347d',
+										'token': 'xoxp-21143396339-21148553634-35579946983-f1498f5c94',
 									}
 							}
 
 							request(options, function (error, response, body) {
 									console.log('request is here');
+									console.log(body);
 							    if (!error && response.statusCode == 200) {
 							        	var members = JSON.parse(body).members;
 											_.forEach(members, function(member) {
@@ -68,7 +71,6 @@ module.exports = function(app) {
 				                  });
 												}
 											});
-
 											// Combine each forEach statement O(n^2)
 											_.forEach(slack, function(member) {
 												console.log('hello');
@@ -83,7 +85,7 @@ module.exports = function(app) {
 														}
 												}, function(err,httpResponse,body){
 													if(err) {
-														//console.log(err);
+														console.log(err);
 													}
 													else {
 														console.log(body);

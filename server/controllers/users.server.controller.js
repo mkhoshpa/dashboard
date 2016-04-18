@@ -109,6 +109,7 @@ exports.signup = function(req, res, next) {
 
 // Generate and Check if Exists
 exports.generateUser = function(req, res, next) {
+	console.log('generate attempted');
 	if (req.body.client) {
 		// Create a new 'User' model instance
 		if(true) {

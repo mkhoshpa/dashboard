@@ -15,8 +15,8 @@ exports.create = function(req, res) {
       User.findByIdAndUpdate(
         reminderResponse.createdBy,
         {$push:{"responses": reminderResponse._id}},
-        {safe: true},
-        {new: true},
+        {safe: true, new:true},
+
         function(err, user) {
           if(err) {
             console.log(err);

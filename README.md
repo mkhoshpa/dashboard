@@ -31,3 +31,17 @@
   {username: 'your username'},
   )
 18. Signout and Sign back in to get clients
+
+
+#MongoLab Stuff
+* In your terminal / command prompt
+  * mongo ds011251.mlab.com:11251/fitpath -u thom -p letmein1
+* To show available database: Run in mongo shell ( open after running above )
+  * show dbs
+* Select which ever databse, use 'database'
+  * use dashboard
+* To update whatever user with a coach field
+  * db.users.update(
+    {username:'colinhryniowski@gmail.com'},      
+    {$set: {role: 'coach'}}
+  );

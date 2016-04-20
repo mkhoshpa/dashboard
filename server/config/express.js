@@ -71,6 +71,7 @@ module.exports = function() {
 	require('../routes/api/surveyRoute.js')(app);
 	require('../routes/twilio.js')(app, client);
 	require('../routes/triangular.routes.js')(app);
+	require('../routes/api/facebook.routes.js')(app);
 
 	// Configure static file serving
   app.use(express.static(__dirname + '/../../app'));

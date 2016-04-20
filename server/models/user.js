@@ -7,7 +7,10 @@ var mongoose = require('mongoose'),
   	crypto = require('crypto'),
   	Schema = mongoose.Schema,
     Slack = require('./slack.js'),
-    reminder = require('./reminder.js');
+
+    reminder = require('./reminder.js'),
+    reminderResponse = require('./reminderResponse.js');
+
 
 // Define a new 'UserSchema'
 var UserSchema = new Schema({
@@ -69,10 +72,13 @@ var UserSchema = new Schema({
     enum: ['red', 'yellow', 'green'],
     default: 'green'
   },
-  mostRecentActivity: {
-    reminder: {type: mongoose.Schema.Types.ObjectId, ref: 'Reminder'},
-    survey: {type: mongoose.Schema.Types.ObjectId, ref: 'Survey'}
-  },
+  responses: [
+    {
+    // reminder: {type: mongoose.Schema.Types.ObjectId, ref: 'Reminder'},
+    // survey: {type: mongoose.Schema.Types.ObjectId, ref: 'Survey'}
+    type: mongoose.Schema.Types.ObjectId, ref: 'ReminderResponse'
+    }
+  ],
   coaches: [
     { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
   ],

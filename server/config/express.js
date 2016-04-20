@@ -66,6 +66,7 @@ module.exports = function() {
 	require('../routes/api/habits.js')(app);
 	require('../routes/api/willow-survey.js')(app);
 	require('../routes/api/reminders.js')(app);
+	require('../routes/api/reminderResponse.js')(app);
 	require('../routes/user.info.routes.js')(app);
 	require('../routes/api/survey.js')(app);
 	require('../routes/twilio.js')(app, client);

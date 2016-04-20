@@ -19,7 +19,8 @@
   },
   "resolutions": {
     "moment": "^2.12.0",
-    "angular": "1.5.3"
+    "angular": ">1.2.8",
+    "angular-material-data-table": "^0.9.14"
   },
   "devDependencies": {
     "triangular": "git@github.com:oxygenna/triangular-bower.git#^2.6.0"

@@ -14,6 +14,7 @@
           <p>{{reminder.author}}</p>
           <p>{{reminder.assignee}}</p>
           <p>{{reminder.timeOfDay | date:'h:mma'}}</p>
+          <p>{{reminder.response}}</p>
         </md-card-content>
       </div>
     </md-card-content>
@@ -24,6 +25,10 @@
       <md-card-actions flex="20" layout-align="end right">
         <md-button ng-click="vm.editReminder($event,reminder)">Edit</md-button>
       </md-card-actions>
+      <md-card-actions flex="20" layout-align="end right">
+        <md-button ng-click="vm.editReminder($event,reminder)">Edit</md-button>
+      </md-card-actions>
+
     </div>
   </div>
   </md-card>

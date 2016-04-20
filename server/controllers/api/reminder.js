@@ -7,6 +7,7 @@ var moment = require('moment');
 
 exports.create = function(req, res) {
   var reminder = new Reminder(req.body);
+  console.log("reminder controller hit");
   console.log(reminder);
   reminder.save(function(err, reminder) {
     if(!err) {
@@ -38,6 +39,9 @@ exports.create = function(req, res) {
     }
   });
 }
+//fire a console log statement if we recieve a response
+
+
 //User.populate(req.user, {path: 'clients'}, function(err, user) {
 
 exports.read = function(req, res) {
@@ -70,6 +74,8 @@ exports.update = function(req, res) {
   //   }
   //
   // });
+  console.log("api reminder update workded");
+  console.log(req.body);
 
   Reminder.findByIdAndUpdate(
     req.params.id,
@@ -79,6 +85,7 @@ exports.update = function(req, res) {
       selectedDates: req.body.selectedDates,
       daysOfTheWeek: req.body.daysOfTheWeek,
       assignee: req.body.assignee
+
     }},{new: true}, function(err, reminder) {
       if(reminder) {
         console.log(reminder);

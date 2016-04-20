@@ -5,6 +5,8 @@ var Schema = mongoose.Schema;
 var ObjectId = mongoose.Schema.Types.ObjectId;
 var User = require('./user.js');
 var moment = require('moment');
+var ReminderResponse = require('./reminderResponse');
+
 
 var reminderSchema = new Schema({
   title: {type: String, required: true},
@@ -31,10 +33,9 @@ var reminderSchema = new Schema({
     saturday: {type: Boolean},
     sunday: {type: Boolean}
   },
-  response : [
+  responses : [
     {
-      contents: {type: mongoose.Schema.Types.Mixed},
-      responseTime: {type: Date},
+      response: {type: mongoose.Schema.Types.ObjectId, ref:'ReminderResponse'}
     }
   ],
    // Who the reminder is coming from
@@ -60,6 +61,7 @@ reminderSchema.statics.makeDefaultReminder = function () {
     return reminder;
 
 };
+
 
 reminderSchema.post('findOneAndUpdate', function(doc) {
   console.log('reminde updated');

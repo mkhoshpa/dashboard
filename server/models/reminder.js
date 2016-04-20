@@ -107,6 +107,45 @@ reminderSchema.pre('save', function(next) {
     }
     next();
 });
+reminderSchema.pre('update', function(next) {
+    if(true){
+        console.log("hello update");
+        this.days = [];
+        if(this.daysOfTheWeek.sunday){
+            this.days.splice(this.days.length,0,0);
+        };
+        if(this.daysOfTheWeek.monday){
+            this.days.splice(this.days.length,0,1);
+        };
+        if(this.daysOfTheWeek.tuesday){
+            this.days.splice(this.days.length,0,2);
+        };
+        if(this.daysOfTheWeek.wednesday){
+            this.days.splice(this.days.length,0,3);
+        };
+        if(this.daysOfTheWeek.thursday){
+            this.days.splice(this.days.length,0,4);
+        };
+        if(this.daysOfTheWeek.friday){
+            this.days.splice(this.days.length,0,5);
+        };
+        if(this.daysOfTheWeek.saturday){
+            this.days.splice(this.days.length,0,6);
+        };
+        console.log("DAYS FOR DAYS");
+        console.log(this.days);
+    };
+
+    if(true){
+        this.hour = this.timeOfDay.getHours();
+        console.log(this.hour + "this is the hour");
+    }
+    if(true){
+        this.minute = this.timeOfDay.getMinutes();
+        console.log("this is the minute" + this.minute);
+    }
+    next();
+});
 
 var Reminder = mongoose.model('Reminder', reminderSchema);
 

@@ -61,14 +61,14 @@ module.exports = function() {
 	require('../routes/index.server.routes.js')(app);
 	require('../routes/users.login.routes.js')(app);
 	require('../routes/dashboard.route.js')(app);
-	require('../routes/api/slack.js')(app);
-	require('../routes/api/willow.js')(app);
-	require('../routes/api/habits.js')(app);
-	require('../routes/api/willow-survey.js')(app);
-	require('../routes/api/reminders.js')(app);
-	require('../routes/api/reminderResponse.js')(app);
+	require('../routes/api/slackRoute.js')(app);
+	require('../routes/api/willowRoute.js')(app);
+	require('../routes/api/habitRoute.js')(app);
+	require('../routes/api/willow-surveyRoute.js')(app);
+	require('../routes/api/reminderRoute.js')(app);
+	require('../routes/api/reminderResponseRoute.js')(app);
 	require('../routes/user.info.routes.js')(app);
-	require('../routes/api/survey.js')(app);
+	require('../routes/api/surveyRoute.js')(app);
 	require('../routes/twilio.js')(app, client);
 	require('../routes/triangular.routes.js')(app);
 

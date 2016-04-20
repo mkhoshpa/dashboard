@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var User = require('./user.js');
 var Surveys = require('./survey.js');
-var Habits = require('./habits.js');
+var Habits = require('./habit.js');
 
 var SlackSchema = new Schema({
     dashboardUser: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},

@@ -33,12 +33,11 @@ var reminderSchema = new Schema({
     saturday: {type: Boolean},
     sunday: {type: Boolean}
   },
-  responses : [{
-
-    timeStamp: {type:Date, default: Date.now},
-    completed: {type: Boolean, default: true},
-    text: {type: String}
-
+  responses : [
+    {
+      timeStamp: {type: Date, default: Date.now},
+      completed: {type: Boolean, default: false},
+      text: {type: String}
     }
   ],
    // Who the reminder is coming from

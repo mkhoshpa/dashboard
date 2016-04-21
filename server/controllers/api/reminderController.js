@@ -50,19 +50,29 @@ exports.read = function(req, res) {
 
 //TODO change routes so this method gets called
 exports.addResponse = function(req, res) {
+  console.log(req.body);
+  console.log('add response triggerd');
   Reminder.findByIdAndUpdate(
-    req.params.id,
-    {$push: {"responses": {timeStamp: Date.now, completed: true, text: req.body.text}}},
+    req.params.id ,
+    {
+      $push: {
+        "responses": {
+          timeStamp: Date.now(),
+          completed: true,
+          text: req.body.text
+        }
+      }
+    },
     {safe: true, upsert: true, new : true},
         function(err, model) {
             console.log(err);
-            console.log(model);
-            
+            res.send(model);
+
         }
       )
 
 
-  };
+  }
 
   //TODO make a virtual to easily display the text and bool from the last responses
 

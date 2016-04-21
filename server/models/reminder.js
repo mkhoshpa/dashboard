@@ -33,9 +33,12 @@ var reminderSchema = new Schema({
     saturday: {type: Boolean},
     sunday: {type: Boolean}
   },
-  responses : [
-    {
-      response: {type: mongoose.Schema.Types.ObjectId, ref:'ReminderResponse'}
+  responses : [{
+
+    timeStamp: {type:Date, default: Date.now},
+    completed: {type: Boolean, default: true},
+    text: {type: String}
+
     }
   ],
    // Who the reminder is coming from
@@ -60,6 +63,10 @@ reminderSchema.statics.makeDefaultReminder = function () {
     })
     return reminder;
 
+};
+reminderSchema.method.response = function(){
+  console.log('can I get a hello');
+  return 'hello';
 };
 
 
@@ -107,6 +114,12 @@ reminderSchema.pre('save', function(next) {
     }
     next();
 });
+
+//make a virtual that returns the most recent response on the responses array
+
+
+//this doesn't work TODO
+
 reminderSchema.pre('update', function(next) {
     if(true){
         console.log("hello update");

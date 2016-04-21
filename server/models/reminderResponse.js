@@ -11,11 +11,7 @@ var reminderResponseSchema = new Schema({
   //need to know what user, date stamp, reminder and status and text block
   text:{type: String},
 
-  createdBy:{type: mongoose.Schema.Types.ObjectId, ref: 'User'},
-
   timeStamp:{type: Date, default: Date.now},
-
-  reminder:{type: mongoose.Schema.Types.ObjectId, ref: 'Reminder'},
 
   completed:{type:Boolean, default:'false'}
 

@@ -48,6 +48,34 @@ exports.read = function(req, res) {
 
 }
 
+//TODO change routes so this method gets called
+exports.addResponse = function(req, res) {
+  Reminder.findByIdAndUpdate(
+    req.params.id,
+    {$push: {"responses": {timeStamp: Date.now, completed: true, text: req.body.text}}},
+    {safe: true, upsert: true, new : true},
+        function(err, model) {
+            console.log(err);
+            console.log(model);
+            
+        }
+      )
+
+
+  };
+
+  //TODO make a virtual to easily display the text and bool from the last responses
+
+
+
+
+
+
+
+
+//from http://stackoverflow.com/questions/15621970/pushing-object-into-array-schema-in-mongoose
+
+
 exports.update = function(req, res) {
 
   // Reminder.findById(req.params.id, function(err, reminder) {
@@ -84,11 +112,14 @@ exports.update = function(req, res) {
       timeOfDay: req.body.timeOfDay,
       selectedDates: req.body.selectedDates,
       daysOfTheWeek: req.body.daysOfTheWeek,
-      assignee: req.body.assignee
+      assignee: req.body.assignee,
+      hour: req.body.hour,
+      minute: req.body.minute,
+      days: req.body.days
 
     }},{new: true}, function(err, reminder) {
       if(reminder) {
-        console.log(reminder);
+        console.log(JSON.stringify(reminder));
         res.send(reminder);
       }
       else{

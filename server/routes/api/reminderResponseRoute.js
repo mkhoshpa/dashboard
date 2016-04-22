@@ -1,7 +1,7 @@
 'use strict';
 
 // Load the module dependencies
-var reminderResponse = require('../../controllers/api/reminderResponse.js');
+var reminderResponse = require('../../controllers/api/reminderResponseController.js');
 
 
 // Define the routes module' method

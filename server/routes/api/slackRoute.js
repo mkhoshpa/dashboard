@@ -1,7 +1,7 @@
 'use strict';
 
 // Load the module dependencies
-var slack = require('../../controllers/api/slack.js');
+var slack = require('../../controllers/api/slackController.js');
 
 
 // Define the routes module' method

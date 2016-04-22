@@ -1,7 +1,7 @@
 'use strict'
 
 var mongoose = require('mongoose');
-var Habit = require('../../models/habits.js');
+var Habit = require('../../models/habit.js');
 
 
 exports.create = function(req, res) {

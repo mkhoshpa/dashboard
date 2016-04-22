@@ -1,7 +1,7 @@
 'use strict';
 
 // Load the module dependencies
-var habit = require('../../controllers/api/habits.js');
+var habit = require('../../controllers/api/habitController.js');
 
 
 // Define the routes module' method

@@ -10,7 +10,7 @@ var app;
                 this.$http = $http;
                 this.selected = selected;
                 this.options = [
-                    'Anxiety', 'Stress', 'Weightloss', 'Productivity'
+                    'Anxiety', 'Stress', 'Weightloss', 'Productivity', 'Other'
                 ];
                 this.green = '#66BB6A';
                 this.yellow = '#FDD835';
@@ -71,6 +71,19 @@ var app;
                     this.second.reminder.timeOfDay = this.second.time;
                     this.id = this.selected._id;
                     this.another = true;
+                }
+                console.log('first');
+                console.log(this.first);
+                console.log(this.first.custom);
+
+                if(this.first.custom){
+                  this.first.goal = this.first.custom;
+                }
+                if(this.another) {
+                  if(this.second.custom) {
+                    this.second.goal = this.second.custom;
+
+                  }
                 }
                 if (this.another) {
                     survey = {

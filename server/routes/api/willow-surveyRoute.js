@@ -1,7 +1,7 @@
 'use strict';
 
 // Load the module dependencies
-var survey = require('../../controllers/api/willow-survey.js');
+var survey = require('../../controllers/api/willow-surveyController.js');
 
 
 // Define the routes module' method

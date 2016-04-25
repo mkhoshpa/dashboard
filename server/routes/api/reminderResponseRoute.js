@@ -1,4 +1,4 @@
-'use strict';
+ 'use strict';
 
 // Load the module dependencies
 var reminderResponse = require('../../controllers/api/reminderResponseController.js');

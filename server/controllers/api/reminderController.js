@@ -52,6 +52,8 @@ exports.read = function(req, res) {
 exports.addResponse = function(req, res) {
   console.log(req.body);
   console.log('add response triggerd');
+  var reminder;
+  
   Reminder.findByIdAndUpdate(
     req.params.id ,
     {
@@ -65,14 +67,59 @@ exports.addResponse = function(req, res) {
     },
     {safe: true, upsert: true, new : true},
         function(err, model) {
+          console.log("reminder updated");
             console.log(err);
-            res.send(model);
+            console.log(model);
+            reminder = model;
 
         }
-      )
+      );
+  User.findById(reminder.assignee ,
+    function(err, user) {
+      if(!err) {
+        //edit the user
+        console.log("user was reached" + user);
+        user.mostRecentResponse = "Worked";
+        user.save;
+      }
+    }
+  );
 
 
-  }
+  res.send(model);
+}
+
+
+
+
+
+
+
+  // var status = "green";
+  // if(req.body.completed)
+
+  // User.findByIdAndUpdate(
+  //   req.params.id ,
+  //   {
+  //     $set: {
+  //       "mostRecentResponse": {
+  //
+  //         text: req.body.text
+  //       }
+  //     }
+  //
+  //   },
+  //   {safe: true, upsert: true, new : true},
+  //       function(err, model) {
+  //           console.log(err);
+  //           res.send(model);
+  //
+  //       }
+  //     )
+  //
+  //
+  // }
+
 
   //TODO make a virtual to easily display the text and bool from the last responses
 

@@ -23,6 +23,8 @@
           //  id: 'TABLE.COLUMNS.ID'
        };
 
+
+
       vm.query = {
         filter: '',
         order: 'username',
@@ -64,7 +66,7 @@
       function success(clients) {
         vm.clients = clients
       }
-      
+
     }
 
 })();

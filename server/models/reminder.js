@@ -72,6 +72,7 @@ reminderSchema.method.response = function(){
 reminderSchema.post('findOneAndUpdate', function(doc) {
   console.log('reminde updated');
   console.log(doc);
+
 });
 
 reminderSchema.pre('save', function(next) {

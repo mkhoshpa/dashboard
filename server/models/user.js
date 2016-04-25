@@ -72,6 +72,10 @@ var UserSchema = new Schema({
     enum: ['red', 'yellow', 'green'],
     default: 'green'
   },
+  mostRecentReponse :{
+    type: String,
+    default: 'Everything is fine'
+  },
   responses: [
     {
     // reminder: {type: mongoose.Schema.Types.ObjectId, ref: 'Reminder'},
@@ -133,6 +137,8 @@ UserSchema.pre('save', function(next) {
 
 	next();
 });
+
+
 
 // Create an instance method for hashing a password
 UserSchema.methods.hashPassword = function(password) {

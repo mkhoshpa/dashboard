@@ -64,7 +64,7 @@
       function success(clients) {
         vm.clients = clients
       }
-      
+
     }
 
 })();

@@ -59,7 +59,7 @@ var UserSchema = new Schema({
   surveys: [
     {type: mongoose.Schema.Types.ObjectId, ref: 'Survey'}
   ],
-  image: {
+  imageUrl: {
     type: String,
   },
   role:{
@@ -72,6 +72,7 @@ var UserSchema = new Schema({
     enum: ['red', 'yellow', 'green'],
     default: 'green'
   },
+  mostRecentResponse: {type: mongoose.Schema.Types.ObjectId, ref: 'ReminderResponse'},
   responses: [
     {
     // reminder: {type: mongoose.Schema.Types.ObjectId, ref: 'Reminder'},
@@ -99,6 +100,10 @@ var UserSchema = new Schema({
 		// Validate 'provider' value existance
 		required: 'Provider is required'
 	},
+  messenger: {
+    type: String,
+    enum: ['slack', 'facebook', 'text']
+  },
 	providerId: String,
 	providerData: {},
 	created: {
@@ -128,9 +133,8 @@ UserSchema.pre('save', function(next) {
     this.salt = new Buffer(crypto.randomBytes(16).toString('base64'), 'base64');
     this.password = this.hashPassword(this.password);
   }
-    //popping the slack id up a level so it's easy to get
-    this.slack_id = this.slack.id;
-
+  this.messenger = this.messagingService();
+  // Removed because will throw error if user is not coming from slack
 	next();
 });
 
@@ -150,6 +154,17 @@ UserSchema.methods.generatePassword = function () {
   for( var i=0; i < 5; i++ )
     text += possible.charAt(Math.floor(Math.random() * possible.length));
   return text;
+}
+
+UserSchema.methods.messagingService = function() {
+  if(this.provider == 'slack') {
+    return 'slack';
+  }
+  if(this.provider == 'facebook') {
+    return 'facebook';
+  }
+  else
+    return 'text';
 }
 
 UserSchema.methods.isUnique = function (email) {

@@ -10,7 +10,7 @@ exports.create = function(req, res) {
     description: req.body.description,
     author: req.body.author
   }).save(function(err, habit, count) {
-    if(err){
+    if (err) {
       res.send(err);
     } else {
       res.send(habit);
@@ -31,7 +31,7 @@ exports.delete = function(req, res) {
 }
 
 exports.list = function(req, res) {
-  Habit.find({}, function(err,obj) {
+  Habit.find({}, function(err, obj) {
     res.json(obj);
   })
 }

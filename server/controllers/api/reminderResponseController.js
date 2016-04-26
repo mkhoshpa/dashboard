@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 var ReminderResponse = require('../../models/reminderResponse.js');
 var User = require('../../models/user.js');
 var moment = require('moment');
-
+var Reminder = require('../../models/reminder.js');
 
 exports.create = function(req, res) {
   var reminderResponse = new ReminderResponse(req.body);
@@ -83,11 +83,8 @@ exports.update = function(req, res) {
   ReminderResponse.findByIdAndUpdate(
     req.params.id,
     {$set: {
-      title: req.body.title,
-      timeOfDay: req.body.timeOfDay,
-      selectedDates: req.body.selectedDates,
-      daysOfTheWeek: req.body.daysOfTheWeek,
-      assignee: req.body.assignee
+      text: req.body.text,
+      createdBy: req.body.assignee
     }},{new: true}, function(err, reminderResponse) {
       if(reminderResponse) {
         console.log(reminderResponse);
@@ -101,16 +98,20 @@ exports.update = function(req, res) {
 }
 
 exports.response = function(req, res) {
-  var contents = req.body.contents;
-  var responseTime = Date.now();
-  ReminderResponse.findOneAndUpdate(
+
+  var response = new ReminderResponse({
+      text: req.body.text,
+      createdBy: req.body.createdBy,
+      reminder: req.params.id
+  });
+
+  response.save();
+
+  Reminder.findOneAndUpdate(
     {_id: req.params.id},
     {
       $push: {
-        "response": {
-          contents: contents,
-          responseTime: responseTime
-        }
+        "response": response
       }
     },
     {

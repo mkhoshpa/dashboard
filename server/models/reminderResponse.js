@@ -10,15 +10,10 @@ var moment = require('moment');
 var reminderResponseSchema = new Schema({
   //need to know what user, date stamp, reminder and status and text block
   text:{type: String},
-
   createdBy:{type: mongoose.Schema.Types.ObjectId, ref: 'User'},
-
   timeStamp:{type: Date, default: Date.now},
-
   reminder:{type: mongoose.Schema.Types.ObjectId, ref: 'Reminder'},
-
-  completed:{type:Boolean, default:'false'}
-
+  read:{type:Boolean, default:'false'},
 });
 //when a response is created, update the connected user and reminder objects
 // reminderResponseSchema.pre('save', function(next) {
@@ -37,6 +32,16 @@ var reminderResponseSchema = new Schema({
 //   )
 // })
 
+reminderResponseSchema.post('save', function(next) {
+  mongoose.model('User').findByIdAndUpdate(
+    this.createdBy,
+    {mostRecentResponse: this._id},
+    {new: true},
+    function(err, model) {
+      console.log(model);
+    }
+  );
+});
 
 var ReminderResponse = mongoose.model('ReminderResponse', reminderResponseSchema);
 

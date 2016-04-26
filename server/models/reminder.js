@@ -5,7 +5,7 @@ var Schema = mongoose.Schema;
 var ObjectId = mongoose.Schema.Types.ObjectId;
 var User = require('./user.js');
 var moment = require('moment');
-var ReminderResponse = require('./reminderResponse');
+var ReminderResponse = require('./reminderResponse.js');
 
 
 var reminderSchema = new Schema({
@@ -33,11 +33,9 @@ var reminderSchema = new Schema({
     saturday: {type: Boolean},
     sunday: {type: Boolean}
   },
-  responses : [
-    {
-      response: {type: mongoose.Schema.Types.ObjectId, ref:'ReminderResponse'}
-    }
-  ],
+  responses : [{
+    type: mongoose.Schema.Types.ObjectId, ref:'ReminderResponse'
+  }],
    // Who the reminder is coming from
   days: [{type: Number, min: 0, max: 6}],
   hour: {type: Number, min: 0, max: 23},
@@ -46,6 +44,14 @@ var reminderSchema = new Schema({
   parent: {
     id: {type: String},
     model: {type: String}
+  },
+  // Which Messaging service will the reminder use
+  delivery: {
+    id: {type: String},
+    platform: {
+      type: String,
+      enum: ['facebook', 'slack', 'text']
+    }
   },
   // Who the reminder is going too
   assignee: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},

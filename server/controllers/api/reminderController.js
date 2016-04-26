@@ -2,6 +2,7 @@
 
 var mongoose = require('mongoose');
 var Reminder = require('../../models/reminder.js');
+var ReminderResponse = require('../../models/reminderResponse.js');
 var User = require('../../models/user.js');
 var moment = require('moment');
 
@@ -99,17 +100,21 @@ exports.update = function(req, res) {
 }
 
 exports.response = function(req, res) {
-  var contents = req.body.contents;
-  var responseTime = Date.now();
+
+  var response = new ReminderResponse({
+      text: req.body.text,
+      createdBy: req.body.createdBy,
+      reminder: req.params.id
+  });
+
+  response.save();
+
+  console.log(response);
+
   Reminder.findOneAndUpdate(
     {_id: req.params.id},
     {
-      $push: {
-        "response": {
-          contents: contents,
-          responseTime: responseTime
-        }
-      }
+      $push: {"responses" : response}
     },
     {
       safe: true,
@@ -117,11 +122,12 @@ exports.response = function(req, res) {
     },
     function(err, doc) {
       if(doc) {
-        res.send('success');
+        res.send(doc);
       }
     }
   );
 }
+
 
 exports.delete = function(req, res) {
   Reminder.findByIdAndRemove(

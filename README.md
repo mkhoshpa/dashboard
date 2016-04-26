@@ -13,7 +13,7 @@
 7. Install gulp [npm install -g gulp-cli]
 8. Clone Repo
 9. Navigate to Repo Directory
-10. Add SSH key to Thom's Github to access Triangular Repo
+10. Add SSH key to Thom's Github to access Triangular Repo (Assign Thom's Credentials To The Key)
 // Use Git Bash if on windows
 // https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/
 11. Test SSH connection

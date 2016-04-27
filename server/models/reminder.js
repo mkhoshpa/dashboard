@@ -57,7 +57,11 @@ var reminderSchema = new Schema({
   assignee: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
   // Who the reminder is coming from
   author: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}
-})
+});
+
+reminderSchema.virtual('mostRecentResponse').get(function() {
+	return this.responses[this.responses.length - 1];
+});
 
 reminderSchema.statics.makeDefaultReminder = function () {
     var reminder = new Reminder();
@@ -68,88 +72,51 @@ reminderSchema.statics.makeDefaultReminder = function () {
 
 };
 
+reminderSchema.methods.hasResponse = function() {
+
+}
 
 reminderSchema.post('findOneAndUpdate', function(doc) {
   console.log('reminde updated');
   console.log(doc);
 });
 
-reminderSchema.pre('save', function(next) {
-    if(true){
-        console.log("hello");
-        this.days = [];
-        if(this.daysOfTheWeek.sunday){
-            this.days.splice(this.days.length,0,0);
-        };
-        if(this.daysOfTheWeek.monday){
-            this.days.splice(this.days.length,0,1);
-        };
-        if(this.daysOfTheWeek.tuesday){
-            this.days.splice(this.days.length,0,2);
-        };
-        if(this.daysOfTheWeek.wednesday){
-            this.days.splice(this.days.length,0,3);
-        };
-        if(this.daysOfTheWeek.thursday){
-            this.days.splice(this.days.length,0,4);
-        };
-        if(this.daysOfTheWeek.friday){
-            this.days.splice(this.days.length,0,5);
-        };
-        if(this.daysOfTheWeek.saturday){
-            this.days.splice(this.days.length,0,6);
-        };
-        console.log("DAYS FOR DAYS");
-        console.log(this.days);
-    };
+reminderSchema.methods.parseDates = function() {
 
-    if(true){
-        this.hour = this.timeOfDay.getHours();
-        console.log(this.hour + "this is the hour");
-    }
-    if(true){
-        this.minute = this.timeOfDay.getMinutes();
-        console.log("this is the minute" + this.minute);
-    }
+  this.days = [];
+  if(this.daysOfTheWeek.sunday){
+      this.days.splice(this.days.length,0,0);
+  };
+  if(this.daysOfTheWeek.monday){
+      this.days.splice(this.days.length,0,1);
+  };
+  if(this.daysOfTheWeek.tuesday){
+      this.days.splice(this.days.length,0,2);
+  };
+  if(this.daysOfTheWeek.wednesday){
+      this.days.splice(this.days.length,0,3);
+  };
+  if(this.daysOfTheWeek.thursday){
+      this.days.splice(this.days.length,0,4);
+  };
+  if(this.daysOfTheWeek.friday){
+      this.days.splice(this.days.length,0,5);
+  };
+  if(this.daysOfTheWeek.saturday){
+      this.days.splice(this.days.length,0,6);
+  };
+
+  this.hour = this.timeOfDay.getHours();
+  this.minute = this.timeOfDay.getMinutes();
+
+}
+
+reminderSchema.pre('save', function(next) {
+    this.parseDates();
     next();
 });
 reminderSchema.pre('update', function(next) {
-    if(true){
-        console.log("hello update");
-        this.days = [];
-        if(this.daysOfTheWeek.sunday){
-            this.days.splice(this.days.length,0,0);
-        };
-        if(this.daysOfTheWeek.monday){
-            this.days.splice(this.days.length,0,1);
-        };
-        if(this.daysOfTheWeek.tuesday){
-            this.days.splice(this.days.length,0,2);
-        };
-        if(this.daysOfTheWeek.wednesday){
-            this.days.splice(this.days.length,0,3);
-        };
-        if(this.daysOfTheWeek.thursday){
-            this.days.splice(this.days.length,0,4);
-        };
-        if(this.daysOfTheWeek.friday){
-            this.days.splice(this.days.length,0,5);
-        };
-        if(this.daysOfTheWeek.saturday){
-            this.days.splice(this.days.length,0,6);
-        };
-        console.log("DAYS FOR DAYS");
-        console.log(this.days);
-    };
-
-    if(true){
-        this.hour = this.timeOfDay.getHours();
-        console.log(this.hour + "this is the hour");
-    }
-    if(true){
-        this.minute = this.timeOfDay.getMinutes();
-        console.log("this is the minute" + this.minute);
-    }
+    this.parseDates();
     next();
 });
 

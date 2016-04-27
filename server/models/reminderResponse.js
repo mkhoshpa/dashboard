@@ -13,7 +13,7 @@ var reminderResponseSchema = new Schema({
   createdBy:{type: mongoose.Schema.Types.ObjectId, ref: 'User'},
   timeStamp:{type: Date, default: Date.now},
   reminder:{type: mongoose.Schema.Types.ObjectId, ref: 'Reminder'},
-  read:{type:Boolean, default:'false'},
+  responded:{type:Boolean, default:'false'},
 });
 //when a response is created, update the connected user and reminder objects
 // reminderResponseSchema.pre('save', function(next) {
@@ -42,6 +42,7 @@ reminderResponseSchema.post('save', function(next) {
     }
   );
 });
+
 
 var ReminderResponse = mongoose.model('ReminderResponse', reminderResponseSchema);
 

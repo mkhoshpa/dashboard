@@ -5,6 +5,10 @@ var Reminder = require('../../models/reminder.js');
 var ReminderResponse = require('../../models/reminderResponse.js');
 var User = require('../../models/user.js');
 var moment = require('moment');
+var _ = require('underscore');
+
+var Promise = require('bluebird');
+var request = require('request');
 
 exports.create = function(req, res) {
   var reminder = new Reminder(req.body);
@@ -51,33 +55,6 @@ exports.read = function(req, res) {
 
 exports.update = function(req, res) {
 
-  // Reminder.findById(req.params.id, function(err, reminder) {
-  //   if(reminder.parent.id) {
-  //     // Counts "" as characters in the string, need to remove to convert to ObjectId
-  //     var id = mongoose.Types.ObjectId(reminder.parent.id.slice(1,25));
-  //     var Model = require('../../models/' + reminder.parent.model + '.js');
-  //     Model.findById(id, function(err, model) {
-  //       if(err) {
-  //         console.log('error - reminder');
-  //         console.log(err);
-  //       }
-  //       else {
-  //         for(var i = 0; i < model.goals.length; i++) {
-  //           if(model.goals[i].reminder == reminder._id) {
-  //             model.goals[i]
-  //           }
-  //         }
-  //       }
-  //     });
-  //   }
-  //   else {
-  //     //err
-  //   }
-  //
-  // });
-  console.log("api reminder update workded");
-  console.log(req.body);
-
   Reminder.findByIdAndUpdate(
     req.params.id,
     {$set: {
@@ -86,7 +63,6 @@ exports.update = function(req, res) {
       selectedDates: req.body.selectedDates,
       daysOfTheWeek: req.body.daysOfTheWeek,
       assignee: req.body.assignee
-
     }},{new: true}, function(err, reminder) {
       if(reminder) {
         console.log(reminder);
@@ -100,16 +76,9 @@ exports.update = function(req, res) {
 }
 
 exports.response = function(req, res) {
-
-  var response = new ReminderResponse({
-      text: req.body.text,
-      createdBy: req.body.createdBy,
-      reminder: req.params.id
-  });
-
+  console.log('attempted to add response to a reminder');
+  var response = new ReminderResponse(req.body);
   response.save();
-
-  console.log(response);
 
   Reminder.findOneAndUpdate(
     {_id: req.params.id},
@@ -141,36 +110,21 @@ exports.delete = function(req, res) {
             // Do some flash message
           }
         });
-        res.send('success');
+        res.sendStatus(200);
       }
       else{
-        res.send('failure');
+        res.sendStatus(500);
       }
     }
   );
 }
 
 exports.listNow = function(req,res) {
-    console.log("testing how soon is now");
-    //test virtuals
-   // var reminder = Reminder.makeDefaultReminder();
-   // console.log("this is a reminder");
-   // console.log(reminder.hour);
-   // console.log(reminder.minute);
-   // console.log(reminder.days);
-
 
    var now = new Date();
-   console.log(now);
    var hoursNow = now.getHours();
-   console.log("the hours now are" + hoursNow);
    var minutesNow = now.getMinutes();
-
-
    var dayNow = now.getDay();
-   console.log(dayNow);
-   console.log("the day now is " + dayNow);
-
 
    Reminder.find({days: dayNow})
         .where('hour').equals(hoursNow)
@@ -178,13 +132,46 @@ exports.listNow = function(req,res) {
         .populate('assignee')
         .populate('slack')
         .exec(function(err, docs){
-            console.log(err);  //returns Null
-            console.log(docs);
-             //returns Null.
+          console.log(docs);
+          console.log('exec reminder/now');
+          if(docs){
+            initResponses(docs)
+              .then(function(reminders) {
+                console.log('then-');
+                res.json(reminders);
+              })
+              .catch(function(err) {
+                console.log(err);
+              });
+          }
+          else
+            console.log(err);
+        });
+}
 
-             res.json(docs);
+// Init Responses with empty text value
+function initResponses(reminders) {
+  return new Promise(function(resolve, reject) {
+    var options = function(creator, id) {
+      return {
+        method: 'POST',
+        uri: 'http://localhost:3000/api/reminder/response/' + id,
+        form: {
+          createdBy: creator,
+          reminder: id
+        }
+      };
+    }
+    _.each(reminders, function(reminder, index) {
+      request(options(reminder.author, reminder._id), function(err, res, body) {
+        console.log(' in each');
+        if(index == reminders.length - 1)
+          resolve(reminders);
+        else if (err)
+          reject(err);
+      });
     });
-
+  });
 }
 
 exports.list = function(req, res) {

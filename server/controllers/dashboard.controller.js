@@ -56,9 +56,16 @@ exports.render = function(req, res, next) {
         }
       ]
 
+      console.log('User.populate');
       User.populate(req.user, populateCoach,
         function(err, user) {
         if(user) {
+          console.log(user.clients.length);
+          console.log('populate dashboard');
+          for(var i = 0; i < user.clients.length; i++) {
+            user.clients[i].calcStatus();
+          }
+
           res.render(path.resolve('app/index'), {
             user: JSON.stringify(user)
           });
@@ -99,7 +106,6 @@ exports.render = function(req, res, next) {
       User.populate(req.user,
         populateClient, function(err, user) {
           if(user) {
-            console.log('has user');
             res.render(path.resolve('app/index'), {
               user: JSON.stringify(user)
             });

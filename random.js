@@ -56,3 +56,15 @@ db.users.update(
   {username:'colinhryniowski@gmail.com'},
   {$set: {role: 'coach'}}
 );
+
+
+// Colors
+var gradient = {
+  '1':'#F44336',
+  '2':'#F77B37',
+  '3':'#FBB139',
+  '4':'#FFEB3B',
+  '5':'#C3D742',
+  '6':'#87C349',
+  '7':'#4CAF50'
+}

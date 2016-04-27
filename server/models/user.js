@@ -68,18 +68,15 @@ var UserSchema = new Schema({
     default: 'user'
   },
   status: {
-    type: String,
-    enum: ['red', 'yellow', 'green'],
-    default: 'green'
+    type: Number,
+    min: 0,
+    max: 7,
+    default: 4
   },
   mostRecentResponse: {type: mongoose.Schema.Types.ObjectId, ref: 'ReminderResponse'},
-  responses: [
-    {
-    // reminder: {type: mongoose.Schema.Types.ObjectId, ref: 'Reminder'},
-    // survey: {type: mongoose.Schema.Types.ObjectId, ref: 'Survey'}
+  responses: [{
     type: mongoose.Schema.Types.ObjectId, ref: 'ReminderResponse'
-    }
-  ],
+  }],
   coaches: [
     { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
   ],
@@ -180,6 +177,22 @@ UserSchema.methods.isUnique = function (email) {
   })
 }
 
+UserSchema.methods.calcStatus = function() {
+
+  // Check for Outgoing Reminder
+  // not undefiend
+  //var mostRecentReminder = this.reminders[this.reminders.length - 1];
+
+  // If Response to Lastest Reminder, Add A Point, Else Subtract
+  // var status = (mostRecentReminder.hasResponse() && this.status < 7)
+  //              ? this.status++ : this.status --;
+
+  // If they don't respond within the next reminder, deduct a Point
+
+  // If they reach 0, send out a response and shut down automated communication
+
+
+}
 
 // Find possible not used username
 // UserSchema.statics.findUniqueUsername = function(username, suffix, callback) {

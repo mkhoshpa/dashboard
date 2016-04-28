@@ -1,15 +1,14 @@
 'use strict';
 
-// Load the module dependencies
 var reminderResponse = require('../../controllers/api/reminderResponseController.js');
 
-
-// Define the routes module' method
 module.exports = function(app) {
-  app.post('/api/reminderResponse', reminderResponse.create);
-  app.get('/api/reminderResponse', reminderResponse.list);
-  app.post('/api/reminderResponse/:id', reminderResponse.update);
-  app.post('/api/reminderResponse/remove/:id', reminderResponse.delete);
 
-//  app.get('/willow/reminderResponse/now', reminderResponse.now);
+  app.get('/api/reminder/response/list', reminderResponse.list);
+  // When Reminder is initially sent out by the bot
+  app.post('/api/reminder/response/create', reminderResponse.create);
+  // When there is a genuine response
+  app.post('/api/reminder/response/respond/:id', reminderResponse.respond);
+  app.post('/api/reminder/response/remove/:id', reminderResponse.delete);
+
 }

@@ -72,8 +72,72 @@ reminderSchema.statics.makeDefaultReminder = function () {
 
 };
 
-reminderSchema.methods.hasResponse = function() {
+/*
+*  Decides if based on the date and contents on the response if we want
+*  to increment their status point
+*  Returns Boolean Value
+*/
+reminderSchema.methods.increment = function() {
 
+  var currentResponse = this.responses[this.responses.length - 1];
+  var lastResponse = this.lastGenuine();
+  var lastNonResponse = this.lastNonResponse();
+
+  // Genuine response
+  if(currentResponse.responded === true) {
+
+    var currentDate = moment(currentResponse.timeStamp);
+    var lastResponseDate = moment(lastResponseDate.timeStamp);
+
+    // If the last genuine response happend atleast a day ago
+    if(currentDate.subtract(1, 'days').isSameOrBefore(lastResponseDate))
+      return true;
+    // Else, last genuine response happend on the same day, thus do not increment
+    else
+      return false;
+  }
+  // Blank response
+  else{
+    return false;
+  }
+
+}
+
+// We want to decrement if the last response
+reminderSchema.methods.decrement = function() {
+
+  var currentResponse = this.responses[this.responses.length - 1];
+  var lastNonResponse = this.lastNonResponse();
+
+  if(currentResponse.responded === false) {
+    var currentDate = moment(currentResponse.timStamp);
+    var lastNonResponseDate = moment(lastNonResponse.timeStamp);
+
+    if(currentDate.subtract(1, 'days').isSameOrBefore(lastNonResponseDate))
+      return true;
+    else
+      return false;
+  }
+  else{
+    return false;
+  }
+
+}
+
+reminderSchema.methods.lastGenuine = function() {
+  for(var i = this.responses.length - 1; i >= 0; i--) {
+    if(this.responses[i].responded) {
+      return this.responses[i].timeStamp;
+    }
+  }
+}
+
+reminderSchema.methods.lastNonResponse = function() {
+  for(var i = this.responses.length - 1; i >= 0; i--) {
+    if(!this.responses[i].responded) {
+      return this.responses[i].timeStamp;
+    }
+  }
 }
 
 reminderSchema.post('findOneAndUpdate', function(doc) {

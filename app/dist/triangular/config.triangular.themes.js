@@ -214,7 +214,8 @@
          *  This overrides any skin set in a call to triSkinsProvider.setSkin if there is a cookie
          *  REMOVE LINE BELOW FOR PRODUCTION SITE
          */
-        triSkinsProvider.useSkinCookie(true);
+         
+        //triSkinsProvider.useSkinCookie(true);
 
         /**
          *  SET DEFAULT SKIN

@@ -54,7 +54,6 @@ exports.read = function(req, res) {
 }
 
 exports.update = function(req, res) {
-
   Reminder.findByIdAndUpdate(
     req.params.id,
     {$set: {
@@ -69,34 +68,11 @@ exports.update = function(req, res) {
         res.send(reminder);
       }
       else{
-
+        res.sendStatus(500);
       }
     }
   );
 }
-
-exports.response = function(req, res) {
-  console.log('attempted to add response to a reminder');
-  var response = new ReminderResponse(req.body);
-  response.save();
-
-  Reminder.findOneAndUpdate(
-    {_id: req.params.id},
-    {
-      $push: {"responses" : response}
-    },
-    {
-      safe: true,
-      new: true
-    },
-    function(err, doc) {
-      if(doc) {
-        res.send(doc);
-      }
-    }
-  );
-}
-
 
 exports.delete = function(req, res) {
   Reminder.findByIdAndRemove(
@@ -135,43 +111,11 @@ exports.listNow = function(req,res) {
           console.log(docs);
           console.log('exec reminder/now');
           if(docs){
-            initResponses(docs)
-              .then(function(reminders) {
-                console.log('then-');
-                res.json(reminders);
-              })
-              .catch(function(err) {
-                console.log(err);
-              });
+            res.json(docs);
           }
           else
             console.log(err);
         });
-}
-
-// Init Responses with empty text value
-function initResponses(reminders) {
-  return new Promise(function(resolve, reject) {
-    var options = function(creator, id) {
-      return {
-        method: 'POST',
-        uri: 'http://localhost:3000/api/reminder/response/' + id,
-        form: {
-          createdBy: creator,
-          reminder: id
-        }
-      };
-    }
-    _.each(reminders, function(reminder, index) {
-      request(options(reminder.author, reminder._id), function(err, res, body) {
-        console.log(' in each');
-        if(index == reminders.length - 1)
-          resolve(reminders);
-        else if (err)
-          reject(err);
-      });
-    });
-  });
 }
 
 exports.list = function(req, res) {

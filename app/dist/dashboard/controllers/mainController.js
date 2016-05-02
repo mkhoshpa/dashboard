@@ -207,13 +207,36 @@ var app;
                 this.selected.notes.splice(foundIndex, 1);
                 this.openToast("Note removed");
             };
-            MainController.prototype.addNote = function () {
-                this.selected.notes.push(this.newNote);
-                this.newNote = new dashboard.Note('', null);
-                this.formScope.noteForm.$setUntouched();
-                this.formScope.noteForm.$setPristine();
-                this.openToast("Note added");
+            MainController.prototype.addNote = function ($event) {
+                var _this = this;
+                var self = this;
+                var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
+                this.$mdDialog.show({
+                    templateUrl: './dist/view/dashboard/notes/tab-notes.html',
+                    parent: angular.element(document.body),
+                    targetEvent: $event,
+                    controller: dashboard.NoteController,
+                    controllerAs: "ctrl",
+                    clickOutsideToClose: true,
+                    fullscreen: useFullScreen,
+                    locals: {
+                        selected: null
+                    }
+                }).then(function (note) {
+                    // Post request, and push onto users local list of reminders
+                    // this.$http.post('uri').then((response) => response.data)
+                    // after promise is succesful add to
+                    // reminder.assigne.reminders.push()
+                    _this.$http.post('/api/note', note).then(function successCallback(response) {
+                        self.selected.note.push(response.data);
+                        console.log(response.data);
+                    });
+                    self.openToast("Note added");
+                }, function () {
+                    console.log('You cancelled the dialog.');
+                });
             };
+
             MainController.prototype.clearNotes = function ($event) {
                 var confirm = this.$mdDialog.confirm()
                     .title('Are you sure you want to delete all notes?')

@@ -72,6 +72,7 @@ var UserSchema = new Schema({
     enum: ['red', 'yellow', 'green'],
     default: 'green'
   },
+  notes: [{type: String}],
   mostRecentReponse :{
     type: String,
     default: 'Everything is fine'

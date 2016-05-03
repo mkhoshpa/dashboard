@@ -76,20 +76,13 @@ var UserSchema = new Schema({
     },
     updated: {type: Date}
   },
-<<<<<<< HEAD
+
   notes: [{type: String}],
-  mostRecentReponse :{
-    type: String,
-    default: 'Everything is fine'
-  },
-  responses: [
-    {
     // reminder: {type: mongoose.Schema.Types.ObjectId, ref: 'Reminder'},
     // survey: {type: mongoose.Schema.Types.ObjectId, ref: 'Survey'}
-=======
+
   mostRecentResponse: {type: mongoose.Schema.Types.ObjectId, ref: 'ReminderResponse'},
   responses: [{
->>>>>>> master
     type: mongoose.Schema.Types.ObjectId, ref: 'ReminderResponse'
   }],
   coaches: [

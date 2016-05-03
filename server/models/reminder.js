@@ -33,9 +33,19 @@ var reminderSchema = new Schema({
     saturday: {type: Boolean},
     sunday: {type: Boolean}
   },
+<<<<<<< HEAD
+  responses : [
+    {
+      timeStamp: {type: Date, default: Date.now},
+      completed: {type: Boolean, default: false},
+      text: {type: String}
+    }
+  ],
+=======
   responses : [{
     type: mongoose.Schema.Types.ObjectId, ref:'ReminderResponse'
   }],
+>>>>>>> master
    // Who the reminder is coming from
   days: [{type: Number, min: 0, max: 6}],
   hour: {type: Number, min: 0, max: 23},
@@ -70,6 +80,10 @@ reminderSchema.statics.makeDefaultReminder = function () {
     })
     return reminder;
 
+};
+reminderSchema.method.response = function(){
+  console.log('can I get a hello');
+  return 'hello';
 };
 
 /*
@@ -143,6 +157,7 @@ reminderSchema.methods.lastNonResponse = function() {
 reminderSchema.post('findOneAndUpdate', function(doc) {
   console.log('reminde updated');
   console.log(doc);
+
 });
 
 reminderSchema.methods.parseDates = function() {
@@ -179,6 +194,12 @@ reminderSchema.pre('save', function(next) {
     this.parseDates();
     next();
 });
+
+//make a virtual that returns the most recent response on the responses array
+
+
+//this doesn't work TODO
+
 reminderSchema.pre('update', function(next) {
     this.parseDates();
     next();

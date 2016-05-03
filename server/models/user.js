@@ -25,14 +25,14 @@ var UserSchema = new Schema({
 	// },
   // Username is the unique itendifier,
 	username: {
-		type: String,
+		//type: String,
 		// Set a unique 'username' index
-		unique: true,
-    index: true,
+		//unique: true,
+    //index: true
 		// Validate 'username' value existance
-		required: 'Email is required',
+		//required: 'Email is required',
 		// Trim the 'username' field
-    match: [/.+\@.+\..+/, "Please fill a valid email address"]
+    //match: [/.+\@.+\..+/, "Please fill a valid email address"]
 	},
 	password: {
 		type: String,
@@ -76,8 +76,20 @@ var UserSchema = new Schema({
     },
     updated: {type: Date}
   },
+<<<<<<< HEAD
+  notes: [{type: String}],
+  mostRecentReponse :{
+    type: String,
+    default: 'Everything is fine'
+  },
+  responses: [
+    {
+    // reminder: {type: mongoose.Schema.Types.ObjectId, ref: 'Reminder'},
+    // survey: {type: mongoose.Schema.Types.ObjectId, ref: 'Survey'}
+=======
   mostRecentResponse: {type: mongoose.Schema.Types.ObjectId, ref: 'ReminderResponse'},
   responses: [{
+>>>>>>> master
     type: mongoose.Schema.Types.ObjectId, ref: 'ReminderResponse'
   }],
   coaches: [
@@ -114,13 +126,15 @@ var UserSchema = new Schema({
 });
 
 // Set the 'fullname' virtual property
-UserSchema.virtual('fullName').get(function() {
-	return this.firstName + ' ' + this.lastName;
-}).set(function(fullName) {
-	var splitName = fullName.split(' ');
-	this.firstName = splitName[0] || '';
-	this.lastName = splitName[1] || '';
-});
+// UserSchema.virtual('fullName').get(function() {
+//   if(this.firstName && this.lastName){
+//   return this.firstName + ' ' + this.lastName;
+// } else return this.name;
+// }).set(function(fullName) {
+// 	var splitName = fullName.split(' ');
+// 	this.firstName = splitName[0] || '';
+// 	this.lastName = splitName[1] || '';
+// });
 
 // Use a pre-save middleware to hash the password
 UserSchema.pre('save', function(next) {
@@ -137,6 +151,8 @@ UserSchema.pre('save', function(next) {
   // Removed because will throw error if user is not coming from slack
 	next();
 });
+
+
 
 // Create an instance method for hashing a password
 UserSchema.methods.hashPassword = function(password) {

@@ -20,16 +20,17 @@ module.exports = function() {
 		function(req, accessToken, refreshToken, profile, done) {
 			// Set the user's provider data and include tokens
 			var providerData = profile._json;
+			console.log(providerData);
 			providerData.accessToken = accessToken;
 			providerData.refreshToken = refreshToken;
 
 			// Create the user OAuth profile
 			var providerUserProfile = {
-				firstName: profile.name.givenName,
-				lastName: profile.name.familyName,
-				fullName: profile.displayName,
-				email: profile.emails[0].value,
-				username: profile.username,
+				//firstName: profile.name.givenName,
+				//lastName: profile.name.familyName,
+				fullName: profile.name,
+				//email: profile.emails[0].value,
+				username: profile.name,
 				provider: 'facebook',
 				providerId: profile.id,
 				providerData: providerData

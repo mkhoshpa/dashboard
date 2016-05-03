@@ -33,19 +33,10 @@ var reminderSchema = new Schema({
     saturday: {type: Boolean},
     sunday: {type: Boolean}
   },
-<<<<<<< HEAD
-  responses : [
-    {
-      timeStamp: {type: Date, default: Date.now},
-      completed: {type: Boolean, default: false},
-      text: {type: String}
-    }
-  ],
-=======
+
   responses : [{
     type: mongoose.Schema.Types.ObjectId, ref:'ReminderResponse'
   }],
->>>>>>> master
    // Who the reminder is coming from
   days: [{type: Number, min: 0, max: 6}],
   hour: {type: Number, min: 0, max: 23},

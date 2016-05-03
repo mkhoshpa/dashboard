@@ -58,7 +58,7 @@ exports.addResponse = function(req, res) {
   console.log(req.body);
   console.log('add response triggerd');
   var reminder;
-  
+
   Reminder.findByIdAndUpdate(
     req.params.id ,
     {
@@ -146,15 +146,12 @@ exports.update = function(req, res) {
       timeOfDay: req.body.timeOfDay,
       selectedDates: req.body.selectedDates,
       daysOfTheWeek: req.body.daysOfTheWeek,
-<<<<<<< HEAD
       assignee: req.body.assignee,
       hour: req.body.hour,
       minute: req.body.minute,
       days: req.body.days
 
-=======
-      assignee: req.body.assignee
->>>>>>> master
+
     }},{new: true}, function(err, reminder) {
       if(reminder) {
         console.log(JSON.stringify(reminder));

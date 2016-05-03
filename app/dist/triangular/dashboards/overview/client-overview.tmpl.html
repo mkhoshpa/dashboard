@@ -68,13 +68,7 @@
                     </thead>
                     <tbody md-body >
                         <tr md-row md-auto-select="false" md-select="client" ng-repeat="client in vm.clients | orderBy: vm.query.order | filter:vm.query.filter  | limitTo: vm.query.limit: (vm.query.page - 1) * vm.query.limit">
-<<<<<<< HEAD
-                            <td md-cell><img ng-src="{{client.slack.img}}" style="border-radius: 50%; width: 50px; margin: 10px;"/></td>
-                            <td md-cell>{{client.username}}</td>
-                            <td md-cell>{{client.status}}</td>
-                            <td md-cell>{{client.mostRecentResponse}} </td>
-=======
-                            <td md-cell>
+                  <td md-cell>
                               <img ng-src="{{client.slack.img}}" style="border-radius: 50%; width: 50px; margin: 10px;"/>
                             </td>
                             <td md-cell>
@@ -86,7 +80,7 @@
                             <td md-cell>
                               <most-recent selected="client"></most-recent>
                             </td>
->>>>>>> master
+
                         </tr>
                     </tbody>
                </table>

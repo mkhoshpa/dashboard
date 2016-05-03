@@ -4,15 +4,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var reminderResponseSchema = new Schema({
-<<<<<<< HEAD
-  //need to know what user, date stamp, reminder and status and text block
-  text:{type: String},
 
-  timeStamp:{type: Date, default: Date.now},
-
-  completed:{type:Boolean, default:'false'}
-
-=======
   response:[{
     text: {type: String},
     time: {type: Date}
@@ -21,7 +13,6 @@ var reminderResponseSchema = new Schema({
   responded:{type:Boolean, default:'false'},
   reminder:{type: mongoose.Schema.Types.ObjectId, ref: 'Reminder'},
   timeStamp: {type: Date, default: Date.now}
->>>>>>> master
 });
 
 reminderResponseSchema.post('save', function(doc,next) {

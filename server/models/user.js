@@ -59,7 +59,7 @@ var UserSchema = new Schema({
   surveys: [
     {type: mongoose.Schema.Types.ObjectId, ref: 'Survey'}
   ],
-  image: {
+  imageUrl: {
     type: String,
   },
   role:{
@@ -68,10 +68,15 @@ var UserSchema = new Schema({
     default: 'user'
   },
   status: {
-    type: String,
-    enum: ['red', 'yellow', 'green'],
-    default: 'green'
+    value: {
+      type: Number,
+      min: 0,
+      max: 7,
+      default: 4
+    },
+    updated: {type: Date}
   },
+<<<<<<< HEAD
   notes: [{type: String}],
   mostRecentReponse :{
     type: String,
@@ -81,9 +86,12 @@ var UserSchema = new Schema({
     {
     // reminder: {type: mongoose.Schema.Types.ObjectId, ref: 'Reminder'},
     // survey: {type: mongoose.Schema.Types.ObjectId, ref: 'Survey'}
+=======
+  mostRecentResponse: {type: mongoose.Schema.Types.ObjectId, ref: 'ReminderResponse'},
+  responses: [{
+>>>>>>> master
     type: mongoose.Schema.Types.ObjectId, ref: 'ReminderResponse'
-    }
-  ],
+  }],
   coaches: [
     { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
   ],
@@ -104,6 +112,10 @@ var UserSchema = new Schema({
 		// Validate 'provider' value existance
 		required: 'Provider is required'
 	},
+  messenger: {
+    type: String,
+    enum: ['slack', 'facebook', 'text']
+  },
 	providerId: String,
 	providerData: {},
 	created: {
@@ -135,9 +147,8 @@ UserSchema.pre('save', function(next) {
     this.salt = new Buffer(crypto.randomBytes(16).toString('base64'), 'base64');
     this.password = this.hashPassword(this.password);
   }
-    //popping the slack id up a level so it's easy to get
-    this.slack_id = this.slack.id;
-
+  this.messenger = this.messagingService();
+  // Removed because will throw error if user is not coming from slack
 	next();
 });
 
@@ -161,6 +172,17 @@ UserSchema.methods.generatePassword = function () {
   return text;
 }
 
+UserSchema.methods.messagingService = function() {
+  if(this.provider == 'slack') {
+    return 'slack';
+  }
+  if(this.provider == 'facebook') {
+    return 'facebook';
+  }
+  else
+    return 'text';
+}
+
 UserSchema.methods.isUnique = function (email) {
   this.findOne({
     username: email
@@ -174,6 +196,11 @@ UserSchema.methods.isUnique = function (email) {
   })
 }
 
+UserSchema.methods.calcStatus = function() {
+
+
+
+}
 
 // Find possible not used username
 // UserSchema.statics.findUniqueUsername = function(username, suffix, callback) {

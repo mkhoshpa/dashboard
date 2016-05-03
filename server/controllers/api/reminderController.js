@@ -2,8 +2,13 @@
 
 var mongoose = require('mongoose');
 var Reminder = require('../../models/reminder.js');
+var ReminderResponse = require('../../models/reminderResponse.js');
 var User = require('../../models/user.js');
 var moment = require('moment');
+var _ = require('underscore');
+
+var Promise = require('bluebird');
+var request = require('request');
 
 exports.create = function(req, res) {
   var reminder = new Reminder(req.body);
@@ -134,34 +139,6 @@ exports.addResponse = function(req, res) {
 
 
 exports.update = function(req, res) {
-
-  // Reminder.findById(req.params.id, function(err, reminder) {
-  //   if(reminder.parent.id) {
-  //     // Counts "" as characters in the string, need to remove to convert to ObjectId
-  //     var id = mongoose.Types.ObjectId(reminder.parent.id.slice(1,25));
-  //     var Model = require('../../models/' + reminder.parent.model + '.js');
-  //     Model.findById(id, function(err, model) {
-  //       if(err) {
-  //         console.log('error - reminder');
-  //         console.log(err);
-  //       }
-  //       else {
-  //         for(var i = 0; i < model.goals.length; i++) {
-  //           if(model.goals[i].reminder == reminder._id) {
-  //             model.goals[i]
-  //           }
-  //         }
-  //       }
-  //     });
-  //   }
-  //   else {
-  //     //err
-  //   }
-  //
-  // });
-  console.log("api reminder update workded");
-  console.log(req.body);
-
   Reminder.findByIdAndUpdate(
     req.params.id,
     {$set: {
@@ -169,43 +146,22 @@ exports.update = function(req, res) {
       timeOfDay: req.body.timeOfDay,
       selectedDates: req.body.selectedDates,
       daysOfTheWeek: req.body.daysOfTheWeek,
+<<<<<<< HEAD
       assignee: req.body.assignee,
       hour: req.body.hour,
       minute: req.body.minute,
       days: req.body.days
 
+=======
+      assignee: req.body.assignee
+>>>>>>> master
     }},{new: true}, function(err, reminder) {
       if(reminder) {
         console.log(JSON.stringify(reminder));
         res.send(reminder);
       }
       else{
-
-      }
-    }
-  );
-}
-
-exports.response = function(req, res) {
-  var contents = req.body.contents;
-  var responseTime = Date.now();
-  Reminder.findOneAndUpdate(
-    {_id: req.params.id},
-    {
-      $push: {
-        "response": {
-          contents: contents,
-          responseTime: responseTime
-        }
-      }
-    },
-    {
-      safe: true,
-      new: true
-    },
-    function(err, doc) {
-      if(doc) {
-        res.send('success');
+        res.sendStatus(500);
       }
     }
   );
@@ -223,36 +179,21 @@ exports.delete = function(req, res) {
             // Do some flash message
           }
         });
-        res.send('success');
+        res.sendStatus(200);
       }
       else{
-        res.send('failure');
+        res.sendStatus(500);
       }
     }
   );
 }
 
 exports.listNow = function(req,res) {
-    console.log("testing how soon is now");
-    //test virtuals
-   // var reminder = Reminder.makeDefaultReminder();
-   // console.log("this is a reminder");
-   // console.log(reminder.hour);
-   // console.log(reminder.minute);
-   // console.log(reminder.days);
-
 
    var now = new Date();
-   console.log(now);
    var hoursNow = now.getHours();
-   console.log("the hours now are" + hoursNow);
    var minutesNow = now.getMinutes();
-
-
    var dayNow = now.getDay();
-   console.log(dayNow);
-   console.log("the day now is " + dayNow);
-
 
    Reminder.find({days: dayNow})
         .where('hour').equals(hoursNow)
@@ -260,13 +201,14 @@ exports.listNow = function(req,res) {
         .populate('assignee')
         .populate('slack')
         .exec(function(err, docs){
-            console.log(err);  //returns Null
-            console.log(docs);
-             //returns Null.
-
-             res.json(docs);
-    });
-
+          console.log(docs);
+          console.log('exec reminder/now');
+          if(docs){
+            res.json(docs);
+          }
+          else
+            console.log(err);
+        });
 }
 
 exports.list = function(req, res) {

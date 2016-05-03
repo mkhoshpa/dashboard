@@ -2,12 +2,9 @@
 
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var ObjectId = mongoose.Schema.Types.ObjectId;
-var User = require('./user.js');
-var Reminder = require('./reminder.js');
-var moment = require('moment');
 
 var reminderResponseSchema = new Schema({
+<<<<<<< HEAD
   //need to know what user, date stamp, reminder and status and text block
   text:{type: String},
 
@@ -15,43 +12,61 @@ var reminderResponseSchema = new Schema({
 
   completed:{type:Boolean, default:'false'}
 
+=======
+  response:[{
+    text: {type: String},
+    time: {type: Date}
+  }],
+  createdBy:{type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+  responded:{type:Boolean, default:'false'},
+  reminder:{type: mongoose.Schema.Types.ObjectId, ref: 'Reminder'},
+  timeStamp: {type: Date, default: Date.now}
+>>>>>>> master
 });
-//when a response is created, update the connected user and reminder objects
-// reminderResponseSchema.pre('save', function(next) {
-//   var id = this.createdBy;
-//   User.findByIdAndUpdate(
-//     id,
-//     {$push: {"mostRecentActivity": 130}},
-//     {safe: true},
-//     function(err, user) {
-//       if(err) {
-//         console.log(err);
-//       }
-//       else {
-//       }
-//     }
-//   )
-// })
 
+reminderResponseSchema.post('save', function(doc,next) {
+  // Push blank response onto ref'd reminder
+  mongoose.model('Reminder').findByIdAndUpdate(
+    this.reminder,
+    {
+      $push: {"responses":this._id}
+    },
+    {new: true},
+    function(err, reminder) {
+      var length = reminder.responses.length;
+      // Subtract
+
+      if(reminder.increment())
+        // Set Adjust User Status Point
+        mongoose.model('User').findByIdAndUpdate(
+          reminder.assignee,
+          {
+            $inc: {"status.value": 1}
+          }
+        )
+
+      else if(reminder.decrement()){
+        mongoose.model('User').findByIdAndUpdate(
+          reminder.assignee,
+          {
+            $inc: {"status.value": -1}
+          }
+        )
+      }
+    }
+  );
+  next();
+});
+
+
+// Update User with most recent response and update thier status
+reminderResponseSchema.post('findOneAndUpdate', function() {
+  console.log(this);
+  // Find User, set response as most recent, then update status
+
+  // Update Status
+});
 
 var ReminderResponse = mongoose.model('ReminderResponse', reminderResponseSchema);
-
-//lets make making reminders a piece of cake !
-
-//create a static method to make a default reminders object
-
-
-
-
-
-
-
-
-
-// console.log(formatTime(" 1:00"));
-// console.log(formatTime("1:00 "));
-// console.log(formatTime("1:00"));
-// console.log(formatTime("2100"));
-// console.log(formatTime("90:00"));
 
 module.exports = ReminderResponse;

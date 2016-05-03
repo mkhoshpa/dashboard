@@ -8,12 +8,26 @@ exports.render = function(req, res, next) {
   if (req.user) {
     if(req.user.role == "coach") {
 
-      var opts = [
+      // Duplicate Code with the Dashboard Controller
+      var populateCoach = [
         {
           path: 'clients',
           model: 'User',
           populate: {
-            path: 'reminders'
+            path: 'reminders',
+            model: 'Reminder',
+            populate: {
+              path: 'responses',
+              model: 'ReminderResponse'
+            }
+          }
+        },
+        {
+          path: 'clients',
+          model: 'User',
+          populate: {
+            path: 'mostRecentResponse',
+            model: 'ReminderResponse',
           }
         },
         {
@@ -32,6 +46,9 @@ exports.render = function(req, res, next) {
           }
         },
         {
+          path: 'mostRecentResponse'
+        },
+        {
           path: 'surveys',
           populate: {path: 'reminder'}
         },
@@ -40,7 +57,8 @@ exports.render = function(req, res, next) {
         }
       ]
 
-      User.populate(req.user, opts,
+
+      User.populate(req.user, populateCoach,
         function(err, user) {
         if(user) {
           res.render(path.resolve('app/dist/triangular/index'), {

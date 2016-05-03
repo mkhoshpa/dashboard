@@ -8,12 +8,25 @@ exports.render = function(req, res, next) {
   if (req.user) {
     if(req.user.role == "coach") {
 
-      var opts = [
+      var populateCoach = [
         {
           path: 'clients',
           model: 'User',
           populate: {
-            path: 'reminders'
+            path: 'reminders',
+            model: 'Reminder',
+            populate: {
+              path: 'responses',
+              model: 'ReminderResponse'
+            }
+          }
+        },
+        {
+          path: 'clients',
+          model: 'User',
+          populate: {
+            path: 'mostRecentResponse',
+            model: 'ReminderResponse',
           }
         },
         {
@@ -32,6 +45,9 @@ exports.render = function(req, res, next) {
           }
         },
         {
+          path: 'mostRecentResponse'
+        },
+        {
           path: 'surveys',
           populate: {path: 'reminder'}
         },
@@ -40,9 +56,16 @@ exports.render = function(req, res, next) {
         }
       ]
 
-      User.populate(req.user, opts,
+      console.log('User.populate');
+      User.populate(req.user, populateCoach,
         function(err, user) {
         if(user) {
+          console.log(user.clients.length);
+          console.log('populate dashboard');
+          for(var i = 0; i < user.clients.length; i++) {
+            user.clients[i].calcStatus();
+          }
+
           res.render(path.resolve('app/index'), {
             user: JSON.stringify(user)
           });
@@ -57,10 +80,32 @@ exports.render = function(req, res, next) {
         }
       });
     } else if (req.user.role == "user")  {
+
+      var populateClient = [
+        {
+          path: 'reminders',
+          model: 'Reminder',
+          populate: {
+            path: 'responses',
+            model: 'ReminderResponse'
+          }
+        },
+        {
+          path: 'surveys',
+          model: 'Survey',
+          populate: {
+            path: 'goals',
+            populate: {
+              path: 'reminder',
+              model: 'Reminder'
+            }
+          }
+        }
+      ]
+
       User.populate(req.user,
-        {path: 'reminders'}, function(err, user) {
+        populateClient, function(err, user) {
           if(user) {
-            console.log('has user');
             res.render(path.resolve('app/index'), {
               user: JSON.stringify(user)
             });

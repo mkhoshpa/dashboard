@@ -80,7 +80,7 @@ var app;
                     // this.$http.post('uri').then((response) => response.data)
                     // after promise is succesful add to
                     // reminder.assigne.reminders.push()
-                    _this.$http.post('/api/reminder', reminder).then(function successCallback(response) {
+                    _this.$http.post('/api/reminder/create', reminder).then(function successCallback(response) {
                         self.selected.reminders.push(response.data);
                         console.log(response.data);
                     });

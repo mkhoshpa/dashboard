@@ -39,10 +39,25 @@
           </md-button>
         </div>
        </md-toolbar>
+       <md-toolbar class="md-table-toolbar" ng-if="vm.selected.length > 0" style="background-color: white;">
+         <!-- <md-chips ng-model="vm.selected" style="padding-right: 16px; padding-left: 13px;">
+          <md-chip-template>
+            <strong>{{$chip.username}}</strong>
+          </md-chip-template>
+        </md-chips> -->
+        <md-contact-chips
+          ng-model="vm.selected"
+          md-contacts="vm.clients"
+          md-contact-name="username"
+          md-highlight-flags="i"
+          placeholder="To"
+          style="padding-right: 16px; padding-left: 13px;">
+        </md-contact-chips>
+       </md-toolbar>
       <md-card-content style="padding-top: 0px;">
         <md-table-container>
                <table md-table class="md-primary md-data-table" multiple md-row-select ng-model="vm.selected" id="client-table">
-                    <thead md-head md-order="vm.query.order">
+                  <thead md-head md-order="vm.query.order">
                         <tr md-row>
                             <th md-column><span translate>{{vm.columns.avatar}}</span></th>
                             <th md-column md-order-by="username"><span translate>{{vm.columns.name}}</span></th>
@@ -53,10 +68,25 @@
                     </thead>
                     <tbody md-body >
                         <tr md-row md-auto-select="false" md-select="client" ng-repeat="client in vm.clients | orderBy: vm.query.order | filter:vm.query.filter  | limitTo: vm.query.limit: (vm.query.page - 1) * vm.query.limit">
+<<<<<<< HEAD
                             <td md-cell><img ng-src="{{client.slack.img}}" style="border-radius: 50%; width: 50px; margin: 10px;"/></td>
                             <td md-cell>{{client.username}}</td>
                             <td md-cell>{{client.status}}</td>
                             <td md-cell>{{client.mostRecentResponse}} </td>
+=======
+                            <td md-cell>
+                              <img ng-src="{{client.slack.img}}" style="border-radius: 50%; width: 50px; margin: 10px;"/>
+                            </td>
+                            <td md-cell>
+                              {{client.username}}
+                            </td>
+                            <td md-cell>
+                              <status selected="client"></status>
+                            </td>
+                            <td md-cell>
+                              <most-recent selected="client"></most-recent>
+                            </td>
+>>>>>>> master
                         </tr>
                     </tbody>
                </table>

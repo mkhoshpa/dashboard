@@ -4,134 +4,71 @@ var mongoose = require('mongoose');
 var ReminderResponse = require('../../models/reminderResponse.js');
 var User = require('../../models/user.js');
 var moment = require('moment');
+var Reminder = require('../../models/reminder.js');
 
 
 exports.create = function(req, res) {
-  var reminderResponse = new ReminderResponse(req.body);
-  console.log("reminderResponse controller hit");
-  console.log(reminderResponse);
-  reminderResponse.save(function(err, reminderResponse) {
-    if(!err) {
-      User.findByIdAndUpdate(
-        reminderResponse.createdBy,
-        {$push:{"responses": reminderResponse._id}},
-        {safe: true, new:true},
 
-        function(err, user) {
-          if(err) {
-            console.log(err);
-          }
-          else {
-            console.log(JSON.stringify(user));
-          }
-        }
-      );
+  // Add  empty response object
+  var response = new ReminderResponse(req.body);
+  response.save();
+  res.send(response);
 
-      // User.populate(
-      //   reminderResponse.assignee,
-      //   {path: 'reminderResponses'}, function(err, user) {
-      //     if(err) {
-      //       // Do something
-      //     }
-      //     else {
-      //     }
-      //   }
-      // );
-
-      res.send(reminderResponse);
-    }
-  });
 }
-//fire a console log statement if we recieve a response
-
-
-//User.populate(req.user, {path: 'clients'}, function(err, user) {
 
 exports.read = function(req, res) {
 
 }
 
-exports.update = function(req, res) {
-
-  // reminderResponse.findById(req.params.id, function(err, reminderResponse) {
-  //   if(reminderResponse.parent.id) {
-  //     // Counts "" as characters in the string, need to remove to convert to ObjectId
-  //     var id = mongoose.Types.ObjectId(reminderResponse.parent.id.slice(1,25));
-  //     var Model = require('../../models/' + reminderResponse.parent.model + '.js');
-  //     Model.findById(id, function(err, model) {
-  //       if(err) {
-  //         console.log('error - reminderResponse');
-  //         console.log(err);
-  //       }
-  //       else {
-  //         for(var i = 0; i < model.goals.length; i++) {
-  //           if(model.goals[i].reminderResponse == reminderResponse._id) {
-  //             model.goals[i]
-  //           }
-  //         }
-  //       }
-  //     });
-  //   }
-  //   else {
-  //     //err
-  //   }
-  //
-  // });
-  console.log("api reminderResponse update workded");
-  console.log(req.body);
+//
+exports.respond = function(req, res) {
 
   ReminderResponse.findByIdAndUpdate(
     req.params.id,
-    {$set: {
-      title: req.body.title,
-      timeOfDay: req.body.timeOfDay,
-      selectedDates: req.body.selectedDates,
-      daysOfTheWeek: req.body.daysOfTheWeek,
-      assignee: req.body.assignee
-    }},{new: true}, function(err, reminderResponse) {
-      if(reminderResponse) {
-        console.log(reminderResponse);
-        res.send(reminderResponse);
+    {
+      $set: {
+        responded: req.body.responded
+      },
+      $push: {
+        response: req.body.response,
       }
-      else{
-
+    },
+    {new: true},
+    function(err, model) {
+      if(model) {
+        updateUser(model._id, model.assignee);
+        res.sendStatus(200);
       }
+      else
+        res.sendStatus(500);
     }
   );
 }
 
-exports.response = function(req, res) {
-  var contents = req.body.contents;
-  var responseTime = Date.now();
-  ReminderResponse.findOneAndUpdate(
-    {_id: req.params.id},
+// When given a genuine response, update user
+function updateUser(responseId, userId) {
+  mongoose.model('User').findByIdAndUpdate(
+    userId,
     {
-      $push: {
-        "response": {
-          contents: contents,
-          responseTime: responseTime
-        }
-      }
+      $set: {
+        mostRecentResponse: responseId,
+      },
     },
-    {
-      safe: true,
-      new: true
-    },
-    function(err, doc) {
-      if(doc) {
-        res.send('success');
+    function(err, model) {
+      if(model){
+        res.send(model);
       }
     }
   );
 }
 
 exports.delete = function(req, res) {
-  reminderResponse.findByIdAndRemove(
+  ReminderResponse.findByIdAndRemove(
     req.params.id,
-    function(err, reminderResponse) {
-      if(reminderResponse) {
-        User.findByIdAndUpdate(reminderResponse.assignee,
-          {$pull : {'reminderResponses': reminderResponse._id}},
+    function(err, ReminderResponse) {
+      if(ReminderResponse) {
+        User.findByIdAndUpdate(ReminderResponse.assignee,
+          {$pull : {'ReminderResponses': ReminderResponse._id}},
           function(err, model) {
           if(err) {
             // Do some flash message
@@ -147,38 +84,22 @@ exports.delete = function(req, res) {
 }
 
 exports.listNow = function(req,res) {
-    console.log("testing how soon is now");
-    //test virtuals
-   // var reminderResponse = reminderResponse.makeDefaultreminderResponse();
-   // console.log("this is a reminderResponse");
-   // console.log(reminderResponse.hour);
-   // console.log(reminderResponse.minute);
-   // console.log(reminderResponse.days);
-
 
    var now = new Date();
-   console.log(now);
-   var hoursNow = now.getHours();
-   console.log("the hours now are" + hoursNow);
-   var minutesNow = now.getMinutes();
+   var hour = now.getHours();
+   var minute = now.getMinutes();
+   var day = now.getDay();
 
-
-   var dayNow = now.getDay();
-   console.log(dayNow);
-   console.log("the day now is " + dayNow);
-
-
-   ReminderResponse.find({days: dayNow})
-        .where('hour').equals(hoursNow)
-        .where('minute').equals(minutesNow)
+   ReminderResponse.find({days: day})
+        .where('hour').equals(hours)
+        .where('minute').equals(minute)
         .populate('assignee')
         .populate('slack')
         .exec(function(err, docs){
-            console.log(err);  //returns Null
-            console.log(docs);
-             //returns Null.
-
-             res.json(docs);
+          if(docs && !err)
+            res.json(docs);
+          else
+            res.sendStatus(500);
     });
 
 }
@@ -188,5 +109,3 @@ exports.list = function(req, res) {
     res.json(obj);
   })
 }
-
-//need a method to find all the reminderResponses that need to go out

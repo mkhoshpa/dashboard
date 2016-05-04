@@ -10,13 +10,11 @@ var reminder = require('../../controllers/api/reminderController.js');
 
 
 module.exports = function(app) {
-<<<<<<< HEAD
   app.post('/api/reminderResponse', reminderResponse.create);
   app.get('/api/reminderResponse', reminderResponse.list);
   app.post('/api/reminderResponse/:id', reminder.addResponse);
   app.post('/api/reminderResponse/remove/:id', reminderResponse.delete);
-=======
->>>>>>> master
+
 
   app.get('/api/reminder/response/list', reminderResponse.list);
   // When Reminder is initially sent out by the bot

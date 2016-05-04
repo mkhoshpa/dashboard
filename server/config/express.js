@@ -38,6 +38,14 @@ module.exports = function() {
 	app.use(bodyParser.json());
 	app.use(methodOverride());
 
+
+
+	//thom added this in to implement easy node authentincation setup
+	app.use(cookieParser());
+
+
+
+
 	// Configure the 'session' middleware
 	app.use(session({
 		// cookie: { maxAge: 60000 },
@@ -58,20 +66,20 @@ module.exports = function() {
 	app.use(passport.session());
 
 	// Load the routing files
-	require('../routes/index.server.routes.js')(app);
-	require('../routes/users.login.routes.js')(app);
-	require('../routes/dashboard.route.js')(app);
-	require('../routes/api/slackRoute.js')(app);
-	require('../routes/api/willowRoute.js')(app);
-	require('../routes/api/habitRoute.js')(app);
-	require('../routes/api/willow-surveyRoute.js')(app);
-	require('../routes/api/reminderRoute.js')(app);
-	require('../routes/api/reminderResponseRoute.js')(app);
-	require('../routes/user.info.routes.js')(app);
-	require('../routes/api/surveyRoute.js')(app);
-	require('../routes/twilio.js')(app, client);
-	require('../routes/triangular.routes.js')(app);
-	require('../routes/api/facebook.routes.js')(app);
+	require('../routes/index.server.routes.js')(app, passport);
+	require('../routes/users.login.routes.js')(app, passport);
+	require('../routes/dashboard.route.js')(app, passport);
+	require('../routes/api/slackRoute.js')(app, passport);
+	require('../routes/api/willowRoute.js')(app, passport);
+	require('../routes/api/habitRoute.js')(app, passport);
+	require('../routes/api/willow-surveyRoute.js')(app, passport);
+	require('../routes/api/reminderRoute.js')(app, passport);
+	require('../routes/api/reminderResponseRoute.js')(app, passport);
+	require('../routes/user.info.routes.js')(app, passport);
+	require('../routes/api/surveyRoute.js')(app, passport);
+	require('../routes/twilio.js')(app, client, passport);
+	require('../routes/triangular.routes.js')(app, passport);
+	require('../routes/api/facebook.routes.js')(app, passport);
 
 	// Configure static file serving
   app.use(express.static(__dirname + '/../../app'));

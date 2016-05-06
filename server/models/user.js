@@ -25,7 +25,7 @@ var UserSchema = new Schema({
 	// },
   // Username is the unique itendifier,
 	username: {
-		//type: String,
+		type: String
 		// Set a unique 'username' index
 		//unique: true,
     //index: true

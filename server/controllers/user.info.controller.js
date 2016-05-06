@@ -11,6 +11,28 @@ var nodemailer = require('nodemailer');
   Node Mailer Config
 */
 
+exports.create = function(req, res) {
+  var user = new User(req.body);
+  console.log("User controller hit");
+  console.log(user);
+  //Test: need my our id(colins)
+      // User.populate(
+      //   reminder.assignee,
+      //   {path: 'reminders'}, function(err, user) {
+      //     if(err) {
+      //       // Do something
+      //     }
+      //     else {
+      //     }
+      //   }
+      // );
+      res.send(user);
+    
+}
+
+
+
+
 
 exports.render = function(req, res) {
 

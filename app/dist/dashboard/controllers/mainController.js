@@ -51,9 +51,13 @@ var app;
                 }).then(function (user) {
                     // Call user service
                     console.log('this is user' + JSON.stringify(user));
-                    var newUser = _this.userService.insert(user.name).then(function (result) {
-                        self.clients.push(result);
-                        self.selectUser(result);
+
+
+
+                    _this.$http.post('/api/user/create', user).then(function successCallback(response) {
+                        //self.selected.reminders.push(response.data);
+                        //console.log(response.data);
+                        console.log("Good!");
                     });
                     self.openToast("User added");
                 }, function () {

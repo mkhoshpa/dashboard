@@ -80,6 +80,7 @@ module.exports = function() {
 	require('../routes/twilio.js')(app, client, passport);
 	require('../routes/triangular.routes.js')(app, passport);
 	require('../routes/api/facebook.routes.js')(app, passport);
+	require('../routes/api/userRoute.js')(app, passport);
 
 	// Configure static file serving
   app.use(express.static(__dirname + '/../../app'));

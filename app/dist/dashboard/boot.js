@@ -40,6 +40,10 @@ var app;
                 .when("/", {
                 templateUrl: "/dist/view/dashboard/index.html",
                 controller: "MainController as vm"
+            }).when("/table", {
+
+                templateUrl: "/dist/view/dashboard/table.html",
+                controller: "MainController as vm"
             });
             $locationProvider.hashPrefix('!');
         });

@@ -55,9 +55,9 @@ var app;
 
 
                     _this.$http.post('/api/user/create', user).then(function successCallback(response) {
-                        //self.selected.reminders.push(response.data);
-                        //console.log(response.data);
-                        console.log("Good!");
+                        console.log(JSON.stringify(response.data));
+                        //self.user.clients.push(response.data);
+
                     });
                     self.openToast("User added");
                 }, function () {
@@ -88,7 +88,7 @@ var app;
                         self.selected.reminders.push(response.data);
                         console.log(response.data);
                     });
-                    self.openToast("Remminder added");
+                    self.openToast("Reminder added");
                 }, function () {
                     console.log('You cancelled the dialog.');
                 });
@@ -212,34 +212,56 @@ var app;
                 this.openToast("Note removed");
             };
             MainController.prototype.addNote = function ($event) {
-                var _this = this;
-                var self = this;
-                var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
-                this.$mdDialog.show({
-                    templateUrl: './dist/view/dashboard/notes/tab-notes.html',
-                    parent: angular.element(document.body),
-                    targetEvent: $event,
-                    controller: dashboard.NoteController,
-                    controllerAs: "ctrl",
-                    clickOutsideToClose: true,
-                    fullscreen: useFullScreen,
-                    locals: {
-                        selected: null
-                    }
-                }).then(function (note) {
-                    // Post request, and push onto users local list of reminders
-                    // this.$http.post('uri').then((response) => response.data)
-                    // after promise is succesful add to
-                    // reminder.assigne.reminders.push()
-                    _this.$http.post('/api/note', note).then(function successCallback(response) {
-                        self.selected.note.push(response.data);
-                        console.log(response.data);
-                    });
-                    self.openToast("Note added");
-                }, function () {
-                    console.log('You cancelled the dialog.');
-                });
-            };
+              var _this = this;
+              var self = this;
+
+              console.log(self.userService.selectedUser);
+              var note = {
+                  description : this.newNote.note,
+              }
+              console.log(note);
+
+              _this.$http.post('/api/note', note).then(function successCallback(response) {
+                console.log("Free!");
+                self.selected.note.push(response);
+                console.log(response);
+              });
+
+              self.openToast("Note added");
+            }
+
+              // var _this = this;
+              // var self = this;
+              // var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
+              // this.$mdDialog.show({
+              //  templateUrl: './dist/view/dashboard/notes/tab-notes.html',
+              //  parent: angular.element(document.body),
+              //  targetEvent: $event,
+              //  controller: dashboard.NoteController,
+              //  controllerAs: "ctrl",
+              //  clickOutsideToClose: true,
+              //  fullscreen: useFullScreen,
+              //  locals: {
+              //      selected: null
+              //   }
+              // })
+                // dashboard.NoteController
+                //
+                // }).then(function (note) {
+                //       console.log("HERE!")
+                //     // Post request, and push onto users local list of reminders
+                //     // this.$http.post('uri').then((response) => response.data)
+                //     // after promise is succesful add to
+                //     // reminder.assigne.reminders.push()
+                //     _this.$http.post('/api/note', note).then(function successCallback(response) {
+                //         self.selected.note.push(response);
+                //         console.log(response);
+                //     });
+                //     self.openToast("Note added");
+                // }, function () {
+                //     console.log('You cancelled the dialog.');
+                // });
+
 
             MainController.prototype.clearNotes = function ($event) {
                 var confirm = this.$mdDialog.confirm()

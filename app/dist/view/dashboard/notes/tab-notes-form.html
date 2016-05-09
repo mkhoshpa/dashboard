@@ -1,10 +1,11 @@
+
 <md-content layout-padding>
   <form name="noteForm" ng-submit="vm.addNote()" ng-init="vm.setFormScope(this)">
     <div layout-gt-xs="row">
       <md-input-container class="md-block">
-        <label>Title</label>
-        <input required="" name="title" ng-model="vm.newNote.title">
-        <div ng-messages="noteForm.title.$error">
+        <label>Note</label>
+        <input required="" name="note" ng-model="vm.newNote.note">
+        <div ng-messages="noteForm.note.$error">
           <div ng-message="required">This is required.</div>
         </div>
       </md-input-container>

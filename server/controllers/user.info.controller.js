@@ -12,6 +12,7 @@ var nodemailer = require('nodemailer');
 */
 
 exports.create = function(req, res) {
+  console.log("Im before new User.")
   var user = new User(req.body);
   console.log("User controller hit");
   console.log(user);
@@ -26,8 +27,8 @@ exports.create = function(req, res) {
       //     }
       //   }
       // );
-      res.send(user);
-    
+  res.send(user);
+
 }
 
 

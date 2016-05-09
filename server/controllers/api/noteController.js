@@ -1,10 +1,15 @@
 'use strict'
 
 var mongoose = require('mongoose');
-var note = require('../../models/note.js'); 
+var Note = require('../../models/note.js');
 
 
 exports.create = function(req, res) {
+  var note = new Note(req.body);
+  console.log("note controller hit");
+  console.log(note);
+
+  res.send(note);
 
 }
 

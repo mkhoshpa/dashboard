@@ -28,7 +28,9 @@ var app;
                 }
                 self.userService.selectedUser = self.selected;
                 this._ = window['_'];
+
             }
+            //console.log(JSON.stringify(this));
             // convertToUsers(slack: any[]) {
             //   console.log('convertToUsers: ' + this.slack);
             //   this.userService.

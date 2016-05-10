@@ -12,6 +12,6 @@ var noteSchema =  new Schema({
   coach: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}
 })
 
-var Note = mongoose.mode('Note', noteSchema);
+var Note = mongoose.model('Note', noteSchema);
 
 module.exports = Note;

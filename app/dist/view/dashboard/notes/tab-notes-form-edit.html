@@ -1,6 +1,6 @@
-
+<md-dialog>
 <md-content layout-padding>
-  <form name="noteForm" ng-submit="vm.addNote()" ng-init="vm.setFormScope(this)">
+  <form name="noteForm" ng-submit="ctrl.cancel()" ng-init="vm.setFormScope(this)">
     <div layout-gt-xs="row">
       <md-input-container class="md-block">
         <label>Note</label>
@@ -10,8 +10,9 @@
         </div>
       </md-input-container>
       <div class="md-actions date-row">
-        <md-button class="md-primary md-raised" type="submit" ng-disabled="noteForm.$invalid">Add</md-button>
+        <md-button class="md-primary md-raised" type="submit" ng-disabled="noteForm.$invalid">Edit</md-button>
       </div>
     </div>
   </form>
 </md-content>
+</md-dialog>

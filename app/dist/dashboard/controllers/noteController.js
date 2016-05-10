@@ -8,6 +8,7 @@ var app;
                 this.$mdDialog = $mdDialog;
                 this.userService = userService;
                 this.selected = selected;
+              /*
                 this.response = "";
                 this.days = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'];
                 this.selectedDays = [];
@@ -36,11 +37,11 @@ var app;
                 else
                     list.push(item);
             };
-            ;
+
             NoteController.prototype.exists = function (item, list) {
                 return list.indexOf(item) > -1;
             };
-            ;
+
             NoteController.prototype.toggleAll = function () {
                 if (this.selectedDays.length === this.days.length) {
                     this.selectedDays = [];
@@ -49,21 +50,23 @@ var app;
                     this.selectedDays = this.days.slice(0);
                 }
             };
-            ;
+
             NoteController.prototype.isChecked = function () {
                 return this.selectedDays.length === this.days.length;
             };
-            ;
+
             NoteController.prototype.isIndeterminate = function () {
                 return (this.selectedDays.length !== 0 &&
                     this.selectedDays.length !== this.days.length);
             };
-            ;
+
             NoteController.prototype.select = function () {
             };
-            NoteController.prototype.close = function () {
+            */
+            NoteController.prototype.save = function () {
                 this.$mdDialog.cancel();
             };
+            /*
             NoteController.prototype.save = function () {
                 console.log(this.time);
                 var dates = {
@@ -71,6 +74,7 @@ var app;
                     tuesday: false,
                     wednesday: false,
                     thursday: false,
+
                     friday: false,
                     saturday: false,
                     sunday: false
@@ -132,6 +136,7 @@ var app;
                 //console.log(Note);
                 this.$mdDialog.hide(Note);
             };
+            */
             NoteController.$inject = ['$mdDialog', 'userService', 'selected'];
             return NoteController;
         }());

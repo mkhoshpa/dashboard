@@ -57,8 +57,8 @@ var app;
 
 
                     _this.$http.post('/api/user/create', user).then(function successCallback(response) {
-                        console.log(JSON.stringify(response.data));
-                        //self.user.clients.push(response.data);
+                        console.log(JSON.stringify(response));
+                        self.user.clients.push(response);
 
                     });
                     self.openToast("User added");
@@ -82,6 +82,7 @@ var app;
                         selected: null
                     }
                 }).then(function (reminder) {
+                    console.log(reminder);
                     // Post request, and push onto users local list of reminders
                     // this.$http.post('uri').then((response) => response.data)
                     // after promise is succesful add to
@@ -110,7 +111,7 @@ var app;
                     fullscreen: useFullScreen,
                     locals: {
                         selected: reminder
-                    },
+                    }
                 }).then(function (reminder) {
                     // Post request, and push onto users local list of reminders
                     // this.$http.post('uri').then((response) => response.data)
@@ -216,53 +217,74 @@ var app;
             MainController.prototype.addNote = function ($event) {
               var _this = this;
               var self = this;
-
-              console.log(self.userService.selectedUser);
-              var note = {
-                  description : this.newNote.note,
-              }
+              var note  = this.newNote.note;
               console.log(note);
-
-              _this.$http.post('/api/note', note).then(function successCallback(response) {
-                console.log("Free!");
-                self.selected.note.push(response);
-                console.log(response);
-              });
-
+              self.selected.notes.push(note);
+              console.log(self.selected.notes);
               self.openToast("Note added");
-            }
+            };
 
-              // var _this = this;
-              // var self = this;
-              // var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
-              // this.$mdDialog.show({
-              //  templateUrl: './dist/view/dashboard/notes/tab-notes.html',
-              //  parent: angular.element(document.body),
-              //  targetEvent: $event,
-              //  controller: dashboard.NoteController,
-              //  controllerAs: "ctrl",
-              //  clickOutsideToClose: true,
-              //  fullscreen: useFullScreen,
-              //  locals: {
-              //      selected: null
-              //   }
-              // })
-                // dashboard.NoteController
-                //
-                // }).then(function (note) {
-                //       console.log("HERE!")
-                //     // Post request, and push onto users local list of reminders
-                //     // this.$http.post('uri').then((response) => response.data)
-                //     // after promise is succesful add to
-                //     // reminder.assigne.reminders.push()
-                //     _this.$http.post('/api/note', note).then(function successCallback(response) {
-                //         self.selected.note.push(response);
-                //         console.log(response);
-                //     });
-                //     self.openToast("Note added");
-                // }, function () {
-                //     console.log('You cancelled the dialog.');
-                // });
+            MainController.prototype.editNote = function($event, note){
+              var _this = this;
+              var self = this;
+              console.log(note);
+              var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
+              this.$mdDialog.show({
+                  templateUrl: './dist/view/dashboard/notes/tab-notes-form-edit.html',
+                  parent: angular.element(document.body),
+                  targetEvent: $event,
+                  controller: dashboard.NoteController,
+                  controllerAs: "ctrl",
+                  clickOutsideToClose: true,
+                  fullscreen: useFullScreen,
+                  locals: {
+                      selected: note
+                  }
+                }).then(function (note) {
+                    console.log("Herer ethsi sa");
+                      // Post request, and push onto users local list of reminders
+                      // this.$http.post('uri').then((response) => response.data)
+                      // after promise is succesful add to
+                  //     // reminder.assigne.reminders.push()
+                  //     _this.$http.post('/api/reminder/' + reminder._id, reminder).then(function successCallback(reminder) {
+                  //         //  self.selected.reminders.push(response.data);
+                  //         if (self.updateReminder(reminder.data)) {
+                  //             if (reminder.data.parent.id) {
+                  //                 var id = reminder.data.parent.id.slice(1, 25);
+                  //                 self.updateReminderInSurvey(id, reminder.data);
+                  //             }
+                  //             self.openToast("Reminder Edited");
+                  //         }
+                  //         else {
+                  //             self.openToast("Reminder Not Found!");
+                  //         }
+                  //     });
+                  // }, function () {
+                  //     console.log('You cancelled the dialog.');
+                  // });
+              })//.then(function (reminder) {
+                  // Post request, and push onto users local list of reminders
+                  // this.$http.post('uri').then((response) => response.data)
+                  // after promise is succesful add to
+              /*    // reminder.assigne.reminders.push()
+                  _this.$http.post('/api/reminder/' + reminder._id, reminder).then(function successCallback(reminder) {
+                        //  self.selected.reminders.push(response.data);
+                      if (self.updateReminder(reminder.data)) {
+                          if (reminder.data.parent.id) {
+                              var id = reminder.data.parent.id.slice(1, 25);
+                              self.updateReminderInSurvey(id, reminder.data);
+                          }
+                          self.openToast("Reminder Edited");
+                      }
+                      else {
+                          self.openToast("Reminder Not Found!");
+                      }
+                  });
+              }, function () {
+                  console.log('You cancelled the dialog.');
+              });
+              */
+            };
 
 
             MainController.prototype.clearNotes = function ($event) {

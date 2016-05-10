@@ -12,7 +12,7 @@ var nodemailer = require('nodemailer');
 */
 
 exports.create = function(req, res) {
-  console.log("Im before new User.")
+  console.log("Im before new User.");
   var user = new User(req.body);
   console.log("User controller hit");
   console.log(user);
@@ -32,7 +32,17 @@ exports.create = function(req, res) {
 }
 
 
+exports.updateCoach = function(req, res){
+  console.log("Im a coach!");
+  var user = new User(req.body);
+  /*
+  User.findByIdAndUpdate(
 
+  );
+  */
+  console.log('ima a saf');
+  res.send(user);
+}
 
 
 exports.render = function(req, res) {
@@ -175,10 +185,11 @@ exports.update = function(req,res) {
       messages: req.flash('You must be logged In!')
     });
   } else {
-    // User.findByIdAndUpdate({
-    //
-    //
-    // });
+  /*   User.findByIdAndUpdate({
+
+*/
+    //});
+
     res.redirect('/');
   }
 }

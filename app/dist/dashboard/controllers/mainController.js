@@ -57,10 +57,18 @@ var app;
 
 
                     _this.$http.post('/api/user/create', user).then(function successCallback(response) {
+                      console.log(JSON.stringify(response));
+                      this.user.clients.push(response);
+
+                      _this.$http.post('/api/coach/newuser', user).then(function successCallback(response){
                         console.log(JSON.stringify(response));
-                        this.user.clients.push(response);
+                      });
 
                     });
+
+
+
+
                     self.openToast("User added");
                 }, function () {
                     console.log('You cancelled the dialog.');

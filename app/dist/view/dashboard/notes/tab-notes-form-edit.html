@@ -1,18 +1,57 @@
-<md-dialog>
+
+<md-dialog aria-label="Edit Note">
+  <form name="noteForm" ng-submit="ctrl.save()">
+
+    <md-dialog-content>
+      <div layout="column" layout-padding>
+        <div layout-gt-xs="row">
+
+          <md-input-container class="md-block" flex-gt-sm>
+            <label>Note</label>
+            <input ng-model="ctrl.note" name="note" required>
+            <div ng-messages="noteForm.note.$error">
+              <div ng-message="required">This is required.</div>
+            </div>
+          </md-input-container>
+
+        </div>
+      </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="col">
+      <md-button ng-click="ctrl.cancel()" >
+        Cancel
+      </md-button>
+      <md-button type="submit" class="md-primary md-raised" ng-disabled="noteForm.$invalid">
+        Save
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>
+
+
+<!--
+<md-dialog aria-label="Edit Note">
 <md-content layout-padding>
-  <form name="noteForm" ng-submit="ctrl.cancel()" ng-init="vm.setFormScope(this)">
+  <form name="noteForm" ng-submit="ctrl.save()">
     <div layout-gt-xs="row">
       <md-input-container class="md-block">
         <label>Note</label>
-        <textarea rows = "4" cols = "50" required="" name="note" ng-model="vm.newNote.note"> </textarea>
+        <textarea rows = "4" cols = "50" required="" name="note" ng-model="ctrl.note"> </textarea>
         <div ng-messages="noteForm.note.$error">
           <div ng-message="required">This is required.</div>
         </div>
       </md-input-container>
       <div class="md-actions date-row">
+        <md-button ng-click="ctrl.save()" >
+          Cancel
+        </md-button>
+
         <md-button class="md-primary md-raised" type="submit" ng-disabled="noteForm.$invalid">Edit</md-button>
+
       </div>
     </div>
   </form>
 </md-content>
-</md-dialog>
+<md-dialog>
+-->

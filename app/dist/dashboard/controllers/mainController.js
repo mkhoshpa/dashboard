@@ -58,7 +58,7 @@ var app;
 
                     _this.$http.post('/api/user/create', user).then(function successCallback(response) {
                         console.log(JSON.stringify(response));
-                        self.user.clients.push(response);
+                        this.user.clients.push(response);
 
                     });
                     self.openToast("User added");
@@ -236,12 +236,13 @@ var app;
                   controller: dashboard.NoteController,
                   controllerAs: "ctrl",
                   clickOutsideToClose: true,
-                  fullscreen: useFullScreen,
-                  locals: {
-                      selected: note
-                  }
+                  fullscreen: useFullScreen
+
                 }).then(function (note) {
                     console.log("Herer ethsi sa");
+                  });
+
+
                       // Post request, and push onto users local list of reminders
                       // this.$http.post('uri').then((response) => response.data)
                       // after promise is succesful add to
@@ -262,7 +263,7 @@ var app;
                   // }, function () {
                   //     console.log('You cancelled the dialog.');
                   // });
-              })//.then(function (reminder) {
+                  //.then(function (reminder) {
                   // Post request, and push onto users local list of reminders
                   // this.$http.post('uri').then((response) => response.data)
                   // after promise is succesful add to

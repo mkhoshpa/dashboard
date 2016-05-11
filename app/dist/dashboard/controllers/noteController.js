@@ -3,10 +3,10 @@ var app;
     var dashboard;
     (function (dashboard) {
         var NoteController = (function () {
-            function NoteController($mdDialog, userService, selected) {
+            function NoteController($mdDialog, userService) {
                 this.$mdDialog = $mdDialog;
-                this.selected = selected;
-                this.note = note;
+                this.userService = userService;
+
 
             }
 
@@ -17,8 +17,9 @@ var app;
 
             NoteController.prototype.save = function () {
               console.log("holy fuck getting somewhere");
-              this.$mdDialog.hide();
+              this.$mdDialog.hide(this.note);
             };
+
             NoteController.$inject = ['$mdDialog', 'userService'];
             return NoteController;
         }());

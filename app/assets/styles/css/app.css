@@ -29,6 +29,11 @@ md-toolbar .md-toolbar-tools h1 {
 
 /* Sidenav area */
 
+md-button.md-default-theme.md-fab, .md-button.md-fab {
+    background-color: #27AE60;
+    color: rgb(255,255,255);
+}
+
 md-list .md-button {
   margin: 20px 0;
   color: inherit;
@@ -49,6 +54,9 @@ md-list .md-button {
   padding-right: 40px;
   padding-top: 5px;
 }
+
+
+
 
 #content md-icon.avatar {
   margin-top: 10px;

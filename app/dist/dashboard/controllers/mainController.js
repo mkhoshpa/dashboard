@@ -60,8 +60,8 @@ var app;
                       //console.log(JSON.stringify(response.data.id));
                       //this.user.clients.push(response.data.id);
 
-                      console.log("done");
-                      _this.$http.post('/api/coach/newuser', user).then(function successCallback(response){
+                        console.log("done");
+                        _this.$http.post('/api/coach/newuser/:usercoachId', user).then(function successCallback(response){
                         console.log("done2");
                       });
 
@@ -226,11 +226,34 @@ var app;
             MainController.prototype.addNote = function ($event) {
               var _this = this;
               var self = this;
-              var note  = this.newNote.note;
-              console.log(note);
-              self.selected.notes.push(note);
-              console.log(self.selected.notes);
-              self.openToast("Note added");
+              var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
+              this.$mdDialog.show({
+                  templateUrl: './dist/view/dashboard/notes/noteModel.html',
+                  parent: angular.element(document.body),
+                  targetEvent: $event,
+                  controller: dashboard.NoteController,
+                  controllerAs: "ctrl",
+                  clickOutsideToClose: true,
+                  fullscreen: useFullScreen,
+                  locals: {
+                      selected: null
+                  }
+              }).then(function (note) {
+                  console.log(note);
+                  // Post request, and push onto users local list of reminders
+                  // this.$http.post('uri').then((response) => response.data)
+                  // after promise is succesful add to
+                  // reminder.assigne.reminders.push()
+                  /*
+                  _this.$http.post('/api/reminder/create', reminder).then(function successCallback(response) {
+                      self.selected.reminders.push(response.data);
+                      console.log(response.data);
+                  });
+                  */
+                  self.openToast("Note added");
+              }, function () {
+                  console.log('You cancelled the dialog.');
+              });
             };
 
             MainController.prototype.editNote = function($event, note){

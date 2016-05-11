@@ -30,6 +30,7 @@ md-toolbar .md-toolbar-tools h1 {
 /* Sidenav area */
 
 md-list .md-button {
+  margin: 20px 0;
   color: inherit;
   font-weight: 500;
   text-align: left;

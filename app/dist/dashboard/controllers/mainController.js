@@ -57,11 +57,12 @@ var app;
 
 
                     _this.$http.post('/api/user/create', user).then(function successCallback(response) {
-                      console.log(JSON.stringify(response));
-                      this.user.clients.push(response);
+                      //console.log(JSON.stringify(response.data.id));
+                      //this.user.clients.push(response.data.id);
 
+                      console.log("done");
                       _this.$http.post('/api/coach/newuser', user).then(function successCallback(response){
-                        console.log(JSON.stringify(response));
+                        console.log("done2");
                       });
 
                     });

@@ -1,0 +1,30 @@
+<md-dialog aria-label="Add Bio" style="height: 300px; width: 500px">
+  <form name="userForm" ng-submit="ctrl.save()">
+
+    <md-dialog-content>
+      <div layout="column" layout-padding>
+        <div layout-gt-sm="row">
+
+          <md-input-container>
+            <label>Bio</label>
+            <textarea ng-model="ctrl.bio" name="bio" required>
+            </textarea>
+            <div ng-messages="userForm.bio.$error">
+              <div ng-message="required">This is required.</div>
+            </div>
+          </md-input-container>
+
+        </div>
+      </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+      <md-button ng-click="ctrl.cancel()" >
+        Cancel
+      </md-button>
+      <md-button type="submit" class="md-primary md-raised" ng-disabled="userForm.$invalid">
+        Save
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

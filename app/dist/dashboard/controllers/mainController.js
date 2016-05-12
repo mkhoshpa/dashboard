@@ -17,6 +17,7 @@ var app;
                 this.selected = null;
                 this.newNote = new dashboard.Note('', null);
                 this.newReminder = new dashboard.Reminder('', null);
+
                 var self = this;
                 this.user = this.userService.get();
                 if (this.user.role == "user") {
@@ -38,6 +39,74 @@ var app;
             MainController.prototype.setFormScope = function (scope) {
                 this.formScope = scope;
             };
+
+
+            MainController.prototype.addBio = function ($event) {
+                var _this = this;
+                var self = this;
+                var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
+                this.$mdDialog.show({
+                    templateUrl: './dist/view/dashboard/bio/newBioDialog.html',
+                    parent: angular.element(document.body),
+                    targetEvent: $event,
+                    controller: dashboard.AddBioDialogController,
+                    controllerAs: "ctrl",
+                    clickOutsideToClose: true,
+                    fullscreen: useFullScreen
+                }).then(function (bio) {
+                    // Call user service
+                    console.log('this is bio' + JSON.stringify(bio));
+
+
+                    /*
+                    _this.$http.post('/api/user/create', user).then(function successCallback(response) {
+                      //console.log(JSON.stringify(response.data.id));
+                      //this.user.clients.push(response.data.id);
+
+                      console.log("done");
+                      _this.$http.post('/api/coach/newuser/' + this.user.id + '?' + response.data.id,  user).then(function successCallback(response){
+                        console.log("done2");
+
+                      });
+
+                    });
+                    */
+                    self.openToast("User added");
+                }, function () {
+                    console.log('You cancelled the dialog.');
+                });
+            };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             MainController.prototype.addUser = function ($event) {
                 var _this = this;
                 var self = this;

@@ -1,12 +1,12 @@
 <section>
 
 
-    <div layout = "row" layout-padding style="background-color: blue; margin: 5px;" >
+    <div md-whiteframe = "2" layout = "row" layout-padding style="background-color: white; margin: 5px;" >
 
-        <div flex = "15" layout = "column" style="background-color: red; margin: 5px;"  >
+        <div md-whiteframe = "3"  flex = "15" layout = "column" style="background-color: #A2C1F7; margin: 5px;"  >
           <div ng-if="vm.isCoach(vm.selected)">
             <a class="secondary-content"><i class="material-icons" style="color: #444; margin-top: 15px; font-size: 60px;">face</i></a>
-            <md-content style="background-color: red; margin: 5px;">
+            <md-content style="background-color: #A2C1F7; margin: 5px;">
               <h1>{{vm.selected.username}}</h1>
             </md-content>
           </div>
@@ -21,12 +21,12 @@
             </h1>
           </div>
           <h1 ng-if="vm.isUser">{{vm.selected.username}}</h1>
-          <md-button aria-label="Reminder" class="md-fab md-mini" style="background-color: white;" ng-click="vm.addSurvey()">
-              <md-icon md-font-set="material-icons" style="color: #444">create</md-icon>
+          <md-button aria-label="Reminder" class="md-fab md-mini" style="background-color: white;" ng-click="vm.addBio($event)">
+              <md-icon md-font-set="material-icons" style="color: #444">settings</md-icon>
           </md-button>
 
         </div>
-        <div flex = "5" layout = "column" style = "background-color: orange; margin: 5px;">
+        <div md-whiteframe = "3"  flex = "5" layout = "column" style = "background-color: #A2C1F7; margin: 5px;">
 
             <md-icon md-font-set = "material-icons"> mail </md-icon>
 
@@ -36,36 +36,14 @@
 
             <md-icon md-font-set = "material-icons"> info </md-icon>
         </div>
-        <div flex = "80" layout = "row" style = "background-color: red; margin: 5px;"  >
-          <md-content layout style = "height: 200px; background-color: green;">
-            <p id = "bio">
-              Hello I have author pages showing on my blog that shows posts by that author, their name, their link, and bio.
+        <div md-whiteframe = "3"  flex = "80" layout = "row" style = "background-color: #A2C1F7; margin: 5px;"  >
+          <md-content layout style = "height: 200px; background-color: #A2C1F7;">
 
-              The bio is very long and I would like to manually insert line breaks within the bio using
-              Hello I have author pages showing on my blog that shows posts by that author, their name, their link, and bio.
-
-              The bio is very long and I would like to manually insert line breaks within the bio using
-              Hello I have author pages showing on my blog that shows posts by that author, their name, their link, and bio.
-
-              The bio is very long and I would like to manually insert line breaks within the bio using
-              Hello I have author pages showing on my blog that shows posts by that author, their name, their link, and bio.
-
-              The bio is very long and I would like to manually insert line breaks within the bio using
-              Hello I have author pages showing on my blog that shows posts by that author, their name, their link, and bio.
-
-              The bio is very long and I would like to manually insert line breaks within the bio using
-              Hello I have author pages showing on my blog that shows posts by that author, their name, their link, and bio.
-
-              The bio is very long and I would like to manually insert line breaks within the bio using
-              Hello I have author pages showing on my blog that shows posts by that author, their name, their link, and bio.
-
-              The bio is very long and I would like to manually insert line breaks within the bio using
-              Hello I have author pages showing on my blog that shows posts by that author, their name, their link, and bio.
-
-              The bio is very long and I would like to manually insert line breaks within the bio using
-              Hello I have author pages showing on my blog that shows posts by that author, their name, their link, and bio.
-
-
+            <p class = "bio" ng-if = "vm.selected.bio" >
+            {{vm.selected.bio}}
+            </p>
+            <p class = "bio" ng-if = "!vm.slected.bio" >
+              I do not have a bio, yet!
             <p>
           </md-content>
         </div>

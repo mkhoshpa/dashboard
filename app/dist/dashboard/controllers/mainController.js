@@ -57,52 +57,17 @@ var app;
                     // Call user service
                     console.log('this is bio' + JSON.stringify(bio));
 
+                    _this.$http.post('/api/bio', user).then(function successCallback(response) {
 
-                    /*
-                    _this.$http.post('/api/user/create', user).then(function successCallback(response) {
-                      //console.log(JSON.stringify(response.data.id));
-                      //this.user.clients.push(response.data.id);
 
-                      console.log("done");
-                      _this.$http.post('/api/coach/newuser/' + this.user.id + '?' + response.data.id,  user).then(function successCallback(response){
-                        console.log("done2");
-
-                      });
 
                     });
-                    */
-                    self.openToast("User added");
+
+                    self.openToast("Bio added");
                 }, function () {
                     console.log('You cancelled the dialog.');
                 });
             };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

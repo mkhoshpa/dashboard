@@ -1,4 +1,4 @@
-<md-dialog aria-label="Add Bio" style="height: 300px; width: 500px">
+<md-dialog aria-label="Add Bio" style="height: 200px; width: 500px">
   <form name="userForm" ng-submit="ctrl.save()">
 
     <md-dialog-content>
@@ -7,7 +7,7 @@
 
           <md-input-container>
             <label>Bio</label>
-            <textarea ng-model="ctrl.bio" name="bio" required>
+            <textarea ng-model="ctrl.bio" class = "bioBox" required>
             </textarea>
             <div ng-messages="userForm.bio.$error">
               <div ng-message="required">This is required.</div>

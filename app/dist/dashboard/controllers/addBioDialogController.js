@@ -16,9 +16,11 @@ var app;
             };
             ;
             AddBioDialogController.prototype.save = function () {
+                console.log(this.bio);
 
-                //console.log(reminder);
-                this.$mdDialog.hide();
+
+
+                this.$mdDialog.hide(this.bio);
             };
             ;
             AddBioDialogController.$inject = ['$mdDialog', 'userService'];

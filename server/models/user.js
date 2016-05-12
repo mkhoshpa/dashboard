@@ -16,6 +16,10 @@ var mongoose = require('mongoose'),
 var UserSchema = new Schema({
 	firstName: String,
 	lastName: String,
+
+  bio: {
+    type:String
+  },
 	// email: {
 	// 	type: String,
 	// 	// Validate the email format

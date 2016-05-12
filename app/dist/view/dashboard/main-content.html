@@ -1,13 +1,16 @@
 <section>
 
 
-    <div layout = "row" layout-padding style="background-color: blue;">
-        <div flex = "20" layout = "column" style="background-color: red; margin: 5px;" >
+    <div layout = "row" layout-padding style="background-color: blue; margin: 5px;" >
 
+        <div flex = "15" layout = "column" style="background-color: red; margin: 5px;"  >
           <div ng-if="vm.isCoach(vm.selected)">
             <a class="secondary-content"><i class="material-icons" style="color: #444; margin-top: 15px; font-size: 60px;">face</i></a>
-            <h1>{{vm.selected.username}}</h1>
+            <md-content style="background-color: red; margin: 5px;">
+              <h1>{{vm.selected.username}}</h1>
+            </md-content>
           </div>
+
           <div ng-if="!vm.isCoach(vm.selected)">
             <img ng-src="{{vm.selected.slack.img}}" class="avatar"></md-icon>
             <h1 ng-if="vm.hasReal(vm.selected)">
@@ -21,14 +24,101 @@
           <md-button aria-label="Reminder" class="md-fab md-mini" style="background-color: white;" ng-click="vm.addSurvey()">
               <md-icon md-font-set="material-icons" style="color: #444">create</md-icon>
           </md-button>
-        </div>
-        <div flex = "15" layout = "column" style="background-color: green; margin: 5px;"  >
-          <p> dassssssssssssssssssssss</p>
-        </div>
 
-        <div flex = "15" layout = "column" style="background-color: orange; margin: 5px;"  >
-          <p> dassssssssssssssssssssss</p>
+        </div>
+        <div flex = "5" layout = "column" style = "background-color: orange; margin: 5px;">
+
+            <md-icon md-font-set = "material-icons"> mail </md-icon>
+
+            <md-icon md-font-set = "material-icons"> call </md-icon>
+
+            <md-icon md-font-set = "material-icons"> cake </md-icon>
+
+            <md-icon md-font-set = "material-icons"> info </md-icon>
+        </div>
+        <div flex = "80" layout = "row" style = "background-color: red; margin: 5px;"  >
+          <md-content layout style = "height: 200px; background-color: green;">
+            <p id = "bio">
+              Hello I have author pages showing on my blog that shows posts by that author, their name, their link, and bio.
+
+              The bio is very long and I would like to manually insert line breaks within the bio using
+              Hello I have author pages showing on my blog that shows posts by that author, their name, their link, and bio.
+
+              The bio is very long and I would like to manually insert line breaks within the bio using
+              Hello I have author pages showing on my blog that shows posts by that author, their name, their link, and bio.
+
+              The bio is very long and I would like to manually insert line breaks within the bio using
+              Hello I have author pages showing on my blog that shows posts by that author, their name, their link, and bio.
+
+              The bio is very long and I would like to manually insert line breaks within the bio using
+              Hello I have author pages showing on my blog that shows posts by that author, their name, their link, and bio.
+
+              The bio is very long and I would like to manually insert line breaks within the bio using
+              Hello I have author pages showing on my blog that shows posts by that author, their name, their link, and bio.
+
+              The bio is very long and I would like to manually insert line breaks within the bio using
+              Hello I have author pages showing on my blog that shows posts by that author, their name, their link, and bio.
+
+              The bio is very long and I would like to manually insert line breaks within the bio using
+              Hello I have author pages showing on my blog that shows posts by that author, their name, their link, and bio.
+
+              The bio is very long and I would like to manually insert line breaks within the bio using
+              Hello I have author pages showing on my blog that shows posts by that author, their name, their link, and bio.
+
+
+            <p>
+          </md-content>
         </div>
 
     </div>
 </section>
+
+
+
+<!--
+<md-content flex = "30" layout = "row" style="background-color: rgb(33,150,243); margin: 5px;"  >
+  <div flex = "10" layout = "column" style = "background-color: orange; margin 5px;">
+
+      <md-icon md-font-set = "material-icons"> mail </md-icon>
+
+      <md-icon md-font-set = "material-icons"> call </md-icon>
+
+      <md-icon md-font-set = "material-icons"> cake </md-icon>
+
+      <md-icon md-font-set = "material-icons"> info </md-icon>
+  </div>
+
+  <md-content flex = "90" layout = "column" style = "background-color: red; margin 5px;" layout-padding>
+    <p ng-if = "vm.selected.bio" >
+    {{vm.selected.bio}}
+    </p>
+    <p ng-if = "!vm.slected.bio" >
+      Hello I have author pages showing on my blog that shows posts by that author, their name, their link, and bio.
+
+      The bio is very long and I would like to manually insert line breaks within the bio using
+      Hello I have author pages showing on my blog that shows posts by that author, their name, their link, and bio.
+
+      The bio is very long and I would like to manually insert line breaks within the bio using
+      Hello I have author pages showing on my blog that shows posts by that author, their name, their link, and bio.
+
+      The bio is very long and I would like to manually insert line breaks within the bio using
+      Hello I have author pages showing on my blog that shows posts by that author, their name, their link, and bio.
+
+      The bio is very long and I would like to manually insert line breaks within the bio using
+      Hello I have author pages showing on my blog that shows posts by that author, their name, their link, and bio.
+
+      The bio is very long and I would like to manually insert line breaks within the bio using
+      Hello I have author pages showing on my blog that shows posts by that author, their name, their link, and bio.
+
+      The bio is very long and I would like to manually insert line breaks within the bio using
+      Hello I have author pages showing on my blog that shows posts by that author, their name, their link, and bio.
+
+      The bio is very long and I would like to manually insert line breaks within the bio using
+      Hello I have author pages showing on my blog that shows posts by that author, their name, their link, and bio.
+
+      The bio is very long and I would like to manually insert line breaks within the bio using
+
+    </p>
+  </md-content>
+</md-content>
+-->

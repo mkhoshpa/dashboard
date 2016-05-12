@@ -17,7 +17,7 @@ var app;
 
             NoteController.prototype.save = function () {
               console.log("holy fuck getting somewhere");
-              this.$mdDialog.hide(this.note);
+              this.$mdDialog.hide({});
             };
 
             NoteController.$inject = ['$mdDialog', 'userService'];

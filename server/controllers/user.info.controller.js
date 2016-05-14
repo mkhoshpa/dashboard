@@ -11,6 +11,35 @@ var nodemailer = require('nodemailer');
   Node Mailer Config
 */
 
+exports.createBio = function(req, res){
+
+   User.findByIdAndUpdate(req.params.id,
+   {$push: {"bio": req.data.body}},
+   {safe: true},
+   function(err, user) {
+     if(err) {
+       console.log(err);
+     }
+   });
+
+   res.send(req.data.body);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 exports.create = function(req, res) {
   console.log("Im before new User.");
   var user = new User(req.body);

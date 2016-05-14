@@ -1,17 +1,25 @@
 'use strict'
 
 var mongoose = require('mongoose');
+var User = require('../../models/user.js');
+var Note = require('../../models/bio.js');
 ///create a bio.js or change as bio for right now is only a string.
-var Bio = require('../../models/bio.js');
 
 
 exports.create = function(req, res) {
-  //change
-  var bio= new Bio(req.body);
-  console.log("bio controller hit");
+  var bio = new Bio(req.body);
+  console.log("bio controller");
   console.log(bio);
-
-  res.send(bio);
+  bio.save(function(err, bio){
+    if(!err){
+      User.findByIdAndUpate(
+        bio.assignee,
+        {$push: {"bio":
+        }}
+      )
+    }
+  })
+  res.send({});
 
 }
 

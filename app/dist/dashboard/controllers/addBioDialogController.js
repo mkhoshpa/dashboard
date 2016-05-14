@@ -8,6 +8,16 @@ var app;
                 this.$mdDialog = $mdDialog;
                 this.userService = userService;
 
+                this.author = this.userService.get();
+                if (this.author.role == "coach") {
+                    this.author = this.author.id;
+                    this.assignee = this.userService.selectedUser;
+                    this.assignee = this.assignee._id;
+                }
+                else if (this.author.role == "user") {
+                    this.author = this.author.id;
+                    this.assignee = this.author;
+                }
 
             }
 
@@ -16,11 +26,14 @@ var app;
             };
             ;
             AddBioDialogController.prototype.save = function () {
-                console.log(this.bio);
 
+              var bio = {
+                body: this.bio,
+                author: this.author,
+                assignee: this.assignee
+              }
 
-
-                this.$mdDialog.hide(this.bio);
+              this.$mdDialog.hide(bio);
             };
             ;
             AddBioDialogController.$inject = ['$mdDialog', 'userService'];

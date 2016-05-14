@@ -54,10 +54,12 @@ var app;
                     clickOutsideToClose: true,
                     fullscreen: useFullScreen
                 }).then(function (bio) {
-                    // Call user service
-                    console.log('this is bio' + JSON.stringify(bio));
 
-                    _this.$http.post('/api/bio', user).then(function successCallback(response) {
+                    // Call user service
+                    console.log('this is bio' + bio.body);
+
+                    _this.$http.post('/api/bio/create/' + bio.assignee, bio).then(function successCallback(response) {
+
 
 
 
@@ -69,8 +71,10 @@ var app;
                 });
             };
 
+            MainController.prototype.bioToggle = function ($event) {
 
 
+            };
 
             MainController.prototype.addUser = function ($event) {
                 var _this = this;

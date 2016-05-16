@@ -26,26 +26,39 @@ exports.createBio = function(req, res){
   res.send(req.body.body);
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 exports.create = function(req, res) {
   console.log("Im before new User.");
+
   var user = new User(req.body);
+  user.provider = 'local';
+  
+  user.save(function(err) {
+    if (err) {
+      console.log(err);
+    }
+    else {
+
+    }
+  });
+
   console.log("User controller hit");
   console.log(user);
+
+  User.findByIdAndUpdate(user.coaches[0],
+  {$push: {"clients": user._id}},
+  {safe: true},
+  function(err, coach) {
+   if(err) {
+     console.log(err);
+    }
+    else {
+      console.log('adding user ot coac');
+      console.log(coach);
+      console.log('success');
+      res.send(user);
+    }
+  });
+
   //Test: need my our id(colins)
       // User.populate(
       //   reminder.assignee,
@@ -57,7 +70,6 @@ exports.create = function(req, res) {
       //     }
       //   }
       // );
-  res.send(user);
 
 }
 

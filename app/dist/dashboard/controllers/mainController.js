@@ -61,7 +61,7 @@ var app;
                     _this.$http.post('/api/bio/create/' + bio.assignee, bio).then(function successCallback(response) {
                       console.log(response.data);
                       console.log(self.selected);
-                      
+
                     });
 
                     self.openToast("Bio added");
@@ -99,9 +99,10 @@ var app;
                       //this.user.clients.push(response.data.id);
 
                       console.log("done");
-                      _this.$http.post('/api/coach/newuser/' + this.user.id + '?' + response.data.id,  user).then(function successCallback(response){
+                      _this.$http.post('/api/coach/newuser/' + this.user.id + '?' + response.data.id,  user).then(function successCallback(client){
                         console.log("done2");
-
+                        console.log(self.user.clients);
+                        self.user.clients.push(client);
                       });
 
                     });

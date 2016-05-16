@@ -1,15 +1,5 @@
 <md-dialog aria-label="Add Note">
-  <form name = "userFrom" ng-submit="ctrl.save()">
-    <md-button ng-click = "ctrl.cancel()">
-      Save
-    </md-button>
-  </form>
 
-
-
-
-
-<!--
   <form name="userForm" ng-submit="ctrl.save()">
 
       <div layout="column" layout-padding >
@@ -23,7 +13,7 @@
 
 
       <md-dialog-actions layout="row">
-        <md-button ng-submit="ctrl.cancel()" >
+        <md-button ng-click="ctrl.cancel()" >
           Cancel
         </md-button>
         <md-button type="submit" class="md-primary md-raised" ng-disabled="userForm.$invalid">
@@ -32,34 +22,5 @@
       </md-dialog-actions>
 
   </form>
--->
+
 </md-dialog>
-<!--
-<form name="noteForm" ng-submit="ctrl.save()">
-
-  <md-dialog-content>
-    <div layout="column" layout-padding>
-      <div layout-gt-sm="row">
-
-        <md-input-container class="md-block" flex-gt-sm>
-          <label>Edit Note</label>
-          <input ng-model="ctrl.note" name="note" required>
-          <div ng-messages="noteForm.note.$error">
-            <div ng-message="required">This is required.</div>
-          </div>
-        </md-input-container>
-
-      </div>
-    </div>
-  </md-dialog-content>
-
-  <md-dialog-actions layout="row">
-    <md-button ng-click="ctrl.cancel()" >
-      Cancel
-    </md-button>
-    <md-button type="submit" class="md-primary md-raised" ng-disabled="noteForm.$invalid">
-      Save
-    </md-button>
-  </md-dialog-actions>
-</form>
--->

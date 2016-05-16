@@ -11,13 +11,16 @@ var app;
             }
 
             NoteController.prototype.cancel = function () {
-              console.log('hello');
               this.$mdDialog.cancel();
             };
 
             NoteController.prototype.save = function () {
-              console.log("holy fuck getting somewhere");
-              this.$mdDialog.hide({});
+              console.log("Getting somewhere");
+
+              var note = {
+                body: this.note
+              }
+              this.$mdDialog.hide(note);
             };
 
             NoteController.$inject = ['$mdDialog', 'userService'];

@@ -42,40 +42,30 @@ var app;
 
 
             MainController.prototype.addBio = function ($event) {
-                var _this = this;
-                var self = this;
-                var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
-                this.$mdDialog.show({
-                    templateUrl: './dist/view/dashboard/bio/newBioDialog.html',
-                    parent: angular.element(document.body),
-                    targetEvent: $event,
-                    controller: dashboard.AddBioDialogController,
-                    controllerAs: "ctrl",
-                    clickOutsideToClose: true,
-                    fullscreen: useFullScreen
-                }).then(function (bio) {
 
-                    // Call user service
-                    console.log('this is bio' + bio.body);
+              var _this = this;
+              var self = this;
+              var bio = {
+                body: this.selected.bio,
+                author: this.user.id,
+                assignee: this.selected.id
+              }
 
-                    _this.$http.post('/api/bio/create/' + bio.assignee, bio).then(function successCallback(response) {
-                      console.log(response.data);
-                      console.log(self.selected);
 
-                    });
+              console.log(this.user);
+              console.log(bio);
+              _this.$http.post('/api/bio/create/' + bio.assignee, bio).then(function successCallback(response) {
+              console.log(response.data);
+              console.log(this.selected);
 
-                    self.openToast("Bio added");
-                }, function () {
-                    console.log('You cancelled the dialog.');
-                });
-            };
 
-            MainController.prototype.removeBio = function ($event) {
-              var found = this.selected.bio
-              this.selected.notes.splice(foundIndex, 1);
-              this.openToast("Note removed");
+              });
+
+              self.openToast("Bio Updated");
 
             };
+
+          
             MainController.prototype.addUser = function ($event) {
                 var _this = this;
                 var self = this;

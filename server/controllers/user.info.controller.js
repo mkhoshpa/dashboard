@@ -15,7 +15,7 @@ exports.createBio = function(req, res){
   console.log(req.body.body);
 
   User.findByIdAndUpdate(req.params.id,
-  {$push: {"bio": req.body.body}},
+  {$set: {"bio": req.body.body}},
   {safe: true},
   function(err, user) {
    if(err) {
@@ -31,7 +31,7 @@ exports.create = function(req, res) {
 
   var user = new User(req.body);
   user.provider = 'local';
-  
+
   user.save(function(err) {
     if (err) {
       console.log(err);
@@ -234,4 +234,12 @@ exports.update = function(req,res) {
 
     res.redirect('/');
   }
+}
+
+
+exports.delete = function(req, res){
+
+
+
+  
 }

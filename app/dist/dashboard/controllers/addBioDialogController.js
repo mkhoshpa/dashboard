@@ -32,7 +32,7 @@ var app;
                 author: this.author,
                 assignee: this.assignee
               }
-
+            
               this.$mdDialog.hide(bio);
             };
             ;

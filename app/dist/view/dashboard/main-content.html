@@ -21,7 +21,7 @@
             </h1>
           </div>
           <h1 ng-if="vm.isUser">{{vm.selected.username}}</h1>
-          <md-button aria-label="Reminder" class="md-fab md-mini" style="background-color: white;" ng-click="vm.bioToggle()">
+          <md-button aria-label="Reminder" class="md-fab md-mini" style="background-color: white;" ng-click="vm.addBio()">
               <md-icon md-font-set="material-icons" style="color: #444">settings</md-icon>
           </md-button>
 
@@ -36,28 +36,21 @@
 
             <md-icon md-font-set = "material-icons"> info </md-icon>
         </div>
-        <div ng-show = "bioText"  md-whiteframe = "3"  flex = "80" layout = "row" style = "background-color: #C3E1EE; margin: 5px;"  >
-          <md-content layout style = "height: 200px; background-color: #C3E1EE;">
+        <div  md-whiteframe = "3"  flex = "75" layout = "row" style = "background-color: #C3E1EE; margin: 5px;"  >
+          <md-content flex = "95"layout style = "height: 200px; background-color: #C3E1EE;">
 
             <p class = "bio" ng-if = "vm.selected.bio" >
             {{vm.selected.bio}}
             </p>
             <p class = "bio" ng-if = "!vm.selected.bio" >
               I do not have a bio, yetsad!
-            <p>
-          </md-content>
-        </div>
-        <div ng-show = "bioInput"  md-whiteframe = "3"  flex = "80" layout = "row" style = "background-color: #C3E1EE; margin: 5px;"  >
-          <md-content layout style = "height: 200px; background-color: #C3E1EE;">
-
-            <p class = "bio" ng-if = "vm.selected.bio" >
-            {{vm.selected.bio}}
             </p>
-            <p class = "bio" ng-if = "!vm.selected.bio" >
-              I do not have a bio, yet!
-            <p>
           </md-content>
+
+
         </div>
+
+
 
     </div>
 </section>
@@ -65,6 +58,18 @@
 
 
 <!--
+<p class = "bio" ng-if = "vm.selected.bio" >
+{{vm.selected.bio}}
+</p>
+<p class = "bio" ng-if = "!vm.selected.bio" >
+  I do not have a bio, yet!
+<p>
+
+
+
+
+
+
 <md-content flex = "30" layout = "row" style="background-color: rgb(33,150,243); margin: 5px;"  >
   <div flex = "10" layout = "column" style = "background-color: orange; margin 5px;">
 

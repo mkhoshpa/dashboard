@@ -12,17 +12,18 @@ var nodemailer = require('nodemailer');
 */
 
 exports.createBio = function(req, res){
+  console.log(req.body.body);
 
-   User.findByIdAndUpdate(req.params.id,
-   {$push: {"bio": req.data.body}},
-   {safe: true},
-   function(err, user) {
-     if(err) {
-       console.log(err);
-     }
-   });
+  User.findByIdAndUpdate(req.params.id,
+  {$push: {"bio": req.body.body}},
+  {safe: true},
+  function(err, user) {
+   if(err) {
+     console.log(err);
+    }
+  });
 
-   res.send(req.data.body);
+  res.send(req.body.body);
 }
 
 

@@ -59,10 +59,9 @@ var app;
                     console.log('this is bio' + bio.body);
 
                     _this.$http.post('/api/bio/create/' + bio.assignee, bio).then(function successCallback(response) {
-
-
-
-
+                      console.log(response.data);
+                      console.log(self.selected);
+                      
                     });
 
                     self.openToast("Bio added");
@@ -71,11 +70,12 @@ var app;
                 });
             };
 
-            MainController.prototype.bioToggle = function ($event) {
-
+            MainController.prototype.removeBio = function ($event) {
+              var found = this.selected.bio
+              this.selected.notes.splice(foundIndex, 1);
+              this.openToast("Note removed");
 
             };
-
             MainController.prototype.addUser = function ($event) {
                 var _this = this;
                 var self = this;
@@ -516,7 +516,6 @@ var app;
             MainController.prototype.selectUser = function (user) {
                 this.selected = user;
                 this.userService.selectedUser = this.selected;
-                console.log(this.selected);
                 var sidebar = this.$mdSidenav('left');
                 if (sidebar.isOpen()) {
                     sidebar.close();

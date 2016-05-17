@@ -2,6 +2,11 @@
 
 var mongoose = require('mongoose');
 var Note = require('../../models/note.js');
+var User = require('../../models/user.js');
+var _ = require('underscore');
+var moment = require('moment');
+var Promise = require('bluebird');
+var request = require('request');
 
 
 exports.create = function(req, res) {
@@ -9,8 +14,36 @@ exports.create = function(req, res) {
   console.log("note controller hit");
   console.log(note);
 
-  res.send(note);
+  note.save(function(err, note) {
+    if(!err) {
+      console.log("NO Error")
+      User.findByIdAndUpdate(
+        note.assignee,
+        {$push: {"notes": note._id}},
+        {safe: true},
+        function(err, user) {
+          if(err) {
+            console.log(err);
+          }
+          else {
+          }
+        }
+      );
 
+      // User.populate(
+      //   reminder.assignee,
+      //   {path: 'reminders'}, function(err, user) {
+      //     if(err) {
+      //       // Do something
+      //     }
+      //     else {
+      //     }
+      //   }
+      // );
+      console.log(note);
+      res.send(note);
+    }
+  });
 }
 
 exports.read = function(req, res) {

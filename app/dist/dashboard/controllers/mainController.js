@@ -245,11 +245,7 @@ var app;
                     self.openToast("Cleared reminders");
                 });
             };
-            MainController.prototype.removeNote = function (note) {
-                var foundIndex = this.selected.notes.indexOf(note);
-                this.selected.notes.splice(foundIndex, 1);
-                this.openToast("Note removed");
-            };
+
 
 
 
@@ -271,25 +267,49 @@ var app;
                   }
               }).then(function (note) {
                   console.log(note);
-                  // Post request, and push onto users local list of reminders
-                  // this.$http.post('uri').then((response) => response.data)
-                  // after promise is succesful add to
-                  // reminder.assigne.reminders.push()
-
                   _this.$http.post('/api/note/create', note).then(function successCallback(response) {
-                      console.log(response.data);
-                      //self.selected.notes.push(response.data);
+                      console.log(response);
+                      this.selected.notes.push(response.data);
 
                   });
-
-
-
 
                   self.openToast("Note added");
               }, function () {
                   console.log('You cancelled the dialog.');
               });
             };
+
+            MainController.prototype.removeNote = function (note) {
+              var foundIndex = this.selected.notes.indexOf(note);
+
+              this.selected.notes.splice(foundIndex, 1);
+              this.openToast("Note removed");
+            };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             MainController.prototype.editNote = function($event, note){
               var _this = this;

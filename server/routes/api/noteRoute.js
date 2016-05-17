@@ -6,6 +6,6 @@ var note = require('../../controllers/api/noteController.js');
 
 // Define the routes module' method
 module.exports = function(app) {
-  app.post('/api/note', note.create);
-  app.get('/api/notes', note.list);
+  app.post('/api/note/create', note.create);
+  //app.get('/api/notes', note.list);
 }

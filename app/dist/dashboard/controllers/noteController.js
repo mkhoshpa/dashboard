@@ -6,8 +6,14 @@ var app;
             function NoteController($mdDialog, userService, selected) {
                 this.$mdDialog = $mdDialog;
                 this.userService = userService;
-
+                this.selected = selected;
                 this.author = this.userService.get();
+                this.assignee = this.userService.selectedUser;
+                if(selected){
+                  this._id = selected._id;
+                }
+
+
             }
 
             NoteController.prototype.cancel = function () {
@@ -18,10 +24,12 @@ var app;
               console.log("Getting somewhere");
 
               var note = {
+                _id: this._id,
                 body: this.note,
                 author: this.author.id,
-                assignee: this.selected
+                assignee: this.assignee.id
               }
+              console.log(note);
               this.$mdDialog.hide(note);
             };
 

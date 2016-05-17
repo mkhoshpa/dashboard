@@ -128,7 +128,7 @@ var app;
                 console.log('check time');
                 console.log(reminder.timeOfDay);
                 console.log('check assingee');
-                console.log(reminder.assignee);
+                console.log(reminder);
                 //console.log(reminder);
                 this.$mdDialog.hide(reminder);
             };

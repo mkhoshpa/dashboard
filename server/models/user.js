@@ -9,6 +9,7 @@ var mongoose = require('mongoose'),
     Slack = require('./slack.js'),
 
     reminder = require('./reminder.js'),
+    note = require('./note.js'),
     reminderResponse = require('./reminderResponse.js');
 
 
@@ -79,7 +80,9 @@ var UserSchema = new Schema({
     updated: {type: Date}
   },
 
-  notes: [{type: mongoose.Schema.Types.ObjectId, ref: 'Note'}],
+  notes: [
+    {type: mongoose.Schema.Types.ObjectId, ref: 'Note'}
+  ],
     // reminder: {type: mongoose.Schema.Types.ObjectId, ref: 'Reminder'},
     // survey: {type: mongoose.Schema.Types.ObjectId, ref: 'Survey'}
 

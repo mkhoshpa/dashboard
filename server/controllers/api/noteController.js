@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 var Note = require('../../models/note.js');
 var User = require('../../models/user.js');
 var _ = require('underscore');
-
+var moment = require('moment');
 var Promise = require('bluebird');
 var request = require('request');
 
@@ -40,7 +40,7 @@ exports.create = function(req, res) {
       //     }
       //   }
       // );
-      console.log("Did it work?");
+      console.log(note);
       res.send(note);
     }
   });

@@ -79,7 +79,7 @@ var UserSchema = new Schema({
     updated: {type: Date}
   },
 
-  notes: [{type: String}],
+  notes: [{type: mongoose.Schema.Types.ObjectId, ref: 'Note'}],
     // reminder: {type: mongoose.Schema.Types.ObjectId, ref: 'Reminder'},
     // survey: {type: mongoose.Schema.Types.ObjectId, ref: 'Survey'}
 

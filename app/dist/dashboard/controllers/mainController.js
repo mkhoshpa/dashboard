@@ -65,7 +65,7 @@ var app;
 
             };
 
-          
+
             MainController.prototype.addUser = function ($event) {
                 var _this = this;
                 var self = this;
@@ -250,6 +250,10 @@ var app;
                 this.selected.notes.splice(foundIndex, 1);
                 this.openToast("Note removed");
             };
+
+
+
+
             MainController.prototype.addNote = function ($event) {
               var _this = this;
               var self = this;
@@ -271,12 +275,16 @@ var app;
                   // this.$http.post('uri').then((response) => response.data)
                   // after promise is succesful add to
                   // reminder.assigne.reminders.push()
-                  /*
-                  _this.$http.post('/api/reminder/create', reminder).then(function successCallback(response) {
-                      self.selected.reminders.push(response.data);
+
+                  _this.$http.post('/api/note/create', note).then(function successCallback(response) {
                       console.log(response.data);
+                      //self.selected.notes.push(response.data);
+
                   });
-                  */
+
+
+
+
                   self.openToast("Note added");
               }, function () {
                   console.log('You cancelled the dialog.');

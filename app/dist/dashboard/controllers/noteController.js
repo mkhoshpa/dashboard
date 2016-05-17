@@ -3,11 +3,11 @@ var app;
     var dashboard;
     (function (dashboard) {
         var NoteController = (function () {
-            function NoteController($mdDialog, userService) {
+            function NoteController($mdDialog, userService, selected) {
                 this.$mdDialog = $mdDialog;
                 this.userService = userService;
 
-
+                this.author = this.userService.get();
             }
 
             NoteController.prototype.cancel = function () {
@@ -18,12 +18,14 @@ var app;
               console.log("Getting somewhere");
 
               var note = {
-                body: this.note
+                body: this.note,
+                author: this.author.id,
+                assignee: this.selected
               }
               this.$mdDialog.hide(note);
             };
 
-            NoteController.$inject = ['$mdDialog', 'userService'];
+            NoteController.$inject = ['$mdDialog', 'userService', 'selected'];
             return NoteController;
         }());
         dashboard.NoteController = NoteController;

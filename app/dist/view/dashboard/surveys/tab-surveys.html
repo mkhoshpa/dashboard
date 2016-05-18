@@ -1,6 +1,10 @@
 
-<p ng-if="!vm.selected.surveys.length">No Surveys for {{vm.selected.name}}, yet.</p>
 <md-content>
+  <md-button class="md-fab" aria-label="Add" ng-click="vm.addSurvey($event)" style = "right: 5px; ">
+    <ng-md-icon  icon="add"></ng-md-icon>
+  </md-button>
+  <p ng-if="!vm.selected.surveys.length">No Surveys for {{vm.selected.name}}, yet.</p>
+
   <md-card ng-repeat="survey in vm.selected.surveys | orderBy: '-date':true">
     <md-card-header ng-style="{'background-color': survey.status}">
       <md-card-avatar>
@@ -62,7 +66,4 @@
     </md-card-content> -->
   </div>
   </md-card>
-  <md-button class="md-fab md-fab-top-right" aria-label="Add" ng-click="vm.addSurvey($event)" style="top: 10px;">
-    <ng-md-icon icon="add"></ng-md-icon>
-  </md-button>
 </md-content>

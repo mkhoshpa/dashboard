@@ -55,9 +55,28 @@ exports.update = function(req, res) {
 }
 
 exports.delete = function(req, res) {
+  Note.findByIdAndUpdate(
+    req.params.id,
+    function(err, note){
+      if(note){
+        User.findByIdAndUpdate(note.assignee,
+          {$pull : {'notes': note._id}},
+          function(err, model){
+            if(err){
 
+            }
+          });
+          res.sendStatus(200);
+      }
+      else{
+        res.sendStatus(500);
+      }
+    }
+  )
 }
 
 exports.list = function(req, res) {
-
+  Note.find({}, function(err, obj){
+    res.json(obj);
+  })
 }

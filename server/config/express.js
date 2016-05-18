@@ -78,7 +78,8 @@ module.exports = function() {
 	require('../routes/user.info.routes.js')(app, passport);
 	require('../routes/api/surveyRoute.js')(app, passport);
 	require('../routes/twilio.js')(app, client, passport);
-	require('../routes/triangular.routes.js')(app, passport);
+	//Take it out
+	//require('../routes/triangular.routes.js')(app, passport);
 	require('../routes/api/facebook.routes.js')(app, passport);
 	require('../routes/api/userRoute.js')(app, passport);
 	require('../routes/api/bioRoute.js')(app, passport);

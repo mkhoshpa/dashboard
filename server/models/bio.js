@@ -1,5 +1,5 @@
 'use strict';
-
+//not used
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var ObjectId = mongoose.Schema.Types.ObjectId;
@@ -19,4 +19,4 @@ var bioSchema = new Schema({
 
 var Bio = mongoose.model('Bio', bioSchema);
 
-module.exports = Note;
+module.exports = Bio;

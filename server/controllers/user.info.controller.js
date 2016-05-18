@@ -28,7 +28,7 @@ exports.createBio = function(req, res){
 
 exports.create = function(req, res) {
   console.log("Im before new User.");
-
+  console.log(req.body);
   var user = new User(req.body);
   user.provider = 'local';
 
@@ -241,5 +241,5 @@ exports.delete = function(req, res){
 
 
 
-  
+
 }

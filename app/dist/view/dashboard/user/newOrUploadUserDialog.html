@@ -1,0 +1,28 @@
+<md-dialog aria-label="Add or Upload User(s)">
+  <form name="userForm" ng-submmit="ctrl.save()">
+
+    <md-dialog-content>
+      <div layout="column" layout-padding>
+        <div layout-gt-sm="row">
+
+          <md-input-container class="md-block" flex-gt-sm>
+            <label>Do you wish to add a new client or upload a list of existing clients?</label>
+          </md-input-container>
+
+        </div>
+      </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+      <md-button ng-click="ctrl.cancel()" >
+        Cancel
+      </md-button>
+      <md-button type="submit" class="md-primary md-raised">
+        New Client
+      </md-button>
+      <md-button type="submit" class="md-primary md-raised">
+        Upload Existing Clients
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

@@ -37,12 +37,12 @@ exports.create = function(req, res) {
       console.log(err);
     }
     else {
-
+      console.log(user._id);
     }
   });
 
   console.log("User controller hit");
-  console.log(user);
+  console.log(user._id);
 
   User.findByIdAndUpdate(user.coaches[0],
   {$push: {"clients": user._id}},

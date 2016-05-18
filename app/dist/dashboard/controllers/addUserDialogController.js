@@ -20,7 +20,36 @@ var app;
             };
             AddUserDialogController.prototype.save = function () {
                 console.log("Saving user.");
-                user = this.user;
+                /*var user = {
+                  firstName: 'Shadfdasda',
+                  lastName: 'Peleiafdaser',
+                  bio: 'This is my bo. It afasis aweome.',
+                  username: 'slajlkflier',
+                  password: 'ilinnafdafpafai',
+                  slack_id: 'efe235gafafdassaf',
+                  slack: {
+                    email: 'shne.peleier@ufadfnb.ca',
+                    id: 'speltadffadfsi',
+                    name: 'Shnsgfsadsfage',
+                    real_name: 'Safdashne Padfasfseaaaaalltier',
+                  },
+                  coaches: [this.user._id]
+                };*/
+                var user = {
+                  firstName: this.firstName,
+                  lastName: this.lastName,
+                  bio: this.bio,
+                  username: this.username,
+                  password: this.password,
+                  slack_id: this.slack_id,
+                  slack: {
+                    email: this.slack.email,
+                    id: this.slack.id,
+                    name: this.slack.real_name
+                  },
+                  coaches: [this.user._id]
+                }
+                console.log(user);
                 this.$mdDialog.hide(user);
             };
             AddUserDialogController.$inject = ['$mdDialog', 'userService'];

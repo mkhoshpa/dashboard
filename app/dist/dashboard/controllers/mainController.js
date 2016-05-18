@@ -85,7 +85,7 @@ var app;
 
 
                     _this.$http.post('/api/user/create', user).then(function successCallback(response) {
-                      //console.log(JSON.stringify(response.data.id));
+                      console.log(JSON.stringify(response.data.id));
                       //this.user.clients.push(response.data.id);
 
                       console.log("done");
@@ -585,6 +585,8 @@ var app;
                 this.tabIndex = 0;
             };
             MainController.prototype.hasReal = function (user) {
+              //  console.log(user);
+              //  console.log(user.slack);
                 if (user.slack.real_name) {
                     return true;
                 }

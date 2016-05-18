@@ -8,7 +8,7 @@ module.exports = function(app) {
 
   app.post('/api/user/create', user.create);
   app.post('/api/user/delete/:id', user.delete);
-  app.post('/api/coach/newuser/:usercoachId', user.updateCoach);
+  app.post('/api/coach/newuser/:id', user.updateCoach);
 
 
 }

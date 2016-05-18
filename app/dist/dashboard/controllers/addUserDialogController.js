@@ -9,7 +9,7 @@ var app;
                 this.userService = userService;
                 this.user = this.userService.get();
                 console.log(this.user);
-                
+
                 //creator: any = this.userService.get();
                 this.avatars = [
                     'svg-1', 'svg-2', 'svg-3', 'svg-4'
@@ -28,8 +28,6 @@ var app;
                   username : this.username,
                   coaches : arr
                 };
-
-
 
                 this.$mdDialog.hide(user);
             };

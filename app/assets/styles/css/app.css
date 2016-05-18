@@ -6,6 +6,15 @@ html, body {
   padding: 0px;
 }
 
+
+md-dialog.SurveyBuilder{
+  height: 350px;
+  width: 400px;
+}
+
+
+
+
 textarea.bioBox {
 
   font-family:  'Roboto', sans-serif;

@@ -1,6 +1,6 @@
 
 
-
+<md-content>
   <md-button class="md-fab" aria-label="Add" ng-click="vm.addNote($event)" style = "right: 5px; ">
     <ng-md-icon  icon="add"></ng-md-icon>
   </md-button>
@@ -11,7 +11,7 @@
       <md-card-content flex="80">
         <div layout="column">
           <md-card-content>
-            <p>{{note}}</p>
+            <p>{{note.body}}</p>
           </md-card-content>
         </div>
       </md-card-content>

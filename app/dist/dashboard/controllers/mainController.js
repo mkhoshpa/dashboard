@@ -125,7 +125,7 @@ var app;
                     // reminder.assigne.reminders.push()
 
                     _this.$http.post('/api/reminder/create', reminder).then(function successCallback(response) {
-                        //self.selected.reminders.push(response.data);
+                        self.selected.reminders.push(response.data);
                         console.log(response.data);
                     });
 

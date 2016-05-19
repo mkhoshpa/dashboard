@@ -17,7 +17,7 @@ var app;
                 this.selected = null;
                 this.newNote = new dashboard.Note('', null);
                 this.newReminder = new dashboard.Reminder('', null);
-                this.question = ""
+                this.question = 0
 
                 this.questions = [1, 2, 3, 4, 5];
                 var self = this;
@@ -38,6 +38,15 @@ var app;
             //   console.log('convertToUsers: ' + this.slack);
             //   this.userService.
             // }
+
+            //create a different controller
+            MainController.prototype.createSurvey = function($event){
+              console.log("here");
+
+            };
+
+
+
             MainController.prototype.setFormScope = function (scope) {
                 this.formScope = scope;
             };

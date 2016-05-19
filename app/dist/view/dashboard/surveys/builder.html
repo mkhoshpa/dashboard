@@ -2,33 +2,65 @@
 
   <md-content layout-padding="">
     <div>
-      <form name="userForm">
+      <form name="userForm" ng-submit = "vm.createSurvey()">
 
-        <div layout-gt-sm="row">
-          <md-input-container class="md-block" flex="80">
+        <div layout-gt-sm="row" >
+          <md-input-container class="md-block" flex="90">
             <label>Title of Survey</label>
-            <input>
+            <input ng-model = "vm.surveyTitle" required>
+            <div ng-messages="userForm.username.$error">
+              <div ng-message="required">This is required.</div>
+            </div>
           </md-input-container>
-          <!--
-          <md-input-container class="md-block" flex="20">
-            <label>Number of Questions</label>
-            <md-select ng-model="vm.question">
-              <md-option ng-repeat="index in vm.questions">
-                {{index}}
-              </md-option>
-            </md-select>
-          </md-input-container>
-        -->
+          <md-button class = "md-block" type = "submit" ng-disabled="userForm.$invalid">
+            Create Survey
+          </md-button>
         </div>
+        <md-content>
+          <div layout ="row">
 
-        <md-input-container class="md-block">
-          <label>Question 1</label>
-          <input>
-        </md-input-container>
+            <md-input-container layout-padding class "md-block" flex= "80">
+              <label>Question </label>
+              <input>
+            </md-input-container>
 
+            <md-input-container layout-padding class "md-block" flex ="20">
+              <label>Question Header </label>
+              <input>
+            </md-input-container>
+          </div>
+          <div>
+            <!-- fix only one at a time -->
+            <p>Selected Answer Type: </p>
+            <md-radio-group>
+              <md-radio-button>
+                Yes or No
+              </md-radio-button>
 
+              <md-radio-button>
+                Scale from 1 to 5
+              </md-radio-button>
 
+              <md-radio-button>
+                Write Answer
+              </md-radio-button>
+            </md-radio-group>
+          </div>
 
+          <div layout = "row">
+            <md-button>
+              Cancel
+            </md-button>
+            <md-button>
+              Another Question
+            </md-button>
+            <md-button>
+              Save
+            </md-button>
+
+          </div>
+
+        </md-content>
 
 
         <!--

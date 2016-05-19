@@ -6,6 +6,7 @@
   <md-button  class="md-fab" aria-label="Add" ng-click="vm.addReminder($event)" style = "right: 5px;">
     <ng-md-icon icon="add"></ng-md-icon>
   </md-button>
+  
   <p  ng-if="!vm.selected.reminders.length">No reminders for {{vm.selected.slack.name}}, yet.</p>
 
   <md-card ng-repeat="reminder in vm.selected.reminders | orderBy: '-date':true track by reminder._id" >

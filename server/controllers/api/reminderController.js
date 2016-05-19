@@ -6,6 +6,7 @@ var ReminderResponse = require('../../models/reminderResponse.js');
 var User = require('../../models/user.js');
 var moment = require('moment');
 var _ = require('underscore');
+var twilio = require('twilio')('ACf83693e222a7ade08080159c4871c9e3', '20b36bd42a33cd249e0079a6a1e8e0dd');
 
 var Promise = require('bluebird');
 var request = require('request');
@@ -39,6 +40,17 @@ exports.create = function(req, res) {
       //     }
       //   }
       // );
+
+      twilio.sendMessage({
+        to: '+15064261732',
+        from: '+12898062194',
+        body: reminder.title
+      }, function (err, responseData) {
+        if (!err) {
+          console.log(responseData.from);
+          console.log(responseData.body);
+        }
+      });
 
       res.send(reminder);
     }

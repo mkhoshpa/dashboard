@@ -12,7 +12,7 @@ var app;
 
                 //creator: any = this.userService.get();
                 this.avatars = [
-                    'svg-1', 'svg-2', 'svg-3', 'svg-4'
+                    'ashley.png', 'james.png', 'jenn.png', 'jo.png', 'john.png', 'julie.png', 'mamajess.png', 'sharon.png'
                 ];
             }
             AddUserDialogController.prototype.cancel = function () {
@@ -45,9 +45,11 @@ var app;
                   slack: {
                     email: this.slack.email,
                     id: this.slack.id,
-                    name: this.slack.real_name
+                    name: this.slack.real_name,
+                    img: '/assets/img/' + this.avatars[Math.floor(Math.random() * 7)]
                   },
-                  coaches: [this.user._id]
+                  coaches: [this.user._id],
+                  imgUrl: '/assets/img/' + this.avatars[Math.floor(Math.random() * 7)]
                 }
                 console.log(user);
                 this.$mdDialog.hide(user);

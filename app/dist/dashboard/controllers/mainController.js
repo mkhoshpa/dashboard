@@ -65,7 +65,6 @@ var app;
 
             };
 
-
             MainController.prototype.addUser = function ($event) {
                 var _this = this;
                 var self = this;

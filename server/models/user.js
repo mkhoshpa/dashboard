@@ -200,6 +200,11 @@ UserSchema.methods.calcStatus = function() {
 
 }
 
+// If we need this later
+/*UserSchema.statics.findByPhoneNumberAndUpdate = function (phoneNumber, callback) {
+
+}*/
+
 // Find possible not used username
 // UserSchema.statics.findUniqueUsername = function(username, suffix, callback) {
 // 	var _this = this;

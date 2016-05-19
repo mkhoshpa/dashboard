@@ -1,0 +1,9 @@
+<form name="messageForm" ng-submit="submit()">
+  <md-input-container class="md-block" flex-gt-sm>
+    <label>Message</label>
+    <input ng-model="message.content" name="content" />
+  </md-input-container>
+  <md-button type="submit" class="md-primary md-raised" ng-disabled="!message.content">
+    Send
+  </md-button>
+</form>

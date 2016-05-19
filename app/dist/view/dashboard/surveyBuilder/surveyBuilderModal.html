@@ -13,16 +13,44 @@
       </md-button>
     </div>
   </md-toolbar>
-  <div layout-padding layout = "row" layout-align ="center center">
-    <p>Create a new Survey<p>
+  <form   layout = "row" style="background-color: red">
 
+
+
+
+  </form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</md-dialog>
+
+
+
+
+
+
+<!--
+<md-content layout-padding layout = "row">
+  <md-content layout-padding layout = "column" style = "color: red" >
+    <p>Name your Survey<p>
+    <input> </input>
     <md-button>
       create
     </md-button>
-  </div>
+  </md-content>
 
-  <div layout-padding layout = "row" layout-align ="center center">
-    <div layout = "column">
+  <md-content layout-padding layout = "column" style = "color: blue">
+
       <p> Select a pre-made Survey <p>
       <md-input-container>
         <md-select ng-model="ctrl.surveySelected">
@@ -31,14 +59,17 @@
           </md-option>
         </md-select>
       </md-input-container>
-    </div>
+
     <md-button>
       create
     </md-button>
-  </div>
-</md-dialog>
+  </md-content>
+</md-content>
 
-<!--
+
+
+
+
 <div layout="column" flex-sm="100" flex="33" layout-align="center center">
 
    <md-input-container>

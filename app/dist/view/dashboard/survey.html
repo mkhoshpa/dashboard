@@ -1,0 +1,130 @@
+<!-- exact table from live demo -->
+<section layout-padding flex >
+  <div flex id="wrapper" layout="row">
+    <md-content flex id="content">
+      <md-tabs md-dynamic-height="" md-border-bottom="" md-stretch-tabs="always" md-selected="vm.tabIndex">
+        <md-tab label= "Survey Builder">
+          <div ng-include="'/dist/view/dashboard/surveys/builder.html'"></div>
+        </md-tab>
+
+        <md-tab label="Survey Selecter">
+          <div ng-include="'/dist/view/dashboard/surveys/selecter.html'"></div>
+        </md-tab>
+        
+      </md-tabs>
+    </md-content>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <!--
+  <div style = "margin:auto">
+    <h1 > Survey Builder </h1>
+  </div>
+  <md-content flex  layout ="row" layout-padding style = "background-color: red">
+      <div>
+        <md-input-container>
+          <label>Title of Survey</label>
+          <input ng-model="">
+        </md-input-container>
+
+      </div>
+  </md-content>
+-->
+</section>
+
+
+
+
+<!--
+  <md-content layout-padding="">
+    <div>
+      <form name="userForm">
+
+        <div layout-gt-xs="row">
+          <md-input-container class="md-block" flex-gt-xs="">
+            <label>Company (Disabled)</label>
+            <input ng-model="" disabled="">
+          </md-input-container>
+
+          <md-datepicker ng-model="" md-placeholder="Enter date">
+          </md-datepicker>
+        </div>
+
+        <div layout-gt-sm="row">
+          <md-input-container class="md-block" flex-gt-sm="">
+            <label>First name</label>
+            <input ng-model="">
+          </md-input-container>
+
+          <md-input-container class="md-block" flex-gt-sm="">
+            <label>Last Name</label>
+            <input ng-model="">
+          </md-input-container>
+        </div>
+
+        <md-input-container class="md-block">
+          <label>Address</label>
+          <input ng-model="">
+        </md-input-container>
+
+        <md-input-container md-no-float="" class="md-block">
+          <input ng-model="" placeholder="Address 2">
+        </md-input-container>
+
+        <div layout-gt-sm="row">
+          <md-input-container class="md-block" flex-gt-sm="">
+            <label>City</label>
+            <input ng-model="">
+          </md-input-container>
+
+          <md-input-container class="md-block" flex-gt-sm="">
+            <label>State</label>
+            <md-select ng-model="">
+              <md-option ng-repeat="" value="">
+
+              </md-option>
+            </md-select>
+          </md-input-container>
+
+          <md-input-container class="md-block" flex-gt-sm="">
+            <label>Postal Code</label>
+            <input name="postalCode" ng-model="" placeholder="12345" required=""  md-maxlength="5">
+
+            <div ng-messages="userForm.postalCode.$error" role="alert" multiple="">
+              <div ng-message="required" class="my-message">You must supply a postal code.</div>
+              <div ng-message="pattern" class="my-message">That doesn't look like a valid postal
+                code.
+              </div>
+              <div ng-message="md-maxlength" class="my-message">
+                Don't use the long version silly...we don't need to be that specific...
+              </div>
+            </div>
+          </md-input-container>
+        </div>
+
+        <md-input-container class="md-block">
+          <label>Biography</label>
+          <textarea ng-model="user.biography" md-maxlength="150" rows="5" md-select-on-focus=""></textarea>
+        </md-input-container>
+
+
+      </form>
+    </div>
+  </md-content>
+-->

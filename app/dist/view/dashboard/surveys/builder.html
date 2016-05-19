@@ -1,0 +1,77 @@
+<section flex  layout-padding  style = "background-color: blue">
+
+  <md-content layout-padding="">
+    <div>
+      <form name="userForm">
+
+        <div layout-gt-sm="row">
+          <md-input-container class="md-block" flex="80">
+            <label>Title of Survey</label>
+            <input>
+          </md-input-container>
+          <!--
+          <md-input-container class="md-block" flex="20">
+            <label>Number of Questions</label>
+            <md-select ng-model="vm.question">
+              <md-option ng-repeat="index in vm.questions">
+                {{index}}
+              </md-option>
+            </md-select>
+          </md-input-container>
+        -->
+        </div>
+
+        <md-input-container class="md-block">
+          <label>Question 1</label>
+          <input>
+        </md-input-container>
+
+
+
+
+
+
+        <!--
+        <div layout-gt-sm="row">
+          <md-input-container class="md-block" flex-gt-sm="">
+            <label>City</label>
+            <input ng-model="">
+          </md-input-container>
+
+          <md-input-container class="md-block" flex-gt-sm="">
+            <label>State</label>
+            <md-select ng-model="">
+              <md-option ng-repeat="" value="">
+
+              </md-option>
+            </md-select>
+          </md-input-container>
+
+          <md-input-container class="md-block" flex-gt-sm="">
+            <label>Postal Code</label>
+            <input name="postalCode" ng-model="" placeholder="12345" required=""  md-maxlength="5">
+
+            <div ng-messages="userForm.postalCode.$error" role="alert" multiple="">
+              <div ng-message="required" class="my-message">You must supply a postal code.</div>
+              <div ng-message="pattern" class="my-message">That doesn't look like a valid postal
+                code.
+              </div>
+              <div ng-message="md-maxlength" class="my-message">
+                Don't use the long version silly...we don't need to be that specific...
+              </div>
+            </div>
+          </md-input-container>
+        </div>
+
+        <md-input-container class="md-block">
+          <label>Biography</label>
+          <textarea ng-model="user.biography" md-maxlength="150" rows="5" md-select-on-focus=""></textarea>
+        </md-input-container>
+
+      -->
+      </form>
+    </div>
+  </md-content>
+
+
+</section>

@@ -17,7 +17,9 @@ var app;
                 this.selected = null;
                 this.newNote = new dashboard.Note('', null);
                 this.newReminder = new dashboard.Reminder('', null);
+                this.question = ""
 
+                this.questions = [1, 2, 3, 4, 5];
                 var self = this;
                 this.user = this.userService.get();
                 if (this.user.role == "user") {
@@ -608,6 +610,21 @@ var app;
                     return false;
                 }
             };
+
+            MainController.prototype.popUp = function(){
+              console.log("IT WORKED!")
+            }
+
+
+
+
+
+
+
+
+
+
+
             MainController.prototype.showContactOptions = function ($event) {
                 this.$mdBottomSheet.show({
                     parent: angular.element(document.getElementById('wrapper')),

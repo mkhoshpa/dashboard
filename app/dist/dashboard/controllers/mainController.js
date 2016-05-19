@@ -91,8 +91,8 @@ var app;
                       console.log("done");
                       _this.$http.post('/api/coach/newuser/' + this.user.id + '?' + response.data.id,  user).then(function successCallback(client){
                         console.log("done2");
-                        console.log(self.user.clients);
-                        self.user.clients.push(client);
+                        self.user.clients.push(user);
+                        console.log(self.user);
                       });
 
                     });

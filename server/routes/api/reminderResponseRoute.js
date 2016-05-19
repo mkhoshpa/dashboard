@@ -22,5 +22,5 @@ module.exports = function(app) {
   // When there is a genuine response
   app.post('/api/reminder/response/respond/:id', reminderResponse.respond);
   app.post('/api/reminder/response/remove/:id', reminderResponse.delete);
-
+  
 }

@@ -7,6 +7,8 @@ var User = require('../../models/user.js');
 var moment = require('moment');
 var _ = require('underscore');
 var twilio = require('twilio')('ACf83693e222a7ade08080159c4871c9e3', '20b36bd42a33cd249e0079a6a1e8e0dd');
+var smsresponse = require('twilio');
+var smsReceiver = require('express')();
 
 var Promise = require('bluebird');
 var request = require('request');
@@ -55,6 +57,21 @@ exports.create = function(req, res) {
       res.send(reminder);
     }
   });
+}
+
+exports.receiveSMS = function (req, res) {
+  console.log('Inside receiveSMS');
+  var resp = new smsresponse.TwimlResponse();
+  resp.message('You replied: ' + req.body.Body);
+  res.writeHead(200, {
+    'Content-Type': 'text/xml'
+  });
+  console.log("The client responded with: " + req.body.Body);
+  console.log(JSON.stringify(req.body));
+  /*Reminder.findByIdAndUpdate(
+    req.body.
+  )*/
+  res.end(resp.toString());
 }
 //fire a console log statement if we recieve a response
 

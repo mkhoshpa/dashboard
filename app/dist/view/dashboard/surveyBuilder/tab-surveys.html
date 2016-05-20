@@ -1,0 +1,68 @@
+<md-content>
+  <md-button class="md-fab" aria-label="Add" ng-click="vm.buildSurvey($event)" style = "right: 5px; ">
+    <ng-md-icon  icon="add"></ng-md-icon>
+  </md-button>
+  <p ng-if="!vm.selected.surveys.length">No Surveys for {{vm.selected.slack.name}}, yet.</p>
+
+  <md-card ng-repeat="survey in vm.selected.surveys | orderBy: '-date':true">
+    <md-card-header ng-style="{'background-color': survey.status}">
+      <md-card-avatar>
+        <md-icon class="md-avatar-icon" md-svg-icon="img/icons/menu.svg"></md-icon>
+      </md-card-avatar>
+      <md-card-header-text>
+        <div layout="row">
+
+          <div flex=90>
+            <span class="md-title">{{survey.author}}</span>
+          </br>
+            <span class="md-subhead">subhead</span>
+          </div>
+
+          <!-- <div ng-if="survey.status=='green'" flex=10>
+            <i class="material-icons" style="font-size: 32px; color:white;">check</i>
+          </div>
+          <div ng-if="survey.status=='yellow'" flex=10>
+            <i class="material-icons" style="font-size: 32px; color:#444;">warning</i>
+          </div>
+          <div ng-if="survey.status=='red'" flex=10>
+            <i class="material-icons" style="font-size: 32px; color:white;">priority_high</i>
+          </div> -->
+
+        </div>
+      </md-card-header-text>
+    </md-card-header>
+  <div layout="column" flex=grow>
+    <div layout="row" flex=grow>
+      <div layout="column" flex=80>
+      <md-card-content>
+        <div layout="row">
+          <md-card-content ng-repeat="goal in survey.goals" flex=50>
+            <p>
+              {{goal.goal}}
+            </p>
+            <span> <b> Reminder: </b> </span>
+            <p>
+              {{goal.reminder.title}}
+            </p>
+            <p>
+              {{goal.reminder.timeOfDay | date:'h:mma'}}
+            </p>
+          </md-card-content>
+        </div>
+      </md-card-content>
+      </div>
+        <div layout="column">
+          <md-card-actions flex="20" layout-align="end right">
+            <md-button ng-click="vm.removeSurvey($event, survey)">Remove</md-button>
+          </md-card-actions>
+          <md-card-actions flex="20" layout-align="end right">
+            <md-button ng-click="vm.editSurvey($event, survey)">Edit</md-button>
+          </md-card-actions>
+        </div>
+    </div>
+    <!-- <md-card-content flex=grow>
+      <p>{{survey.status}}</p>
+    </md-card-content> -->
+  </div>
+  </md-card>
+</md-content>

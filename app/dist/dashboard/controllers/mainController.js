@@ -17,7 +17,9 @@ var app;
                 this.selected = null;
                 this.newNote = new dashboard.Note('', null);
                 this.newReminder = new dashboard.Reminder('', null);
+                this.question = 0
 
+                this.questions = [1, 2, 3, 4, 5];
                 var self = this;
                 this.user = this.userService.get();
                 if (this.user.role == "user") {
@@ -36,9 +38,43 @@ var app;
             //   console.log('convertToUsers: ' + this.slack);
             //   this.userService.
             // }
+
+            //create a different controller
+            MainController.prototype.createSurvey = function($event){
+              console.log("here");
+
+            };
+
+
+
             MainController.prototype.setFormScope = function (scope) {
                 this.formScope = scope;
             };
+
+
+            MainController.prototype.buildSurvey = function($event){
+              var _this = this;
+              var self = this;
+              console.log("Here");
+              var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
+              this.$mdDialog.show({
+                  templateUrl: './dist/view/dashboard/surveyBuilder/surveyBuilderModal.html',
+                  parent: angular.element(document.body),
+                  targetEvent: $event,
+                  controller: dashboard.SurveyBuilderController,
+                  controllerAs: "ctrl",
+                  clickOutsideToClose: true,
+                  fullscreen: useFullScreen,
+                  locals: {
+                    selected: null
+                  }
+              }).then(function (survey) {
+                console.log("this is where the survey would be sent to a single person for the time being");
+
+
+              });
+            };
+
 
 
             MainController.prototype.addBio = function ($event) {
@@ -88,7 +124,7 @@ var app;
                       //this.user.clients.push(response.data.id);
 
                       console.log("done");
-                      _this.$http.post('/api/coach/newuser/' + this.user.id + '?' + response.data.id,  user).then(function successCallback(client){
+                      _this.$http.post('/api/coach/newuser/' + this.user.coaches[0],  user).then(function successCallback(client){
                         console.log("done2");
                         self.user.clients.push(user);
                         console.log(self.user);
@@ -162,7 +198,7 @@ var app;
               console.log(this.user);
               var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
               this.$mdDialog.show({
-                  templateUrl: './dist/view/dashboard/notes/noteModel.html',
+                  templateUrl: './dist/view/dashboard/notes/noteModal.html',
                   parent: angular.element(document.body),
                   targetEvent: $event,
                   controller: dashboard.NoteController,
@@ -434,13 +470,15 @@ var app;
                     self.openToast("Cleared notes");
                 });
             };
+
+            /*
             MainController.prototype.addSurvey = function ($event) {
                 var _this = this;
                 var self = this;
                 console.log('addSurvey()');
                 var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
                 this.$mdDialog.show({
-                    templateUrl: './dist/view/dashboard/surveys/modal.html',
+                    templateUrl: './dist/view/dashboard/survey/modal.html',
                     parent: angular.element(document.body),
                     targetEvent: $event,
                     controller: dashboard.SurveyController,
@@ -468,6 +506,8 @@ var app;
                     console.log('You cancelled the dialog.');
                 });
             };
+            */
+
             MainController.prototype.editSurvey = function ($event, survey) {
                 var _this = this;
                 var self = this;
@@ -604,6 +644,21 @@ var app;
                     return false;
                 }
             };
+
+            MainController.prototype.popUp = function(){
+              console.log("IT WORKED!")
+            }
+
+
+
+
+
+
+
+
+
+
+
             MainController.prototype.showContactOptions = function ($event) {
                 this.$mdBottomSheet.show({
                     parent: angular.element(document.getElementById('wrapper')),

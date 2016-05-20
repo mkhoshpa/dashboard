@@ -36,6 +36,7 @@ var app;
                   coaches: [this.user._id]
                 };*/
                 var user = {
+
                   firstName: this.firstName,
                   lastName: this.lastName,
                   bio: this.bio,
@@ -52,6 +53,7 @@ var app;
                   imgUrl: '/assets/img/' + this.avatars[Math.floor(Math.random() * 7)]
                 }
                 console.log(user);
+
                 this.$mdDialog.hide(user);
             };
             AddUserDialogController.$inject = ['$mdDialog', 'userService'];

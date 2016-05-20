@@ -1,4 +1,7 @@
 <form name="messageForm" ng-submit="vm.sendMessage(message.content)">
+  <p ng-repeat="message in vm.selected.messages">
+    {{message}}
+  </p>
   <md-input-container class="md-block" flex-gt-sm>
     <label>Message</label>
     <input ng-model="message.content" name="content" />

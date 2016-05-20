@@ -1,26 +1,48 @@
 'use strict'
 
+var mongooose = require('mongoose');
+var Message = require('../../models/message.js');
+var User = require('../../models/user.js');
+var _ = require('underscore');
+var moment = require('moment');
+var Promise = require('bluebird');
+var request = require('request');
 var twilio = require('twilio')('ACf83693e222a7ade08080159c4871c9e3', '20b36bd42a33cd249e0079a6a1e8e0dd');
 var twiml = require('twilio');
 
 exports.sendSMS = function (req, res) {
+  var message = new Message(req.body);
   console.log('Begin sendSMS');
-  console.log(req.body);
-  twilio.sendMessage({
-    to: '+15064261732',//req.params.number,
-    from: '+12898062194',
-    body: req.body,
-  }, function (err, responseData) {
+  console.log(message);
+
+  message.save(function(err, message) {
     if (!err) {
-      console.log('Message successfully sent.');
-      // console.log(responseData.from);
-      // console.log(responseData.body);
+      console.log("Message saved.");
+      User.findByIdAndUpdate(
+        message.sentBy,
+        {$push: {"messages": message._id}},
+        {safe: true},
+        function(err, user) {
+          if (err) {
+            console.log(err);
+          } else {
+            console.log(message.sentTo.phoneNumber);
+            twilio.sendMessage({
+              to: '+15064261732',//message.sentTo.phoneNumber,
+              from: '+12898062194',//message.sentFrom.phoneNumber,
+              body: message.body
+            }, function (err, responseData) {
+              if (!err) {
+                console.log('Message successfully sent.');
+              }
+            });
+          }
+        }
+      )
+      console.log(message);
+      res.send(message);
     }
-  })
-  res.writeHead(200, {
-    'Content-Type': 'text/plain'
   });
-  res.end('Success\n');
 }
 
 exports.receiveSMS = function (req, res) {

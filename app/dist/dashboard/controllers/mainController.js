@@ -124,7 +124,7 @@ var app;
                       //this.user.clients.push(response.data.id);
 
                       console.log("done");
-                      _this.$http.post('/api/coach/newuser/' + this.user.coaches[0],  user).then(function successCallback(client){
+                      _this.$http.post('/api/coach/newuser/' + this.user.id + '?' + response.data.id,  user).then(function successCallback(client){
                         console.log("done2");
                         self.user.clients.push(user);
                         console.log(self.user);
@@ -387,7 +387,8 @@ var app;
 
             MainController.prototype.sendMessage = function (message) {
               console.log('Begin submit');
-              this.$http.post('/api/message/send/+15064261732/', {"message":message});
+              this.$http.post('/api/message/send/', {'body': message, 'sentBy': this.selected.coaches[0], 'sentTo': this.selected._id});
+              this.selected.messages.push(message);
             };
 
 

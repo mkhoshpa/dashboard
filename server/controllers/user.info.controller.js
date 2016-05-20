@@ -6,6 +6,7 @@ var async = require('async');
 var crypto = require('crypto');
 var smtpTransport = require('nodemailer-smtp-transport');
 var nodemailer = require('nodemailer');
+var dashboard = require('./dashboard.controller');
 
 /**
   Node Mailer Config
@@ -28,7 +29,7 @@ exports.createBio = function(req, res){
 
 exports.create = function(req, res) {
   console.log("Im before new User.");
-
+  console.log(req.body);
   var user = new User(req.body);
   user.provider = 'local';
 
@@ -37,12 +38,12 @@ exports.create = function(req, res) {
       console.log(err);
     }
     else {
-
+      console.log(user._id);
     }
   });
 
   console.log("User controller hit");
-  console.log(user);
+  console.log(user._id);
 
   User.findByIdAndUpdate(user.coaches[0],
   {$push: {"clients": user._id}},
@@ -52,7 +53,8 @@ exports.create = function(req, res) {
      console.log(err);
     }
     else {
-      console.log('adding user ot coac');
+      console.log('adding user ' + user._id + ' ot coac');
+      user.clients.push(user._id);
       console.log(coach);
       console.log('success');
       res.send(user);
@@ -241,5 +243,5 @@ exports.delete = function(req, res){
 
 
 
-  
+
 }

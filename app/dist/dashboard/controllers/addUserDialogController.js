@@ -12,22 +12,47 @@ var app;
 
                 //creator: any = this.userService.get();
                 this.avatars = [
-                    'svg-1', 'svg-2', 'svg-3', 'svg-4'
+                    'ashley.png', 'james.png', 'jenn.png', 'jo.png', 'john.png', 'julie.png', 'mamajess.png', 'sharon.png'
                 ];
             }
             AddUserDialogController.prototype.cancel = function () {
                 this.$mdDialog.cancel();
             };
             AddUserDialogController.prototype.save = function () {
-                //weird naming on coachesId
-                var arr = [];
-                arr[0] = this.user.id;
-
-
+                console.log("Saving user.");
+                /*var user = {
+                  firstName: 'Shadfdasda',
+                  lastName: 'Peleiafdaser',
+                  bio: 'This is my bo. It afasis aweome.',
+                  username: 'slajlkflier',
+                  password: 'ilinnafdafpafai',
+                  slack_id: 'efe235gafafdassaf',
+                  slack: {
+                    email: 'shne.peleier@ufadfnb.ca',
+                    id: 'speltadffadfsi',
+                    name: 'Shnsgfsadsfage',
+                    real_name: 'Safdashne Padfasfseaaaaalltier',
+                  },
+                  coaches: [this.user._id]
+                };*/
                 var user = {
-                  username : this.username,
-                  coaches : arr
-                };
+
+                  firstName: this.firstName,
+                  lastName: this.lastName,
+                  bio: this.bio,
+                  username: this.username,
+                  password: this.password,
+                  slack_id: this.slack_id,
+                  slack: {
+                    email: this.slack.email,
+                    id: this.slack.id,
+                    name: this.slack.real_name,
+                    img: '/assets/img/' + this.avatars[Math.floor(Math.random() * 7)]
+                  },
+                  coaches: [this.user._id],
+                  imgUrl: '/assets/img/' + this.avatars[Math.floor(Math.random() * 7)]
+                }
+                console.log(user);
 
                 this.$mdDialog.hide(user);
             };

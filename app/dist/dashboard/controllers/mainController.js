@@ -101,7 +101,6 @@ var app;
 
             };
 
-
             MainController.prototype.addUser = function ($event) {
                 var _this = this;
                 var self = this;
@@ -121,14 +120,14 @@ var app;
 
 
                     _this.$http.post('/api/user/create', user).then(function successCallback(response) {
-                      //console.log(JSON.stringify(response.data.id));
+                      console.log(JSON.stringify(response.data.id));
                       //this.user.clients.push(response.data.id);
 
                       console.log("done");
                       _this.$http.post('/api/coach/newuser/' + this.user.coaches[0],  user).then(function successCallback(client){
                         console.log("done2");
-                        console.log(self.user.clients);
-                        self.user.clients.push(client);
+                        self.user.clients.push(user);
+                        console.log(self.user);
                       });
 
                     });
@@ -138,6 +137,27 @@ var app;
                     console.log('You cancelled the dialog.');
                 });
             };
+
+            // TODO: possibly remove if unnecessary.
+            MainController.prototype.addOrUploadUser = function ($event) {
+              var _this = this;
+              var self = this;
+              var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
+              this.$mdDialog.show({
+                templateUrl: './dist/view/dashboard/user/newOrUploadUserDialog.html',
+                parent: angular.element(document.body),
+                targetEvent: $event,
+                controller: dashboard.AddOrUploadUserDialogController,
+                controllerAs: "ctrl",
+                clickOutsideToClose: true,
+                fullscreen: useFullScreen
+              }).then(function (user) {
+
+              }, function () {
+                console.log('You cancelled the dialog.');
+              })
+            };
+
             MainController.prototype.addReminder = function ($event) {
                 var _this = this;
                 var self = this;
@@ -604,6 +624,8 @@ var app;
                 this.tabIndex = 0;
             };
             MainController.prototype.hasReal = function (user) {
+              //  console.log(user);
+              //  console.log(user.slack);
                 if (user.slack.real_name) {
                     return true;
                 }

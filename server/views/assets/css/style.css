@@ -255,3 +255,11 @@ footer.page-footer {
 form#update input {
   padding-left: 10px;
 }
+
+.list_default {
+  list-style-type: disc;
+}
+
+.list_default li {
+  list-style-type: disc;
+}

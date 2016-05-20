@@ -9,7 +9,9 @@ var moment = require('moment');
 var messageSchema = new Schema({
   body: {type: String, required: true},
   sentBy: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
-  sentTo: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}
+  sentTo: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+  //TODO: fix so this isn't necessarry
+  sentToPhoneNumber: {type: String}
 });
 
 var Message = mongoose.model('Message', messageSchema);

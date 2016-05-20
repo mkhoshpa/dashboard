@@ -120,7 +120,8 @@ var app;
 
 
                     _this.$http.post('/api/user/create', user).then(function successCallback(response) {
-                      console.log(JSON.stringify(response.data.id));
+                      console.log('The user\'s id is: ' + response.data.id);
+                      console.log('The user\'s _id is: ' + response.data._id);
                       //this.user.clients.push(response.data.id);
 
                       console.log("done");
@@ -388,11 +389,13 @@ var app;
             MainController.prototype.sendMessage = function (message) {
               var _this = this;
               console.log('Begin submit');
-              console.log('this.selected._id: ' + _this.selected._id);
-              this.$http.post('/api/message/send/', {'body': message, 'sentBy': this.selected.coaches[0], 'sentTo': this.selected._id}).then(function (response) {
+              console.log('this.selected.id: ' + this.selected.id);
+              this.$http.post('/api/message/send/', {'body': message, 'sentBy': this.selected.coaches[0], 'sentTo': this.selected.id}).then(function (response) {
                 console.log('response.data is ' + JSON.stringify(response.data));
-                //_this.selected.messages.push(response.data);
-                console.log('self.selected is:' + JSON.stringify(this.selected));
+                //console.log('_this.selected.messages is: ' + JSON.stringify(_this.selected.messages));
+                console.log(_this.selected.messages); // Why is this undefined?
+                _this.selected.messages.push(response.data);
+                console.log('self.selected is:' + JSON.stringify(this.selected.messages));
               });
             };
 

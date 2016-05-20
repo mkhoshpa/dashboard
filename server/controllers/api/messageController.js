@@ -26,14 +26,19 @@ exports.sendSMS = function (req, res) {
           if (err) {
             console.log(err);
           } else {
-            console.log(message.sentTo.phoneNumber);
-            twilio.sendMessage({
-              to: '+15064261732',//message.sentTo.phoneNumber,
-              from: '+12898062194',//message.sentFrom.phoneNumber,
-              body: message.body
-            }, function (err, responseData) {
+            var sentToPhoneNumber = '';
+            console.log('message.sentTo is ' + message.sentTo);
+            User.findById(message.sentTo, function (err, sentTo) {
               if (!err) {
-                console.log('Message successfully sent.');
+                twilio.sendMessage({
+                  to: sentTo.phoneNumber,
+                  from: '+12898062194',
+                  body: message.body
+                }, function (err, responseData) {
+                  if (!err) {
+                    console.log('Message successfully sent.');
+                  }
+                });
               }
             });
           }

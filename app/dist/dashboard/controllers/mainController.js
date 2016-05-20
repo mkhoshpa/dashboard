@@ -349,7 +349,10 @@ var app;
                 this.selected.notes.splice(foundIndex, 1);
             };
 
-
+            MainController.prototype.sendMessage = function () {
+              console.log('Begin submit');
+              this.$http.post('/api/message/send/+15064261732/', 'Hello!');
+            };
 
 
 

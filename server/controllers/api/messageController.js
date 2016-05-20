@@ -4,10 +4,12 @@ var twilio = require('twilio')('ACf83693e222a7ade08080159c4871c9e3', '20b36bd42a
 var twiml = require('twilio');
 
 exports.sendSMS = function (req, res) {
+  console.log('Begin sendSMS');
+  console.log(req.body);
   twilio.sendMessage({
     to: '+15064261732',//req.params.number,
     from: '+12898062194',
-    body: req.params.message
+    body: req.body,
   }, function (err, responseData) {
     if (!err) {
       console.log('Message successfully sent.');

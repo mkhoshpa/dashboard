@@ -15,9 +15,11 @@ exports.sendSMS = function (req, res) {
   console.log('Begin sendSMS');
   console.log(message);
 
+  console.log('Printed message contents');
   message.save(function(err, message) {
     if (!err) {
       console.log("Message saved.");
+      console.log(message);
       User.findByIdAndUpdate(
         message.sentTo,
         {$push: {"messages": message}},
@@ -31,12 +33,13 @@ exports.sendSMS = function (req, res) {
             User.findById(message.sentTo, function (err, userSentTo) {
               if (!err) {
                 twilio.sendMessage({
-                  to: userSentTo.phoneNumber,
+                  to: '+15064261732',//userSentTo.phoneNumber,
                   from: '+12898062194',
                   body: message.body
                 }, function (err, responseData) {
                   if (!err) {
-                    console.log('Message successfully sent to: ' + userSentTo.phoneNumber);
+                    console.log(JSON.stringify(responseData));
+                    //`console.log('Message successfully sent to: ' + userSentTo.phoneNumber);
                   }
                 });
               }

@@ -386,9 +386,13 @@ var app;
             };
 
             MainController.prototype.sendMessage = function (message) {
+              var _this = this;
               console.log('Begin submit');
-              this.$http.post('/api/message/send/', {'body': message, 'sentBy': this.selected.coaches[0], 'sentTo': this.selected._id});
-              this.selected.messages.push(message);
+              this.$http.post('/api/message/send/', {'body': message, 'sentBy': this.selected.coaches[0], 'sentTo': _this.selected._id}).then(function (response) {
+                console.log('response.data is ' + JSON.stringify(response.data));
+                _this.selected.messages.push(response.data);
+                console.log('self.selected is:' + JSON.stringify(_this.selected));
+              });
             };
 
 

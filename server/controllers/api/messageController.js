@@ -19,8 +19,8 @@ exports.sendSMS = function (req, res) {
     if (!err) {
       console.log("Message saved.");
       User.findByIdAndUpdate(
-        message.sentBy,
-        {$push: {"messages": message._id}},
+        message.sentTo,
+        {$push: {"messages": message}},
         {safe: true},
         function(err, user) {
           if (err) {
@@ -28,15 +28,15 @@ exports.sendSMS = function (req, res) {
           } else {
             var sentToPhoneNumber = '';
             console.log('message.sentTo is ' + message.sentTo);
-            User.findById(message.sentTo, function (err, sentTo) {
+            User.findById(message.sentTo, function (err, userSentTo) {
               if (!err) {
                 twilio.sendMessage({
-                  to: sentTo.phoneNumber,
+                  to: userSentTo.phoneNumber,
                   from: '+12898062194',
                   body: message.body
                 }, function (err, responseData) {
                   if (!err) {
-                    console.log('Message successfully sent.');
+                    console.log('Message successfully sent to: ' + userSentTo.phoneNumber);
                   }
                 });
               }

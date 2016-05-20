@@ -1,7 +1,10 @@
+<p ng-if="!vm.selected.messages.length">
+  No messages for {{vm.selected.slack.name}}, yet.
+</p>
+<!-- <p ng-repeat="message in vm.selected.messages"> -->
+  {{vm.selected.messages}}
+<!--</p>-->
 <form name="messageForm" ng-submit="vm.sendMessage(message.content)">
-  <p ng-repeat="message in vm.selected.messages">
-    {{message}}
-  </p>
   <md-input-container class="md-block" flex-gt-sm>
     <label>Message</label>
     <input ng-model="message.content" name="content" />

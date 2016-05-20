@@ -390,7 +390,7 @@ var app;
               var _this = this;
               console.log('Begin submit');
               console.log('this.selected.id: ' + this.selected.id);
-              this.$http.post('/api/message/send/', {'body': message, 'sentBy': this.selected.coaches[0], 'sentTo': this.selected.id}).then(function (response) {
+              this.$http.post('/api/message/sendsms/', {'body': message, 'sentBy': this.selected.coaches[0], 'sentTo': this.selected.id}).then(function (response) {
                 console.log('response.data is ' + JSON.stringify(response.data));
                 //console.log('_this.selected.messages is: ' + JSON.stringify(_this.selected.messages));
                 console.log(_this.selected.messages); // Why is this undefined?

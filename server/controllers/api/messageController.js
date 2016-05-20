@@ -64,3 +64,11 @@ exports.receiveSMS = function (req, res) {
   console.log(JSON.stringify(req.body));
   res.end(resp.toString());
 }
+
+exports.sendFB = function (req, res) {
+  if (req.query['hub.verify_token'] === '4kfz2v98hj1CCG2ho01C1s1Pup5TEh2JuBOVXDnh') {
+    res.send(req.query['hub.challenge']);
+  } else {
+    res.send('Error, wrong validation token');
+  }
+}

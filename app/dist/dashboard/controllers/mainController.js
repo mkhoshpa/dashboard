@@ -385,9 +385,9 @@ var app;
                 this.selected.notes.splice(foundIndex, 1);
             };
 
-            MainController.prototype.sendMessage = function () {
+            MainController.prototype.sendMessage = function (message) {
               console.log('Begin submit');
-              this.$http.post('/api/message/send/+15064261732/', 'Hello!');
+              this.$http.post('/api/message/send/+15064261732/', {"message":message});
             };
 
 

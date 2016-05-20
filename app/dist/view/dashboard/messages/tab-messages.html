@@ -1,4 +1,4 @@
-<form name="messageForm" ng-submit="submit()">
+<form name="messageForm" ng-submit="vm.sendMessage(message.content)">
   <md-input-container class="md-block" flex-gt-sm>
     <label>Message</label>
     <input ng-model="message.content" name="content" />

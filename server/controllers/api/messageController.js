@@ -9,7 +9,7 @@ exports.sendSMS = function (req, res) {
   twilio.sendMessage({
     to: '+15064261732',//req.params.number,
     from: '+12898062194',
-    body: req.body,
+    body: req.body.message,
   }, function (err, responseData) {
     if (!err) {
       console.log('Message successfully sent.');

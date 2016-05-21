@@ -4,14 +4,15 @@ var app;
   var dashboard;
   (function (dashboard) {
     var MessageController = (function () {
-      function MessageController($http) {
+      function MessageController($http, userService) {
         this.$http = $http;
+        this.userService = userService;
       };
       MessageController.prototype.submit = function () {
         console.log('Begin submit');
         this.$http.post('/api/message/send/+15064261732/' + message.content);
       };
-      MessageController.$inject = ['$http'];
+      MessageController.$inject = ['$http', 'userService'];
 
       return MessageController;
     }());

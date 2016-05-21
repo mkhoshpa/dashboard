@@ -19,13 +19,15 @@ exports.create = function(req, res) {
       console.log("NO Error")
       User.findByIdAndUpdate(
         note.assignee,
-        {$push: {"notes": note._id}},
+        {$push: {"notes": note}},
         {safe: true},
         function(err, user) {
           if(err) {
             console.log(err);
           }
           else {
+            console.log("Note pushed to user.");
+            console.log("User is: " + JSON.stringify(user));
           }
         }
       );

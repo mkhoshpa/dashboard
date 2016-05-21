@@ -67,7 +67,17 @@ exports.receiveSMS = function (req, res) {
     sentBy: req.body.From,
     sentTo: '5740520e1a24306816892905'
   });
-  User.findByPhoneNumber(req.body.From, function (err, user) {
+  User.findOneAndUpdate(
+    {phoneNumber: req.body.From},
+    {$push: {messages: message}},
+    {safe: true},
+    function (err, user) {
+      if (!err) {
+        console.log('The user with that phone number is: ' + user.slack.name);
+        console.log('Message saved and pushed to user');
+    }
+  });
+  /*User.findByPhoneNumber(req.body.From, function (err, user) {
     if (!err) {
       console.log("The user with that phone number is: " + user.slack.name);
       message.save(function (err, message) {
@@ -88,7 +98,7 @@ exports.receiveSMS = function (req, res) {
         }
       });
     }
-  });
+  });*/
   //console.log(JSON.stringify(req.body));
   res.end(resp.toString());
 }

@@ -208,7 +208,7 @@ UserSchema.methods.calcStatus = function() {
 // If we need this later
 UserSchema.statics.findByPhoneNumber = function (phoneNumber, callback) {
   console.log("Inside findByPhoneNumber, attempting to find: " + phoneNumber);
-  return this.findOne({ 'phoneNumber': '+15064261732' }, callback);
+  return this.findOne({ 'phoneNumber': phoneNumber }, callback);
 }
 
 // Find possible not used username

@@ -115,20 +115,21 @@ var app;
                     fullscreen: useFullScreen
                 }).then(function (user) {
                     // Call user service
-                    console.log('this is user' + JSON.stringify(user));
+                    //console.log('this is user' + JSON.stringify(user));
 
 
 
                     _this.$http.post('/api/user/create', user).then(function successCallback(response) {
-                      console.log('The user\'s id is: ' + response.data.id);
-                      console.log('The user\'s _id is: ' + response.data._id);
+                      //console.log('The user\'s id is: ' + response.data.id);
+                    //  console.log('The user\'s _id is: ' + response.data._id);
                       //this.user.clients.push(response.data.id);
 
                       console.log("done");
                       _this.$http.post('/api/coach/newuser/' + this.user.id + '?' + response.data.id,  user).then(function successCallback(client){
                         console.log("done2");
-                        self.user.clients.push(user);
-                        console.log(self.user);
+                        self.user.clients.push(response.data);
+                        console.log("User created:")
+                        console.log(response.data);
                       });
 
                     });
@@ -389,13 +390,13 @@ var app;
             MainController.prototype.sendMessage = function (message) {
               var _this = this;
               console.log('Begin submit');
-              console.log('this.selected.id: ' + this.selected.id);
+              console.log('this.selected: ' + JSON.stringify(this.selected));
               this.$http.post('/api/message/sendsms/', {'body': message, 'sentBy': this.selected.coaches[0], 'sentTo': this.selected.id}).then(function (response) {
                 console.log('response.data is ' + JSON.stringify(response.data));
                 //console.log('_this.selected.messages is: ' + JSON.stringify(_this.selected.messages));
                 console.log(_this.selected.messages); // Why is this undefined?
                 _this.selected.messages.push(response.data);
-                console.log('self.selected is:' + JSON.stringify(this.selected.messages));
+                console.log('self.selected is:' + JSON.stringify(_this.selected.messages));
               });
             };
 

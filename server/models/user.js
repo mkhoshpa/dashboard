@@ -83,6 +83,9 @@ var UserSchema = new Schema({
   notes: [
     {type: mongoose.Schema.Types.ObjectId, ref: 'Note'}
   ],
+  messages: [
+    {type: mongoose.Schema.Types.ObjectId, ref: 'Messages'}
+  ],
     // reminder: {type: mongoose.Schema.Types.ObjectId, ref: 'Reminder'},
     // survey: {type: mongoose.Schema.Types.ObjectId, ref: 'Survey'}
 
@@ -122,7 +125,6 @@ var UserSchema = new Schema({
 		default: Date.now
 	},
   phoneNumber: String,
-  messages: String
 });
 
 // Set the 'fullname' virtual property

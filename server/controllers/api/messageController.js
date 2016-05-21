@@ -13,27 +13,25 @@ var twiml = require('twilio');
 exports.sendSMS = function (req, res) {
   var message = new Message(req.body);
   console.log('Begin sendSMS');
-  console.log(message);
 
-  console.log('Printed message contents');
   message.save(function(err, message) {
     if (!err) {
       console.log("Message saved.");
-      console.log(message);
       User.findByIdAndUpdate(
         message.sentTo,
-        {$push: {"messages": message}},
+        {$push: {"messages": message._id}},
         {safe: true},
         function(err, user) {
           if (err) {
             console.log(err);
           } else {
+            console.log('Message pushed to user');
+            console.log(user);
             var sentToPhoneNumber = '';
-            console.log('message.sentTo is ' + message.sentTo);
             User.findById(message.sentTo, function (err, userSentTo) {
               if (!err) {
                 twilio.sendMessage({
-                  to: '+15064261732',//userSentTo.phoneNumber,
+                  to: userSentTo.phoneNumber,
                   from: '+12898062194',
                   body: message.body
                 }, function (err, responseData) {

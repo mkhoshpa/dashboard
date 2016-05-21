@@ -18,7 +18,7 @@ var app;
                 this.newNote = new dashboard.Note('', null);
                 this.newReminder = new dashboard.Reminder('', null);
                 this.question = 0
-
+                //this.socket = io.connect('http://localhost:3001');
                 this.questions = [1, 2, 3, 4, 5];
                 var self = this;
                 this.user = this.userService.get();
@@ -400,7 +400,16 @@ var app;
               });
             };
 
-
+            // socket.io code ahead
+            socket.on('message', function (message) {
+              console.log(message);
+              if (this.selected) {
+                if (this.selected._id == message.sentBy) {
+                  console.log('Message pushed.');
+                  this.selected.messages.push(message);
+                }
+              }
+            });
 
             MainController.prototype.editNote = function($event, note){
               var _this = this;

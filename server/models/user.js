@@ -10,6 +10,7 @@ var mongoose = require('mongoose'),
 
     reminder = require('./reminder.js'),
     note = require('./note.js'),
+    message = require('./message.js'),
     reminderResponse = require('./reminderResponse.js');
 
 
@@ -84,7 +85,7 @@ var UserSchema = new Schema({
     {type: mongoose.Schema.Types.ObjectId, ref: 'Note'}
   ],
   messages: [
-    {type: mongoose.Schema.Types.ObjectId, ref: 'Messages'}
+    {type: mongoose.Schema.Types.ObjectId, ref: 'Message'}
   ],
     // reminder: {type: mongoose.Schema.Types.ObjectId, ref: 'Reminder'},
     // survey: {type: mongoose.Schema.Types.ObjectId, ref: 'Survey'}
@@ -205,9 +206,10 @@ UserSchema.methods.calcStatus = function() {
 }
 
 // If we need this later
-/*UserSchema.statics.findByPhoneNumberAndUpdate = function (phoneNumber, callback) {
-
-}*/
+UserSchema.statics.findByPhoneNumber = function (phoneNumber, callback) {
+  console.log("Inside findByPhoneNumber, attempting to find: " + phoneNumber);
+  return this.findOne({ 'phoneNumber': '+15064261732' }, callback);
+}
 
 // Find possible not used username
 // UserSchema.statics.findUniqueUsername = function(username, suffix, callback) {

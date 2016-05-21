@@ -17,16 +17,18 @@ exports.sendSMS = function (req, res) {
   message.save(function(err, message) {
     if (!err) {
       console.log("Message saved.");
+      console.log('Message is: ' + JSON.stringify(message));
       User.findByIdAndUpdate(
         message.sentTo,
         {$push: {"messages": message._id}},
         {safe: true},
         function(err, user) {
           if (err) {
+            console.log("ERROR!!!!!!");
             console.log(err);
           } else {
             console.log('Message pushed to user');
-            console.log(user);
+            console.log('User is ' + JSON.stringify(user));
             var sentToPhoneNumber = '';
             User.findById(message.sentTo, function (err, userSentTo) {
               if (!err) {
@@ -54,12 +56,40 @@ exports.sendSMS = function (req, res) {
 exports.receiveSMS = function (req, res) {
   console.log('Begin receiveSMS');
   var resp = new twiml.TwimlResponse();
-  resp.message('You replied: ' + req.body.Body);
+  console.log('Received SMS from: ' + req.body.From);
+  //resp.message('You wrote: ' + req.body.Body);
   res.writeHead(200, {
     'Content-Type': 'text/xml'
   });
-  console.log("The client responsed with: " + req.body.Body);
-  console.log(JSON.stringify(req.body));
+  console.log("The client wrote: " + req.body.Body);
+  User.findByPhoneNumber(req.body.From, function (err, user) {
+    if (!err) {
+      console.log("The user with that phone number is: " + user.slack.name);
+      var message = new Message({
+        body: req.body.Body,
+        sentBy: req.body.From,
+        sentTo: '5740520e1a24306816892905' //TODO: figure out how to allow more people than just Colin to use FitPath
+      });
+      message.save(function (err, message) {
+        console.log('Message saved');
+        if (!err) {
+          User.findByIdAndUpdate(
+            message.sentBy,
+            {$push: {"messages": message._id}},
+            {safe: true},
+            function (err, user) {
+              if (err) {
+                console.log(err);
+              } else {
+                console.log('Message saved and pushed to user, at least theoretically.');
+              }
+            }
+          )
+        }
+      });
+    }
+  });
+  //console.log(JSON.stringify(req.body));
   res.end(resp.toString());
 }
 

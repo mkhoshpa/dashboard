@@ -26,6 +26,8 @@ exports.create = function(req, res) {
             console.log(err);
           }
           else {
+            console.log("Note pushed to user.");
+            console.log("User is: " + JSON.stringify(user));
           }
         }
       );

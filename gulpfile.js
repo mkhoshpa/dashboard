@@ -6,6 +6,9 @@ var nodemon = require('gulp-nodemon');
 var sass = require('gulp-sass');
     browserSync = require('browser-sync');
     reload = browserSync.reload;
+var mongoose = require('mongoose');
+var db = require('./server/config/env/development.js').db;
+var User = require('./server/models/user.js');
 
 var paths = {
   angular: ['app/dist/**/*.js'],
@@ -51,6 +54,41 @@ gulp.task('watch', function() {
   gulp.watch(paths.server, reload);
   //gulp.watch(paths.sass, ['sass']);
   gulp.watch(paths.css, reload);
+});
+
+//TODO: allow cleaning any model
+gulp.task('clean', function() {
+  mongoose.connect(db);
+  var conn = mongoose.connection;
+  conn.on('error', console.error.bind(console, 'connection error:'));
+  conn.once('open', function() {
+    conn.collection('users').drop(function(err) {
+      console.log('Users dropped');
+      var colin = new User({
+        firstName: 'Colin',
+        lastName: 'Hryniowski',
+        bio: 'I\'m a Coach',
+        username: 'colinhryniowski@gmail.com',
+        password: 'letmein',
+        slack_id: 'colin',
+        slack: {
+          email: 'colinhryniowski@gmail.com',
+          id: 'colin',
+          img: 'ashley.png',
+          name: 'Colin Hryniowski',
+          real_name: 'Colin Hryniowski'
+        },
+        imageUrl: 'ashley.png',
+        role: 'coach',
+        provider: 'local'
+      });
+      colin.save(function (err) {
+        if (err) {
+          console.log('DB is now broken, good luck.');
+        }
+      })
+    });
+  });
 });
 
 gulp.task('default', ['browser-sync']);

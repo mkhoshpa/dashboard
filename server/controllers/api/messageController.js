@@ -20,7 +20,7 @@ exports.sendSMS = function (req, res) {
       console.log('Message is: ' + JSON.stringify(message));
       User.findByIdAndUpdate(
         message.sentTo,
-        {$push: {"messages": message._id}},
+        {$push: {"messages": message}},
         {safe: true},
         function(err, user) {
           if (err) {
@@ -62,20 +62,20 @@ exports.receiveSMS = function (req, res) {
     'Content-Type': 'text/xml'
   });
   console.log("The client wrote: " + req.body.Body);
+  var message = new Message({
+    body: req.body.Body,
+    sentBy: req.body.From,
+    sentTo: '5740520e1a24306816892905'
+  });
   User.findByPhoneNumber(req.body.From, function (err, user) {
     if (!err) {
       console.log("The user with that phone number is: " + user.slack.name);
-      var message = new Message({
-        body: req.body.Body,
-        sentBy: req.body.From,
-        sentTo: '5740520e1a24306816892905' //TODO: figure out how to allow more people than just Colin to use FitPath
-      });
       message.save(function (err, message) {
         console.log('Message saved');
         if (!err) {
           User.findByIdAndUpdate(
             message.sentBy,
-            {$push: {"messages": message._id}},
+            {$push: {"messages": message}},
             {safe: true},
             function (err, user) {
               if (err) {

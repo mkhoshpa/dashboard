@@ -82,10 +82,10 @@ var UserSchema = new Schema({
   },
 
   notes: [
-    {type: mongoose.Schema.Types.ObjectId, ref: 'Note'}
+    {type: mongoose.Schema.Types.Object, ref: 'Note'}
   ],
   messages: [
-    {type: mongoose.Schema.Types.ObjectId, ref: 'Message'}
+    {type: mongoose.Schema.Types.Object, ref: 'Message'}
   ],
     // reminder: {type: mongoose.Schema.Types.ObjectId, ref: 'Reminder'},
     // survey: {type: mongoose.Schema.Types.ObjectId, ref: 'Survey'}

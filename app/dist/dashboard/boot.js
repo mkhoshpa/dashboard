@@ -43,7 +43,7 @@ var app;
             }).when("/table", {
 
                 templateUrl: "/dist/view/dashboard/table.html",
-                controller: "MainController as vm"
+                controller: "ClientOverviewController as vm"
             }).when("/surveys",{
                 templateUrl: "/dist/view/dashboard/survey.html",
                 controller: "MainController as vm"

@@ -3,8 +3,10 @@ var app;
 (function (app) {
     var dashboard;
     (function (dashboard) {
+        var userSelected;
+        var scope;
         var MainController = (function () {
-            function MainController(userService, $mdSidenav, $mdBottomSheet, $mdToast, $mdDialog, $mdMedia, $http) {
+            function MainController($scope, userService, $mdSidenav, $mdBottomSheet, $mdToast, $mdDialog, $mdMedia, $http) {
                 this.userService = userService;
                 this.$mdSidenav = $mdSidenav;
                 this.$mdBottomSheet = $mdBottomSheet;
@@ -30,6 +32,8 @@ var app;
                     self.selected = this.clients[0];
                 }
                 self.userService.selectedUser = self.selected;
+                userSelected = self.userService.selectedUser;
+                scope = $scope;
                 this._ = window['_'];
 
             }
@@ -400,16 +404,47 @@ var app;
               });
             };
 
+            MainController.prototype.sendFB = function (message) {
+              var _this = this;
+              console.log('Begin submit');
+              console.log('this.selected: ' + JSON.stringify(this.selected));
+              this.$http.post('/api/message/sendfb/', {'body': message, 'sentBy': this.selected.coaches[0], 'sentTo': this.selected.id}).then(function (response) {
+                console.log('response.data is ' + JSON.stringify(response.data));
+                console.log(_this.selected.messages);
+                _this.selected.messages.push(response.data);
+                console.log('self.selected is: ' + JSON.stringify(_this.selected.messages));
+              });
+            };
+
             // socket.io code ahead
             socket.on('message', function (message) {
+              console.log('Server sent a message');
+              MainController.prototype.receiveMessage(message);
+            });/*function (message) {
+              console.log(this.selected);
+              console.log('Message received from server');
               console.log(message);
               if (this.selected) {
+                console.log(this.selected._id);
                 if (this.selected._id == message.sentBy) {
                   console.log('Message pushed.');
                   this.selected.messages.push(message);
                 }
               }
-            });
+            });*/
+
+            MainController.prototype.receiveMessage = function (message) {
+              console.log('userSelected is: ' + JSON.stringify(userSelected));
+              console.log('Message received from server');
+              console.log(message);
+              //if (this.selected) {
+                if (userSelected._id === message.sentBy) {
+                  console.log('Message pushed.');
+                  userSelected.messages.push(message);
+                  scope.$apply();
+                }
+              //}
+            };
 
             MainController.prototype.editNote = function($event, note){
               var _this = this;
@@ -690,7 +725,7 @@ var app;
                     clickedItem && console.log(clickedItem.name + ' clicked!');
                 });
             };
-            MainController.$inject = ['userService', '$mdSidenav', '$mdBottomSheet',
+            MainController.$inject = ['$scope', 'userService', '$mdSidenav', '$mdBottomSheet',
                 '$mdToast', '$mdDialog', '$mdMedia', '$http'];
             return MainController;
         }());

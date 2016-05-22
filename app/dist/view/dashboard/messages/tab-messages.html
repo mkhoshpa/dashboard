@@ -1,10 +1,17 @@
-<p ng-if="!vm.selected.messages.length">
-  No messages for {{vm.selected.slack.name}}, yet.
-</p>
-<p ng-repeat="message in vm.selected.messages">
-  {{message.body}}
-</p>
-<form name="messageForm" ng-submit="vm.sendMessage(message.content)">
+<md-virtual-repeat-container id="vertical-container" scroll-glue>
+    <p ng-if="!vm.selected.messages.length">
+      No messages for {{vm.selected.slack.name}}, yet.
+    </p>
+    <p md-virtual-repeat="message in vm.selected.messages" class="repeated-item" flex>
+      <span ng-if="message.sentTo === vm.selected._id">
+        Sent: {{message.body}}
+      </span>
+      <span ng-if="message.sentTo != vm.selected._id">
+        Received: {{message.body}}
+      </span>
+    </p>
+</md-virtual-repeat-container>
+<form name="messageForm" ng-submit="vm.sendMessage(message.content); message.content=''">
   <md-input-container class="md-block" flex-gt-sm>
     <label>Message</label>
     <input ng-model="message.content" name="content" />

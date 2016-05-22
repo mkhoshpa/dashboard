@@ -126,6 +126,7 @@ var UserSchema = new Schema({
 		default: Date.now
 	},
   phoneNumber: String,
+  facebookId: Number
 });
 
 // Set the 'fullname' virtual property

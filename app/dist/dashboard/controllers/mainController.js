@@ -404,6 +404,18 @@ var app;
               });
             };
 
+            MainController.prototype.sendFB = function (message) {
+              var _this = this;
+              console.log('Begin submit');
+              console.log('this.selected: ' + JSON.stringify(this.selected));
+              this.$http.post('/api/message/sendfb/', {'body': message, 'sentBy': this.selected.coaches[0], 'sentTo': this.selected.id}).then(function (response) {
+                console.log('response.data is ' + JSON.stringify(response.data));
+                console.log(_this.selected.messages);
+                _this.selected.messages.push(response.data);
+                console.log('self.selected is: ' + JSON.stringify(_this.selected.messages));
+              });
+            };
+
             // socket.io code ahead
             socket.on('message', function (message) {
               console.log('Server sent a message');

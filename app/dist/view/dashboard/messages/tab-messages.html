@@ -11,12 +11,15 @@
       </span>
     </p>
 </md-virtual-repeat-container>
-<form name="messageForm" ng-submit="vm.sendMessage(message.content); message.content=''">
+<form name="messageForm">
   <md-input-container class="md-block" flex-gt-sm>
     <label>Message</label>
     <input ng-model="message.content" name="content" />
   </md-input-container>
-  <md-button type="submit" class="md-primary md-raised" ng-disabled="!message.content">
-    Send
+  <md-button type="submit" class="md-primary md-raised" ng-disabled="!message.content" ng-click="vm.sendMessage(message.content); message.content=''">
+    Send (SMS)
+  </md-button>
+  <md-button type="submit" class="md-primary md-raised" ng-disabled="!message.content" ng-click="vm.sendFB(message.content); message.content=''">
+    Send (Messenger)
   </md-button>
 </form>

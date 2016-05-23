@@ -127,24 +127,24 @@ var app;
                       //console.log('The user\'s id is: ' + response.data.id);
                     //  console.log('The user\'s _id is: ' + response.data._id);
                       //this.user.clients.push(response.data.id);
-
-                      console.log("done");
-                      _this.$http.post('/api/coach/newuser/' + this.user.id + '?' + response.data.id,  user).then(function successCallback(client){
-                        console.log("done2");
-                        self.user.clients.push(response.data);
-                        console.log("User created:")
-                        console.log(response.data);
-                      });
-
+                      if (response.data.id) {
+                        console.log("done");
+                        _this.$http.post('/api/coach/newuser/' + this.user.id + '?' + response.data.id,  user).then(function successCallback(client){
+                          console.log("done2");
+                          self.user.clients.push(response.data);
+                          console.log("User created:")
+                          console.log(response.data);
+                          self.openToast("User added");
+                        });
+                      } else {
+                        self.openToast('User not added. ' + response.data.errors.password.message);
+                      }
                     });
-
-                    self.openToast("User added");
                 }, function () {
                     console.log('You cancelled the dialog.');
                 });
             };
 
-            // TODO: possibly remove if unnecessary.
             MainController.prototype.addOrUploadUser = function ($event) {
               var _this = this;
               var self = this;

@@ -37,30 +37,32 @@ exports.create = function(req, res) {
   user.save(function(err) {
     if (err) {
       console.log(err);
+      res.send(err);
     }
     else {
       console.log(user._id);
-    }
-  });
 
-  console.log("User controller hit");
-  console.log(user._id);
+      console.log("User controller hit");
+      console.log(user._id);
 
-  User.findByIdAndUpdate(user.coaches[0],
-  {$push: {"clients": user._id}},
-  {safe: true},
-  function(err, coach) {
-   if(err) {
-     console.log(err);
-    }
-    else {
-      console.log('adding user ' + user._id + ' ot coac');
-      user.clients.push(user._id);
-      console.log(coach);
-      console.log('success');
-      res.send(user);
-    }
-  });
+      User.findByIdAndUpdate(user.coaches[0],
+        {$push: {"clients": user._id}},
+        {safe: true},
+        function(err, coach) {
+          if(err) {
+            console.log(err);
+          }
+          else {
+            console.log('adding user ' + user._id + ' ot coac');
+            user.clients.push(user._id);
+            console.log(coach);
+            console.log('success');
+            res.send(user);
+          }
+        });
+      }
+    });
+  };
 
   //Test: need my our id(colins)
       // User.populate(
@@ -73,9 +75,6 @@ exports.create = function(req, res) {
       //     }
       //   }
       // );
-
-}
-
 
 exports.updateCoach = function(req, res){
   console.log("Im a coach!");

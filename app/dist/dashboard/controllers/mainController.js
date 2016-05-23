@@ -157,12 +157,69 @@ var app;
                 controllerAs: "ctrl",
                 clickOutsideToClose: true,
                 fullscreen: useFullScreen
-              }).then(function (user) {
-
+              }).then(function (add) {
+                if (add) {
+                  console.log('You wish to add a new user.');
+                  _this.addUser($event);
+                } else {
+                  console.log('You wish to upload a list of existing users.');
+                  _this.uploadUsers($event);
+                }
               }, function () {
                 console.log('You cancelled the dialog.');
-              })
+              });
             };
+
+            MainController.prototype.uploadUsers = function ($event) {
+              var _this = this;
+              var self = this;
+              var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
+              this.$mdDialog.show({
+                templateUrl: './dist/view/dashboard/user/uploadUsersDialog.html',
+                parent: angular.element(document.body),
+                targetEvent: $event,
+                controller: dashboard.UploadUserDialogController,
+                controllerAs: 'ctrl',
+                clickOutsideToClose: true,
+                fullscreen: useFullScreen
+              }).then(function (userList) {
+                // Post to parser
+                _this.$http.post('/api/user/parse-csv', {textToParse: userList}).then(function (response) {
+                  // Post to backend
+                  var avatars = [
+                    'ashley.png', 'james.png', 'jenn.png', 'jo.png', 'john.png', 'julie.png', 'mamajess.png', 'sharon.png'
+                  ];
+                  for (var i = 0; i < response.data.length; i++) {
+                    var user = {
+                      firstName: response.data[i][0],
+                      lastName: response.data[i][1],
+                      bio: response.data[i][2],
+                      username: response.data[i][3],
+                      password: response.data[i][4],
+                      slack_id: response.data[i][5],
+                      slack: {
+                        email: response.data[i][6],
+                        id: response.data[i][7],
+                        name: response.data[i][8],
+                        real_name: response.data[i][9],
+                        img: '/assets/img/' + avatars[Math.floor(Math.random() * 7)]
+                      },
+                      coaches: _this.user._id,
+                      imgUrl: '/assets/img' + avatars[Math.floor(Math.random() * 7)],
+                      phoneNumber: response.data[i][10]
+                    };
+                    _this.$http.post('/api/user/create', user).then(function (response) {
+                      _this.$http.post('/api/coach/newuser/' + this.user.id + '?' + response.data.id, user).then(function (client) {
+                        self.user.clients.push(response.data);
+                      });
+                    });
+                  }
+                });
+              }, function () {
+                console.log('You cancelled the dialog.');
+              });
+            };
+
 
             MainController.prototype.addReminder = function ($event) {
                 var _this = this;
@@ -674,6 +731,7 @@ var app;
             MainController.prototype.selectUser = function (user) {
                 this.selected = user;
                 this.userService.selectedUser = this.selected;
+                userSelected = user;
                 var sidebar = this.$mdSidenav('left');
                 if (sidebar.isOpen()) {
                     sidebar.close();

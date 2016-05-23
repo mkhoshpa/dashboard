@@ -7,6 +7,7 @@ var crypto = require('crypto');
 var smtpTransport = require('nodemailer-smtp-transport');
 var nodemailer = require('nodemailer');
 var dashboard = require('./dashboard.controller');
+var parse = require('csv-parse');
 
 /**
   Node Mailer Config
@@ -245,3 +246,11 @@ exports.delete = function(req, res){
 
 
 }
+
+exports.parseCSV = function (req, res) {
+  console.log(req.body.textToParse);
+  parse(req.body.textToParse, function (err, output) {
+    console.log(JSON.stringify(output));
+    res.send(output);
+  });
+};

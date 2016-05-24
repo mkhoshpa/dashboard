@@ -105,6 +105,18 @@ var app;
 
             };
 
+            MainController.prototype.addPhoneNumber = function ($event) {
+              var _this = this;
+              var self = this;
+              var phoneNumber = {
+                number: this.selected.phoneNumber
+              };
+              _this.$http.post('/api/phonenumber/create/' + this.selected.id, phoneNumber).then(function (response) {
+
+              });
+              self.openToast('Phone Number Updated');
+            }
+
             MainController.prototype.addUser = function ($event) {
                 var _this = this;
                 var self = this;

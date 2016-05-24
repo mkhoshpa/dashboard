@@ -41,8 +41,10 @@
                 <textarea ng-model="vm.selected.bio" md-select-on-focus ng-blur = "vm.addBio()"></textarea>
               </md-input-container>
 
+            <md-input-container layout="column" flex="95" style="height: 150px">
               <label>Phone Number</label>
-              <p>{{vm.selected.phoneNumber || "Phone number doesn't exist"}}</p>
+              <textarea ng-model="vm.selected.phoneNumber" md-select-on-focus ng-blur="vm.addPhoneNumber()"></textarea>
+            </md-input-container>
 
           </md-content>
 

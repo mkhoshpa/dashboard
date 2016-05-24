@@ -28,6 +28,18 @@ exports.createBio = function(req, res){
   res.send(req.body.body);
 }
 
+exports.createPhoneNumber = function (req, res) {
+  User.findByIdAndUpdate(req.params.id,
+  {$set: {"phoneNumber": req.body.number}},
+  {safe: true},
+  function (err, user) {
+    if (err) {
+      console.log(err);
+    }
+  });
+  res.send(req.body.number);
+};
+
 exports.create = function(req, res) {
   console.log("Im before new User.");
   console.log(req.body);

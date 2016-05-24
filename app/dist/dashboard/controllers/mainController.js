@@ -17,9 +17,27 @@ var app;
                 this.selected = null;
                 this.newNote = new dashboard.Note('', null);
                 this.newReminder = new dashboard.Reminder('', null);
-                this.question = 0
 
-                this.questions = [1, 2, 3, 4, 5];
+
+
+                //Survey Stuff
+                this.first = true;
+                this.second = false;
+                this.third = false;
+                this.four = false;
+                this.fifth = false;
+
+
+
+
+
+
+
+
+
+
+
+
                 var self = this;
                 this.user = this.userService.get();
                 if (this.user.role == "user") {
@@ -52,6 +70,53 @@ var app;
             };
 
 
+            MainController.prototype.anotherQuestion = function($event){
+              var _this = this;
+              var self = this;
+              if(this.first){
+                this.first = false;
+                this.second = true;
+                self.openToast("Next Question");
+              }
+              else if(this.second){
+                this.second = false;
+                this.third = true;
+                self.openToast("Next Question");
+              }
+              else if(this.third){
+                this.third = false;
+                this.fourth = true;
+                self.openToast("Next Question");
+              }
+              else if(this.fourth){
+                this.fourth = false;
+                this.fifth = true;
+                self.openToast("Next Question");
+              }
+
+            }
+
+            MainController.prototype.saveSurvey = function($event){
+
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            //not used
             MainController.prototype.buildSurvey = function($event){
               var _this = this;
               var self = this;

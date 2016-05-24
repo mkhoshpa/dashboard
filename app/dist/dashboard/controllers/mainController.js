@@ -20,7 +20,11 @@ var app;
                 this.newNote = new dashboard.Note('', null);
                 this.newReminder = new dashboard.Reminder('', null);
                 this.question = 0
+
                 //this.socket = io.connect('http://localhost:3001');
+
+
+
                 this.questions = [1, 2, 3, 4, 5];
                 var self = this;
                 this.user = this.userService.get();
@@ -127,6 +131,7 @@ var app;
                       //console.log('The user\'s id is: ' + response.data.id);
                     //  console.log('The user\'s _id is: ' + response.data._id);
                       //this.user.clients.push(response.data.id);
+
                       if (response.data.id) {
                         console.log("done");
                         _this.$http.post('/api/coach/newuser/' + this.user.id + '?' + response.data.id,  user).then(function successCallback(client){
@@ -139,6 +144,7 @@ var app;
                       } else {
                         self.openToast('User not added. ' + response.data.errors.password.message);
                       }
+
                     });
                 }, function () {
                     console.log('You cancelled the dialog.');

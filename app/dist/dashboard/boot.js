@@ -47,6 +47,9 @@ var app;
             }).when("/surveys",{
                 templateUrl: "/dist/view/dashboard/survey.html",
                 controller: "MainController as vm"
+            }).when("/surveys",{
+                templateUrl: "/dist/view/dashboard/survey.html",
+                controller: "MainController as vm"
             });
             $locationProvider.hashPrefix('!');
         });

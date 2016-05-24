@@ -182,6 +182,7 @@ exports.saveOAuthUserProfile = function(req, profile, done) {
 				var possibleUsername = profile.providerData.name || ((profile.email) ? profile.email.split('@')[0] : '');
 				console.log("made it here");
 				console.log("profile" + JSON.stringify(profile));
+				//console.log("profile.providerData: " + JSON.stringify(profile.providerData));
 				var name = profile.providerData.name.split(' ');
 				user = new User({
 					firstName: name[0],
@@ -191,6 +192,7 @@ exports.saveOAuthUserProfile = function(req, profile, done) {
 					//username: this.username,
 					//password: this.password,
 					provider: profile.provider,
+					providerData: profile.providerData,
 					role: 'coach',
 					//slack_id: this.slack_id,
 					slack_id: profile.providerData.name,

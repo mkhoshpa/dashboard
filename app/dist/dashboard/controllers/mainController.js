@@ -175,7 +175,9 @@ var app;
 
             MainController.prototype.addUserThroughFacebook = function ($event) {
               var _this = this;
+              var self = this;
               console.log('Begin addUserThroughFacebook');
+              console.log(_this.user);
               FB.ui({
                 method: 'apprequests',
                 message: 'Welcome to FitPath!'
@@ -184,8 +186,15 @@ var app;
                 // Loop through all ids in _response.to
                 // This code is vomit-inducing. Blame Facebook.
                 for (var i = 0; i < _response.to.length; i++) {
-                  _this.$http.get('https://www.facebook.com/' + _response.to[i], function (response) {
+                  _this.$http.get('/api/facebook/getprofile/' + _response.to[i] + '/' + _this.user.providerData.accessToken).then(function (response) {
                     console.log(response);
+                    var user = response.data;
+                    user.coaches = _this.user._id;
+                    _this.$http.post('/api/user/create', user).then(function (__response) {
+                        _this.$http.post('/api/coach/newuser/' + this.user.id + '?' + __response.data.id, user).then(function (client) {
+                          self.user.clients.push(response.data);
+                        });
+                    });
                   });
                 }
               });

@@ -2,9 +2,9 @@
 
   <md-content layout-padding="">
     <div>
-      <form name="userForm" ng-submit = "vm.createSurvey()">
+      <form name="userForm" ng-submit = "vm.saveSurvey()">
 
-        <div layout-gt-sm="row" layout-padding >
+        <div layout-gt-sm="row"  >
           <md-input-container  class="md-block" flex="50" >
             <label>Title of Survey</label>
             <input ng-disabled = "!vm.first" ng-model = "vm.surveyTitle" required>
@@ -14,15 +14,15 @@
           </md-input-container>
         </div>
 
-        <md-content ng-if = "vm.first" layout-padding>
+        <md-content ng-if = "vm.first" >
           <div layout ="row">
 
-            <md-input-container layout-padding class "md-block" flex= "80">
+            <md-input-container  class "md-block" flex= "80">
               <label>Question 1</label>
               <input ng-model = "vm.questions[0].question" ng-required = "true">
             </md-input-container>
 
-            <md-input-container layout-padding class "md-block" flex ="20">
+            <md-input-container  class "md-block" flex ="20">
               <label>Question Header </label>
               <input ng-model = "vm.questions[0].questionHeader" ng-required = "true">
             </md-input-container>
@@ -47,15 +47,15 @@
 
         </md-content>
 
-        <md-content ng-if = "vm.second" layout-padding>
+        <md-content ng-if = "vm.second" >
           <div layout ="row">
 
-            <md-input-container layout-padding class "md-block" flex= "80">
+            <md-input-container  class "md-block" flex= "80">
               <label>Question 2</label>
               <input ng-model = "vm.questions[1].question" ng-required = "true">
             </md-input-container>
 
-            <md-input-container layout-padding class "md-block" flex ="20">
+            <md-input-container  class "md-block" flex ="20">
               <label>Question Header </label>
               <input ng-model = "vm.questions[1].questionHeader" ng-required = "true">
             </md-input-container>
@@ -80,15 +80,15 @@
 
         </md-content>
 
-        <md-content ng-if = "vm.third" layout-padding>
+        <md-content ng-if = "vm.third">
           <div layout ="row">
 
-            <md-input-container layout-padding class "md-block" flex= "80">
+            <md-input-container  class "md-block" flex= "80">
               <label>Question 3</label>
               <input ng-model = "vm.questions[2].question" ng-required = "true">
             </md-input-container>
 
-            <md-input-container layout-padding class "md-block" flex ="20">
+            <md-input-container  class "md-block" flex ="20">
               <label>Question Header </label>
               <input ng-model = "vm.questions[2].questionHeader" ng-required = "true">
             </md-input-container>
@@ -113,15 +113,15 @@
 
         </md-content>
 
-        <md-content ng-if = "vm.fourth" layout-padding>
+        <md-content ng-if = "vm.fourth" >
           <div layout ="row">
 
-            <md-input-container layout-padding class "md-block" flex= "80">
+            <md-input-container class "md-block" flex= "80">
               <label>Question 4</label>
               <input ng-model = "vm.questions[3].question" ng-required = "true">
             </md-input-container>
 
-            <md-input-container layout-padding class "md-block" flex ="20">
+            <md-input-container  class "md-block" flex ="20">
               <label>Question Header </label>
               <input ng-model = "vm.questions[3].questionHeader" ng-required = "true">
             </md-input-container>
@@ -146,18 +146,19 @@
 
         </md-content>
 
-        <md-content ng-if = "vm.fifth" layout-padding>
+        <md-content ng-if = "vm.fifth" >
           <div layout ="row">
 
-            <md-input-container layout-padding class "md-block" flex= "80">
+            <md-input-container  class "md-block" flex= "60">
               <label>Question 5</label>
               <input ng-model = "vm.questions[4].question" ng-required = "true">
             </md-input-container>
 
-            <md-input-container layout-padding class "md-block" flex ="20">
+            <md-input-container class "md-block" flex ="20">
               <label>Question Header </label>
               <input ng-model = "vm.questions[4].questionHeader" ng-required = "true">
             </md-input-container>
+
           </div>
           <div>
             <!-- fix only one at a time -->
@@ -184,14 +185,14 @@
 
 
 
-        <div layout = "row" layout-padding>
-          <md-button ng-click = "vm.surveyCancel()">
+        <div layout = "row" >
+          <md-button ng-click = "vm.cancelSurveyl()">
             Cancel
           </md-button>
           <md-button ng-click = "vm.anotherQuestion()" ng-disabled = "vm.fifth">
             Another Question
           </md-button>
-          <md-button ng-submit = "vm.saveSurvey()">
+          <md-button type = "submit">
             Save
           </md-button>
 

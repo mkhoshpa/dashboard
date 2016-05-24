@@ -157,16 +157,37 @@ var app;
                 controllerAs: "ctrl",
                 clickOutsideToClose: true,
                 fullscreen: useFullScreen
-              }).then(function (add) {
-                if (add) {
+              }).then(function (option) {
+                if (option.add) {
                   console.log('You wish to add a new user.');
                   _this.addUser($event);
-                } else {
+                } else if (option.upload) {
                   console.log('You wish to upload a list of existing users.');
                   _this.uploadUsers($event);
+                } else {
+                  console.log('You wish to add a user through facebook.');
+                  _this.addUserThroughFacebook($event);
                 }
               }, function () {
                 console.log('You cancelled the dialog.');
+              });
+            };
+
+            MainController.prototype.addUserThroughFacebook = function ($event) {
+              var _this = this;
+              console.log('Begin addUserThroughFacebook');
+              FB.ui({
+                method: 'apprequests',
+                message: 'Welcome to FitPath!'
+              }, function (_response) {
+                console.log(_response);
+                // Loop through all ids in _response.to
+                // This code is vomit-inducing. Blame Facebook.
+                for (var i = 0; i < _response.to.length; i++) {
+                  _this.$http.get('https://www.facebook.com/' + _response.to[i], function (response) {
+                    console.log(response);
+                  });
+                }
               });
             };
 

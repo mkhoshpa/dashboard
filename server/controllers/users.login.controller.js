@@ -186,19 +186,25 @@ exports.saveOAuthUserProfile = function(req, profile, done) {
 				user = new User({
 					firstName: name[0],
 					lastName: name[1],
+					username: profile.providerData.name,
 					//bio: this.bio,
 					//username: this.username,
 					//password: this.password,
 					provider: profile.provider,
 					role: 'coach',
 					//slack_id: this.slack_id,
+					slack_id: profile.providerData.name,
 					slack: {
 						//email: this.slack.email,
 						//id: this.slack.id,
+						id: profile.providerData.name,
 						name: profile.providerData.name,
+						real_name: profile.providerData.name
 						//img: ''
 					},
 					coaches: [],
+					providerId: profile.providerId,
+					facebookId: profile.providerData.id
 					//imgUrl:
 					//phoneNumber:
 				});

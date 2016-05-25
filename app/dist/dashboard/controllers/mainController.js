@@ -165,6 +165,18 @@ var app;
 
             };
 
+            MainController.prototype.addPhoneNumber = function ($event) {
+              var _this = this;
+              var self = this;
+              var phoneNumber = {
+                number: this.selected.phoneNumber
+              };
+              _this.$http.post('/api/phonenumber/create/' + this.selected.id, phoneNumber).then(function (response) {
+
+              });
+              self.openToast('Phone Number Updated');
+            }
+
             MainController.prototype.addUser = function ($event) {
                 var _this = this;
                 var self = this;
@@ -219,16 +231,46 @@ var app;
                 controllerAs: "ctrl",
                 clickOutsideToClose: true,
                 fullscreen: useFullScreen
-              }).then(function (add) {
-                if (add) {
+              }).then(function (option) {
+                if (option.add) {
                   console.log('You wish to add a new user.');
                   _this.addUser($event);
-                } else {
+                } else if (option.upload) {
                   console.log('You wish to upload a list of existing users.');
                   _this.uploadUsers($event);
+                } else {
+                  console.log('You wish to add a user through facebook.');
+                  _this.addUserThroughFacebook($event);
                 }
               }, function () {
                 console.log('You cancelled the dialog.');
+              });
+            };
+
+            MainController.prototype.addUserThroughFacebook = function ($event) {
+              var _this = this;
+              var self = this;
+              console.log('Begin addUserThroughFacebook');
+              console.log(_this.user);
+              FB.ui({
+                method: 'apprequests',
+                message: 'Welcome to FitPath!'
+              }, function (_response) {
+                console.log(_response);
+                // Loop through all ids in _response.to
+                // This code is vomit-inducing. Blame Facebook.
+                for (var i = 0; i < _response.to.length; i++) {
+                  _this.$http.get('/api/facebook/getprofile/' + _response.to[i] + '/' + _this.user.providerData.accessToken).then(function (response) {
+                    console.log(response);
+                    var user = response.data;
+                    user.coaches = _this.user._id;
+                    _this.$http.post('/api/user/create', user).then(function (__response) {
+                        _this.$http.post('/api/coach/newuser/' + this.user.id + '?' + __response.data.id, user).then(function (client) {
+                          self.user.clients.push(response.data);
+                        });
+                    });
+                  });
+                }
               });
             };
 

@@ -7,4 +7,6 @@ module.exports = function(app) {
 
 	app.post('/api/facebook/send', facebook.send);
 	app.get('/api/facebook/recieve', facebook.recieve);
+
+	app.get('/api/facebook/getprofile/:user_id/:access_token', facebook.getProfile);
 }

@@ -32,7 +32,7 @@ io.on('connection', function (socket) {
   });
 });
 
-let bot = new Bot({
+var bot = new Bot({
   token: 'EAADXmpOGmZBQBAP1nUwAntcZAU8gO7Md7y1FWsy2TGJPKIB434MgCg7v22OiKBo9zZBxGwo0QiL1Nlz9zcWbmB7dsoFqZCt5DsQASqfNZBcynJv1aZCP8C96J7gyFNSu1E3VjqskMguW2ZBOTa9whpa4SQOjXZB7RaegrZAEASwwz7AZDZD',
   verify: 'supersecrettoken'
 });

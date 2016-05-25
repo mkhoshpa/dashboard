@@ -2,7 +2,7 @@
 <div class="nav-wrapper container">
   <a id="logo-container" href="#" class="brand-logo">FitPath</a>
   <ul class="right hide-on-med-and-down">
-    <% if ( email ) { %>
+    <% if ( userName ) { %>
 
         <ul id="dropdown1" class="dropdown-content">
           <li><a href="/signout">Sign Out</a></li>
@@ -17,8 +17,6 @@
         <i class="material-icons right">arrow_drop_down</i></a></li>
 
     	<% } else { %>
-        <li><a href="/signin">Login</a></li>
-        <li><a href="/signup">Sign Up</a></li>
         <li><a href="/contact">Contact Us</a></li>
 
     <% } %>
@@ -29,8 +27,6 @@
         <li><a href="/contact">Contact Us</a></li>
         <li><a href="/signout">Sign Out</a></li>
     	<% } else { %>
-        <li><a href="/signin">Login</a></li>
-        <li><a href="/signup">Sign Up</a></li>
         <li><a href="/contact">Contact Us</a></li>
     <% } %>
   </ul>

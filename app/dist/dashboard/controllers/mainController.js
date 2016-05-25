@@ -20,10 +20,18 @@ var app;
                 this.newNote = new dashboard.Note('', null);
                 this.newReminder = new dashboard.Reminder('', null);
 
+
                 //this.socket = io.connect('http://localhost:3001');
-                
 
 
+                this.questions1 = [{type: "Yes/No"},{type:"Scale from 1 to 5"},{type:"Written Answer"}];
+
+
+                this.counter = 0
+                this.questionAmount = [
+                  0
+                ]
+                this.selectedType = "Yes/No";
 
 
 
@@ -56,8 +64,11 @@ var app;
             // }
 
             //create a different controller
-            MainController.prototype.createSurvey = function($event){
-              console.log("here");
+            MainController.prototype.question = function(index){
+              this.index = index;
+              this.title = null;
+              this.header = null;
+              this.type = null;
 
             };
 
@@ -68,9 +79,15 @@ var app;
             };
 
 
-            MainController.prototype.anotherQuestion = function($event){
-                var _this = this;
-                var self = this;
+            MainController.prototype.anotherQuestion = function(questionNum){
+
+              this.questionAmount.push(++this.counter);
+
+
+
+
+
+                /*
                 if(this.first){
                   this.first = false;
                   this.second = true;
@@ -91,26 +108,30 @@ var app;
                   this.fifth = true;
                   self.openToast("Next Question");
                 }
-
+                */
               };
 
               MainController.prototype.saveSurvey = function($event){
                 console.log("hey");
-                console.log(this.questionType);
                 console.log(this.questions);
               };
 
               MainController.prototype.cancelSurvey = function($event){
+                var _this = this;
+                var self = this;
                 console.log("Cancel!");
-                this.first = true;
-                this.second = false;
-                this.third = false;
-                this.fourth = false;
-                this.fifth = false;
+                console.log(this.questions);
+                this.questions = null;
+                this.surveyTitle = null;
+                this.counter = 0;
+                this.questionAmount = null;
+                this.questionAmount = [
+                  0
+                ];
 
                 self.openToast("Cancel Survey");
 
-                this.questions = "null";
+
               };
 
 

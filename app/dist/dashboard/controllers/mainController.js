@@ -21,10 +21,9 @@ var app;
                 this.newReminder = new dashboard.Reminder('', null);
 
                 //this.socket = io.connect('http://localhost:3001');
+                
 
 
-
-                //this.questions = [1, 2, 3, 4, 5];
 
 
 
@@ -70,34 +69,49 @@ var app;
 
 
             MainController.prototype.anotherQuestion = function($event){
-              var _this = this;
-              var self = this;
-              if(this.first){
-                this.first = false;
-                this.second = true;
-                self.openToast("Next Question");
-              }
-              else if(this.second){
+                var _this = this;
+                var self = this;
+                if(this.first){
+                  this.first = false;
+                  this.second = true;
+                  self.openToast("Next Question");
+                }
+                else if(this.second){
+                  this.second = false;
+                  this.third = true;
+                  self.openToast("Next Question");
+                }
+                else if(this.third){
+                  this.third = false;
+                  this.fourth = true;
+                  self.openToast("Next Question");
+                }
+                else if(this.fourth){
+                  this.fourth = false;
+                  this.fifth = true;
+                  self.openToast("Next Question");
+                }
+
+              };
+
+              MainController.prototype.saveSurvey = function($event){
+                console.log("hey");
+                console.log(this.questionType);
+                console.log(this.questions);
+              };
+
+              MainController.prototype.cancelSurvey = function($event){
+                console.log("Cancel!");
+                this.first = true;
                 this.second = false;
-                this.third = true;
-                self.openToast("Next Question");
-              }
-              else if(this.third){
                 this.third = false;
-                this.fourth = true;
-                self.openToast("Next Question");
-              }
-              else if(this.fourth){
                 this.fourth = false;
-                this.fifth = true;
-                self.openToast("Next Question");
-              }
+                this.fifth = false;
 
-            }
+                self.openToast("Cancel Survey");
 
-            MainController.prototype.saveSurvey = function($event){
-
-            }
+                this.questions = "null";
+              };
 
 
 

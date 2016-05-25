@@ -21,11 +21,11 @@ var app;
                 this.newReminder = new dashboard.Reminder('', null);
 
                 //this.socket = io.connect('http://localhost:3001');
+                
 
 
 
 
-          
 
                 //Survey Stuff
                 this.first = true;
@@ -110,6 +110,7 @@ var app;
 
                 self.openToast("Cancel Survey");
 
+                this.questions = "null";
               };
 
 

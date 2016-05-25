@@ -42,7 +42,7 @@ bot.on('error', function (err) {
 });
 
 bot.on('message', function (payload, reply) {
-  let text = payload.message.text;
+  var text = payload.message.text;
 
   var message = Message({
     body: text,

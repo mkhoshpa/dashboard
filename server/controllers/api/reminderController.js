@@ -173,42 +173,39 @@ exports.addResponse = function(req, res) {
 
 
 exports.update = function(req, res) {
-  User.findById(req.body.assignee, function (err, user) {
-    if (!err) {
-      for (var i = 0; i < user.reminders.length; i++) {
-        if (user.reminders[i]._id == req.body._id) {
-          user.reminders[i] = req.body;
-        }
+  console.log('Updating reminder');
+  console.log();
+  console.log(JSON.stringify(req.body));
+  User.findOneAndUpdate(
+    {"_id": req.body.assignee,/* "reminders.$._id": req.body._id*/},
+    {
+      "$set": {
+        "reminders.$": req.body
       }
-      user.save();
+    },
+    {new: true},
+    function (err, user) {
+      if (err) {
+        console.log(err);
+      }
       res.send(user);
+      console.log('The user is: ' + user);
     }
-  });
+  )
+  /*User.findByIdAndUpdate(
+    req.body.assignee,
+    function (err, user) {
+    console.log(JSON.stringify(user));
+    for (var i = 0; i < user.reminders.length; i++) {
+      if (user.reminders[i]._id == req.body._id) {
+        user.reminders[i] = req.body;
+      }
+    }
+    console.log(JSON.stringify(user));
+  });*/
+  //res.send(req.body);
 }
-  /*Reminder.findByIdAndUpdate(
-    req.params.id,
-    {$set: {
-      title: req.body.title,
-      timeOfDay: req.body.timeOfDay,
-      selectedDates: req.body.selectedDates,
-      daysOfTheWeek: req.body.daysOfTheWeek,
-      assignee: req.body.assignee,
-      hour: req.body.hour,
-      minute: req.body.minute,
-      days: req.body.days,
 
-    }},{new: false}, function(err, reminder) {
-      if(reminder) {
-        console.log(JSON.stringify(reminder));
-        res.send(reminder);
-      }
-      else{
-        res.sendStatus(500);
-      }
-    }
-  );
-}
-*/
 exports.delete = function(req, res) {
   console.log('Inside reminder.delete');
   console.log('id: ' + req.params.id);
@@ -216,9 +213,11 @@ exports.delete = function(req, res) {
     req.params.id,
     function(err, reminder) {
       if(reminder) {
+        console.log(reminder);
         User.findByIdAndUpdate(reminder.assignee,
           {$pull : {'reminders': reminder}},
           function(err, model) {
+            console.log(model);
           if(err) {
             // Do some flash message
           }

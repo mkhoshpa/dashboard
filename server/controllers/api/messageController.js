@@ -204,9 +204,10 @@ exports.receiveSMS = function (req, res) {
           createdBy: user._id
         });
         reminder.save();
-        console.log(JSON.stringify(reminder));
+        console.log('Reminder saved as: ' + JSON.stringify(reminder));
         user.reminders[user.reminders.length - 1].responses.push(reminder);
         user.save();
+        console.log('User saved as: ' + JSON.stringify(user));
         io.emit('response', reminder);
       } else {
         console.log('We should be adding a message');

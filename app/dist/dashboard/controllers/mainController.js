@@ -461,10 +461,11 @@ var app;
             };
 
             MainController.prototype.updateReminder = function (reminder) {
-                console.log(this.selected.reminders);
-                for (var i = 0; i < this.selected.reminders.length; i++) {
-                    if (reminder._id == this.selected.reminders[i]._id) {
-                        this.selected.reminders[i] = reminder;
+                console.log(userSelected.reminders);
+                for (var i = 0; i < userSelected.reminders.length; i++) {
+                    if (reminder._id == userSelected.reminders[i]._id) {
+                        userSelected.reminders[i] = reminder;
+                        scope.$apply();
                         return true;
                     }
                 }

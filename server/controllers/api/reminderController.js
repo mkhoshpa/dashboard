@@ -177,7 +177,7 @@ exports.update = function(req, res) {
   console.log();
   console.log(JSON.stringify(req.body));
   User.findOneAndUpdate(
-    {"_id": req.body.assignee,/* "reminders.$._id": req.body._id*/},
+    {"_id": req.body.assignee, "reminders.$._id": req.body._id},
     {
       "$set": {
         "reminders.$": req.body

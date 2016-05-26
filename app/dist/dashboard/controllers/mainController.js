@@ -100,8 +100,8 @@ var app;
 
                 _this.$http.post('/api/surveyTemplete/create', surveyTemplete).then(function successCallback(response) {
                 console.log(response.data);
+                console.log(this.user);
 
-                
                 });
               };
 

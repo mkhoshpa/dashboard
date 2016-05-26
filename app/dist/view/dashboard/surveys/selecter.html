@@ -1,6 +1,12 @@
 <section layout-padding style="background-color: red">
 
-
+  <md-card ng-repeat = "st in vm.user.surveyTempletes">
+    <md-card-content>
+      <p>{{st.title}}</p>
+      <p>{{st.questions}}</p>
+      <p>{{st.author}}</p>
+    </md-card-content>
+  </md-card>
 
 
 

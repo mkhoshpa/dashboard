@@ -34,6 +34,7 @@
     "express": "^4.13.4",
     "express-session": "^1.13.0",
     "gulp-install": "~0.6.0",
+    "hooker": "^0.2.3",
     "messenger-bot": "^2.3.0",
     "method-override": "^2.3.5",
     "moment": "^2.12.0",

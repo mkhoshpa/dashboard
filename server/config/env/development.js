@@ -8,16 +8,16 @@ module.exports = {
 	facebook: {
 		clientID: '237058900007908',
 		clientSecret: '756eb97b58fb72f845277f0e2f51fda2',
-		callbackURL: 'http://localhost:3000/oauth/facebook/callback'
+		callbackURL: 'http://localhost:8081/oauth/facebook/callback'
 	},
 	twitter: {
 		clientID: 'Twitter Application ID',
 		clientSecret: 'Twitter Application Secret',
-		callbackURL: 'http://localhost:3000/oauth/twitter/callback'
+		callbackURL: 'http://localhost:8081/oauth/twitter/callback'
 	},
 	google: {
 		clientID: 'Google Application ID',
 		clientSecret: 'Google Application Secret',
-		callbackURL: 'http://localhost:3000/oauth/google/callback'
+		callbackURL: 'http://localhost:8081/oauth/google/callback'
 	}
 };

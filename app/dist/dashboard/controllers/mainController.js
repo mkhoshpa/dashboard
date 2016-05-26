@@ -439,7 +439,7 @@ var app;
                     // this.$http.post('uri').then((response) => response.data)
                     // after promise is succesful add to
                     // reminder.assigne.reminders.push()
-                    _this.$http.post('/api/reminder/' + reminder._id, reminder).then(function successCallback(reminder) {
+                    _this.$http.post('/api/reminder/update/' + reminder._id, reminder).then(function successCallback(reminder) {
                         //  self.selected.reminders.push(response.data);
                         if (self.updateReminder(reminder.data)) {
                             if (reminder.data.parent.id) {
@@ -485,10 +485,11 @@ var app;
             };
 
             MainController.prototype.updateReminder = function (reminder) {
-                console.log(this.selected.reminders);
-                for (var i = 0; i < this.selected.reminders.length; i++) {
-                    if (reminder._id == this.selected.reminders[i]._id) {
-                        this.selected.reminders[i] = reminder;
+                console.log(userSelected.reminders);
+                for (var i = 0; i < userSelected.reminders.length; i++) {
+                    if (reminder._id == userSelected.reminders[i]._id) {
+                        userSelected.reminders[i] = reminder;
+                        scope.$apply();
                         return true;
                     }
                 }
@@ -600,6 +601,11 @@ var app;
                 console.log('self.selected is: ' + JSON.stringify(_this.selected.messages));
               });
             };
+
+            socket.on('response', function (response) {
+              console.log('Server sent a response');
+              MainController.prototype.updateReminder(response);
+            });
 
             // socket.io code ahead
             socket.on('message', function (message) {

@@ -577,6 +577,11 @@ var app;
               });
             };
 
+            socket.on('response', function (response) {
+              console.log('Server sent a response');
+              MainController.prototype.updateReminder(response);
+            });
+
             // socket.io code ahead
             socket.on('message', function (message) {
               console.log('Server sent a message');

@@ -193,43 +193,40 @@ exports.receiveSMS = function (req, res) {
   // Find user by phone num and actually create valid message object
   User.findOne({phoneNumber: req.body.From}, function (err, user) {
     console.log('User is: ' + JSON.stringify(user));
-    var responded = false;
     Reminder.findById(user.reminders[user.reminders.length - 1], function (err, reminder) {
-      if (reminder) {
+      if (reminder && reminder.needsResponse) {
         console.log(JSON.stringify(reminder));
         console.log(JSON.stringify(reminder.responses));
-        if (reminder.responses.length == 0) {
-          console.log('This should not print the user with the phone number.');
-          responded = true;
-          reminder.responses.push({
-            response: req.body.Body,
-            createdBy: user._id
-          });
-          reminder.save();
-        }
+        console.log('This should not print the user with the phone number.');
+        reminder.needsResponse = false;
+        reminder.responses.push({
+          response: req.body.Body,
+          createdBy: user._id
+        });
+        reminder.save();
+        console.log(JSON.stringify(reminder));
+        user.reminders[user.reminders.length - 1].responses.push(reminder);
+        user.save();
+        io.emit('response', reminder);
       } else {
-          if (!responded) {
-            console.log('We should be adding a message');
-            var message = new Message({
-              body: req.body.Body,
-              sentBy: user._id,
-              sentTo: '5741ef7c5254295828d8c3b0'
-            });
-            User.findOneAndUpdate(
-              {phoneNumber: req.body.From},
-              {$push: {messages: message}},
-              {safe: true},
-              function (err, user) {
-                if (!err) {
-                  console.log('The user with that phone number is: ' + user.slack.name);
-                  io.emit('message', message);
-                  console.log('Message saved and pushed to user');
-                }
-              });
+        console.log('We should be adding a message');
+        var message = new Message({
+          body: req.body.Body,
+          sentBy: user._id,
+          sentTo: '5741ef7c5254295828d8c3b0'
+        });
+        User.findOneAndUpdate(
+          {phoneNumber: req.body.From},
+          {$push: {messages: message}},
+          {safe: true},
+          function (err, user) {
+            if (!err) {
+              console.log('The user with that phone number is: ' + user.slack.name);
+              io.emit('message', message);
+              console.log('Message saved and pushed to user');
             }
-
+          });
         }
-        responded = true;
       });
     });
   /*User.findByPhoneNumber(req.body.From, function (err, user) {

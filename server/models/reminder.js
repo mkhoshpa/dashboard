@@ -57,7 +57,9 @@ var reminderSchema = new Schema({
   // Who the reminder is going too
   assignee: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
   // Who the reminder is coming from
-  author: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}
+  author: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+
+  needsResponse: {type: Boolean, default: false}
 });
 
 reminderSchema.virtual('mostRecentResponse').get(function() {
@@ -82,7 +84,7 @@ reminderSchema.method.response = function(){
 *  to increment their status point
 *  Returns Boolean Value
 */
-reminderSchema.methods.increment = function() {
+/*reminderSchema.methods.increment = function() {
 
   var currentResponse = this.responses[this.responses.length - 1];
   var lastResponse = this.lastGenuine();
@@ -107,7 +109,7 @@ reminderSchema.methods.increment = function() {
   }
 
 }
-
+*/
 // We want to decrement if the last response
 reminderSchema.methods.decrement = function() {
 

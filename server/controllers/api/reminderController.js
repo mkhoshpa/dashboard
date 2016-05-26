@@ -183,8 +183,7 @@ exports.update = function(req, res) {
       assignee: req.body.assignee,
       hour: req.body.hour,
       minute: req.body.minute,
-      days: req.body.days
-
+      days: req.body.days,
 
     }},{new: true}, function(err, reminder) {
       if(reminder) {
@@ -267,9 +266,11 @@ exports.sendReminders = function () {
         console.log(docs);
         // Turns out 'int' isn't in JS... I blame C++ for ruining me
         for (var i = 0; i < docs.length; i++) {
+          docs[i].needsResponse = true;
           console.log(docs[i].assignee.phoneNumber);
           var phoneNum = docs[i].assignee.phoneNumber;
           var title = docs[i].title;
+          docs[i].save();
           User.findById(docs[i].author, function (err, author) {
             if (!err) {
               twilio.sendMessage({

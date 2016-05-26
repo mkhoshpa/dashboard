@@ -30,6 +30,5 @@ exports.create = function(req, res) {
       );
     }
   });
-  //console.log(surveyTemplate);
   res.send(surveyTemplate);
 }

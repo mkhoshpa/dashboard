@@ -31,16 +31,10 @@ var app;
                 this.questionAmount = [
                   0
                 ]
-                this.selectedType = "Yes/No";
 
 
 
-                //Survey Stuff
-                this.first = true;
-                this.second = false;
-                this.third = false;
-                this.four = false;
-                this.fifth = false;
+
 
                 var self = this;
                 this.user = this.userService.get();
@@ -64,15 +58,6 @@ var app;
             // }
 
             //create a different controller
-            MainController.prototype.question = function(index){
-              this.index = index;
-              this.title = null;
-              this.header = null;
-              this.type = null;
-
-            };
-
-
 
             MainController.prototype.setFormScope = function (scope) {
                 this.formScope = scope;
@@ -101,8 +86,25 @@ var app;
                 _this.$http.post('/api/surveyTemplate/create', surveyTemplate).then(function successCallback(response) {
                 console.log(response.data);
                 console.log(this.user);
+                this.user.surveyTemplates.push(response.data);
+
+
+                console.log("reseting save!");
+
+
 
                 });
+                console.log(this.questions);
+                this.questions = null;
+                this.surveyTitle = null;
+                this.counter = 0;
+                this.questionAmount = null;
+                this.questionAmount = [
+                  0
+                ];
+
+                self.openToast("Survey Created");
+
               };
 
               MainController.prototype.cancelSurvey = function($event){

@@ -80,40 +80,30 @@ var app;
 
 
             MainController.prototype.anotherQuestion = function(questionNum){
-
+              var _this = this;
+              var self = this;
               this.questionAmount.push(++this.counter);
-
-
-
-
-
-                /*
-                if(this.first){
-                  this.first = false;
-                  this.second = true;
-                  self.openToast("Next Question");
-                }
-                else if(this.second){
-                  this.second = false;
-                  this.third = true;
-                  self.openToast("Next Question");
-                }
-                else if(this.third){
-                  this.third = false;
-                  this.fourth = true;
-                  self.openToast("Next Question");
-                }
-                else if(this.fourth){
-                  this.fourth = false;
-                  this.fifth = true;
-                  self.openToast("Next Question");
-                }
-                */
+              self.openToast("Next Question");
               };
 
               MainController.prototype.saveSurvey = function($event){
+                var _this = this;
+                var self = this;
                 console.log("hey");
                 console.log(this.questions);
+                var surveyTemplete = {
+                  title: this.surveyTitle,
+                  questions : this.questions,
+                  author : this.user._id
+                };
+                console.log(surveyTemplete);
+
+                _this.$http.post('/api/surveyTemplete/create', surveyTemplete).then(function successCallback(response) {
+                console.log(response.data);
+                console.log(this.selected);
+
+
+                });
               };
 
               MainController.prototype.cancelSurvey = function($event){

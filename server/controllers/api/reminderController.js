@@ -173,7 +173,19 @@ exports.addResponse = function(req, res) {
 
 
 exports.update = function(req, res) {
-  Reminder.findByIdAndUpdate(
+  User.findById(req.body.assignee, function (err, user) {
+    if (!err) {
+      for (var i = 0; i < user.reminders.length; i++) {
+        if (user.reminders[i]._id == req.body._id) {
+          user.reminders[i] = req.body;
+        }
+      }
+      user.save();
+      res.send(user);
+    }
+  });
+}
+  /*Reminder.findByIdAndUpdate(
     req.params.id,
     {$set: {
       title: req.body.title,
@@ -185,7 +197,7 @@ exports.update = function(req, res) {
       minute: req.body.minute,
       days: req.body.days,
 
-    }},{new: true}, function(err, reminder) {
+    }},{new: false}, function(err, reminder) {
       if(reminder) {
         console.log(JSON.stringify(reminder));
         res.send(reminder);
@@ -196,8 +208,10 @@ exports.update = function(req, res) {
     }
   );
 }
-
+*/
 exports.delete = function(req, res) {
+  console.log('Inside reminder.delete');
+  console.log('id: ' + req.params.id);
   Reminder.findByIdAndRemove(
     req.params.id,
     function(err, reminder) {

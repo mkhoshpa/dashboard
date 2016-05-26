@@ -418,10 +418,10 @@ var app;
                     _this.$http.post('/api/reminder/update/' + reminder._id, reminder).then(function successCallback(reminder) {
                         //  self.selected.reminders.push(response.data);
                         if (self.updateReminder(reminder.data)) {
-                            if (reminder.data.parent.id) {
+                            /*if (reminder.data.parent.id) {
                                 var id = reminder.data.parent.id.slice(1, 25);
                                 self.updateReminderInSurvey(id, reminder.data);
-                            }
+                            }*/
                             self.openToast("Reminder Edited");
                         }
                         else {
@@ -463,17 +463,17 @@ var app;
             MainController.prototype.updateReminder = function (reminder) {
                 console.log(userSelected.reminders);
                 for (var i = 0; i < userSelected.reminders.length; i++) {
-                    if (reminder._id == userSelected.reminders[i]._id) {
-                        userSelected.reminders[i] = reminder;
-                        scope.$apply();
+                    if (reminder.reminders[i]._id == userSelected.reminders[i]._id) {
+                        userSelected.reminders[i] = reminder.reminders[i];
                         return true;
                     }
                 }
                 return false;
             };
             MainController.prototype.deleteReminder = function (reminder) {
-                var foundIndex = this.selected.reminders.indexOf(reminder);
-                this.selected.reminders.splice(foundIndex, 1);
+                this.selected.reminders = _.without(this.selected.reminders, reminder);
+                /*var foundIndex = this.selected.reminders.indexOf(reminder);
+                this.selected.reminders.splice(foundIndex, 1);*/
             };
             MainController.prototype.slackList = function () {
                 // var test = this.userService.slack().then((members: any) => {

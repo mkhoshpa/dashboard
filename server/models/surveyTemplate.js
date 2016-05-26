@@ -5,7 +5,7 @@ var Schema = mongoose.Schema;
 var User = require('./user.js');
 var moment = require('moment');
 
-var SurveyTempleteSchema =  new Schema({
+var surveyTemplateSchema =  new Schema({
   //title: {type: String, required: true},
   title: {type: String, required: true},
   questions: Object,
@@ -13,5 +13,5 @@ var SurveyTempleteSchema =  new Schema({
 
 });
 
-var SurveyTemplete = mongoose.model('SurveyTemplete',SurveyTempleteSchema);
-module.exports = SurveyTemplete;
+var surveyTemplate = mongoose.model('surveyTemplate',surveyTemplateSchema);
+module.exports = surveyTemplate;

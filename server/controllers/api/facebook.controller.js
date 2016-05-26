@@ -107,7 +107,8 @@ exports.getProfile = function (req, res) {
                 real_name: fullName,
                 img: profilePic
               },
-              imgUrl: profilePic
+              imgUrl: profilePic,
+              facebookId: req.params.user_id
             };
             res.send(user);
           }

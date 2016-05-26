@@ -71,6 +71,7 @@ exports.render = function(req, res, next) {
           });
         }
         else {
+          console.log('ERROR LOADING LANDING PAGE FOR SOME ODD REASON');
           res.render('landing', {
       			// Set the page title variable
       			title: 'Fitpath',

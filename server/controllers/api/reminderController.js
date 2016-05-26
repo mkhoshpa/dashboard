@@ -4,11 +4,14 @@ var mongoose = require('mongoose');
 var Reminder = require('../../models/reminder.js');
 var ReminderResponse = require('../../models/reminderResponse.js');
 var User = require('../../models/user.js');
+var Message = require('../../models/message.js');
+var messageController = require('./messageController.js');
 var moment = require('moment');
 var _ = require('underscore');
 var twilio = require('twilio')('ACf83693e222a7ade08080159c4871c9e3', '20b36bd42a33cd249e0079a6a1e8e0dd');
 var smsresponse = require('twilio');
 var smsReceiver = require('express')();
+var schedule = require('node-schedule');
 
 var Promise = require('bluebird');
 var request = require('request');
@@ -21,7 +24,7 @@ exports.create = function(req, res) {
     if(!err) {
       User.findByIdAndUpdate(
         reminder.assignee,
-        {$push: {"reminders": reminder._id}},
+        {$push: {"reminders": reminder}},
         {safe: true},
         function(err, user) {
           if(err) {
@@ -43,6 +46,8 @@ exports.create = function(req, res) {
       //   }
       // );
 
+      /*
+
       twilio.sendMessage({
         to: '+15064261732',
         from: '+12898062194',
@@ -52,7 +57,7 @@ exports.create = function(req, res) {
           console.log(responseData.from);
           console.log(responseData.body);
         }
-      });
+      });*/
 
       res.send(reminder);
     }
@@ -178,8 +183,7 @@ exports.update = function(req, res) {
       assignee: req.body.assignee,
       hour: req.body.hour,
       minute: req.body.minute,
-      days: req.body.days
-
+      days: req.body.days,
 
     }},{new: true}, function(err, reminder) {
       if(reminder) {
@@ -199,7 +203,7 @@ exports.delete = function(req, res) {
     function(err, reminder) {
       if(reminder) {
         User.findByIdAndUpdate(reminder.assignee,
-          {$pull : {'reminders': reminder._id}},
+          {$pull : {'reminders': reminder}},
           function(err, model) {
           if(err) {
             // Do some flash message
@@ -242,5 +246,53 @@ exports.list = function(req, res) {
     res.json(obj);
   })
 }
+
+exports.sendReminders = function () {
+  var now = new Date();
+  var hoursNow = now.getHours();
+  var minutesNow = now.getMinutes();
+  var dayNow = now.getDay();
+
+  console.log("Running sendReminders");
+  console.log("Time is: " + now);
+
+  Reminder.find({days: dayNow})
+      .where('hour').equals(hoursNow)
+      .where('minute').equals(minutesNow)
+      .populate('assignee')
+      .populate('slack')
+      .exec(function (err, docs) {
+        console.log('Printing all reminders for this time.');
+        console.log(docs);
+        // Turns out 'int' isn't in JS... I blame C++ for ruining me
+        for (var i = 0; i < docs.length; i++) {
+          docs[i].needsResponse = true;
+          console.log(docs[i].assignee.phoneNumber);
+          var phoneNum = docs[i].assignee.phoneNumber;
+          var title = docs[i].title;
+          docs[i].save();
+          User.findById(docs[i].author, function (err, author) {
+            if (!err) {
+              twilio.sendMessage({
+                to: phoneNum,
+                from: author.phoneNumber,
+                body: title
+              }, function (err, responseData) {
+                if (!err) {
+                  console.log(JSON.stringify(responseData));
+                }
+              });
+            }
+          });
+        }
+      });
+}
+
+// Every minute all day every day
+var rule = new schedule.RecurrenceRule();
+rule.dayOfWeek = [new schedule.Range(0, 6)];
+var job = schedule.scheduleJob(rule, function() {
+    exports.sendReminders();
+});
 
 //need a method to find all the reminders that need to go out

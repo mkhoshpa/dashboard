@@ -1,6 +1,6 @@
 'use strict'
 var mongoose = require('mongoose');
-var SurveyTemplete = require('../../models/surveyTemplete.js');
+var SurveyTemplate = require('../../models/surveyTemplate.js');
 var User = require('../../models/user.js');
 var _ = require('underscore');
 var moment = require('moment');
@@ -10,14 +10,14 @@ var request = require('request');
 
 exports.create = function(req, res) {
 
-  var surveyTemplete = new SurveyTemplete(req.body);
-  console.log( surveyTemplete);
-  console.log(surveyTemplete.questions);
-  surveyTemplete.save(function(err, surveyTemplete) {
+  var surveyTemplate = new SurveyTemplate(req.body);
+  console.log(surveyTemplate);
+  console.log(surveyTemplate.questions);
+  surveyTemplate.save(function(err, surveyTemplate) {
     if(!err) {
       User.findByIdAndUpdate(
-        surveyTemplete.author,
-        {$push: {"surveyTempletes": surveyTemplete}},
+        surveyTemplate.author,
+        {$push: {"surveyTemplates": surveyTemplate}},
         {safe: true},
         function(err, user) {
           if(err) {
@@ -30,6 +30,6 @@ exports.create = function(req, res) {
       );
     }
   });
-  //console.log(surveyTemplete);
-  res.send(surveyTemplete);
+  //console.log(surveyTemplate);
+  res.send(surveyTemplate);
 }

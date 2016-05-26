@@ -12,7 +12,7 @@ var mongoose = require('mongoose'),
     note = require('./note.js'),
     message = require('./message.js'),
     reminderResponse = require('./reminderResponse.js'),
-    surveyTemplete = require('./surveyTemplete.js');
+    surveyTemplate = require('./surveyTemplate.js');
 
 
 // Define a new 'UserSchema'
@@ -61,8 +61,8 @@ var UserSchema = new Schema({
     {type: mongoose.Schema.Types.ObjectId, ref: 'Survey'}
   ],
 
-  surveyTempletes:[
-    {type: mongoose.Schema.Types.Object, ref: 'SurveyTemplete'}
+  surveyTemplates:[
+    {type: mongoose.Schema.Types.Object, ref: 'SurveyTemplate'}
   ],
 
   imageUrl: {

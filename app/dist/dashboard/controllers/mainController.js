@@ -91,14 +91,14 @@ var app;
                 var self = this;
                 console.log("hey");
                 console.log(this.questions);
-                var surveyTemplete = {
+                var surveyTemplate = {
                   title: this.surveyTitle,
                   questions : this.questions,
                   author : this.user._id
                 };
-                console.log(surveyTemplete);
+                console.log(surveyTemplate);
 
-                _this.$http.post('/api/surveyTemplete/create', surveyTemplete).then(function successCallback(response) {
+                _this.$http.post('/api/surveyTemplate/create', surveyTemplate).then(function successCallback(response) {
                 console.log(response.data);
                 console.log(this.user);
 

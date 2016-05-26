@@ -9,9 +9,27 @@ var request = require('request');
 
 
 exports.create = function(req, res) {
-  console.log(req.body);
-  //var surveyTemplete = new SurveyTemplete(req.body);
-  console.log("here");
+
+  var surveyTemplete = new SurveyTemplete(req.body);
+  console.log( surveyTemplete);
+  console.log(surveyTemplete.questions);
+  surveyTemplete.save(function(err, surveyTemplete) {
+    if(!err) {
+      User.findByIdAndUpdate(
+        surveyTemplete.author,
+        {$push: {"surveyTempletes": surveyTemplete}},
+        {safe: true},
+        function(err, user) {
+          if(err) {
+            console.log(err);
+          }
+          else {
+            console.log("YES!");
+          }
+        }
+      );
+    }
+  });
   //console.log(surveyTemplete);
-  res.send({});
+  res.send(surveyTemplete);
 }

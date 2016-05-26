@@ -8,11 +8,8 @@ var moment = require('moment');
 var SurveyTempleteSchema =  new Schema({
   //title: {type: String, required: true},
   title: {type: String, required: true},
-  questions: [{
-    type: Object
-  }],
-  
-  author: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+  questions: Object,
+  author: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}
 
 });
 

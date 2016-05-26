@@ -54,7 +54,7 @@ var UserSchema = new Schema({
     timezone: {type: String}
   },
   reminders: [
-    {type: mongoose.Schema.Types.ObjectId, ref: 'Reminder'}
+    {type: mongoose.Schema.Types.Object, ref: 'Reminder'}
   ],
   surveys: [
     {type: mongoose.Schema.Types.ObjectId, ref: 'Survey'}

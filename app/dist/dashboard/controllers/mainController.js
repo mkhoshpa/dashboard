@@ -415,7 +415,7 @@ var app;
                     // this.$http.post('uri').then((response) => response.data)
                     // after promise is succesful add to
                     // reminder.assigne.reminders.push()
-                    _this.$http.post('/api/reminder/' + reminder._id, reminder).then(function successCallback(reminder) {
+                    _this.$http.post('/api/reminder/update/' + reminder._id, reminder).then(function successCallback(reminder) {
                         //  self.selected.reminders.push(response.data);
                         if (self.updateReminder(reminder.data)) {
                             if (reminder.data.parent.id) {

@@ -35,7 +35,7 @@ var reminderSchema = new Schema({
   },
 
   responses : [{
-    type: mongoose.Schema.Types.ObjectId, ref:'ReminderResponse'
+    type: mongoose.Schema.Types.Object, ref:'ReminderResponse'
   }],
    // Who the reminder is coming from
   days: [{type: Number, min: 0, max: 6}],

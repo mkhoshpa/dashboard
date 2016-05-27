@@ -62,7 +62,10 @@ gulp.task('clean', function() {
   var conn = mongoose.connection;
   conn.on('error', console.error.bind(console, 'connection error:'));
   conn.once('open', function() {
-    conn.collection('users').drop(function(err) {
+    conn.collection('reminders').drop(function (err) {
+      console.log('Reminders dropped.');
+    });
+    /*conn.collection('users').drop(function(err) {
       console.log('Users dropped');
       var colin = new User({
         firstName: 'Colin',
@@ -88,7 +91,7 @@ gulp.task('clean', function() {
           console.log('DB is now broken, good luck.');
         }
       })
-    });
+    });*/
   });
 });
 

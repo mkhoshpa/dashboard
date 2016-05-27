@@ -17,8 +17,8 @@ var Http = require('http');
 var bodyParser = require('body-parser');
 var Bot = require('messenger-bot');
 
-http.listen(3001, function() {
-  console.log('listening for websocket connections on *:3001');
+http.listen(3852, function() {
+  console.log('listening for websocket connections on *:3852');
 });
 
 // a list of currently connected sockets

@@ -285,6 +285,7 @@ exports.sendReminders = function () {
       .exec(function (err, docs) {
         console.log('Printing all reminders for this time.');
         console.log(docs);
+        console.log(docs.length);
         // Turns out 'int' isn't in JS... I blame C++ for ruining me
         for (var i = 0; i < docs.length; i++) {
           docs[i].needsResponse = true;
@@ -294,6 +295,7 @@ exports.sendReminders = function () {
           docs[i].save();
           User.findById(docs[i].author, function (err, author) {
             if (!err) {
+              console.log('sending message');
               twilio.sendMessage({
                 to: phoneNum,
                 from: author.phoneNumber,

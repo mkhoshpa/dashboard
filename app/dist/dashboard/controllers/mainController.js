@@ -412,6 +412,7 @@ var app;
                     }
                 }).then(function (reminder) {
                     console.log('updating reminder id: ' + reminder._id);
+                    console.log(userSelected);
                     // Post request, and push onto users local list of reminders
                     // this.$http.post('uri').then((response) => response.data)
                     // after promise is succesful add to

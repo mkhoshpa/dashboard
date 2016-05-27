@@ -176,22 +176,30 @@ exports.update = function(req, res) {
   console.log('Updating reminder');
   console.log();
   console.log(JSON.stringify(req.body));
-  User.findOneAndUpdate(
-    {"_id": req.body.assignee, "reminders.*._id": req.body._id},
-    {
-      "$set": {
-        //"reminders.$": req.body
-      }
-    },
-    {new: true},
-    function (err, user) {
-      if (err) {
-        console.log(err);
-      }
-      res.send(user);
-      console.log('The user is: ' + user);
+  User.findById(req.body.assignee, function (err, user) {
+    if (err) {
+      console.log(err);
     }
-  )
+
+    var _user = user;
+    var user = user.toObject();
+
+    console.log('The user is: ' + JSON.stringify(user));
+    console.log('The user\'s id is: ' + user._id);
+    console.log('User.reminders is: ' + JSON.stringify(user.reminders));
+    for (var i = 0; i < user.reminders.length; i++) {
+      if (user.reminders[i]._id == req.body._id) {
+        console.log(JSON.stringify(user.reminders[i]));
+        user.reminders[i] = req.body;
+        console.log(JSON.stringify(user.reminders[i]));
+        res.send(req.body);
+      }
+    }
+    _user.set(user);
+    _user.save(function (err, doc) {
+      console.log(JSON.stringify(doc));
+    });
+  });
   /*User.findByIdAndUpdate(
     req.body.assignee,
     function (err, user) {

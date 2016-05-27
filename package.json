@@ -8,8 +8,7 @@
   },
   "scripts": {
     "start": "node app.js",
-    "postinstall": "bower install",
-    "prestart": "npm update"
+    "postinstall": "gulp default"
   },
   "description": "Contact Manager",
   "license": "MIT",

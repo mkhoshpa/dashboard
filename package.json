@@ -2,9 +2,13 @@
   "name": "contact-manager",
   "private": true,
   "version": "0.0.1",
+  "engines": {
+    "node": "4.4.4",
+    "npm": "2.1.x"
+  },
   "scripts": {
-    "postinstall": "bower update",
-    "prestart": "npm update"
+    "build": "gulp",
+    "start": "node app.js"
   },
   "description": "Contact Manager",
   "license": "MIT",

@@ -12,14 +12,14 @@ var twilio = require('twilio')('ACf83693e222a7ade08080159c4871c9e3', '20b36bd42a
 var twiml = require('twilio');
 var app = require('express')();
 var http = require('http').Server(app);
-var io = require('socket.io')(http);
-var Http = require('http');
+var io = require('socket.io')(3854);
 var bodyParser = require('body-parser');
-var Bot = require('messenger-bot');
+//var Bot = require('messenger-bot');
+var config = require('../../config/env/development.js');
 
-http.listen(3852, function() {
-  console.log('listening for websocket connections on *:3852');
-});
+//http.listen(3853, function () {
+  console.log('listening for websocket connections on *:3854');
+//});
 
 // a list of currently connected sockets
 var sockets = [];
@@ -33,7 +33,7 @@ io.on('connection', function (socket) {
   });
 });
 
-let bot = new Bot({
+/*let bot = new Bot({
   token: 'EAADXmpOGmZBQBAFZBq02j4QbdEkEGp6G9bZAYjKJielJusP9zkeXHPyEOXqiCLXQUZCZClGxEeBL5n1ZA5ybAJFChpUfRZARZCZAMBvXM25zvQxP3vpUS8eZA5Oo3m8qtyfQLFfflyyIG1H0L89OIBTKJUZCeuNrNFDqNqo0c3KWiFcPQZDZD',
   verify: 'fishisokay'
 });
@@ -77,11 +77,11 @@ bot.on('message', function (payload, reply) {
     });
     /*reply({ text }, function (err) {
       if (err) throw err;
-    });*/
+    });/
   });
 });
-
-app.use(bodyParser.json());
+*/
+/*app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
 }));
@@ -97,6 +97,8 @@ app.post('/facebook/receive', function (req, res) {
 
 Http.createServer(app).listen(3003);
 console.log('Listening for Facebook messages on *:3003');
+*/
+
 
 /*// sockets a list of currently connected sockets
 var sockets = [];
@@ -110,7 +112,7 @@ io.on('connection', function (socket) {
   });
 });*/
 
-exports.sendFB = function (req, res) {
+/*exports.sendFB = function (req, res) {
   var message = new Message(req.body);
   console.log('Begin sendFB');
 
@@ -136,7 +138,7 @@ exports.sendFB = function (req, res) {
     }
   });
 };
-
+*/
 exports.sendSMS = function (req, res) {
   var message = new Message(req.body);
   console.log('Begin sendSMS');
@@ -161,7 +163,7 @@ exports.sendSMS = function (req, res) {
               if (!err) {
                 twilio.sendMessage({
                   to: userSentTo.phoneNumber,
-                  from: '+12898062194',
+                  from: config.phoneNumbers.messages,
                   body: message.body
                 }, function (err, responseData) {
                   if (!err) {
@@ -193,67 +195,67 @@ exports.receiveSMS = function (req, res) {
   // Find user by phone num and actually create valid message object
   User.findOne({phoneNumber: req.body.From}, function (err, user) {
     console.log('User is: ' + JSON.stringify(user));
-    Reminder.findById(user.reminders[user.reminders.length - 1], function (err, reminder) {
-      if (reminder && reminder.needsResponse) {
-        console.log(JSON.stringify(reminder));
-        console.log(JSON.stringify(reminder.responses));
-        console.log('This should not print the user with the phone number.');
-        reminder.needsResponse = false;
-        reminder.responses.push({
-          response: req.body.Body,
-          createdBy: user._id
-        });
-        reminder.save();
-        console.log('Reminder saved as: ' + JSON.stringify(reminder));
-        user.reminders[user.reminders.length - 1].responses.push(reminder);
-        user.save();
-        console.log('User saved as: ' + JSON.stringify(user));
-        io.emit('response', reminder);
-      } else {
-        console.log('We should be adding a message');
-        var message = new Message({
-          body: req.body.Body,
-          sentBy: user._id,
-          sentTo: '5741ef7c5254295828d8c3b0'
-        });
-        User.findOneAndUpdate(
-          {phoneNumber: req.body.From},
-          {$push: {messages: message}},
-          {safe: true},
-          function (err, user) {
-            if (!err) {
-              console.log('The user with that phone number is: ' + user.slack.name);
-              io.emit('message', message);
-              console.log('Message saved and pushed to user');
-            }
-          });
-        }
-      });
-    });
-  /*User.findByPhoneNumber(req.body.From, function (err, user) {
+    /*Reminder.findById(user.reminders[user.reminders.length - 1], function (err, reminder) {
+    if (reminder && reminder.needsResponse) {
+    console.log(JSON.stringify(reminder));
+    console.log(JSON.stringify(reminder.responses));
+    console.log('This should not print the user with the phone number.');
+    reminder.needsResponse = false;
+    reminder.responses.push({
+    response: req.body.Body,
+    createdBy: user._id
+  });
+  reminder.save();
+  console.log('Reminder saved as: ' + JSON.stringify(reminder));
+  user.reminders[user.reminders.length - 1].responses.push(reminder);
+  user.save();
+  console.log('User saved as: ' + JSON.stringify(user));
+  io.emit('response', reminder);
+} else {*/
+console.log('We should be adding a message');
+var message = new Message({
+  body: req.body.Body,
+  sentBy: user._id,
+  sentTo: '5741ef7c5254295828d8c3b0'
+});
+User.findOneAndUpdate(
+  {phoneNumber: req.body.From},
+  {$push: {messages: message}},
+  {safe: true},
+  function (err, user) {
     if (!err) {
-      console.log("The user with that phone number is: " + user.slack.name);
-      message.save(function (err, message) {
-        console.log('Message saved');
-        if (!err) {
-          User.findByIdAndUpdate(
-            message.sentBy,
-            {$push: {"messages": message}},
-            {safe: true},
-            function (err, user) {
-              if (err) {
-                console.log(err);
-              } else {
-                console.log('Message saved and pushed to user, at least theoretically.');
-              }
-            }
-          )
-        }
-      });
+      console.log('The user with that phone number is: ' + user.slack.name);
+      io.emit('message', message);
+      console.log('Message saved and pushed to user');
     }
-  });*/
-  //console.log(JSON.stringify(req.body));
-  res.end(resp.toString());
+  });
+  //}
+  //});
+});
+/*User.findByPhoneNumber(req.body.From, function (err, user) {
+if (!err) {
+console.log("The user with that phone number is: " + user.slack.name);
+message.save(function (err, message) {
+console.log('Message saved');
+if (!err) {
+User.findByIdAndUpdate(
+message.sentBy,
+{$push: {"messages": message}},
+{safe: true},
+function (err, user) {
+if (err) {
+console.log(err);
+} else {
+console.log('Message saved and pushed to user, at least theoretically.');
+}
+}
+)
+}
+});
+}
+});*/
+//console.log(JSON.stringify(req.body));
+res.end(resp.toString());
 }
 /*
 exports.sendFB = function (req, res) {

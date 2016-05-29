@@ -63,6 +63,21 @@ gulp.task('clean', function() {
   conn.on('error', console.error.bind(console, 'connection error:'));
   conn.once('open', function() {
     conn.collection('reminders').drop(function (err) {
+      User.find({}, function (err, users) {
+        if (!err) {
+          users.forEach(function (_user, index) {
+            var user = _user.toObject();
+            user.reminders = [];
+            user.phoneNumber = '';
+            _user.set(user);
+            _user.save(function (err, user) {
+              if (!err) {
+                console.log(user);
+              }
+            });
+          });
+        }
+      });
       console.log('Reminders dropped.');
     });
     /*conn.collection('users').drop(function(err) {

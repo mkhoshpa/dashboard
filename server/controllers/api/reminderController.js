@@ -9,12 +9,31 @@ var messageController = require('./messageController.js');
 var moment = require('moment');
 var _ = require('underscore');
 var twilio = require('twilio')('ACf83693e222a7ade08080159c4871c9e3', '20b36bd42a33cd249e0079a6a1e8e0dd');
-var smsresponse = require('twilio');
-var smsReceiver = require('express')();
+var twiml = require('twilio');
+var app = require('express')();
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
 var schedule = require('node-schedule');
 
 var Promise = require('bluebird');
 var request = require('request');
+var config = require('../../config/env/development.js');
+
+http.listen(3852, function () {
+  console.log('listening for websocket connections on *:3852');
+});
+
+// a list of currently connected sockets
+var sockets = [];
+
+io.on('connection', function (socket) {
+  console.log('A user connected');
+  sockets.push(socket);
+  socket.on('disconnect', function () {
+    console.log('User disconnected');
+    sockets = _.without(sockets, sockets);
+  });
+});
 
 exports.create = function(req, res) {
   var reminder = new Reminder(req.body);
@@ -175,7 +194,24 @@ exports.addResponse = function(req, res) {
 exports.update = function(req, res) {
   console.log('Updating reminder');
   console.log();
-  console.log(JSON.stringify(req.body));
+  console.log(req.body);
+  Reminder.findOneAndUpdate({'_id': req.body._id},
+  {
+    title: req.body.title,
+    timeOfDay: req.body.timeOfDay,
+    days: req.body.days,
+    hour: req.body.hour,
+    minute: req.body.minute,
+    seletedDates: req.body.selectedDates,
+    daysOfTheWeek: req.body.daysOfTheWeek,
+    author: req.body.author,
+    assignee: req.body.assignee,
+    responses: []
+  }, {new: true}, function (err, reminder) {
+    if (!err) {
+      console.log('Reminder updated: ' + reminder);
+    }
+  })
   User.findById(req.body.assignee, function (err, user) {
     if (err) {
       console.log(err);
@@ -268,6 +304,38 @@ exports.list = function(req, res) {
   })
 }
 
+exports.receiveResponse = function (req, res) {
+  console.log('Begin receiveResponse');
+  var resp = new twiml.TwimlResponse();
+  console.log('Received SMS from: ' + req.body.From);
+  res.writeHead( 200, {
+    'Content-Type': 'text/xml'
+  });
+  console.log('The client wrote: ' + req.body.Body);
+  console.log('req.body.From is: ' + req.body.From);
+  User.findOne({phoneNumber: req.body.From}, function (err, _user) {
+    var user = _user.toObject();
+    console.log('User is: ' + JSON.stringify(_user));
+    Reminder.findById(user.reminders[user.reminders.length - 1], function (err, _reminder) {
+      var reminder = _reminder.toObject();
+      if (reminder && reminder.needsResponse) {
+        reminder.needsResponse = false;
+        reminder.responses.push({
+          response: req.body.Body,
+          createdBy: user._id
+        });
+        _reminder.set(reminder);
+        _reminder.save();
+        user.reminders[user.reminders.length - 1].responses.push(_reminder);
+        _user.set(user);
+        _user.save();
+        io.emit('response', reminder);
+      }
+    });
+  });
+  res.end(resp.toString());
+}
+
 exports.sendReminders = function () {
   var now = new Date();
   var hoursNow = now.getHours();
@@ -284,7 +352,8 @@ exports.sendReminders = function () {
       .populate('slack')
       .exec(function (err, docs) {
         console.log('Printing all reminders for this time.');
-        console.log(docs);
+        console.
+        log(docs);
         console.log(docs.length);
         // Turns out 'int' isn't in JS... I blame C++ for ruining me
         for (var i = 0; i < docs.length; i++) {
@@ -293,12 +362,13 @@ exports.sendReminders = function () {
           var phoneNum = docs[i].assignee.phoneNumber;
           var title = docs[i].title;
           docs[i].save();
+          console.log(docs[i]);
           User.findById(docs[i].author, function (err, author) {
             if (!err) {
               console.log('sending message');
               twilio.sendMessage({
                 to: phoneNum,
-                from: author.phoneNumber,
+                from: config.phoneNumbers.reminders,
                 body: title
               }, function (err, responseData) {
                 if (!err) {

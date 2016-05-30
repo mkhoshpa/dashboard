@@ -87,7 +87,7 @@ var app;
 
                 console.log("reseting save!");
 
-
+                console.log("HEWGFRBHI");
 
                 });
                 console.log(this.questions);

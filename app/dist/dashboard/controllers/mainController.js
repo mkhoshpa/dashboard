@@ -34,6 +34,7 @@ var app;
 
                 var self = this;
                 this.user = this.userService.get();
+
                 if (this.user.role == "user") {
                     self.selected = this.user;
                 }
@@ -249,6 +250,7 @@ var app;
             MainController.prototype.addUser = function ($event) {
                 var _this = this;
                 var self = this;
+
                 var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
                 this.$mdDialog.show({
                     templateUrl: './dist/view/dashboard/user/newUserDialog.html',
@@ -291,6 +293,7 @@ var app;
             MainController.prototype.addOrUploadUser = function ($event) {
               var _this = this;
               var self = this;
+
               var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
               this.$mdDialog.show({
                 templateUrl: './dist/view/dashboard/user/newOrUploadUserDialog.html',
@@ -603,7 +606,7 @@ var app;
               var self = this;
               this.$mdDialog.show(confirm).then(function (result) {
               console.log(note);
-
+              console.log(result);
               if (result) {
                 _this.$http.post('/api/note/remove/' + note._id, note)
                   .then(function successCallback(success) {
@@ -923,16 +926,7 @@ var app;
                 }
                 this.tabIndex = 0;
             };
-            MainController.prototype.hasReal = function (user) {
-              //  console.log(user);
-              //  console.log(user.slack);
-                if (user.slack.real_name) {
-                    return true;
-                }
-                else {
-                    return false;
-                }
-            };
+          
             MainController.prototype.isCoach = function (user) {
                 if (user.role == "coach") {
                     return true;

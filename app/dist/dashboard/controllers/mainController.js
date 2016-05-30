@@ -20,20 +20,21 @@ var app;
                 this.newNote = new dashboard.Note('', null);
                 this.newReminder = new dashboard.Reminder('', null);
 
+
                 //this.socket = io.connect('http://localhost:3001');
 
 
-
-                //this.questions = [1, 2, 3, 4, 5];
-
+                this.questions1 = [{type: "Yes/No"},{type:"Scale from 1 to 5"},{type:"Written Answer"}];
 
 
-                //Survey Stuff
-                this.first = true;
-                this.second = false;
-                this.third = false;
-                this.four = false;
-                this.fifth = false;
+                this.counter = 0
+                this.questionAmount = [
+                  0
+                ]
+
+
+
+
 
                 var self = this;
                 this.user = this.userService.get();
@@ -57,47 +58,72 @@ var app;
             // }
 
             //create a different controller
-            MainController.prototype.createSurvey = function($event){
-              console.log("here");
-
-            };
-
-
 
             MainController.prototype.setFormScope = function (scope) {
                 this.formScope = scope;
             };
 
 
-            MainController.prototype.anotherQuestion = function($event){
+            MainController.prototype.anotherQuestion = function(questionNum){
               var _this = this;
               var self = this;
-              if(this.first){
-                this.first = false;
-                this.second = true;
-                self.openToast("Next Question");
-              }
-              else if(this.second){
-                this.second = false;
-                this.third = true;
-                self.openToast("Next Question");
-              }
-              else if(this.third){
-                this.third = false;
-                this.fourth = true;
-                self.openToast("Next Question");
-              }
-              else if(this.fourth){
-                this.fourth = false;
-                this.fifth = true;
-                self.openToast("Next Question");
-              }
+              this.questionAmount.push(++this.counter);
+              self.openToast("Next Question");
+              };
 
-            }
+              MainController.prototype.saveSurvey = function($event){
+                var _this = this;
+                var self = this;
+                console.log("hey");
+                console.log(this.questions);
+                var surveyTemplate = {
+                  title: this.surveyTitle,
+                  questions : this.questions,
+                  author : this.user._id
+                };
+                console.log(surveyTemplate);
 
-            MainController.prototype.saveSurvey = function($event){
+                _this.$http.post('/api/surveyTemplate/create', surveyTemplate).then(function successCallback(response) {
+                console.log(response.data);
+                console.log(this.user);
+                this.user.surveyTemplates.push(response.data);
 
-            }
+
+                console.log("reseting save!");
+
+
+
+                });
+                console.log(this.questions);
+                this.questions = null;
+                this.surveyTitle = null;
+                this.counter = 0;
+                this.questionAmount = null;
+                this.questionAmount = [
+                  0
+                ];
+
+                self.openToast("Survey Created");
+
+              };
+
+              MainController.prototype.cancelSurvey = function($event){
+                var _this = this;
+                var self = this;
+                console.log("Cancel!");
+                console.log(this.questions);
+                this.questions = null;
+                this.surveyTitle = null;
+                this.counter = 0;
+                this.questionAmount = null;
+                this.questionAmount = [
+                  0
+                ];
+
+                self.openToast("Cancel Survey");
+
+
+              };
 
 
 

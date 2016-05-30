@@ -1,0 +1,31 @@
+<section layout-padding >
+  <div md-whiteframe = "3" layout = "row" layout-padding>
+    <h1>Select a survey to send out:</h1>
+
+
+    <md-input-container layout-padding flex = "10">
+      <md-select ng-model = "vm.surveyUser">
+        <md-option ng-repeat = "client in vm.user.clients" ng-value = "client.firstName">{{client.firstName}} <md-option>
+      </md-select>
+    </md-input-container>
+
+    <md-input-container layout-padding flex = "10">
+      <md-select ng-model = "vm.surveyUser">
+        <md-option ng-repeat = "client in vm.user.clients" ng-value = "client.firstName">{{client.firstName}} <md-option>
+      </md-select>
+    </md-input-container>
+
+
+
+    <md-card ng-repeat = "st in vm.user.surveyTemplates" >
+      <md-card-content>
+        <p>{{st.title}}</p>
+        <p>{{st.questions}}</p>
+        <p>{{st.author}}</p>
+      </md-card-content>
+    </md-card>
+
+
+
+  </div>
+</section>

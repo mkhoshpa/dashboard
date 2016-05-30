@@ -321,33 +321,31 @@ exports.receiveResponse = function (req, res) {
   User.findOne({phoneNumber: req.body.From}, function (err, _user) {
     var user = _user.toObject();
     console.log('User is: ' + JSON.stringify(_user));
+    var response = new ReminderResponse({
+      response: req.body.Body,
+      createdBy: user._id
+    });
     Reminder.findById(user.reminders[user.reminders.length - 1], function (err, _reminder) {
       var reminder = _reminder.toObject();
       if (reminder && reminder.needsResponse) {
         console.log('Adding response to reminder');
         reminder.needsResponse = false;
-        reminder.responses.push({
-          response: req.body.Body,
-          createdBy: user._id
-        });
+        reminder.responses.push({response: req.body.Body, createdBy: user._id});
         _reminder.set(reminder);
         _reminder.save(function (err, reminder) {
           console.log('Placing response into user\'s reminder');
-          console.log(user.reminders[user.reminders.length - 1]);
-          User.update(
-            {'reminders.responses._id': reminder._id},
-            {$push: {response: req.body.Body, createdBy: user._id}}
-          );
-          //user.reminders[user.reminders.length - 1].responses.push(reminder.responses[reminder.responses.length - 1]);
-          console.log();
-          console.log(user.reminders[user.reminders.length - 1]);
-          _user.set(user);
-          _user.save(function (err, user) {
-            console.log(JSON.stringify(user));
-          });
         });
         io.emit('response', reminder);
       }
+    });
+    user.reminders[user.reminders.length - 1].responses.push({response: req.body.Body, createdBy: user._id});
+    _user.set(user);
+    _user.save(function (err, __user) {
+      if (err) {
+        console.log(err);
+      }
+      console.log('Everything should be working. If not, apply hand firmly to forehead.');
+      console.log(JSON.stringify(__user));
     });
   });
   res.end(resp.toString());

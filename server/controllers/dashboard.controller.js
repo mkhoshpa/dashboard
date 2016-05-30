@@ -17,10 +17,10 @@ exports.render = function(req, res, next) {
           populate: {
             path: 'reminders',
             model: 'Reminder',
-            populate: {
+            /*populate: {
               path: 'responses',
               model: 'ReminderResponse'
-            }
+            }*/
           }
         },
         {

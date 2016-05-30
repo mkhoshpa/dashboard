@@ -472,10 +472,11 @@ var app;
                     if (reminder._id == userSelected.reminders[i]._id) {
                         userSelected.reminders[i] = reminder;
                         console.log(userSelected.reminders);
+                        console.log('Look ma, an update!');
+                        scope.$apply();
                         return true;
                     }
                 }
-                $scope.apply();
                 return false;
             };
             MainController.prototype.deleteReminder = function (reminder) {

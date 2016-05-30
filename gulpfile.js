@@ -62,7 +62,24 @@ gulp.task('clean', function() {
   var conn = mongoose.connection;
   conn.on('error', console.error.bind(console, 'connection error:'));
   conn.once('open', function() {
-    conn.collection('users').drop(function(err) {
+    conn.collection('reminders').drop(function (err) {
+      User.find({}, function (err, users) {
+        if (!err) {
+          users.forEach(function (_user, index) {
+            var user = _user.toObject();
+            user.reminders = [];
+            _user.set(user);
+            _user.save(function (err, user) {
+              if (!err) {
+                console.log(user);
+              }
+            });
+          });
+        }
+      });
+      console.log('Reminders dropped.');
+    });
+    /*conn.collection('users').drop(function(err) {
       console.log('Users dropped');
       var colin = new User({
         firstName: 'Colin',
@@ -88,8 +105,11 @@ gulp.task('clean', function() {
           console.log('DB is now broken, good luck.');
         }
       })
-    });
+    });*/
   });
+});
+gulp.task("heroku:production", function(){
+    console.log('hello'); // the task does not need to do anything.
 });
 
 gulp.task('default', ['browser-sync']);

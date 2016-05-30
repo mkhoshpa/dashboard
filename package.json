@@ -2,6 +2,10 @@
   "name": "contact-manager",
   "private": true,
   "version": "0.0.1",
+  "engines": {
+    "node": "4.4.4",
+    "npm": "2.1.x"
+  },
   "scripts": {
     "start": "node --harmony app.js"
   },

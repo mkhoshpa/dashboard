@@ -481,6 +481,7 @@ var app;
                     }
                 }).then(function (reminder) {
                     console.log('updating reminder id: ' + reminder._id);
+                    console.log(userSelected);
                     // Post request, and push onto users local list of reminders
                     // this.$http.post('uri').then((response) => response.data)
                     // after promise is succesful add to
@@ -540,6 +541,8 @@ var app;
                     if (reminder._id == userSelected.reminders[i]._id) {
                         userSelected.reminders[i] = reminder;
                         console.log(userSelected.reminders);
+                        console.log('Look ma, an update!');
+                        scope.$apply();
                         return true;
                     }
                 }
@@ -642,7 +645,7 @@ var app;
             };
 
             MainController.prototype.sendFB = function (message) {
-              var _this = this;
+              /*var _this = this;
               console.log('Begin submit');
               console.log('this.selected: ' + JSON.stringify(this.selected));
               this.$http.post('/api/message/sendfb/', {'body': message, 'sentBy': this.selected.coaches[0], 'sentTo': this.selected.id}).then(function (response) {
@@ -650,16 +653,16 @@ var app;
                 console.log(_this.selected.messages);
                 _this.selected.messages.push(response.data);
                 console.log('self.selected is: ' + JSON.stringify(_this.selected.messages));
-              });
+              });*/
             };
 
-            socket.on('response', function (response) {
+            responseSocket.on('response', function (response) {
               console.log('Server sent a response');
               MainController.prototype.updateReminder(response);
             });
 
             // socket.io code ahead
-            socket.on('message', function (message) {
+            messageSocket.on('message', function (message) {
               console.log('Server sent a message');
               MainController.prototype.receiveMessage(message);
             });/*function (message) {

@@ -18,7 +18,13 @@
             <h3 style="margin-top: px;">{{reminder.title}}</h3>
             <p>{{reminder.date | date:'MM/dd/yyyy'}}</p>
           </md-card-content>
-
+          <md-card-content>
+            <p>{{reminder.selectedDates}}</p>
+            <p>{{reminder.author}}</p>
+            <p>{{reminder.assignee}}</p>
+            <p>{{reminder.timeOfDay | date:'h:mma'}}</p>
+            <p>Responses: {{reminder.responses}}</p>
+          </md-card-content>
         </div>
       </md-card-content>
       <div layout="column">

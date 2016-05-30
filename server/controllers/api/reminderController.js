@@ -9,12 +9,31 @@ var messageController = require('./messageController.js');
 var moment = require('moment');
 var _ = require('underscore');
 var twilio = require('twilio')('ACf83693e222a7ade08080159c4871c9e3', '20b36bd42a33cd249e0079a6a1e8e0dd');
-var smsresponse = require('twilio');
-var smsReceiver = require('express')();
+var twiml = require('twilio');
+var app = require('express')();
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
 var schedule = require('node-schedule');
 
 var Promise = require('bluebird');
 var request = require('request');
+var config = require('../../config/env/development.js');
+
+http.listen(3852, function () {
+  console.log('listening for websocket connections on *:3852');
+});
+
+// a list of currently connected sockets
+var sockets = [];
+
+io.on('connection', function (socket) {
+  console.log('A user connected');
+  sockets.push(socket);
+  socket.on('disconnect', function () {
+    console.log('User disconnected');
+    sockets = _.without(sockets, sockets);
+  });
+});
 
 exports.create = function(req, res) {
   var reminder = new Reminder(req.body);
@@ -175,23 +194,47 @@ exports.addResponse = function(req, res) {
 exports.update = function(req, res) {
   console.log('Updating reminder');
   console.log();
-  console.log(JSON.stringify(req.body));
-  User.findOneAndUpdate(
-    {"_id": req.body.assignee,/* "reminders.$._id": req.body._id*/},
-    {
-      "$set": {
-        "reminders.$": req.body
-      }
-    },
-    {new: true},
-    function (err, user) {
-      if (err) {
-        console.log(err);
-      }
-      res.send(user);
-      console.log('The user is: ' + user);
+  console.log(req.body);
+  Reminder.findOneAndUpdate({'_id': req.body._id},
+  {
+    title: req.body.title,
+    timeOfDay: req.body.timeOfDay,
+    days: req.body.days,
+    hour: req.body.hour,
+    minute: req.body.minute,
+    seletedDates: req.body.selectedDates,
+    daysOfTheWeek: req.body.daysOfTheWeek,
+    author: req.body.author,
+    assignee: req.body.assignee,
+    responses: []
+  }, {new: true}, function (err, reminder) {
+    if (!err) {
+      console.log('Reminder updated: ' + reminder);
+      User.findById(req.body.assignee, function (err, user) {
+        if (err) {
+          console.log(err);
+        }
+
+        var _user = user;
+        var user = user.toObject();
+        console.log('The user is: ' + JSON.stringify(user));
+        console.log('The user\'s id is: ' + user._id);
+        console.log('User.reminders is: ' + JSON.stringify(user.reminders));
+        for (var i = 0; i < user.reminders.length; i++) {
+          if (user.reminders[i]._id == req.body._id) {
+            console.log(user.reminders[i]);
+            user.reminders[i] = reminder;
+            console.log(user.reminders[i]);
+            res.send(req.body);
+          }
+        }
+        _user.set(user);
+        _user.save(function (err, doc) {
+          console.log(JSON.stringify(doc));
+        });
+      });
     }
-  )
+  })
   /*User.findByIdAndUpdate(
     req.body.assignee,
     function (err, user) {
@@ -207,6 +250,7 @@ exports.update = function(req, res) {
 }
 
 exports.delete = function(req, res) {
+  console.log();
   console.log('Inside reminder.delete');
   console.log('id: ' + req.params.id);
   Reminder.findByIdAndRemove(
@@ -215,16 +259,21 @@ exports.delete = function(req, res) {
       if(reminder) {
         console.log(reminder);
         User.findByIdAndUpdate(reminder.assignee,
-          {$pull : {'reminders': reminder}},
+          {$pull : {reminders: {_id: reminder._id}}},
+          {new: true},
           function(err, model) {
+            console.log();
+            console.log('Should output a user with the specified reminder removed.');
             console.log(model);
+            res.sendStatus(200);
           if(err) {
             // Do some flash message
           }
         });
-        res.sendStatus(200);
       }
       else{
+        console.log();
+        console.log(err);
         res.sendStatus(500);
       }
     }
@@ -260,6 +309,48 @@ exports.list = function(req, res) {
   })
 }
 
+exports.receiveResponse = function (req, res) {
+  console.log('Begin receiveResponse');
+  var resp = new twiml.TwimlResponse();
+  console.log('Received SMS from: ' + req.body.From);
+  res.writeHead( 200, {
+    'Content-Type': 'text/xml'
+  });
+  console.log('The client wrote: ' + req.body.Body);
+  console.log('req.body.From is: ' + req.body.From);
+  User.findOne({phoneNumber: req.body.From}, function (err, _user) {
+    var user = _user.toObject();
+    console.log('User is: ' + JSON.stringify(_user));
+    var response = new ReminderResponse({
+      response: req.body.Body,
+      createdBy: user._id
+    });
+    Reminder.findById(user.reminders[user.reminders.length - 1], function (err, _reminder) {
+      var reminder = _reminder.toObject();
+      if (reminder && reminder.needsResponse) {
+        console.log('Adding response to reminder');
+        reminder.needsResponse = false;
+        reminder.responses.push({response: req.body.Body, createdBy: user._id});
+        _reminder.set(reminder);
+        _reminder.save(function (err, reminder) {
+          console.log('Placing response into user\'s reminder');
+        });
+        io.emit('response', reminder);
+      }
+    });
+    user.reminders[user.reminders.length - 1].responses.push({response: req.body.Body, createdBy: user._id});
+    _user.set(user);
+    _user.save(function (err, __user) {
+      if (err) {
+        console.log(err);
+      }
+      console.log('Everything should be working. If not, apply hand firmly to forehead.');
+      console.log(JSON.stringify(__user));
+    });
+  });
+  res.end(resp.toString());
+}
+
 exports.sendReminders = function () {
   var now = new Date();
   var hoursNow = now.getHours();
@@ -275,30 +366,35 @@ exports.sendReminders = function () {
       .populate('assignee')
       .populate('slack')
       .exec(function (err, docs) {
-        console.log('Printing all reminders for this time.');
-        console.log(docs);
-        // Turns out 'int' isn't in JS... I blame C++ for ruining me
-        for (var i = 0; i < docs.length; i++) {
-          docs[i].needsResponse = true;
-          console.log(docs[i].assignee.phoneNumber);
-          var phoneNum = docs[i].assignee.phoneNumber;
-          var title = docs[i].title;
-          docs[i].save();
-          User.findById(docs[i].author, function (err, author) {
-            if (!err) {
-              twilio.sendMessage({
-                to: phoneNum,
-                from: author.phoneNumber,
-                body: title
-              }, function (err, responseData) {
-                if (!err) {
-                  console.log(JSON.stringify(responseData));
-                }
-              });
-            }
+        if (docs) {
+          console.log('Printing all reminders for this time.');
+          console.log(docs);
+          console.log(docs.length);
+          // Turns out 'int' isn't in JS... I blame C++ for ruining me
+          for (var i = 0; i < docs.length; i++) {
+            docs[i].needsResponse = true;
+            console.log(docs[i].assignee.phoneNumber);
+            var phoneNum = docs[i].assignee.phoneNumber;
+            var title = docs[i].title;
+            docs[i].save();
+            console.log(docs[i]);
+            User.findById(docs[i].author, function (err, author) {
+              if (!err) {
+                console.log('sending message');
+                twilio.sendMessage({
+                  to: phoneNum,
+                  from: config.phoneNumbers.reminders,
+                  body: title
+                }, function (err, responseData) {
+                  if (!err) {
+                    console.log(JSON.stringify(responseData));
+                  }
+                });
+              }
           });
         }
-      });
+      }
+    });
 }
 
 // Every minute all day every day

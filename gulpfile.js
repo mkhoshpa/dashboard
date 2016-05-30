@@ -44,7 +44,7 @@ gulp.task('browser-sync', ['nodemon'], function() {
     injectChanges: true,
 		proxy: "http://localhost:8081",
         files: ["app/**/*.*"],
-        browser: "google chrome",
+        browser: 'google chrome',
         port: 7000,
 	});
 });

@@ -10,15 +10,14 @@
               <h1>{{vm.selected.username}}</h1>
             </md-content>
           </div>
-
+          <!-- change this -->
           <div ng-if="!vm.isCoach(vm.selected)">
             <img ng-src="{{vm.selected.slack.img}}" class="avatar"></md-icon>
-            <h1 ng-if="vm.hasReal(vm.selected)">
-              {{vm.selected.slack.real_name}}
-            </h1>
-            <h1 ng-if="!vm.hasReal(vm.selected)">
-              {{vm.selected.firstName}}
-            </h1>
+            <md-content style="background-color: #C3E1EE; margin: 5px;">
+              <h1>
+                {{vm.selected.firstName +" "+ vm.selected.lastName}}
+              </h1>
+            </md-content>
           </div>
           <h1 ng-if="vm.isUser">{{vm.selected.username}}</h1>
 

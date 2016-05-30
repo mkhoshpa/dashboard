@@ -2,7 +2,7 @@
   <form name="userForm" ng-submit="ctrl.save()">
 
     <md-dialog-content>
-      <div layout="column" layout-padding>
+      <div layout="row" layout-padding>
         <!-- <div layout-gt-sm="row"> -->
 
           <md-input-container class="md-block" flex-gt-sm>
@@ -18,11 +18,25 @@
             <input ng-model="ctrl.lastName" name="lastName" />
           </md-input-container>
 
-          <md-input-container class="md-block" flex-gt-sm>
-            <label>Bio</label>
-            <input ng-model="ctrl.bio" name="bio" />
-          </md-input-container>
 
+      </div>
+      <div layout = "row" layout-padding>
+
+        <md-input-container class="md-block" flex-gt-sm>
+          <label>Bio</label>
+          <input ng-model="ctrl.bio" name="bio" />
+        </md-input-container>
+
+        <md-input-container class="md-block" flex-gt-sm>
+          <label>Phone Number</label>
+          <input ng-model="ctrl.phoneNumber" name="phoneNumber" />
+        </md-input-container>
+        
+      </div>
+
+
+
+        <div>
           <md-input-container class="md-block" flex-gt-sm>
             <label>Username</label>
             <input ng-model="ctrl.username" name="username" />
@@ -58,10 +72,7 @@
             <input ng-model="ctrl.slack.real_name" name="slack_real_name" />
           </md-input-container>
 
-          <md-input-container class="md-block" flex-gt-sm>
-            <label>Phone Number</label>
-            <input ng-model="ctrl.phoneNumber" name="phoneNumber" />
-          </md-input-container>
+
 
       <!--  </div> -->
       </div>

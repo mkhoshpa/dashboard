@@ -50,6 +50,8 @@ var app;
                     img: '/assets/img/' + this.avatars[Math.floor(Math.random() * 7)]
                   },
                   coaches: [this.user._id],
+                  role: "user",
+
                   imgUrl: '/assets/img/' + this.avatars[Math.floor(Math.random() * 7)],
                   phoneNumber: this.phoneNumber
                 }

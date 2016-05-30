@@ -23,15 +23,11 @@ var app;
 
                 //this.socket = io.connect('http://localhost:3001');
 
-
+                //Survey stuff
                 this.questions1 = [{type: "Yes/No"},{type:"Scale from 1 to 5"},{type:"Written Answer"}];
-
-
-                this.counter = 0
-                this.questionAmount = [
-                  0
-                ]
-
+                this.counter = 0;
+                this.questionAmount = [0];
+                this.selectSurveyUser = [];
 
 
 
@@ -125,45 +121,92 @@ var app;
 
               };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            //not used
-            MainController.prototype.buildSurvey = function($event){
-              var _this = this;
-              var self = this;
-              console.log("Here");
-              var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
-              this.$mdDialog.show({
-                  templateUrl: './dist/view/dashboard/surveyBuilder/surveyBuilderModal.html',
-                  parent: angular.element(document.body),
-                  targetEvent: $event,
-                  controller: dashboard.SurveyBuilderController,
-                  controllerAs: "ctrl",
-                  clickOutsideToClose: true,
-                  fullscreen: useFullScreen,
-                  locals: {
-                    selected: null
+              MainController.prototype.toggle = function (item, list) {
+                  var idx = list.indexOf(item);
+                  if (idx > -1)
+                      list.splice(idx, 1);
+                  else
+                      list.push(item);
+              };
+              ;
+              MainController.prototype.exists = function (item, list) {
+                  return list.indexOf(item) > -1;
+              };
+              ;
+              MainController.prototype.toggleAll = function () {
+                  if (this.selectSurveyUser.length === this.user.clients.length) {
+                    this.selectSurveyUser = [];
                   }
-              }).then(function (survey) {
-                console.log("this is where the survey would be sent to a single person for the time being");
+                  else if (this.selectSurveyUser.length === 0 || this.selectSurveyUser.length > 0) {
+                    this.selectSurveyUser = this.user.clients.slice(0);
+                  }
+              };
+              ;
+              MainController.prototype.isChecked = function () {
+                  return this.selectSurveyUser.length === this.user.clients.length;
+              };
+              ;
+              MainController.prototype.isIndeterminate = function () {
+                  return (this.selectSurveyUser.length  !== 0 &&
+                      this.selectSurveyUser.length  !== this.user.clients.length);
+              };
+              ;
+
+              MainController.prototype.sendOutSurvey = function ($event) {
+                console.log("here");
+                var _this = this;
+                var self = this;
+                console.log("Here");
+                var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
+                this.$mdDialog.show({
+                    templateUrl: './dist/view/dashboard/surveys/selectorModal.html',
+                    parent: angular.element(document.body),
+                    targetEvent: $event,
+                    controller: dashboard.SurveySelectorController,
+                    controllerAs: "ctrl",
+                    clickOutsideToClose: true,
+                    fullscreen: useFullScreen,
+                    locals: {
+                      selected: null
+                    }
+                }).then(function (survey) {
+                  console.log("this is where the survey would be sent to a single person for the time being");
 
 
-              });
-            };
+                });
+
+
+              };
+
+              MainController.prototype.previewSurvey = function ($event) {
+                console.log("here");
+                var _this = this;
+                var self = this;
+                console.log("Here");
+                console.log(this.selectedSurvey);
+                var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
+                this.$mdDialog.show({
+                    templateUrl: './dist/view/dashboard/surveys/previewModal.html',
+                    parent: angular.element(document.body),
+                    targetEvent: $event,
+                    controller: dashboard.MainController,
+                    controllerAs: "vm",
+                    clickOutsideToClose: true,
+                    fullscreen: useFullScreen,
+                    locals: {
+                      selected: null
+                    }
+                });
+                console.log("here2");
+
+              };
+
+
+
+
+
+
+
 
 
 

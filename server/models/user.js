@@ -71,7 +71,7 @@ var UserSchema = new Schema({
   role:{
     type: String,
     enum: ['coach', 'user', 'admin'],
-    default: 'user'
+    default: 'coach'
   },
   status: {
     value: {

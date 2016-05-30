@@ -475,6 +475,7 @@ var app;
                         return true;
                     }
                 }
+                $scope.apply();
                 return false;
             };
             MainController.prototype.deleteReminder = function (reminder) {

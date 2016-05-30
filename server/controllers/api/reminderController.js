@@ -210,32 +210,31 @@ exports.update = function(req, res) {
   }, {new: true}, function (err, reminder) {
     if (!err) {
       console.log('Reminder updated: ' + reminder);
+      User.findById(req.body.assignee, function (err, user) {
+        if (err) {
+          console.log(err);
+        }
+
+        var _user = user;
+        var user = user.toObject();
+        console.log('The user is: ' + JSON.stringify(user));
+        console.log('The user\'s id is: ' + user._id);
+        console.log('User.reminders is: ' + JSON.stringify(user.reminders));
+        for (var i = 0; i < user.reminders.length; i++) {
+          if (user.reminders[i]._id == req.body._id) {
+            console.log(user.reminders[i]);
+            user.reminders[i] = reminder;
+            console.log(user.reminders[i]);
+            res.send(req.body);
+          }
+        }
+        _user.set(user);
+        _user.save(function (err, doc) {
+          console.log(JSON.stringify(doc));
+        });
+      });
     }
   })
-  User.findById(req.body.assignee, function (err, user) {
-    if (err) {
-      console.log(err);
-    }
-
-    var _user = user;
-    var user = user.toObject();
-
-    console.log('The user is: ' + JSON.stringify(user));
-    console.log('The user\'s id is: ' + user._id);
-    console.log('User.reminders is: ' + JSON.stringify(user.reminders));
-    for (var i = 0; i < user.reminders.length; i++) {
-      if (user.reminders[i]._id == req.body._id) {
-        console.log(JSON.stringify(user.reminders[i]));
-        user.reminders[i] = req.body;
-        console.log(JSON.stringify(user.reminders[i]));
-        res.send(req.body);
-      }
-    }
-    _user.set(user);
-    _user.save(function (err, doc) {
-      console.log(JSON.stringify(doc));
-    });
-  });
   /*User.findByIdAndUpdate(
     req.body.assignee,
     function (err, user) {
@@ -251,6 +250,7 @@ exports.update = function(req, res) {
 }
 
 exports.delete = function(req, res) {
+  console.log();
   console.log('Inside reminder.delete');
   console.log('id: ' + req.params.id);
   Reminder.findByIdAndRemove(
@@ -259,16 +259,21 @@ exports.delete = function(req, res) {
       if(reminder) {
         console.log(reminder);
         User.findByIdAndUpdate(reminder.assignee,
-          {$pull : {'reminders': reminder}},
+          {$pull : {reminders: {_id: reminder._id}}},
+          {new: true},
           function(err, model) {
+            console.log();
+            console.log('Should output a user with the specified reminder removed.');
             console.log(model);
+            res.sendStatus(200);
           if(err) {
             // Do some flash message
           }
         });
-        res.sendStatus(200);
       }
       else{
+        console.log();
+        console.log(err);
         res.sendStatus(500);
       }
     }
@@ -319,16 +324,28 @@ exports.receiveResponse = function (req, res) {
     Reminder.findById(user.reminders[user.reminders.length - 1], function (err, _reminder) {
       var reminder = _reminder.toObject();
       if (reminder && reminder.needsResponse) {
+        console.log('Adding response to reminder');
         reminder.needsResponse = false;
         reminder.responses.push({
           response: req.body.Body,
           createdBy: user._id
         });
         _reminder.set(reminder);
-        _reminder.save();
-        user.reminders[user.reminders.length - 1].responses.push(_reminder);
-        _user.set(user);
-        _user.save();
+        _reminder.save(function (err, reminder) {
+          console.log('Placing response into user\'s reminder');
+          console.log(user.reminders[user.reminders.length - 1]);
+          User.update(
+            {'reminders.responses._id': reminder._id},
+            {$push: {response: req.body.Body, createdBy: user._id}}
+          );
+          //user.reminders[user.reminders.length - 1].responses.push(reminder.responses[reminder.responses.length - 1]);
+          console.log();
+          console.log(user.reminders[user.reminders.length - 1]);
+          _user.set(user);
+          _user.save(function (err, user) {
+            console.log(JSON.stringify(user));
+          });
+        });
         io.emit('response', reminder);
       }
     });
@@ -351,34 +368,35 @@ exports.sendReminders = function () {
       .populate('assignee')
       .populate('slack')
       .exec(function (err, docs) {
-        console.log('Printing all reminders for this time.');
-        console.
-        log(docs);
-        console.log(docs.length);
-        // Turns out 'int' isn't in JS... I blame C++ for ruining me
-        for (var i = 0; i < docs.length; i++) {
-          docs[i].needsResponse = true;
-          console.log(docs[i].assignee.phoneNumber);
-          var phoneNum = docs[i].assignee.phoneNumber;
-          var title = docs[i].title;
-          docs[i].save();
-          console.log(docs[i]);
-          User.findById(docs[i].author, function (err, author) {
-            if (!err) {
-              console.log('sending message');
-              twilio.sendMessage({
-                to: phoneNum,
-                from: config.phoneNumbers.reminders,
-                body: title
-              }, function (err, responseData) {
-                if (!err) {
-                  console.log(JSON.stringify(responseData));
-                }
-              });
-            }
+        if (docs) {
+          console.log('Printing all reminders for this time.');
+          console.log(docs);
+          console.log(docs.length);
+          // Turns out 'int' isn't in JS... I blame C++ for ruining me
+          for (var i = 0; i < docs.length; i++) {
+            docs[i].needsResponse = true;
+            console.log(docs[i].assignee.phoneNumber);
+            var phoneNum = docs[i].assignee.phoneNumber;
+            var title = docs[i].title;
+            docs[i].save();
+            console.log(docs[i]);
+            User.findById(docs[i].author, function (err, author) {
+              if (!err) {
+                console.log('sending message');
+                twilio.sendMessage({
+                  to: phoneNum,
+                  from: config.phoneNumbers.reminders,
+                  body: title
+                }, function (err, responseData) {
+                  if (!err) {
+                    console.log(JSON.stringify(responseData));
+                  }
+                });
+              }
           });
         }
-      });
+      }
+    });
 }
 
 // Every minute all day every day

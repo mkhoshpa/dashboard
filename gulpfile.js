@@ -68,7 +68,6 @@ gulp.task('clean', function() {
           users.forEach(function (_user, index) {
             var user = _user.toObject();
             user.reminders = [];
-            user.phoneNumber = '';
             _user.set(user);
             _user.save(function (err, user) {
               if (!err) {

@@ -18,7 +18,7 @@
 
         <div layout = "row">
           <h1>{{vm.selectedSurvey.title}}</h1>
-          <md-button ng-click = "vm.tester()"  layout-padding>
+          <md-button ng-click = "vm.previewSurvey(vm.selectedSurvey)"  layout-padding>
             Preview Survey
           </md-button>
           <md-select  ng-model = "vm.userSurvey"  aria-label = "user" placeholder = "Select Users">

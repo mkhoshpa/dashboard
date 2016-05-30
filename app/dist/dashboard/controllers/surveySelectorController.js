@@ -66,12 +66,24 @@ var app;
 
 
             SurveySelectorController.prototype.save = function () {
-                var survey = {};
+              /*
+                var instanceSurvey {
+                  title:
+                  questions:
+                  surveyResponse:
 
+                }
+                */
 
 
                 this.$mdDialog.hide(survey);
             };
+
+
+
+
+
+
             SurveySelectorController.$inject = ['$mdDialog', 'userService', '$http'];
             return SurveySelectorController;
         }());

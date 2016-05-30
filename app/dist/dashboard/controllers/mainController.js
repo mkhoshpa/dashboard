@@ -178,6 +178,28 @@ var app;
 
               };
 
+              MainController.prototype.previewSurvey = function ($event) {
+                console.log("here");
+                var _this = this;
+                var self = this;
+                console.log("Here");
+                console.log(this.selectedSurvey);
+                var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
+                this.$mdDialog.show({
+                    templateUrl: './dist/view/dashboard/surveys/previewModal.html',
+                    parent: angular.element(document.body),
+                    targetEvent: $event,
+                    controller: dashboard.MainController,
+                    controllerAs: "vm",
+                    clickOutsideToClose: true,
+                    fullscreen: useFullScreen,
+                    locals: {
+                      selected: null
+                    }
+                });
+                console.log("here2");
+
+              };
 
 
 
@@ -185,34 +207,6 @@ var app;
 
 
 
-
-
-
-
-
-            //not used
-            MainController.prototype.buildSurvey = function($event){
-              var _this = this;
-              var self = this;
-              console.log("Here");
-              var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
-              this.$mdDialog.show({
-                  templateUrl: './dist/view/dashboard/surveyBuilder/surveyBuilderModal.html',
-                  parent: angular.element(document.body),
-                  targetEvent: $event,
-                  controller: dashboard.SurveyBuilderController,
-                  controllerAs: "ctrl",
-                  clickOutsideToClose: true,
-                  fullscreen: useFullScreen,
-                  locals: {
-                    selected: null
-                  }
-              }).then(function (survey) {
-                console.log("this is where the survey would be sent to a single person for the time being");
-
-
-              });
-            };
 
 
 

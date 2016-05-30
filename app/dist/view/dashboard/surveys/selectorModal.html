@@ -1,6 +1,14 @@
 <md-dialog>
-  <md-content>
-    <h1>Date Picker</h1>
+  <md-content layout-padding>
+    <p>Select A Date</p>
+
+    <div layout = "row" >
+    <p>Repeat weekly</p>
+      <md-checkbox ng-model = "ctrl.repeat" layout-padding style="margin: 0 14px 0 14px">
+
+      </md-checkbox>
+    </div>
+
 
     <div layout="row" layout-wrap="">
       <md-input-container flex="grow" layout-fill style="margin: 0 14px 0 14px;">

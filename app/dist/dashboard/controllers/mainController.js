@@ -480,17 +480,19 @@ var app;
                         selected: reminder
                     }
                 }).then(function (reminder) {
+                    console.log('updating reminder id: ' + reminder._id);
                     // Post request, and push onto users local list of reminders
                     // this.$http.post('uri').then((response) => response.data)
                     // after promise is succesful add to
                     // reminder.assigne.reminders.push()
                     _this.$http.post('/api/reminder/update/' + reminder._id, reminder).then(function successCallback(reminder) {
+                        console.log('returned junk: ' + JSON.stringify(reminder.data._id));
                         //  self.selected.reminders.push(response.data);
                         if (self.updateReminder(reminder.data)) {
-                            if (reminder.data.parent.id) {
+                            /*if (reminder.data.parent.id) {
                                 var id = reminder.data.parent.id.slice(1, 25);
                                 self.updateReminderInSurvey(id, reminder.data);
-                            }
+                            }*/
                             self.openToast("Reminder Edited");
                         }
                         else {
@@ -513,6 +515,7 @@ var app;
                 this.$mdDialog.show(confirm).then(function (result) {
                     console.log(reminder);
                     if (result) {
+                        console.log('removing reminder id: ' + reminder._id);
                         _this.$http.post('/api/reminder/remove/' + reminder._id, reminder)
                             .then(function successCallback(success) {
                             if (success) {
@@ -530,19 +533,22 @@ var app;
             };
 
             MainController.prototype.updateReminder = function (reminder) {
+                console.log('Inside updateReminder');
                 console.log(userSelected.reminders);
+                console.log(reminder);
                 for (var i = 0; i < userSelected.reminders.length; i++) {
                     if (reminder._id == userSelected.reminders[i]._id) {
                         userSelected.reminders[i] = reminder;
-                        scope.$apply();
+                        console.log(userSelected.reminders);
                         return true;
                     }
                 }
                 return false;
             };
             MainController.prototype.deleteReminder = function (reminder) {
-                var foundIndex = this.selected.reminders.indexOf(reminder);
-                this.selected.reminders.splice(foundIndex, 1);
+                this.selected.reminders = _.without(this.selected.reminders, reminder);
+                /*var foundIndex = this.selected.reminders.indexOf(reminder);
+                this.selected.reminders.splice(foundIndex, 1);*/
             };
             MainController.prototype.slackList = function () {
                 // var test = this.userService.slack().then((members: any) => {

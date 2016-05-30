@@ -33,7 +33,7 @@ io.on('connection', function (socket) {
   });
 });
 
-let bot = new Bot({
+var bot = new Bot({
   token: 'EAADXmpOGmZBQBAFZBq02j4QbdEkEGp6G9bZAYjKJielJusP9zkeXHPyEOXqiCLXQUZCZClGxEeBL5n1ZA5ybAJFChpUfRZARZCZAMBvXM25zvQxP3vpUS8eZA5Oo3m8qtyfQLFfflyyIG1H0L89OIBTKJUZCeuNrNFDqNqo0c3KWiFcPQZDZD',
   verify: 'fishisokay'
 });

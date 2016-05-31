@@ -469,6 +469,7 @@ var app;
             MainController.prototype.editReminder = function ($event, reminder) {
                 var _this = this;
                 console.log('main controller edit reminder');
+                console.log(reminder);
                 var self = this;
                 var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
                 this.$mdDialog.show({
@@ -485,6 +486,7 @@ var app;
                 }).then(function (reminder) {
                     console.log('updating reminder id: ' + reminder._id);
                     console.log(userSelected);
+
                     // Post request, and push onto users local list of reminders
                     // this.$http.post('uri').then((response) => response.data)
                     // after promise is succesful add to
@@ -545,7 +547,6 @@ var app;
                         userSelected.reminders[i] = reminder;
                         console.log(userSelected.reminders);
                         console.log('Look ma, an update!');
-                        scope.$apply();
                         return true;
                     }
                 }

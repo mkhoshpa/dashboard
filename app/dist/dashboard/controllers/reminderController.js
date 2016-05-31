@@ -122,7 +122,8 @@ var app;
                     selectedDates: this.selectedDays,
                     daysOfTheWeek: dates,
                     author: this.author,
-                    assignee: this.assignee
+                    assignee: this.assignee,
+                    responses: this.responses
                 };
 
                 console.log('check time');

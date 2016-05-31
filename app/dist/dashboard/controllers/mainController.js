@@ -630,8 +630,8 @@ var app;
             };
 
             MainController.prototype.deleteNote = function (note) {
-                var note = this.selected.notes.indexOf(note);
-                this.selected.notes.splice(foundIndex, 1);
+              this.selected.notes = _.without(this.selected.notes, note);
+
             };
 
             MainController.prototype.sendMessage = function (message) {
@@ -695,67 +695,63 @@ var app;
             };
 
             MainController.prototype.editNote = function($event, note){
+              console.log("TETETT");
               var _this = this;
               var self = this;
               console.log(note);
               var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
               this.$mdDialog.show({
-                  templateUrl: './dist/view/dashboard/notes/tab-notes-form-edit.html',
+                  templateUrl: './dist/view/dashboard/notes/noteModal.html',
                   parent: angular.element(document.body),
                   targetEvent: $event,
                   controller: dashboard.NoteController,
                   controllerAs: "ctrl",
                   clickOutsideToClose: true,
-                  fullscreen: useFullScreen
-
+                  fullscreen: useFullScreen,
+                  locals:{
+                      selected: note
+                  }
                 }).then(function (note) {
-                    console.log("Herer ethsi sa");
-                  });
+                  console.log('updating note: ' + note.body);
 
-
-                      // Post request, and push onto users local list of reminders
-                      // this.$http.post('uri').then((response) => response.data)
-                      // after promise is succesful add to
-                  //     // reminder.assigne.reminders.push()
-                  //     _this.$http.post('/api/reminder/' + reminder._id, reminder).then(function successCallback(reminder) {
-                  //         //  self.selected.reminders.push(response.data);
-                  //         if (self.updateReminder(reminder.data)) {
-                  //             if (reminder.data.parent.id) {
-                  //                 var id = reminder.data.parent.id.slice(1, 25);
-                  //                 self.updateReminderInSurvey(id, reminder.data);
-                  //             }
-                  //             self.openToast("Reminder Edited");
-                  //         }
-                  //         else {
-                  //             self.openToast("Reminder Not Found!");
-                  //         }
-                  //     });
-                  // }, function () {
-                  //     console.log('You cancelled the dialog.');
-                  // });
-                  //.then(function (reminder) {
-                  // Post request, and push onto users local list of reminders
-                  // this.$http.post('uri').then((response) => response.data)
-                  // after promise is succesful add to
-              /*    // reminder.assigne.reminders.push()
-                  _this.$http.post('/api/reminder/' + reminder._id, reminder).then(function successCallback(reminder) {
-                        //  self.selected.reminders.push(response.data);
-                      if (self.updateReminder(reminder.data)) {
-                          if (reminder.data.parent.id) {
+                  _this.$http.post('/api/note/update/' + note._id, note).then(function successCallback(note) {
+                      console.log('returned junk: ' + JSON.stringify(note.data._id));
+                      //  self.selected.reminders.push(response.data);
+                      if (self.updateNote(note.data)) {
+                          /*if (reminder.data.parent.id) {
                               var id = reminder.data.parent.id.slice(1, 25);
                               self.updateReminderInSurvey(id, reminder.data);
-                          }
-                          self.openToast("Reminder Edited");
+                          }*/
+                          self.openToast("Note Edited");
                       }
                       else {
-                          self.openToast("Reminder Not Found!");
+                          self.openToast("Note Not Found!");
                       }
                   });
-              }, function () {
-                  console.log('You cancelled the dialog.');
-              });
-              */
+                },function () {
+                    console.log('You cancelled the dialog.');
+                });
             };
+            MainController.prototype.updateNote = function(note){
+              console.log('Inside note');
+              console.log(userSelected.notes);
+              console.log(note);
+              for (var i = 0; i < userSelected.notes.length; i++) {
+                  if (note._id == userSelected.notes[i]._id) {
+                      userSelected.notes[i] = note;
+                      console.log(userSelected.notes);
+                      console.log('Look ma, an update!');
+
+                      return true;
+                  }
+              }
+              return false;
+
+
+
+            };
+
+
 
 
             MainController.prototype.clearNotes = function ($event) {
@@ -929,7 +925,7 @@ var app;
                 }
                 this.tabIndex = 0;
             };
-          
+
             MainController.prototype.isCoach = function (user) {
                 if (user.role == "coach") {
                     return true;

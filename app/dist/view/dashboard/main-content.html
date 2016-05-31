@@ -12,15 +12,15 @@
           </div>
           <!-- change this -->
           <div ng-if="!vm.isCoach(vm.selected)">
-            <img ng-src="{{vm.selected.slack.img}}" class="avatar"></md-icon>
+            <img ng-src="{{vm.selected.imageUrl}}" class="avatar"></md-icon>
             <md-content style="background-color: #C3E1EE; margin: 5px;">
               <h1>
                 {{vm.selected.firstName +" "+ vm.selected.lastName}}
               </h1>
             </md-content>
           </div>
-          <h1 ng-if="vm.isUser">{{vm.selected.username}}</h1>
-
+          <!--<h1 ng-if="vm.isUser">{{vm.selected.username}}</h1>
+          -->
         </div><!--
         <div md-whiteframe = "3"  flex = "5" layout = "column" style = "background-color: #C3E1EE; margin: 5px;">
 

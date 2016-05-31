@@ -4,7 +4,7 @@ var app;
     var dashboard;
     (function (dashboard) {
         var ReminderController = (function () {
-            function ReminderController($mdDialog, userService) {
+            function ReminderController($mdDialog, userService, selected) {
                 this.$mdDialog = $mdDialog;
                 this.userService = userService;
                 this.selected = selected;

@@ -170,10 +170,21 @@ var app;
                     locals: {
                       selected: null
                     }
-                }).then(function (survey) {
+                }).then(function (surveyInfo) {
                   console.log("this is where the survey would be sent to a single person for the time being");
-
-
+                  console.log();
+                  console.log('The times to receive this survey is: ');
+                  console.log(surveyInfo);
+                  console.log('this.selectedSurvey is: ');
+                  console.log(_this.selectedSurvey);
+                  _this.selectedSurvey.selectedDays = surveyInfo.selectedDays;
+                  //_this.daysOfTheWeek = stuff from selectedDays;
+                  //_this.selectedSurvey.days;
+                  //_this.selectedSurvey.hour;
+                  //_this.selectedSurvey.minute;
+                  _this.$http.post('/api/surveyTemplate/schedule', _this.selectedSurvey).then(function (response) {
+                    console.log(response.data);
+                  });
                 });
 
 
@@ -186,7 +197,7 @@ var app;
                 console.log("Here");
                 console.log(this.selectedSurvey);
                 var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
-                this.$mdDialog.show({
+                /*this.$mdDialog.show({
                     templateUrl: './dist/view/dashboard/surveys/previewModal.html',
                     parent: angular.element(document.body),
                     targetEvent: $event,
@@ -197,6 +208,10 @@ var app;
                     locals: {
                       selected: null
                     }
+                });*/
+                this.$http.post('/api/surveyTemplate/preview', this.selectedSurvey).then(function (response) {
+                  console.log('Previewing survey');
+                  console.log(response.data);
                 });
                 console.log("here2");
 
@@ -929,7 +944,7 @@ var app;
                 }
                 this.tabIndex = 0;
             };
-          
+
             MainController.prototype.isCoach = function (user) {
                 if (user.role == "coach") {
                     return true;

@@ -54,11 +54,14 @@
     "passport-slack": "0.0.6",
     "passport-twitter": "^1.0.4",
     "path": "^0.12.7",
+    "pb-node": "^2.0.1",
     "request": "^2.72.0",
     "request-promise": "^3.0.0",
     "socket.io": "^1.4.6",
     "twilio": "^2.9.1",
     "underscore": "^1.8.3",
-    "url": "^0.11.0"
+    "url": "^0.11.0",
+    "written-number": "^0.2.4",
+    "xmlbuilder": "^8.2.2"
   }
 }

@@ -12,7 +12,7 @@ var app;
 
                 //creator: any = this.userService.get();
                 this.avatars = [
-                    'ashley.png', 'james.png', 'jenn.png', 'jo.png', 'john.png', 'julie.png', 'mamajess.png', 'sharon.png'
+                  "matt.png", "thom.png", "tiffany.png", "victoria.png"
                 ];
             }
             AddUserDialogController.prototype.cancel = function () {
@@ -54,7 +54,7 @@ var app;
                   coaches: [this.user._id],
                   role: "user",
 
-                  imageUrl: '/assets/img/' + this.avatars[Math.floor(Math.random() * 7)],
+                  imageUrl: '/assets/img/' + this.avatars[Math.floor(Math.random() * 3)],
                   phoneNumber: this.phoneNumber
                 }
                 console.log(user);

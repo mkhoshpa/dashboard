@@ -810,7 +810,7 @@ var app;
                     // this.$http.post('uri').then((response) => response.data)
                     // after promise is succesful add to
                     // reminder.assigne.reminders.push()
-                    console.log(survey);
+HI Shane!                    console.log(survey);
                     _this.$http.post('/api/survey', survey).then(function successCallback(survey) {
                         self.selected.surveys.push(survey.data);
                         console.log(survey.data);

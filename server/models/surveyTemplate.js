@@ -20,6 +20,7 @@ var surveyTemplateSchema =  new Schema({
     saturday: {type: Boolean},
     sunday: {type: Boolean}
   },
+  repeat: Boolean,
   days: [{type: Number, min: 0, max: 6}],
   hour: {type: Number, min: 0, max: 23},
   minute: {type: Number, min: 0, max: 59}

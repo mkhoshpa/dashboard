@@ -484,7 +484,7 @@ var app;
                         selected: reminder
                     }
                 }).then(function (reminder) {
-                    console.log('updating reminder id: ' + reminder._id);
+                    console.log(reminder.responses);
                     console.log(userSelected);
 
                     // Post request, and push onto users local list of reminders
@@ -492,7 +492,7 @@ var app;
                     // after promise is succesful add to
                     // reminder.assigne.reminders.push()
                     _this.$http.post('/api/reminder/update/' + reminder._id, reminder).then(function successCallback(reminder) {
-                        console.log('returned junk: ' + JSON.stringify(reminder.data._id));
+                        console.log('returned junk: ' + JSON.stringify(reminder.data));
                         //  self.selected.reminders.push(response.data);
                         if (self.updateReminder(reminder.data)) {
                             /*if (reminder.data.parent.id) {

@@ -205,8 +205,7 @@ exports.update = function(req, res) {
     seletedDates: req.body.selectedDates,
     daysOfTheWeek: req.body.daysOfTheWeek,
     author: req.body.author,
-    assignee: req.body.assignee,
-    responses: req.body.responses
+    assignee: req.body.assignee
   }, {new: true}, function (err, reminder) {
     if (!err) {
       console.log('Reminder updated: ' + reminder);

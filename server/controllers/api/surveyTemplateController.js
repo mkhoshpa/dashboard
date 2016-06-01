@@ -185,6 +185,7 @@ exports.preview = function (req, res) {
 exports.schedule = function (req, res) {
   console.log('Scheduling survey');
   console.log(req.body);
+  // Save updated surveyTemplate
   res.send(req.body);
 }
 
@@ -196,7 +197,7 @@ exports.sendSurveys = function () {
     if (!err) console.log(res);
   });
   //TODO: for every survey to be sent at this time, start the bot talking to the client
-  var talkParams = {
+  /*var talkParams = {
     input: 'init'
   };
   bot.talk(talkParams, function (err, res) {
@@ -206,7 +207,7 @@ exports.sendSurveys = function () {
         if (!err) console.log(res);
       });
     }
-  });
+  });*/
 }
 
 // Every minute all day every day

@@ -177,11 +177,34 @@ var app;
                   console.log(surveyInfo);
                   console.log('this.selectedSurvey is: ');
                   console.log(_this.selectedSurvey);
+                  _this.selectedSurvey.daysOfTheWeek = {};
                   _this.selectedSurvey.selectedDays = surveyInfo.selectedDays;
-                  //_this.daysOfTheWeek = stuff from selectedDays;
-                  //_this.selectedSurvey.days;
-                  //_this.selectedSurvey.hour;
-                  //_this.selectedSurvey.minute;
+                  if (_this._.contains(_this.selectedSurvey.selectedDays, 'Sun')) {
+                    _this.selectedSurvey.daysOfTheWeek.sunday = true;
+                    _this.selectedSurvey.days.splice(_this.selectedSurvey.days.length, 0, 0);
+                  } else if (_this._.contains(selectedSurvey.selectedDays, 'Mon')) {
+                    _this.selectedSurvey.daysOfTheWeek.monday = true;
+                    _this.selectedSurvey.days.splice(_this.selectedSurvey.days.length, 0, 1);
+                  } else if (_this._.contains(selectedSurvey.selectedDays, 'Tues')) {
+                    _this.selectedSurvey.daysOfTheWeek.tuesday = true;
+                    _this.selectedSurvey.days.splice(_this.selectedSurvey.days.length, 0, 2);
+                  } else if (_this._.contains(selectedSurvey.selectedDays, 'Wed')) {
+                    _this.selectedSurvey.daysOfTheWeek.wednesday = true;
+                    _this.selectedSurvey.days.splice(_this.selectedSurvey.days.length, 0, 3);
+                  } else if (_this._.contains(selectedSurvey.selectedDays, 'Thurs')) {
+                    _this.selectedSurvey.daysOfTheWeek.thursday = true;
+                    _this.selectedSurvey.days.splice(_this.selectedSurvey.days.length, 0, 4);
+                  } else if (_this._.contains(selectedSurvey.selectedDays, 'Fri')) {
+                    _this.selectedSurvey.daysOfTheWeek.friday = true;
+                    _this.selectedSurvey.days.splice(_this.selectedSurvey.days.length, 0, 5);
+                  } else if (_this._.contains(selectedSurvey.selectedDays, 'Sat')) {
+                    _this.selectedSurvey.daysOfTheWeek.saturday = true;
+                    _this.selectedSurvey.days.splice(_this.selectedSurvey.days.length, 0, 6);
+                  }
+                  _this.selectedSurvey.timeOfDay = surveyInfo.time;
+                  _this.selectedSurvey.hour = _this.selectedSurvey.timeOfDay.getHours();
+                  _this.selectedSurvey.minute = _this.selectedSurvey.timeOfDay.getMinutes();
+                  _this.selectedSurvey.repeat = surveyInfo.repeat;
                   _this.$http.post('/api/surveyTemplate/schedule', _this.selectedSurvey).then(function (response) {
                     console.log(response.data);
                   });

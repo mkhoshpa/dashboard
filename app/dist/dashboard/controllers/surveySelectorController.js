@@ -76,7 +76,8 @@ var app;
                 */
                 var surveyInfo = {
                   selectedDays: this.selectedDays,
-                  time: this.time
+                  time: this.time,
+                  repeat: this.repeat
                 };
                 console.log(JSON.stringify(surveyInfo));
 

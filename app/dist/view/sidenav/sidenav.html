@@ -22,7 +22,7 @@
         <md-button ng-click="vm.selectUser(vm.user)">
           <i class="material-icons avatar" style="color: #444;">face</i>
               <span>
-                {{vm.user.username}}
+                {{vm.user.username }}
               </span>
 
 
@@ -30,10 +30,10 @@
       </md-list-item>
       <md-list-item ng-repeat="it in vm.clients | filter:vm.searchText | orderBy:'name'">
           <md-button ng-click="vm.selectUser(it)" ng-class="{'selected' : it === vm.selected }">
-            <img ng-src="{{it.imageUrl}}" class="avatar">
+            <img ng-src="{{it.imgUrl}}" class="avatar">
 
                 {{it.firstName + " " + it.lastName}}
-            
+
           </md-button>
       </md-list-item>
     </md-list>

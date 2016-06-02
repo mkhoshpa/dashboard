@@ -42,6 +42,7 @@ var app;
                   bio: this.bio,
                   username: this.username,
                   password: this.password,
+                  email: this.email,
                   /*
                   slack_id: this.slack_id,
                   slack: {
@@ -54,7 +55,7 @@ var app;
                   coaches: [this.user._id],
                   role: "user",
 
-                  imageUrl: '/assets/img/' + this.avatars[Math.floor(Math.random() * 3)],
+                  imgUrl: '/assets/img/' + this.avatars[Math.floor(Math.random() * 3)],
                   phoneNumber: this.phoneNumber
                 }
                 console.log(user);

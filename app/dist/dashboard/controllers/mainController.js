@@ -278,7 +278,11 @@ var app;
                           self.user.clients.push(response.data);
                           console.log("User created:")
                           console.log(response.data);
-                          self.openToast("User added");
+                          self.openToast("User added And Email Sent!");
+                          _this.$http.post('api/facebook/email/', user).then(function successCallback(response) {
+                            console.log("email done!");
+                            //console.log(response);
+                          });
                         });
                       } else {
                         self.openToast('User not added. ' + response.data.errors.password.message);
@@ -338,6 +342,7 @@ var app;
                     user.coaches = _this.user._id;
                     _this.$http.post('/api/user/create', user).then(function (__response) {
                         _this.$http.post('/api/coach/newuser/' + this.user.id + '?' + __response.data.id, user).then(function (client) {
+                          console.log("Here fb");
                           self.user.clients.push(response.data);
                         });
                     });

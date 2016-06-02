@@ -75,7 +75,7 @@ exports.create = function(req, res) {
                 .ele('template', question)
                   .ele('think')
                     .ele('set')
-                      .att('name', surveyTemplate._id + '/' + count)
+                      .att('name', surveyTemplate._id + count)
                       .ele('star');
               normalizedQuestion = res.responses.join(' ');
             }
@@ -90,10 +90,11 @@ exports.create = function(req, res) {
                   .up()
                   .ele('that', normalizedQuestion)
                   .up()
-                  .ele('template', 'Thanks for answering my questions! Enjoy the rest of your day.')
+                  // Bot signals end of conversation by sending id of survey
+                  .ele('template', 'Thanks for answering my questions! Enjoy the rest of your day. ' + surveyTemplate._id)
                     .ele('think')
                       .ele('set')
-                        .att('name', surveyTemplate._id + '/' + count)
+                        .att('name', surveyTemplate._id + count)
                         .ele('star');
                 xmlString = xml.end({pretty: true});
                 console.log();
@@ -146,6 +147,7 @@ exports.create = function(req, res) {
 }
 
 exports.preview = function (req, res) {
+  //TODO: fix preview to use bot code
   console.log();
   console.log('Inside preview');
   var surveyTemplate = new SurveyTemplate(req.body);
@@ -154,7 +156,7 @@ exports.preview = function (req, res) {
     twilio.sendMessage({
       to: user.phoneNumber,
       from: config.phoneNumbers.reminders,
-      body: 'Hi! Here\'s a survey your coach wanted me to send.'
+      body: 'Hi! Here\'s a survey your coach wanted me to send you.'
     }, function (err, responseData) {
       if (!err) {
         console.log(JSON.stringify(responseData));
@@ -171,6 +173,8 @@ exports.preview = function (req, res) {
           }, function (err, responseData) {
             if (!err) {
               console.log(JSON.stringify(responseData));
+            } else {
+              console.log(err);
             }
           });
           index++;
@@ -186,16 +190,87 @@ exports.schedule = function (req, res) {
   console.log('Scheduling survey');
   console.log(req.body);
   // Save updated surveyTemplate
+  SurveyTemplate.findByIdAndUpdate(req.body._id, req.body, {new: true}, function (err, surveyTemplate) {
+    if (!err) {
+      console.log('Survey updated successfully');
+      console.log(surveyTemplate);
+    } else {
+      console.log('An error occured');
+      console.log(err);
+    }
+  });
   res.send(req.body);
 }
 
 exports.sendSurveys = function () {
+  var now = new Date();
+  var hoursNow = now.getHours();
+  var minutesNow = now.getMinutes();
+  var dayNow = now.getDay();
+
   console.log('Sending surveys...');
-  console.log();
+  /*console.log();
   console.log('Listing all bots...');
   bot.list(function (err, res) {
     if (!err) console.log(res);
+  });*/
+
+  SurveyTemplate.find({days: dayNow})
+    .where('hour').equals(hoursNow)
+    .where('minute').equals(minutesNow)
+    .exec(function (err, surveys) {
+      if (surveys) {
+        console.log('Printing all surveys for this time.');
+        console.log(surveys);
+        for (var i = 0; i < surveys.length; i++) {
+          var survey = surveys[i];
+          // Find author's clients
+          User.findById(survey.author, function (err, coach) {
+            console.log('The coach\'s clients are:');
+            console.log(coach.clients);
+            for (var j = 0; j < coach.clients.length; j++) {
+              var clientId = coach.clients[j];
+              User.findById(clientId, function (err, client) {
+                  console.log(client);
+                  // Initiate conversation with bot
+                  bot.talk({input: 'XINIT ' + survey._id}, function (err, response) {
+                  if (!err) {
+                    console.log('The bot said: ' + response.responses.join(' '));
+                    // Split the bot's response and send two texts to the user, to provide neater UX
+                    var splitResponse = response.responses.join(' ').split('\n');
+                    console.log(splitResponse);
+                    twilio.sendMessage({
+                      to: client.phoneNumber,
+                      from: config.phoneNumbers.reminders,
+                      body: splitResponse[0]
+                    }, function (err, responseData) {
+                      if (!err) {
+                        console.log(JSON.stringify(responseData));
+                        twilio.sendMessage({
+                          to: client.phoneNumber,
+                          from: config.phoneNumbers.reminders,
+                          body: splitResponse[1]
+                        }, function (err, responseData) {
+                          if (!err) {
+                            console.log(JSON.stringify(responseData));
+                          } else {
+                            console.log(err);
+                          }
+                        })
+                      } else {
+                        console.log(err);
+                      }
+                    });
+                    // Send initial question from bot to clients
+                  }
+                });
+              });
+            }
+          });
+        }
+      }
   });
+  //If survey isn't supposed to repeat set all days to false
   //TODO: for every survey to be sent at this time, start the bot talking to the client
   /*var talkParams = {
     input: 'init'

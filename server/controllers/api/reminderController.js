@@ -5,6 +5,7 @@ var Reminder = require('../../models/reminder.js');
 var ReminderResponse = require('../../models/reminderResponse.js');
 var User = require('../../models/user.js');
 var Message = require('../../models/message.js');
+var SurveyTemplate = require('../../models/surveyTemplate.js');
 var messageController = require('./messageController.js');
 var moment = require('moment');
 var _ = require('underscore');
@@ -14,6 +15,16 @@ var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var schedule = require('node-schedule');
+var Pandorabot = require('pb-node');
+
+var botOptions = {
+  url: 'https://aiaas.pandorabots.com',
+  app_id: '1409612709792',
+  user_key: '83a7e3b5fa60385bd676a05cb4951e98',
+  botname: 'willow'
+};
+
+var bot = new Pandorabot(botOptions);
 
 var Promise = require('bluebird');
 var request = require('request');
@@ -310,6 +321,7 @@ exports.list = function(req, res) {
 }
 
 exports.receiveResponse = function (req, res) {
+  var _this = this;
   console.log('Begin receiveResponse');
   var resp = new twiml.TwimlResponse();
   console.log('Received SMS from: ' + req.body.From);
@@ -325,28 +337,267 @@ exports.receiveResponse = function (req, res) {
       response: req.body.Body,
       createdBy: user._id
     });
-    Reminder.findById(user.reminders[user.reminders.length - 1], function (err, _reminder) {
-      var reminder = _reminder.toObject();
-      if (reminder && reminder.needsResponse) {
-        console.log('Adding response to reminder');
-        reminder.needsResponse = false;
-        reminder.responses.push({response: req.body.Body, createdBy: user._id});
-        _reminder.set(reminder);
-        _reminder.save(function (err, reminder) {
-          console.log('Placing response into user\'s reminder');
-        });
-        io.emit('response', reminder);
-      }
-    });
-    user.reminders[user.reminders.length - 1].responses.push({response: req.body.Body, createdBy: user._id});
-    _user.set(user);
-    _user.save(function (err, __user) {
-      if (err) {
-        console.log(err);
-      }
-      console.log('Everything should be working. If not, apply hand firmly to forehead.');
-      console.log(JSON.stringify(__user));
-    });
+    if (user.reminders.length != 0) {
+      Reminder.findById(user.reminders[user.reminders.length - 1], function (err, _reminder) {
+        var reminder = _reminder.toObject();
+        if (reminder && reminder.needsResponse) {
+          console.log('Adding response to reminder');
+          reminder.needsResponse = false;
+          reminder.responses.push({response: req.body.Body, createdBy: user._id});
+          _reminder.set(reminder);
+          _reminder.save(function (err, reminder) {
+            console.log('Placing response into user\'s reminder');
+          });
+          io.emit('response', reminder);
+        } else {
+          console.log('Must be a response to a survey question');
+            // Send response out to bot, send bot's response back to user
+            // if the message contains survey id, get all responses from bot and store in survey
+            console.log('Must be a response to a survey');
+            console.log();
+            console.log(req.body);
+            console.log();
+            bot.talk({input: req.body.Body}, function (err, response) {
+              if (!err) {
+                console.log('The bot responded: ' + JSON.stringify(response));
+                User.findOne({phoneNumber: req.body.From}, function (err, user) {
+                  console.log();
+                  console.log('The user is:');
+                  console.log(JSON.stringify(user));
+                  console.log();
+                  SurveyTemplate.find({author: user.coaches[0]}, function (err, surveys) {
+                    console.log('The surveys are:');
+                    console.log(surveys);
+                    console.log();
+                    var containsId = false;
+                    var survey;
+                    for (var i = 0; i < surveys.length; i++) {
+                      survey = surveys[i];
+                      if (response.responses.join(' ').indexOf(survey._id) > -1) {
+                        containsId = true;
+                        break;
+                      } else {
+                        containsId = false;
+                      }
+                    }
+                    console.log('The survey is:');
+                    console.log(JSON.stringify(survey));
+                    // if the response includes the survey id
+                    console.log('Response included survey id: ' + response.responses.join(' ').indexOf(survey._id));
+                    if (containsId) {
+                      console.log('Survey has ended, retrieving results...');
+                      // get the user's responses from the bot
+                      console.log()
+                      var count = 0;
+                      for (var key in survey.questions) {
+                        //for (var i = 0; i < Object.keys(survey.questions).length; i++) {
+                        console.log('Getting response with id: ' + survey._id + count);
+                        bot.talk({input: 'XGET ' + survey._id + count}, function (err, response) {
+                          if (!err) {
+                            bot.talk({input: 'XDENORM ' + response.responses.join(' ')}, function (err, response) {
+                              if (!err) {
+                                // Store user's response inside survey.
+                                console.log();
+                                console.log(response.responses.join(' '));
+                                survey.questions[key].responses.push({
+                                  from: user._id,
+                                  response: response.responses.join(' '),
+                                  time: Date.now()
+                                });
+                                console.log(survey.questions);
+                                var __survey = survey;
+                                // add the user's responses to the survey object + update survey
+                                SurveyTemplate.findById(survey._id, function (err, _survey) {
+                                  console.log(_survey);
+                                  var survey = _survey.toObject();
+                                  survey = __survey;
+                                  _survey.set(survey);
+                                  _survey.save(function (err, _survey) {
+                                    if (!err) {
+                                      console.log();
+                                      console.log('Survey saved.');
+                                      console.log(JSON.stringify(_survey));
+                                      console.log();
+                                    } else {
+                                      console.log(err);
+                                    }
+                                  });
+                                });
+                                console.log();
+                              } else {
+                                console.log(err);
+                              }
+                            });
+                          } else {
+                            console.log(err);
+                          }
+                        });
+                        count++;
+                      }
+                      console.log();
+                      // trim the survey id from the response and send response to user
+                      var trimmedResponse = response.responses.join(' ').replace(' ' + survey._id, '');
+                      twilio.sendMessage({
+                        to: req.body.From,
+                        from: config.phoneNumbers.reminders,
+                        body: trimmedResponse
+                      }, function (err, responseData) {
+                        if (!err) {
+                          console.log(JSON.stringify(responseData));
+                        } else {
+                          console.log(err);
+                        }
+                      });
+                    } else {
+                      twilio.sendMessage({
+                        to: req.body.From,
+                        from: config.phoneNumbers.reminders,
+                        body: response.responses.join(' ')
+                      }, function (err, responseData) {
+                        if (!err) {
+                          console.log(JSON.stringify(responseData));
+                        } else {
+                          console.log(err);
+                        }
+                      });
+                    }
+                  });
+                });
+              } else {
+                console.log(err);
+              }
+            });
+          }
+      });
+      user.reminders[user.reminders.length - 1].responses.push({response: req.body.Body, createdBy: user._id});
+      _user.set(user);
+      _user.save(function (err, __user) {
+        if (err) {
+          console.log(err);
+        }
+        console.log('Everything should be working. If not, apply hand firmly to forehead.');
+        console.log(JSON.stringify(__user));
+      });
+    } else {
+      console.log('Must be a response to a survey');
+      console.log();
+      console.log(req.body);
+      console.log();
+      bot.talk({input: req.body.Body}, function (err, response) {
+        if (!err) {
+          console.log('The bot responded: ' + JSON.stringify(response));
+          User.findOne({phoneNumber: req.body.From}, function (err, user) {
+            console.log();
+            console.log('The user is:');
+            console.log(JSON.stringify(user));
+            console.log();
+            SurveyTemplate.find({author: user.coaches[0]}, function (err, surveys) {
+              console.log('The surveys are:');
+              console.log(surveys);
+              console.log();
+              var containsId = false;
+              var survey;
+              for (var i = 0; i < surveys.length; i++) {
+                survey = surveys[i];
+                if (response.responses.join(' ').indexOf(survey._id) > -1) {
+                  containsId = true;
+                  break;
+                } else {
+                  containsId = false;
+                }
+              }
+              console.log('The survey is:');
+              console.log(JSON.stringify(survey));
+              // if the response includes the survey id
+              console.log('Response included survey id: ' + response.responses.join(' ').indexOf(survey._id));
+              if (containsId) {
+                console.log('Survey has ended, retrieving results...');
+                // get the user's responses from the bot
+                console.log()
+                var count = 0;
+                for (var key in survey.questions) {
+                //for (var i = 0; i < Object.keys(survey.questions).length; i++) {
+                  console.log('Getting response with id: ' + survey._id + count);
+                  bot.talk({input: 'XGET ' + survey._id + count}, function (err, response) {
+                    if (!err) {
+                      bot.talk({input: 'XDENORM ' + response.responses.join(' ')}, function (err, response) {
+                        if (!err) {
+                          // Store user's response inside survey.
+                          console.log();
+                          console.log('THE USER\'S RESPONSE IS: ' + response.responses.join(' '));
+                          console.log();
+                          console.log('THE KEY IS: ' + key);
+                          console.log('THE COUNTER IS: ' + count);
+                          console.log();
+                          survey.questions[key].responses.push({
+                            from: user._id,
+                            response: response.responses.join(' '),
+                            time: Date.now()
+                          });
+                          console.log(survey.questions);
+                          var __survey = survey;
+                          // add the user's responses to the survey object + update survey
+                          SurveyTemplate.findById(survey._id, function (err, _survey) {
+                            console.log(_survey);
+                            var survey = _survey.toObject();
+                            survey = __survey;
+                            _survey.set(survey);
+                            _survey.save(function (err, _survey) {
+                              if (!err) {
+                                console.log();
+                                console.log('Survey saved.');
+                                console.log(JSON.stringify(_survey));
+                                console.log();
+                              } else {
+                                console.log(err);
+                              }
+                            });
+                          });
+                          console.log();
+                        } else {
+                          console.log(err);
+                        }
+                      });
+                    } else {
+                      console.log(err);
+                    }
+                  });
+                  count++;
+                }
+                console.log();
+                // trim the survey id from the response and send response to user
+                var trimmedResponse = response.responses.join(' ').replace(' ' + survey._id, '');
+                twilio.sendMessage({
+                  to: req.body.From,
+                  from: config.phoneNumbers.reminders,
+                  body: trimmedResponse
+                }, function (err, responseData) {
+                  if (!err) {
+                    console.log(JSON.stringify(responseData));
+                  } else {
+                    console.log(err);
+                  }
+                });
+              } else {
+                twilio.sendMessage({
+                  to: req.body.From,
+                  from: config.phoneNumbers.reminders,
+                  body: response.responses.join(' ')
+                }, function (err, responseData) {
+                  if (!err) {
+                    console.log(JSON.stringify(responseData));
+                  } else {
+                    console.log(err);
+                  }
+                });
+              }
+            });
+          });
+        } else {
+          console.log(err);
+        }
+      });
+    }
   });
   res.end(resp.toString());
 }

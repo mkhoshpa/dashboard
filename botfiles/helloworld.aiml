@@ -24,6 +24,11 @@
     <template><star/></template>
   </category>
 
+  <category>
+    <pattern>XDENORM *</pattern>
+    <template><denormalize><star/></denormalize></template>
+  </category>
+
 <!--
 
   <category>

@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<aiml version="2.0">
+  <category>
+    <pattern>XINIT 574f2c21e284fdac123db570</pattern>
+    <template>Hi! Here's a survey your coach wanted me to send you.
+dajsklfjsaklfj</template>
+  </category>
+  <category>
+    <pattern>*</pattern>
+    <that>dajsklfjsaklfj</that>
+    <template>
+      uiopuoiuio
+      <think>
+        <set name="574f2c21e284fdac123db570/0">
+          <star/>
+        </set>
+      </think>
+    </template>
+  </category>
+  <category>
+    <pattern>*</pattern>
+    <that>uiopuoiuio</that>
+    <template>
+      ioioio
+      <think>
+        <set name="574f2c21e284fdac123db570/1">
+          <star/>
+        </set>
+      </think>
+    </template>
+  </category>
+  <category>
+    <pattern>*</pattern>
+    <that>ioioio</that>
+    <template>
+      Thanks for answering my questions! Enjoy the rest of your day.
+      <think>
+        <set name="574f2c21e284fdac123db570/2">
+          <star/>
+        </set>
+      </think>
+    </template>
+  </category>
+</aiml>

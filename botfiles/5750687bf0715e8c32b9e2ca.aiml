@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<aiml version="2.0">
+  <category>
+    <pattern>XINIT 5750687bf0715e8c32b9e2ca</pattern>
+    <template>Hi! Here's a survey your coach wanted me to send you.
+Question of test</template>
+  </category>
+  <category>
+    <pattern>*</pattern>
+    <that>Question of test</that>
+    <template>
+      Question of testing
+      <think>
+        <set name="5750687bf0715e8c32b9e2ca0">
+          <star/>
+        </set>
+      </think>
+    </template>
+  </category>
+  <category>
+    <pattern>*</pattern>
+    <that>Question of testing</that>
+    <template>
+      Question of tester
+      <think>
+        <set name="5750687bf0715e8c32b9e2ca1">
+          <star/>
+        </set>
+      </think>
+    </template>
+  </category>
+  <category>
+    <pattern>*</pattern>
+    <that>Question of tester</that>
+    <template>
+      Thanks for answering my questions! Enjoy the rest of your day. 5750687bf0715e8c32b9e2ca
+      <think>
+        <set name="5750687bf0715e8c32b9e2ca/2">
+          <star/>
+        </set>
+      </think>
+    </template>
+  </category>
+</aiml>

@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<aiml version="2.0">
+  <category>
+    <pattern>XINIT 57503fabe73ebd682c79b553</pattern>
+    <template>Hi! Here's a survey your coach wanted me to send you:
+Which one exercise would you least like to do next week?</template>
+  </category>
+  <category>
+    <pattern>*</pattern>
+    <that>Which one exercise would you least like to do next week</that>
+    <template>
+      On a scale from 1 to 5, how much did you enjoy your routine this week?
+      <think>
+        <set name="57503fabe73ebd682c79b553/0">
+          <star/>
+        </set>
+      </think>
+    </template>
+  </category>
+  <category>
+    <pattern>*</pattern>
+    <that>On a scale from 1 to 5, how much did you enjoy your routine this week</that>
+    <template>
+      Did you remember to stretch after every workout?
+      <think>
+        <set name="57503fabe73ebd682c79b553/1">
+          <star/>
+        </set>
+      </think>
+    </template>
+  </category>
+  <category>
+    <pattern>*</pattern>
+    <that>Did you remember to stretch after every workout</that>
+    <template>
+      Thanks for answering my questions! Enjoy the rest of your day. 57503fabe73ebd682c79b553
+      <think>
+        <set name="57503fabe73ebd682c79b553/2">
+          <star/>
+        </set>
+      </think>
+    </template>
+  </category>
+</aiml>

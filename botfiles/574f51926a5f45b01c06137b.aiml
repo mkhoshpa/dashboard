@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<aiml version="2.0">
+  <category>
+    <pattern>XINIT 574f51926a5f45b01c06137b</pattern>
+    <template>Hi! Here's a survey your coach wanted me to send you.
+Have you eaten fish at least once this week?</template>
+  </category>
+  <category>
+    <pattern>*</pattern>
+    <that>Have you eaten fish at least once this week</that>
+    <template>
+      How happy were you with this week's meal plan?
+      <think>
+        <set name="574f51926a5f45b01c06137b/0">
+          <star/>
+        </set>
+      </think>
+    </template>
+  </category>
+  <category>
+    <pattern>*</pattern>
+    <that>How happy were you with this week s meal plan</that>
+    <template>
+      What one food would you most like to eat next week?
+      <think>
+        <set name="574f51926a5f45b01c06137b/1">
+          <star/>
+        </set>
+      </think>
+    </template>
+  </category>
+  <category>
+    <pattern>*</pattern>
+    <that>What one food would you most like to eat next week</that>
+    <template>
+      Thanks for answering my questions! Enjoy the rest of your day.
+      <think>
+        <set name="574f51926a5f45b01c06137b/2">
+          <star/>
+        </set>
+      </think>
+    </template>
+  </category>
+</aiml>

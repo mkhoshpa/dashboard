@@ -918,9 +918,17 @@ var app;
                     .position('top right')
                     .hideDelay(5000));
             };
+
+
+
             MainController.prototype.toggleList = function () {
+                console.log("hey im here");
                 this.$mdSidenav('left').toggle();
             };
+
+
+
+
             MainController.prototype.selectUser = function (user) {
                 this.selected = user;
                 this.userService.selectedUser = this.selected;

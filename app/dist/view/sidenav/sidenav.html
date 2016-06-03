@@ -1,12 +1,13 @@
 <md-sidenav class="md-sidenav-left md-whiteframe-z2"
               md-component-id="left"
-              md-is-locked-open="$mdMedia('gt-sm')" flex>
+              md-is-locked-open="$mdMedia('xs')" >
   <div layout-padding>
     <md-autocomplete
       md-search-text="vm.searchText"
       md-items="item in vm.users | filter:vm.searchText"
       md-item-text="item.name"
       md-min-length="3"
+
       placeholder="filter">
       <md-item-template>
         <span md-highlight-text="vm.searchText" md-highlight-flags="^i">{{item.name}}</span>
@@ -22,18 +23,18 @@
         <md-button ng-click="vm.selectUser(vm.user)">
           <i class="material-icons avatar" style="color: #444;">face</i>
               <span>
-                {{vm.user.username}}
+                {{vm.user.username }}
               </span>
 
 
         </md-button>
       </md-list-item>
       <md-list-item ng-repeat="it in vm.clients | filter:vm.searchText | orderBy:'name'">
-          <md-button ng-click="vm.selectUser(it)" ng-class="{'selected' : it === vm.selected }">
-            <img ng-src="{{it.imageUrl}}" class="avatar">
+          <md-button ng-click="vm.selectUser(it)" ng-class="{'selected' : it === vm.selected }" >
+            <img ng-src="{{it.imgUrl}}" class="avatar">
 
                 {{it.firstName + " " + it.lastName}}
-            
+
           </md-button>
       </md-list-item>
     </md-list>

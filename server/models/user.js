@@ -65,7 +65,7 @@ var UserSchema = new Schema({
     {type: mongoose.Schema.Types.Object, ref: 'SurveyTemplate'}
   ],
 
-  imageUrl: {
+  imgUrl: {
     type: String,
   },
   role:{
@@ -128,7 +128,8 @@ var UserSchema = new Schema({
 		default: Date.now
 	},
   phoneNumber: String,
-  facebookId: Number
+  facebookId: Number,
+  email: String
 });
 
 // Set the 'fullname' virtual property

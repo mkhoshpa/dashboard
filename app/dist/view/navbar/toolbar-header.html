@@ -1,15 +1,15 @@
 <md-toolbar>
   <div class="md-toolbar-tools">
-    <md-button class="menu" hide-gt-sm ng-click="vm.toggleList()" aria-label="Show User List">
+    <md-button class="menu" ng-click="vm.toggleList()" aria-label="Show User List">
       <md-icon md-svg-icon="menu" ></md-icon>
     </md-button>
     <!-- Navbar Action/Menus-->
 
-<md-headline  style="color: white;">
-  <li><a flex-offset="10" href="/" >FitPath</a></li>
-</md-headline>
+    <md-headline  style="color: white;">
+      <li><a flex-offset="10" href="/" >FitPath</a></li>
+    </md-headline>
 
-    <div class="nav-buttons" style="color: white;">
+    <div class="nav-buttons" style="color: white;" flex = "90">
       <ul>
 
         <li><a href="#!/"> Dashboard </a></li>
@@ -22,6 +22,11 @@
         <li><a href="#!/notes"> Notes </a></li>
       -->
       </ul>
+    </div>
+    <div>
+      <md-button>
+        <li><a href="/signout"> Sign out </a></li>
+      </md-button>
     </div>
   </div>
 </md-toolbar>

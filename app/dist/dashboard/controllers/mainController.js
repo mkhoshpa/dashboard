@@ -278,7 +278,11 @@ var app;
                           self.user.clients.push(response.data);
                           console.log("User created:")
                           console.log(response.data);
-                          self.openToast("User added");
+                          self.openToast("User added And Email Sent!");
+                          _this.$http.post('api/facebook/email/', user).then(function successCallback(response) {
+                            console.log("email done!");
+                            //console.log(response);
+                          });
                         });
                       } else {
                         self.openToast('User not added. ' + response.data.errors.password.message);
@@ -338,6 +342,7 @@ var app;
                     user.coaches = _this.user._id;
                     _this.$http.post('/api/user/create', user).then(function (__response) {
                         _this.$http.post('/api/coach/newuser/' + this.user.id + '?' + __response.data.id, user).then(function (client) {
+                          console.log("Here fb");
                           self.user.clients.push(response.data);
                         });
                     });
@@ -469,6 +474,7 @@ var app;
             MainController.prototype.editReminder = function ($event, reminder) {
                 var _this = this;
                 console.log('main controller edit reminder');
+                console.log(reminder);
                 var self = this;
                 var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
                 this.$mdDialog.show({
@@ -483,14 +489,15 @@ var app;
                         selected: reminder
                     }
                 }).then(function (reminder) {
-                    console.log('updating reminder id: ' + reminder._id);
+                    console.log(reminder.responses);
                     console.log(userSelected);
+
                     // Post request, and push onto users local list of reminders
                     // this.$http.post('uri').then((response) => response.data)
                     // after promise is succesful add to
                     // reminder.assigne.reminders.push()
                     _this.$http.post('/api/reminder/update/' + reminder._id, reminder).then(function successCallback(reminder) {
-                        console.log('returned junk: ' + JSON.stringify(reminder.data._id));
+                        console.log('returned junk: ' + JSON.stringify(reminder.data));
                         //  self.selected.reminders.push(response.data);
                         if (self.updateReminder(reminder.data)) {
                             /*if (reminder.data.parent.id) {
@@ -545,7 +552,6 @@ var app;
                         userSelected.reminders[i] = reminder;
                         console.log(userSelected.reminders);
                         console.log('Look ma, an update!');
-                        scope.$apply();
                         return true;
                     }
                 }

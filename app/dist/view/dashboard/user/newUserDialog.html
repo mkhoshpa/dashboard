@@ -32,6 +32,15 @@
 
 
       </div>
+      <div layout-padding>
+        <md-input-container class = "md-block" flex-gt-sm>
+          <label>Email</label>
+          <input ng-model="ctrl.email" name="email" required>
+          <div ng-messages="userForm.email.$error">
+            <div ng-message="required">This is required.</div>
+          </div>
+        </md-input-container>
+      </div>
       <div layout = "row" layout-padding>
 
         <md-input-container class="md-block" flex-gt-sm>

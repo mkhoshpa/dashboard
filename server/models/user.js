@@ -128,7 +128,8 @@ var UserSchema = new Schema({
 		default: Date.now
 	},
   phoneNumber: String,
-  facebookId: Number
+  facebookId: Number,
+  pandoraSessionId: String
 });
 
 // Set the 'fullname' virtual property

@@ -215,6 +215,13 @@ var app;
                   _this.selectedSurvey.hour = _this.selectedSurvey.timeOfDay.getHours();
                   _this.selectedSurvey.minute = _this.selectedSurvey.timeOfDay.getMinutes();
                   _this.selectedSurvey.repeat = surveyInfo.repeat;
+                  _this.selectedSurvey.selectedUsers = [];
+                  for (var i = 0; i < _this.selectSurveyUser.length; i++) {
+                    _this.selectedSurvey.selectedUsers.push(_this.selectSurveyUser[i]._id);
+                  }
+                  console.log();
+                  console.log(_this.selectedSurvey.selectedUsers);
+                  console.log();
                   _this.$http.post('/api/surveyTemplate/schedule', _this.selectedSurvey).then(function (response) {
                     console.log(response.data);
                   });

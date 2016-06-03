@@ -10,7 +10,7 @@ var surveyTemplateSchema =  new Schema({
   title: {type: String, required: true},
   questions: Object,
   author: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
-  selectedDates: [String],
+  selectedUsers: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
   daysOfTheWeek: {
     monday: {type: Boolean},
     tuesday: {type: Boolean},

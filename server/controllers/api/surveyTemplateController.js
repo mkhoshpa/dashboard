@@ -75,7 +75,7 @@ exports.create = function(req, res) {
         var total = Object.keys(surveyTemplate.questions).length - 1;
         var count = 0;
         var xmlString = '';
-        for (var key in surveyTemplate.questions) {
+        for (var key = 0; key < surveyTemplate.questions.length; key++)/*in surveyTemplate.questions)*/ {
           (function (question) {
             // access question by doing surveyTemplate.questions[key].question
             // first question has already been asked, no need to ask twice

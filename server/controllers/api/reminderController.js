@@ -409,50 +409,65 @@ exports.receiveResponse = function (req, res) {
                       console.log()
                       var count = 0;
                       for (var key = 0; key < survey.questions.length; key++) {
-                      //for (var key in survey.questions) {
-                        //for (var i = 0; i < Object.keys(survey.questions).length; i++) {
-                        console.log('Getting response with id: ' + survey._id + count);
-                        bot.talk({extra: true, trace: true, sessionid: user.pandoraSessionId, client_name: user._id, input: 'XGET ' + survey._id + user._id + count}, function (err, response) {
-                          if (!err) {
-                            bot.talk({extra: true, trace: true, sessionid: user.pandoraSessionId, client_name: user._id, input: 'XDENORM ' + response.responses.join(' ')}, function (err, response) {
+                        (function (question) {
+                          console.log('Getting response with id: ' + survey._id + count);
+                            bot.talk({extra: true, trace: true, sessionid: user.pandoraSessionId, client_name: user._id, input: 'XGET ' + survey._id + user._id + count}, function (err, response) {
                               if (!err) {
-                                // Store user's response inside survey.
-                                console.log();
-                                console.log(response.responses.join(' '));
-                                survey.questions[key - 1].responses.push({
-                                  from: user._id,
-                                  response: response.responses.join(' '),
-                                  time: Date.now()
-                                });
-                                console.log(survey.questions);
-                                var __survey = survey;
-                                // add the user's responses to the survey object + update survey
-                                SurveyTemplate.findById(survey._id, function (err, _survey) {
-                                  console.log(_survey);
-                                  var survey = _survey.toObject();
-                                  survey = __survey;
-                                  _survey.set(survey);
-                                  _survey.save(function (err, _survey) {
-                                    if (!err) {
-                                      console.log();
-                                      console.log('Survey saved.');
-                                      console.log(JSON.stringify(_survey));
-                                      console.log();
-                                    } else {
-                                      console.log(err);
-                                    }
+                                bot.talk({extra: true, trace: true, sessionid: user.pandoraSessionId, client_name: user._id, input: 'XDENORM ' + response.responses.join(' ')}, function (err, response) {
+                                  if (!err) {
+                                    // Store user's response inside survey.
+                                    console.log();
+                                    console.log(response.responses.join(' '));
+                                    question.responses.push({
+                                    from: user._id,
+                                    response: response.responses.join(' '),
+                                    time: Date.now()
                                   });
-                                });
-                                console.log();
-                              } else {
-                                console.log(err);
-                              }
-                            });
-                          } else {
-                            console.log(err);
-                          }
-                        });
-                        count++;
+                                  console.log(survey.questions);
+                                  var __survey = survey;
+
+                                  SurveyTemplate.findByIdAndUpdate(
+                                    survey._id,
+                                    survey,
+                                    {new: true},
+                                    function (err, survey) {
+                                      if (!err) {
+                                        console.log('Survey updated');
+                                        console.log(survey);
+                                      } else {
+                                        console.log('Error:');
+                                        console.log(err);
+                                      }
+                                  });
+
+                                  // add the user's responses to the survey object + update survey
+                                  /*SurveyTemplate.findById(survey._id, function (err, _survey) {
+                                    console.log(_survey);
+                                    var survey = _survey.toObject();
+                                    survey = __survey;
+                                    _survey.set(survey);
+                                    _survey.save(function (err, _survey) {
+                                      if (!err) {
+                                        console.log();
+                                        console.log('Survey saved.');
+                                        console.log(JSON.stringify(_survey));
+                                        console.log();
+                                      } else {
+                                        console.log(err);
+                                      }
+                                    });
+                                  });*/
+                                  console.log();
+                                } else {
+                                  console.log(err);
+                                }
+                              });
+                            } else {
+                              console.log(err);
+                            }
+                          });
+                          count++;
+                        }(survey.questions[key]));
                       }
                       console.log();
                       // trim the survey id from the response and send response to user

@@ -3,7 +3,6 @@
 var mongoose = require('mongoose');
 var User = require('../../models/user.js');
 var request = require('request');
-var cheerio = require('cheerio');
 var async = require('async');
 var crypto = require('crypto');
 var smtpTransport = require('nodemailer-smtp-transport');

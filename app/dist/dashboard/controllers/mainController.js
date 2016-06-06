@@ -73,9 +73,16 @@ var app;
                 var self = this;
                 console.log("hey");
                 console.log(this.questions);
+                for (var key in this.questions) {
+                  this.questions[key].responses = [];
+                }
+                var questions = [];
+                for (var key in this.questions) {
+                  questions.push(this.questions[key]);
+                }
                 var surveyTemplate = {
                   title: this.surveyTitle,
-                  questions : this.questions,
+                  questions : questions,
                   author : this.user._id
                 };
                 console.log(surveyTemplate);
@@ -170,10 +177,58 @@ var app;
                     locals: {
                       selected: null
                     }
-                }).then(function (survey) {
+                }).then(function (surveyInfo) {
                   console.log("this is where the survey would be sent to a single person for the time being");
-
-
+                  console.log();
+                  console.log('The times to receive this survey is: ');
+                  console.log(surveyInfo);
+                  console.log('this.selectedSurvey is: ');
+                  console.log(_this.selectedSurvey);
+                  _this.selectedSurvey.daysOfTheWeek = {};
+                  _this.selectedSurvey.selectedDays = surveyInfo.selectedDays;
+                  _this.selectedSurvey.days = [];
+                  if (_this._.contains(_this.selectedSurvey.selectedDays, 'Sun')) {
+                    _this.selectedSurvey.daysOfTheWeek.sunday = true;
+                    _this.selectedSurvey.days.push(0);
+                  }
+                  if (_this._.contains(_this.selectedSurvey.selectedDays, 'Mon')) {
+                    _this.selectedSurvey.daysOfTheWeek.monday = true;
+                    _this.selectedSurvey.days.push(1);
+                  }
+                  if (_this._.contains(_this.selectedSurvey.selectedDays, 'Tues')) {
+                    _this.selectedSurvey.daysOfTheWeek.tuesday = true;
+                    _this.selectedSurvey.days.push(2);
+                  }
+                  if (_this._.contains(_this.selectedSurvey.selectedDays, 'Wed')) {
+                    _this.selectedSurvey.daysOfTheWeek.wednesday = true;
+                    _this.selectedSurvey.days.push(3);
+                  }
+                  if (_this._.contains(_this.selectedSurvey.selectedDays, 'Thurs')) {
+                    _this.selectedSurvey.daysOfTheWeek.thursday = true;
+                    _this.selectedSurvey.days.push(4);
+                  }
+                  if (_this._.contains(_this.selectedSurvey.selectedDays, 'Fri')) {
+                    _this.selectedSurvey.daysOfTheWeek.friday = true;
+                    _this.selectedSurvey.days.push(5);
+                  }
+                  if (_this._.contains(_this.selectedSurvey.selectedDays, 'Sat')) {
+                    _this.selectedSurvey.daysOfTheWeek.saturday = true;
+                    _this.selectedSurvey.days.push(6);
+                  }
+                  _this.selectedSurvey.timeOfDay = surveyInfo.time;
+                  _this.selectedSurvey.hour = _this.selectedSurvey.timeOfDay.getHours();
+                  _this.selectedSurvey.minute = _this.selectedSurvey.timeOfDay.getMinutes();
+                  _this.selectedSurvey.repeat = surveyInfo.repeat;
+                  _this.selectedSurvey.selectedUsers = [];
+                  for (var i = 0; i < _this.selectSurveyUser.length; i++) {
+                    _this.selectedSurvey.selectedUsers.push(_this.selectSurveyUser[i]._id);
+                  }
+                  console.log();
+                  console.log(_this.selectedSurvey.selectedUsers);
+                  console.log();
+                  _this.$http.post('/api/surveyTemplate/schedule', _this.selectedSurvey).then(function (response) {
+                    console.log(response.data);
+                  });
                 });
 
 
@@ -186,7 +241,7 @@ var app;
                 console.log("Here");
                 console.log(this.selectedSurvey);
                 var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
-                this.$mdDialog.show({
+                /*this.$mdDialog.show({
                     templateUrl: './dist/view/dashboard/surveys/previewModal.html',
                     parent: angular.element(document.body),
                     targetEvent: $event,
@@ -197,6 +252,10 @@ var app;
                     locals: {
                       selected: null
                     }
+                });*/
+                this.$http.post('/api/surveyTemplate/preview', this.selectedSurvey).then(function (response) {
+                  console.log('Previewing survey');
+                  console.log(response.data);
                 });
                 console.log("here2");
 
@@ -797,7 +856,7 @@ var app;
                     // this.$http.post('uri').then((response) => response.data)
                     // after promise is succesful add to
                     // reminder.assigne.reminders.push()
-                    console.log(survey);
+HI Shane!                    console.log(survey);
                     _this.$http.post('/api/survey', survey).then(function successCallback(survey) {
                         self.selected.surveys.push(survey.data);
                         console.log(survey.data);

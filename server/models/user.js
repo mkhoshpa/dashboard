@@ -130,6 +130,9 @@ var UserSchema = new Schema({
   phoneNumber: String,
   facebookId: Number,
   email: String
+  pandoraSessionId: String,
+  // This is a hack for Pandorabots
+  pandoraBotSaid: String
 });
 
 // Set the 'fullname' virtual property

@@ -74,9 +74,14 @@ var app;
 
                 }
                 */
+                var surveyInfo = {
+                  selectedDays: this.selectedDays,
+                  time: this.time,
+                  repeat: this.repeat
+                };
+                console.log(JSON.stringify(surveyInfo));
 
-
-                this.$mdDialog.hide(survey);
+                this.$mdDialog.hide(surveyInfo);
             };
 
 

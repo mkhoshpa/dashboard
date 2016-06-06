@@ -59,8 +59,18 @@ exports.create = function(req, res) {
         .ele('template', 'Hi! Here\'s a survey your coach wanted me to send you.\n' + surveyTemplate.questions[0].question);
       // Find out how the bot normalizes the first question
       var normalizedQuestion;
-      bot.talk({input: 'XNORM ' + surveyTemplate.questions[0].question}, function (err, res) {
+      bot.talk({extra: true, trace: true, input: 'XNORM ' + surveyTemplate.questions[0].question}, function (err, res) {
         normalizedQuestion = res.responses.join(' ');
+
+        User.findByIdAndUpdate(
+          user._id,
+          {pandoraBotSaid: normalizedQuestion},
+          {new: true},
+          function(err, user) {
+            console.log('User updated');
+            console.log(user);
+        });
+
         //TODO: fix if IE support becomes an issue
         var total = Object.keys(surveyTemplate.questions).length - 1;
         var count = 0;
@@ -71,12 +81,12 @@ exports.create = function(req, res) {
             // first question has already been asked, no need to ask twice
             if (key != 0) {
               // find out how the bot normalizes the question
-              bot.talk({input: 'XNORM ' + question}, function (err, res) {
+              bot.talk({extra: true, trace: true, input: 'XNORM ' + question}, function (err, res) {
                 console.log('Adding question');
                 console.log(res);
                 if (!err) {
                   xml.ele('category')
-                    .ele('pattern', '* ' + user._id)
+                    .ele('pattern', user._id + ' *')
                     .up()
                     .ele('that', normalizedQuestion)
                     .up()
@@ -94,7 +104,7 @@ exports.create = function(req, res) {
                   console.log('Should work');
                   (function() {
                     xml.ele('category')
-                      .ele('pattern', '* ' + user._id)
+                      .ele('pattern', user._id + ' *')
                       .up()
                       .ele('that', normalizedQuestion)
                       .up()
@@ -265,7 +275,7 @@ exports.sendSurveys = function () {
                     console.log();
                     console.log();
                     // Initiate conversation with bot
-                    bot.talk({client_name: client._id, input: 'XINIT ' + survey._id + client._id}, function (err, response) {
+                    bot.talk({extra: true, trace: true, client_name: client._id, input: 'XINIT ' + survey._id + client._id}, function (err, response) {
                     if (!err) {
                       console.log(response);
                       client.pandoraSessionId = response.sessionid;

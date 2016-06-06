@@ -357,9 +357,19 @@ exports.receiveResponse = function (req, res) {
             console.log();
             console.log(req.body);
             console.log();
-            bot.talk({sessionid: user.pandoraSessionId, client_name: user._id, input: req.body.Body + ' ' + user._id}, function (err, response) {
+            bot.talk({that: user.pandoraBotSaid, extra: true, trace: true, sessionid: user.pandoraSessionId, client_name: user._id, input: user._id + ' ' + req.body.Body}, function (err, response) {
               if (!err) {
                 console.log('The bot responded: ' + JSON.stringify(response));
+
+                User.findByIdAndUpdate(
+                  user._id,
+                  {pandoraBotSaid: response.responses.join(' ')},
+                  {new: true},
+                  function (err, user) {
+                    console.log('User updated');
+                    console.log(user);
+                });
+
                 User.findOne({phoneNumber: req.body.From}, function (err, user) {
                   console.log();
                   console.log('The user is:');
@@ -386,20 +396,31 @@ exports.receiveResponse = function (req, res) {
                     console.log('Response included survey id: ' + response.responses.join(' ').indexOf(survey._id));
                     if (containsId) {
                       console.log('Survey has ended, retrieving results...');
+
+                      User.findByIdAndUpdate(
+                        user._id,
+                        {pandoraBotSaid: ''},
+                        {new: true},
+                        function (err, user) {
+                          console.log('User updated');
+                          console.log(user);
+                      });
+
                       // get the user's responses from the bot
                       console.log()
                       var count = 0;
-                      for (var key in survey.questions) {
+                      for (var key = 0; key < survey.questions.length; key++) {
+                      //for (var key in survey.questions) {
                         //for (var i = 0; i < Object.keys(survey.questions).length; i++) {
                         console.log('Getting response with id: ' + survey._id + count);
-                        bot.talk({sessionid: user.pandoraSessionId, client_name: user._id, input: 'XGET ' + survey._id + user._id + count}, function (err, response) {
+                        bot.talk({extra: true, trace: true, sessionid: user.pandoraSessionId, client_name: user._id, input: 'XGET ' + survey._id + user._id + count}, function (err, response) {
                           if (!err) {
-                            bot.talk({sessionid: user.pandoraSessionId, client_name: user._id, input: 'XDENORM ' + response.responses.join(' ')}, function (err, response) {
+                            bot.talk({extra: true, trace: true, sessionid: user.pandoraSessionId, client_name: user._id, input: 'XDENORM ' + response.responses.join(' ')}, function (err, response) {
                               if (!err) {
                                 // Store user's response inside survey.
                                 console.log();
                                 console.log(response.responses.join(' '));
-                                survey.questions[key].responses.push({
+                                survey.questions[key - 1].responses.push({
                                   from: user._id,
                                   response: response.responses.join(' '),
                                   time: Date.now()
@@ -483,9 +504,19 @@ exports.receiveResponse = function (req, res) {
       console.log();
       console.log(req.body);
       console.log();
-      bot.talk({sessionid: user.pandoraSessionId, client_name: user._id, input: req.body.Body + ' ' + user._id}, function (err, response) {
+      bot.talk({that: user.pandoraBotSaid, extra: true, trace: true, sessionid: user.pandoraSessionId, client_name: user._id, input: user._id + ' ' + req.body.Body}, function (err, response) {
         if (!err) {
           console.log('The bot responded: ' + JSON.stringify(response));
+
+          User.findByIdAndUpdate(
+            user._id,
+            {pandoraBotSaid: response.responses.join(' ')},
+            {new: true},
+            function(err, user) {
+              console.log('User updated');
+              console.log(user);
+          });
+
           User.findOne({phoneNumber: req.body.From}, function (err, user) {
             console.log();
             console.log('The user is:');
@@ -512,15 +543,31 @@ exports.receiveResponse = function (req, res) {
               console.log('Response included survey id: ' + response.responses.join(' ').indexOf(survey._id));
               if (containsId) {
                 console.log('Survey has ended, retrieving results...');
+
+                User.findByIdAndUpdate(
+                  user._id,
+                  {pandoraBotSaid: ''},
+                  {new: true},
+                  function (err, user) {
+                    console.log('User updated');
+                    console.log(user);
+                });
+
                 // get the user's responses from the bot
                 console.log()
                 var count = 0;
-                for (var key in survey.questions) {
-                  (function (survey) {
+                console.log('THE LENGTH IS: ' + survey.questions.length);
+                console.log();
+                for (var key = 0; key < survey.questions.length; key++) {
+                //for (var key in survey.questions) {
+                  (function (question) {
+                    console.log();
+                    console.log('THE QUESTION IS ' + JSON.stringify(question));
+                    console.log();
                     console.log('Getting response with id: ' + survey._id + count);
-                    bot.talk({sessionid: user.pandoraSessionId, client_name: user._id, input: 'XGET ' + survey._id + user._id + count}, function (err, response) {
+                    bot.talk({extra: true, trace: true, sessionid: user.pandoraSessionId, client_name: user._id, input: 'XGET ' + survey._id + user._id + count}, function (err, response) {
                       if (!err) {
-                        bot.talk({sessionid: user.pandoraSessionId, client_name: user._id, input: 'XDENORM ' + response.responses.join(' ')}, function (err, response) {
+                        bot.talk({extra: true, trace: true, sessionid: user.pandoraSessionId, client_name: user._id, input: 'XDENORM ' + response.responses.join(' ')}, function (err, response) {
                           if (!err) {
                             // Store user's response inside survey.
                             console.log();
@@ -529,15 +576,35 @@ exports.receiveResponse = function (req, res) {
                             console.log('THE KEY IS: ' + key);
                             console.log('THE COUNTER IS: ' + count);
                             console.log();
-                            survey.questions[key].responses.push({
+                            console.log(survey.questions);
+                            console.log(key);
+                            console.log('The length is: ' + survey.questions.length);
+                            console.log();
+                            console.log('THE QUESTION IS: ' + JSON.stringify(question));
+                            console.log();
+                            //console.log(survey.questions[key]);
+                            question.responses.push({
                               from: user._id,
                               response: response.responses.join(' '),
                               time: Date.now()
                             });
                             console.log(survey.questions);
                             var __survey = survey;
+                            SurveyTemplate.findByIdAndUpdate(
+                              survey._id,
+                              survey,
+                              {new: true},
+                              function (err, survey) {
+                                if (!err) {
+                                  console.log('Survey updated');
+                                  console.log(survey);
+                                } else {
+                                  console.log('Error:');
+                                  console.log(err);
+                                }
+                            });
                             // add the user's responses to the survey object + update survey
-                            SurveyTemplate.findById(survey._id, function (err, _survey) {
+                            /*SurveyTemplate.findById(survey._id, function (err, _survey) {
                               console.log(_survey);
                               var survey = _survey.toObject();
                               survey = __survey;
@@ -549,10 +616,15 @@ exports.receiveResponse = function (req, res) {
                                   console.log(JSON.stringify(_survey));
                                   console.log();
                                 } else {
+                                  console.log();
+                                  console.log('An error occurred:');
                                   console.log(err);
+                                  console.log();
+                                  console.log('Attempted to save survey: ' + JSON.stringify(survey));
+                                  console.log();
                                 }
                               });
-                            });
+                            });*/
                             console.log();
                           } else {
                             console.log(err);
@@ -563,7 +635,7 @@ exports.receiveResponse = function (req, res) {
                       }
                     });
                     count++;
-                  }(survey));
+                  }(survey.questions[key]));
                 }
                 console.log();
                 // trim the survey id from the response and send response to user

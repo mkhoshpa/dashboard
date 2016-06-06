@@ -76,9 +76,13 @@ var app;
                 for (var key in this.questions) {
                   this.questions[key].responses = [];
                 }
+                var questions = [];
+                for (var key in this.questions) {
+                  questions.push(this.questions[key]);
+                }
                 var surveyTemplate = {
                   title: this.surveyTitle,
-                  questions : this.questions,
+                  questions : questions,
                   author : this.user._id
                 };
                 console.log(surveyTemplate);

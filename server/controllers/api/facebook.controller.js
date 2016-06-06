@@ -1,6 +1,5 @@
 'use strict'
 var request = require('request');
-var cheerio = require('cheerio');
 
 exports.webhook = function(req, res) {
   console.log(req.query);

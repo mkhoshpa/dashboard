@@ -19,7 +19,7 @@ var app;
                 this.selected = null;
                 this.newNote = new dashboard.Note('', null);
                 this.newReminder = new dashboard.Reminder('', null);
-
+                
 
                 //this.socket = io.connect('http://localhost:3001');
 
@@ -918,6 +918,14 @@ var app;
                     .position('top right')
                     .hideDelay(5000));
             };
+
+
+
+            MainController.prototype.tester = function () {
+              console.log("hey im here");
+              this.$mdSidenav('left').toggle();
+            };
+
 
 
 

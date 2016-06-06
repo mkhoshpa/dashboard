@@ -19,7 +19,7 @@ var app;
                 this.selected = null;
                 this.newNote = new dashboard.Note('', null);
                 this.newReminder = new dashboard.Reminder('', null);
-
+                
 
                 //this.socket = io.connect('http://localhost:3001');
 
@@ -977,9 +977,25 @@ HI Shane!                    console.log(survey);
                     .position('top right')
                     .hideDelay(5000));
             };
+
+
+
+            MainController.prototype.tester = function () {
+              console.log("hey im here");
+              this.$mdSidenav('left').toggle();
+            };
+
+
+
+
             MainController.prototype.toggleList = function () {
+                console.log("hey im here");
                 this.$mdSidenav('left').toggle();
             };
+
+
+
+
             MainController.prototype.selectUser = function (user) {
                 this.selected = user;
                 this.userService.selectedUser = this.selected;

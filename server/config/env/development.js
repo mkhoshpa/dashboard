@@ -3,7 +3,8 @@
 
 // Set the 'development' environment configuration object
 module.exports = {
-	db: 'mongodb://thom:letmein1@ds011251.mlab.com:11251/fitpath',
+	//db: 'mongodb://thom:letmein1@ds011251.mlab.com:11251/fitpath',
+  db: 'mongodb://shane:letmein1@localhost:27017/development',
 	sessionSecret: 'developmentSessionSecret',
   phoneNumbers: {
     messages: '+12898062194',
@@ -12,7 +13,7 @@ module.exports = {
 	facebook: {
 		clientID: '237058900007908',
 		clientSecret: '756eb97b58fb72f845277f0e2f51fda2',
-		callbackURL: 'http://localhost:8081/oauth/facebook/callback'
+		callbackURL: 'http://e624bd40.ngrok.io/oauth/facebook/callback'
 	},
 	twitter: {
 		clientID: 'Twitter Application ID',

@@ -45,6 +45,7 @@ exports.create = function(req, res) {
   console.log(req.body);
   var user = new User(req.body);
   user.provider = 'local';
+  user.fullName = user.firstName + ' ' + user.lastName;
 
   user.save(function(err) {
     if (err) {

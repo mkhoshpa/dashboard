@@ -9,6 +9,18 @@ var sass = require('gulp-sass');
 var mongoose = require('mongoose');
 var db = require('./server/config/env/development.js').db;
 var User = require('./server/models/user.js');
+var Pandorabot = require('pb-node');
+var _ = require('underscore');
+var SurveyTemplate = require('./server/models/surveyTemplate.js');
+
+var botOptions = {
+  url: 'https://aiaas.pandorabots.com',
+  app_id: '1409612709792',
+  user_key: '83a7e3b5fa60385bd676a05cb4951e98',
+  botname: 'willow'
+};
+
+var bot = new Pandorabot(botOptions);
 
 var paths = {
   angular: ['app/dist/**/*.js'],
@@ -59,7 +71,52 @@ gulp.task('watch', function() {
 //TODO: allow cleaning any model
 gulp.task('clean', function() {
   mongoose.connect(db);
-  var conn = mongoose.connection;
+  bot.get(function (err, res) {
+    if (!err) {
+      console.log(res);
+      _.each(res.files, function (file) {
+        if (file.name != 'helloworld.aiml') {
+          bot.remove(file.name, function (err, res) {
+            if (!err) {
+              console.log(res);
+              bot.compile(function (err, res) {
+                if (!err) {
+                  console.log('Success');
+                  console.log(res);
+                }
+              });
+            }
+          });
+        }
+      });
+    }
+  });
+  /*SurveyTemplate.find({}, function (err, surveys) {
+    _.each(surveys, function (survey) {
+      User.find({}, function (err, users) {
+        _.each(users, function (user) {
+          bot.remove('botfiles/' + survey._id + user._id + '.aiml', function (err, res) {
+            if (!err) {
+              console.log(res);
+              bot.compile(function (err, res) {
+                if (!err) {
+                  console.log('Bot file removed');
+                  console.log(res);
+                } else {
+                  console.log('Error compiling bot');
+                  console.log(err);
+                }
+              });
+            } else {
+              console.log('Error removing file');
+              console.log(err);
+            }
+          });
+        });
+      });
+    })
+  })
+  /*var conn = mongoose.connection;
   conn.on('error', console.error.bind(console, 'connection error:'));
   conn.once('open', function() {
     conn.collection('reminders').drop(function (err) {
@@ -105,9 +162,10 @@ gulp.task('clean', function() {
           console.log('DB is now broken, good luck.');
         }
       })
-    });*/
-  });
+    });/
+  });*/
 });
+
 gulp.task("heroku:production", function(){
     console.log('hello'); // the task does not need to do anything.
 });

@@ -129,7 +129,7 @@ var UserSchema = new Schema({
 	},
   phoneNumber: String,
   facebookId: Number,
-  email: String
+  email: String,
   pandoraSessionId: String,
   // This is a hack for Pandorabots
   pandoraBotSaid: String

@@ -127,7 +127,7 @@ exports.create = function(req, res) {
                           console.log(res);
                           bot.compile(function (err, res) {
                             if (!err) {
-                              console.log('Bot ready to use.')
+                              console.log('Bot ready to use.');
                               console.log(res);
                             }
                           });
@@ -244,6 +244,34 @@ exports.sendSurveys = function () {
         console.log(surveys);
         for (var i = 0; i < surveys.length; i++) {
           var survey = surveys[i];
+
+          if (!survey.repeat) {
+            SurveyTemplate.findById(
+              survey._id,
+              {
+                daysOfTheWeek: {
+                  monday: false,
+                  tuesday: false,
+                  wednesday: false,
+                  thursday: false,
+                  friday: false,
+                  saturday: false,
+                  sunday: false
+                },
+                days: []
+              },
+              {new: true},
+              function (err, survey) {
+                if (!err) {
+                  console.log('Survey updated');
+                  console.log(survey);
+                } else {
+                  console.log('Error updating survey');
+                  console.log(err);
+                }
+            });
+          }
+
           // Find author's clients
           User.findById(survey.author, function (err, coach) {
             console.log('The coach\'s clients are:');

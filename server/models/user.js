@@ -73,6 +73,20 @@ var UserSchema = new Schema({
     enum: ['coach', 'user', 'admin'],
     default: 'coach'
   },
+  //look at this an actual comment :) was going to override the user role but I think I'll make a new field so I don't break anything.
+  pipelineStage:{
+    type: String,
+    enum: ['lead', 'prospect', 'trial', 'active-client', 'previous-client', 'archived', 'NA', 'test' ],
+    /** lead is a potential coach or client that we have contact information for but haven't spoken to yet
+      propect is someone that we have established contact with
+      trial is someone that is being offered a free service for a fixed period of timezone
+      active-client is a person that is currently paying for training
+      previous-client is someone that has paid for training ON fitpath
+      acrhice is someone that we have moved out of the pipeline for some resetPasswordToken
+      NA means they aren't part of a sales pipeline AKA a coach or a admin - or possibly a free "user"
+      **/
+      default: 'test'
+  },
   status: {
     value: {
       type: Number,
@@ -162,7 +176,12 @@ UserSchema.pre('save', function(next) {
 	next();
 });
 
+UserSchema.methods.getStatus = function(){
+  console.log("is this thing getting called");
+  return status.value;
 
+
+}
 
 // Create an instance method for hashing a password
 UserSchema.methods.hashPassword = function(password) {

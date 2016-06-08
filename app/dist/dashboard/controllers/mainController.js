@@ -19,7 +19,7 @@ var app;
                 this.selected = null;
                 this.newNote = new dashboard.Note('', null);
                 this.newReminder = new dashboard.Reminder('', null);
-                
+
 
                 //this.socket = io.connect('http://localhost:3001');
 
@@ -304,7 +304,31 @@ var app;
 
               });
               self.openToast('Phone Number Updated');
-            }
+            };
+            MainController.prototype.addPipelineStage = function ($event) {
+
+              var _this = this;
+              var self = this;
+              var pipelineStage = {
+                body: this.selected.pipelineStage,
+                author: this.user.id,
+                assignee: this.selected.id
+              }
+
+
+              console.log(this.user);
+              console.log(pipelineStage);
+              _this.$http.post('/api/pipelineStage/create/' + pipelineStage.assignee, pipelineStage).then(function successCallback(response) {
+              console.log(response.data);
+              console.log(this.selected);
+
+
+              });
+
+              self.openToast("Pipeline Stage Updated");
+
+            };
+
 
             MainController.prototype.addUser = function ($event) {
                 var _this = this;

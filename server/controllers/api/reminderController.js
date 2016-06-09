@@ -44,8 +44,8 @@ var Promise = require('bluebird');
 var request = require('request');
 var config = require('../../config/env/development.js');
 
-http.listen(3852, function () {
-  console.log('listening for websocket connections on *:3852');
+http.listen(3732, function () {
+  console.log('listening for websocket connections on *:3732');
 });
 
 // a list of currently connected sockets

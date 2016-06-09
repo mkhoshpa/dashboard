@@ -22,6 +22,9 @@ module.exports = function(app) {
 						return next(err);
 					}
 	    		if (!user) {
+	    					if (info) {
+	    						console.log(info);
+	    					}
 						req.flash('status', 'Information Entered Incorrect');
 						return res.redirect('/signin');
 					}

@@ -12,13 +12,13 @@ var twilio = require('twilio')('ACf83693e222a7ade08080159c4871c9e3', '20b36bd42a
 var twiml = require('twilio');
 var app = require('express')();
 var http = require('http').Server(app);
-var io = require('socket.io')(3797);
+var io = require('socket.io')(4317);
 var bodyParser = require('body-parser');
 //var Bot = require('messenger-bot');
 var config = require('../../config/env/development.js');
 
 //http.listen(3853, function () {
-  console.log('listening for websocket connections on *:3797');
+  console.log('listening for websocket connections on *:4317');
 //});
 
 // a list of currently connected sockets

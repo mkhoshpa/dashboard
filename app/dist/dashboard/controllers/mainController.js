@@ -30,8 +30,19 @@ var app;
                 this.questionAmount = [0];
                 this.selectSurveyUser = [];
 
+                //rostr stuff for selecting columns
 
-
+                // this.rostr.columns =
+                // [
+                //   {"headerTitle" : "image", "display": false},
+                //   "userName": false,
+                //   "pipelineStage": false,
+                //   "lastMessage": false,
+                //   "lastReminder": false,
+                //   "lastResponse": false,
+                //   "surveyTitle": false,
+                //   "surveyStatus": false
+                // ]
 
                 var self = this;
                 this.user = this.userService.get();

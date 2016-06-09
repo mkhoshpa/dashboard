@@ -75,7 +75,7 @@ gulp.task('clean', function() {
     if (!err) {
       console.log(res);
       _.each(res.files, function (file) {
-        if (file.name != 'helloworld.aiml') {
+        if (file.name != 'helloworld.aiml' && file.name != 'personality.aiml') {
           bot.remove(file.name, function (err, res) {
             if (!err) {
               console.log(res);

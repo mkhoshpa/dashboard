@@ -4,6 +4,7 @@ var app;
     var dashboard;
     (function (dashboard) {
         var userSelected;
+        var userCoach;
         var scope;
         var MainController = (function () {
             function MainController($scope, userService, $mdSidenav, $mdBottomSheet, $mdToast, $mdDialog, $mdMedia, $http) {
@@ -34,7 +35,7 @@ var app;
 
                 var self = this;
                 this.user = this.userService.get();
-
+                userCoach = this.user;
                 if (this.user.role == "user") {
                     self.selected = this.user;
                 }
@@ -626,6 +627,18 @@ var app;
                 });
             };
 
+            MainController.prototype.updateSurveyResponses = function (survey) {
+              console.log('Inside updateSurveyResponses');
+              console.log(userCoach);
+              for (var i = 0; i < userCoach.surveyTemplates.length; i++) {
+                if (survey._id == userCoach.surveyTemplates[i]._id) {
+                  userCoach.surveyTemplates[i] = survey;
+                }
+              }
+              scope.$apply();
+              console.log(survey);
+            };
+
             MainController.prototype.updateReminder = function (reminder) {
                 console.log('Inside updateReminder');
                 console.log(userSelected.reminders);
@@ -748,12 +761,17 @@ var app;
               });*/
             };
 
+            // socket.io code ahead
             responseSocket.on('response', function (response) {
-              console.log('Server sent a response');
+              console.log('Server sent a reminder response');
               MainController.prototype.updateReminder(response);
             });
 
-            // socket.io code ahead
+            surveySocket.on('survey', function (response) {
+              console.log('Server sent a survey response');
+              MainController.prototype.updateSurveyResponses(response);
+            });
+
             messageSocket.on('message', function (message) {
               console.log('Server sent a message');
               MainController.prototype.receiveMessage(message);

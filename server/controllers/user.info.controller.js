@@ -76,7 +76,7 @@ exports.create = function(req, res) {
   var user = new User(req.body);
   user.provider = 'local';
   user.fullName = user.firstName + ' ' + user.lastName;
-
+  user.pandoraBotSaid = '';
   user.save(function(err) {
     if (err) {
       console.log(err);

@@ -10,10 +10,16 @@
     var messageSocket = io.connect('http://localhost:3854');
   </script>
 
-  <!-- For sending responses to clients -->
+  <!-- For sending reminder responses to clients -->
   <script src="http://localhost:3852/socket.io/socket.io.js"></script>
   <script>
-    var responseSocket = io.connect('http://localhost:3852')
+    var responseSocket = io.connect('http://localhost:3852');
+  </script>
+
+  <!-- For sending survey responses to clients -->
+  <script src="http://localhost:3856/socket.io/socket.io.js"></script>
+  <script>
+    var surveySocket = io.connect('http://localhost:3856');
   </script>
 
   <!-- Bower / Front End Components -->

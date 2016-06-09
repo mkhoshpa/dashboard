@@ -37,7 +37,8 @@ var reminderSchema = new Schema({
   responses : [
     {
       response: {type: String},
-      createdBy: {type: mongoose.Schema.Types.ObjectId, ref:'User'}
+      createdBy: {type: mongoose.Schema.Types.ObjectId, ref:'User'},
+      createdAt: {type: Date, default: Date.now}
     }
   ],
    // Who the reminder is coming from

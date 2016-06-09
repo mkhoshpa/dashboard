@@ -51,6 +51,8 @@ exports.create = function(req, res) {
       console.log();
       console.log('USERUSERUSERUSER');
       console.log(user);
+      console.log('Survey template is: ');
+      console.log(JSON.stringify(surveyTemplate));
       console.log();
       console.log();
       xml.ele('category')
@@ -76,14 +78,24 @@ exports.create = function(req, res) {
         var count = 0;
         var xmlString = '';
         for (var key = 0; key < surveyTemplate.questions.length; key++)/*in surveyTemplate.questions)*/ {
-          (function (question) {
+          (function (question, key) {
+            console.log();
+            console.log();
+            console.log(question);
+            console.log();
+            console.log();
             // access question by doing surveyTemplate.questions[key].question
             // first question has already been asked, no need to ask twice
             if (key != 0) {
               // find out how the bot normalizes the question
               bot.talk({extra: true, trace: true, input: 'XNORM ' + question}, function (err, res) {
+                console.log();
                 console.log('Adding question');
-                console.log(res);
+                console.log(question);
+                console.log('Key is:');
+                console.log(key);
+                console.log();
+                //console.log(res);
                 if (!err) {
                   xml.ele('category')
                     .ele('pattern', user._id + ' *')
@@ -138,7 +150,7 @@ exports.create = function(req, res) {
                 }
               });
             }
-          })(surveyTemplate.questions[key].question);
+          })(surveyTemplate.questions[key].question, key);
         }
       });
       //console.log(surveyTemplate.questions);
@@ -146,7 +158,8 @@ exports.create = function(req, res) {
         if(!err) {
           User.findByIdAndUpdate(
             surveyTemplate.author,
-            {$push: {"surveyTemplates": surveyTemplate}},
+            // $addToSet works like $push but prevents duplicates
+            {$addToSet: {"surveyTemplates": surveyTemplate}},
             {safe: true, new: true},
             function(err, user) {
               if(err) {

@@ -14,11 +14,11 @@ var twiml = require('twilio');
 var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-var ioSurvey = require('socket.io')(3856);
+var ioSurvey = require('socket.io')(3798);
 var schedule = require('node-schedule');
 var Pandorabot = require('pb-node');
 
-console.log('listening for websocket connections on *:3856');
+console.log('listening for websocket connections on *:3798');
 
 var sockets = [];
 

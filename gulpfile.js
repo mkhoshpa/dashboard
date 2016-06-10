@@ -9,6 +9,19 @@ var sass = require('gulp-sass');
 var mongoose = require('mongoose');
 var db = require('./server/config/env/development.js').db;
 var User = require('./server/models/user.js');
+var Pandorabot = require('pb-node');
+var _ = require('underscore');
+var SurveyTemplate = require('./server/models/surveyTemplate.js');
+var portfinder = require('portfinder');
+
+var botOptions = {
+  url: 'https://aiaas.pandorabots.com',
+  app_id: '1409612709792',
+  user_key: '83a7e3b5fa60385bd676a05cb4951e98',
+  botname: 'willow'
+};
+
+var bot = new Pandorabot(botOptions);
 
 var paths = {
   angular: ['app/dist/**/*.js'],
@@ -17,7 +30,6 @@ var paths = {
   views: ['app/dist/views/*.html'],
   server: ['server/**/*.js']
 }
-
 
 gulp.task('sass', function () {
   return gulp.src('app/dist/triangular/**/*.scss')
@@ -42,7 +54,7 @@ gulp.task('nodemon' ,['sass'], function (cb) {
 gulp.task('browser-sync', ['nodemon'], function() {
 	browserSync.init(null, {
     injectChanges: true,
-		proxy: "http://localhost:8081",
+		proxy: "http://localhost:12557",
         files: ["app/**/*.*"],
         browser: 'google chrome',
         port: 7000,
@@ -59,6 +71,51 @@ gulp.task('watch', function() {
 //TODO: allow cleaning any model
 gulp.task('clean', function() {
   mongoose.connect(db);
+  bot.get(function (err, res) {
+    if (!err) {
+      console.log(res);
+      _.each(res.files, function (file) {
+        if (file.name != 'helloworld.aiml' && file.name != 'personality.aiml') {
+          bot.remove(file.name, function (err, res) {
+            if (!err) {
+              console.log(res);
+              bot.compile(function (err, res) {
+                if (!err) {
+                  console.log('Success');
+                  console.log(res);
+                }
+              });
+            }
+          });
+        }
+      });
+    }
+  });
+  /*SurveyTemplate.find({}, function (err, surveys) {
+    _.each(surveys, function (survey) {
+      User.find({}, function (err, users) {
+        _.each(users, function (user) {
+          bot.remove('botfiles/' + survey._id + user._id + '.aiml', function (err, res) {
+            if (!err) {
+              console.log(res);
+              bot.compile(function (err, res) {
+                if (!err) {
+                  console.log('Bot file removed');
+                  console.log(res);
+                } else {
+                  console.log('Error compiling bot');
+                  console.log(err);
+                }
+              });
+            } else {
+              console.log('Error removing file');
+              console.log(err);
+            }
+          });
+        });
+      });
+    })
+  })*/
   var conn = mongoose.connection;
   conn.on('error', console.error.bind(console, 'connection error:'));
   conn.once('open', function() {
@@ -79,7 +136,7 @@ gulp.task('clean', function() {
       });
       console.log('Reminders dropped.');
     });
-    /*conn.collection('users').drop(function(err) {
+    conn.collection('users').drop(function(err) {
       console.log('Users dropped');
       var colin = new User({
         firstName: 'Colin',
@@ -104,10 +161,20 @@ gulp.task('clean', function() {
         if (err) {
           console.log('DB is now broken, good luck.');
         }
+      });
+      conn.collection('surveytemplates').drop(function (err) {
+        if (!err) {
+          conn.collection('messages').drop(function (err) {
+            if (!err) {
+              console.log('DB successfully wiped');
+            }
+          })
+        }
       })
-    });*/
+    });
   });
 });
+
 gulp.task("heroku:production", function(){
     console.log('hello'); // the task does not need to do anything.
 });

@@ -12,6 +12,7 @@
       vm.bookmark;
       vm.user = user.current;
       vm.clients = vm.user.clients;
+      vm.possibleColumns = {};
       //vm.contents = contents(vm.clients);
       vm.selected = [];
 

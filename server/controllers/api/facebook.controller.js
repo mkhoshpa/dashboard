@@ -7,6 +7,7 @@ var async = require('async');
 var crypto = require('crypto');
 var smtpTransport = require('nodemailer-smtp-transport');
 var nodemailer = require('nodemailer');
+var config = require('../../config/env/development.js');
 
 exports.webhook = function(req, res) {
   console.log(req.query);
@@ -32,6 +33,45 @@ exports.recieve = function(req, res) {
 
 exports.send = function(req, res) {
 
+}
+
+exports.connectUser = function (req, res) {
+  res.writeHead(302, {
+    'Location': 'https://www.facebook.com/dialog/oauth?client_id=' + config.facebook.clientID + '&redirect_uri=http://107.170.21.178:12557/api/facebook/getclientprofile'
+  });
+  res.end();
+}
+
+exports.getClientProfile = function (req, res) {
+  console.log('Getting client\'s profile from Facebook');
+  console.log(req.query.code);
+  request('https://graph.facebook.com/v2.6/oauth/access_token?client_id=' + config.facebook.clientID + '&redirect_uri=http://107.170.21.178:12557/api/facebook/getclientprofile&client_secret=' + config.facebook.clientSecret + '&code=' + req.query.code, function (err, res, body) {
+    if (!err && res.statusCode == 200) {
+      console.log('Printing body');
+      console.log(body);
+      console.log();
+      console.log(JSON.parse(body).access_token);
+      request('https://graph.facebook.com/v2.6/me?access_token=' + JSON.parse(body).access_token, function (err, res, body) {
+        console.log(err);
+        //console.log(res);
+        console.log(body);
+        var _body = JSON.parse(body);
+        request('https://graph.facebook.com/' + JSON.parse(body).id + '/picture/', function (err, res, body) {
+          console.log(res.request.href);
+          User.findOneAndUpdate({fullName: _body.name}, {imgUrl: res.request.href}, {new: true}, function (err, user) {
+            if (!err) {
+              console.log('User updated successfully');
+              console.log(user);
+            } else {
+              console.log('Error');
+              console.log(err);
+            }
+          })
+        });
+      });
+    }
+  });
+  res.render('pages/thanks');
 }
 
 exports.sendEmail = function (req,res){
@@ -79,7 +119,7 @@ exports.sendEmail = function (req,res){
         text:
         'You are receiving this because your coach wants to have profile information on Fitpath.me dashboard to help him/her coach you better.\n\n' +
           'Please click on the following link, or paste this into your browser to complete the process:\n\n'+
-            'http://' + req.headers.host + '/reset/' + token + '\n\n' +
+            'http://107.170.21.178:12557/api/facebook/connect/\n\n' +
           'Thank you for your time.\n'
       };
 
@@ -95,7 +135,7 @@ exports.sendEmail = function (req,res){
     }
     ], function(err) {
       if (err) return next(err);
-      res.send(502);
+      //res.send(502);
     });
 
   res.send({});

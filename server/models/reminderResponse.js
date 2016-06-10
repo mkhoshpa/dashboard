@@ -11,41 +11,6 @@ var reminderResponseSchema = new Schema({
   timeStamp: {type: Date, default: Date.now}
 });
 
-/*
-reminderResponseSchema.post('save', function(doc,next) {
-  // Push blank response onto ref'd reminder
-  mongoose.model('Reminder').findByIdAndUpdate(
-    this.reminder,
-    {
-      $push: {"responses":this}
-    },
-    {new: true},
-    function(err, reminder) {
-      var length = reminder.responses.length;
-      // Subtract
-
-      if(reminder.increment())
-        // Set Adjust User Status Point
-        mongoose.model('User').findByIdAndUpdate(
-          reminder.assignee,
-          {
-            $inc: {"status.value": 1}
-          }
-        )
-
-      else if(reminder.decrement()){
-        mongoose.model('User').findByIdAndUpdate(
-          reminder.assignee,
-          {
-            $inc: {"status.value": -1}
-          }
-        )
-      }
-    }
-  );
-  next();
-});
-*/
 
 // Update User with most recent response and update thier status
 reminderResponseSchema.post('findOneAndUpdate', function() {

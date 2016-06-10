@@ -66,8 +66,8 @@ var app;
                 this.$mdDialog.cancel();
             };
             ReminderController.prototype.save = function () {
-                console.log("r" + this.selected);
-                console.log("hello select: " +this.selected.responses);
+                //console.log("r" + this.selected);
+                //console.log("hello select: " +this.selected.responses);
                 console.log(this.time);
                 var dates = {
                     monday: false,

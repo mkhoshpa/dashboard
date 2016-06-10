@@ -1,0 +1,52 @@
+(node:2373) fs: re-evaluating native module sources is not supported. If you are using the graceful-fs module, please update it to a more recent version.
+[13:42:39] Using gulpfile /data/development/releases/1465494013/gulpfile.js
+[13:42:39] Starting 'sass'...
+[13:42:39] Finished 'sass' after 68 ms
+[13:42:39] Starting 'nodemon'...
+[13:42:39] [nodemon] 1.9.2
+[13:42:39] [nodemon] to restart at any time, enter `rs`
+[13:42:39] [nodemon] watching: *.*
+[13:42:39] [nodemon] starting `node app.js`
+[13:42:39] Finished 'nodemon' after 62 ms
+[13:42:39] Starting 'browser-sync'...
+[13:42:40] Finished 'browser-sync' after 101 ms
+[13:42:40] Starting 'default'...
+[13:42:40] Finished 'default' after 4.67 μs
+events.js:160
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: EBADF: bad file descriptor, read
+    at Error (native)
+development
+listening for websocket connections on *:45874
+listening for websocket connections on *:37392
+/data/development/releases/1465494013/server/config
+Server running at http://localhost:12557/
+events.js:160
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: listen EADDRINUSE :::45874
+    at Object.exports._errnoException (util.js:1007:11)
+    at exports._exceptionWithHostPort (util.js:1030:20)
+    at Server._listen2 (net.js:1253:14)
+    at listen (net.js:1289:10)
+    at Server.listen (net.js:1385:5)
+    at Server.listen.Server.attach (/data/development/releases/1465494013/node_modules/socket.io/lib/index.js:216:9)
+    at new Server (/data/development/releases/1465494013/node_modules/socket.io/lib/index.js:50:17)
+    at Server (/data/development/releases/1465494013/node_modules/socket.io/lib/index.js:38:41)
+    at Object.<anonymous> (/data/development/releases/1465494013/server/controllers/api/messageController.js:15:30)
+    at Module._compile (module.js:541:32)
+    at Object.Module._extensions..js (module.js:550:10)
+    at Module.load (module.js:458:32)
+    at tryModuleLoad (module.js:417:12)
+    at Function.Module._load (module.js:409:3)
+    at Module.require (module.js:468:17)
+    at require (internal/module.js:20:19)
+    at Object.<anonymous> (/data/development/releases/1465494013/server/controllers/api/reminderController.js:9:25)
+    at Module._compile (module.js:541:32)
+    at Object.Module._extensions..js (module.js:550:10)
+    at Module.load (module.js:458:32)
+    at tryModuleLoad (module.js:417:12)
+    at Function.Module._load (module.js:409:3)

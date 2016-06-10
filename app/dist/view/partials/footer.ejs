@@ -5,15 +5,21 @@
   <script src="../../../bower_components/moment/moment.js"></script>
 
   <!-- For sending messages to clients -->
-  <script src="http://localhost:3854/socket.io/socket.io.js"></script>
+  <script src="http://107.170.21.178:45874/socket.io/socket.io.js"></script>
   <script>
-    var messageSocket = io.connect('http://localhost:3854');
+    var messageSocket = io.connect('http://107.170.21.178:45874');
   </script>
 
-  <!-- For sending responses to clients -->
-  <script src="http://localhost:3852/socket.io/socket.io.js"></script>
+  <!-- For sending reminder responses to clients -->
+  <script src="http://107.170.21.178:55241/socket.io/socket.io.js"></script>
   <script>
-    var responseSocket = io.connect('http://localhost:3852')
+    var responseSocket = io.connect('http://107.170.21.178:55241');
+  </script>
+
+  <!-- For sending survey responses to clients -->
+  <script src="http://107.170.21.178:37392/socket.io/socket.io.js"></script>
+  <script>
+    var surveySocket = io.connect('http://107.170.21.178:37392');
   </script>
 
   <!-- Bower / Front End Components -->

@@ -54,7 +54,7 @@ gulp.task('nodemon' ,['sass'], function (cb) {
 gulp.task('browser-sync', ['nodemon'], function() {
 	browserSync.init(null, {
     injectChanges: true,
-		proxy: "http://localhost:8081",
+		proxy: "http://localhost:12557",
         files: ["app/**/*.*"],
         browser: 'google chrome',
         port: 7000,
@@ -75,7 +75,7 @@ gulp.task('clean', function() {
     if (!err) {
       console.log(res);
       _.each(res.files, function (file) {
-        if (file.name != 'helloworld.aiml') {
+        if (file.name != 'helloworld.aiml' && file.name != 'personality.aiml') {
           bot.remove(file.name, function (err, res) {
             if (!err) {
               console.log(res);

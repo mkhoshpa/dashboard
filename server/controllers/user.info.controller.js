@@ -41,6 +41,22 @@ exports.createBio = function(req, res){
 
   res.send(req.body.body);
 }
+exports.createPipelineStage = function(req,res){
+  console.log(req.body.body);
+
+  User.findByIdAndUpdate(req.params.id,
+  {$set: {"pipelineStage": req.body.body}},
+  {safe: true},
+  function(err, user) {
+   if(err) {
+     console.log(err);
+    }
+  });
+
+  res.send(req.body.body);
+
+
+}
 
 exports.createPhoneNumber = function (req, res) {
   User.findByIdAndUpdate(req.params.id,
@@ -59,7 +75,8 @@ exports.create = function(req, res) {
   console.log(req.body);
   var user = new User(req.body);
   user.provider = 'local';
-
+  user.fullName = user.firstName + ' ' + user.lastName;
+  user.pandoraBotSaid = '';
   user.save(function(err) {
     if (err) {
       console.log(err);

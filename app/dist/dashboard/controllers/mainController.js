@@ -4,6 +4,7 @@ var app;
     var dashboard;
     (function (dashboard) {
         var userSelected;
+        var userCoach;
         var scope;
         var MainController = (function () {
             function MainController($scope, userService, $mdSidenav, $mdBottomSheet, $mdToast, $mdDialog, $mdMedia, $http) {
@@ -19,7 +20,7 @@ var app;
                 this.selected = null;
                 this.newNote = new dashboard.Note('', null);
                 this.newReminder = new dashboard.Reminder('', null);
-                
+
 
                 //this.socket = io.connect('http://localhost:3001');
 
@@ -29,12 +30,23 @@ var app;
                 this.questionAmount = [0];
                 this.selectSurveyUser = [];
 
+                //rostr stuff for selecting columns
 
-
+                // this.rostr.columns =
+                // [
+                //   {"headerTitle" : "image", "display": false},
+                //   "userName": false,
+                //   "pipelineStage": false,
+                //   "lastMessage": false,
+                //   "lastReminder": false,
+                //   "lastResponse": false,
+                //   "surveyTitle": false,
+                //   "surveyStatus": false
+                // ]
 
                 var self = this;
                 this.user = this.userService.get();
-
+                userCoach = this.user;
                 if (this.user.role == "user") {
                     self.selected = this.user;
                 }
@@ -304,7 +316,31 @@ var app;
 
               });
               self.openToast('Phone Number Updated');
-            }
+            };
+            MainController.prototype.addPipelineStage = function ($event) {
+
+              var _this = this;
+              var self = this;
+              var pipelineStage = {
+                body: this.selected.pipelineStage,
+                author: this.user.id,
+                assignee: this.selected.id
+              }
+
+
+              console.log(this.user);
+              console.log(pipelineStage);
+              _this.$http.post('/api/pipelineStage/create/' + pipelineStage.assignee, pipelineStage).then(function successCallback(response) {
+              console.log(response.data);
+              console.log(this.selected);
+
+
+              });
+
+              self.openToast("Pipeline Stage Updated");
+
+            };
+
 
             MainController.prototype.addUser = function ($event) {
                 var _this = this;
@@ -602,6 +638,18 @@ var app;
                 });
             };
 
+            MainController.prototype.updateSurveyResponses = function (survey) {
+              console.log('Inside updateSurveyResponses');
+              console.log(userCoach);
+              for (var i = 0; i < userCoach.surveyTemplates.length; i++) {
+                if (survey._id == userCoach.surveyTemplates[i]._id) {
+                  userCoach.surveyTemplates[i] = survey;
+                }
+              }
+              scope.$apply();
+              console.log(survey);
+            };
+
             MainController.prototype.updateReminder = function (reminder) {
                 console.log('Inside updateReminder');
                 console.log(userSelected.reminders);
@@ -724,12 +772,17 @@ var app;
               });*/
             };
 
+            // socket.io code ahead
             responseSocket.on('response', function (response) {
-              console.log('Server sent a response');
+              console.log('Server sent a reminder response');
               MainController.prototype.updateReminder(response);
             });
 
-            // socket.io code ahead
+            surveySocket.on('survey', function (response) {
+              console.log('Server sent a survey response');
+              MainController.prototype.updateSurveyResponses(response);
+            });
+
             messageSocket.on('message', function (message) {
               console.log('Server sent a message');
               MainController.prototype.receiveMessage(message);

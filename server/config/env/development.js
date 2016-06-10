@@ -14,7 +14,7 @@ module.exports = {
 	facebook: {
 		clientID: '237058900007908',
 		clientSecret: '756eb97b58fb72f845277f0e2f51fda2',
-		callbackURL: 'http://localhost:8081/oauth/facebook/callback'
+		callbackURL: 'http://e624bd40.ngrok.io/oauth/facebook/callback'
 	},
 	twitter: {
 		clientID: 'Twitter Application ID',

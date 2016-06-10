@@ -22,6 +22,9 @@ module.exports = function(app) {
 						return next(err);
 					}
 	    		if (!user) {
+	    					if (info) {
+	    						console.log(info);
+	    					}
 						req.flash('status', 'Information Entered Incorrect');
 						return res.redirect('/signin');
 					}
@@ -68,7 +71,7 @@ module.exports = function(app) {
 											});
 											// Combine each forEach statement O(n^2)
 											_.forEach(slack, function(member) {
-												request.post('http://localhost:8081/generate',{
+												request.post('http://localhost:12557/generate',{
 													form: {
 															user: req.user.id,
 															client: {

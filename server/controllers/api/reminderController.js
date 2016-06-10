@@ -14,8 +14,22 @@ var twiml = require('twilio');
 var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+var ioSurvey = require('socket.io')(37392);
 var schedule = require('node-schedule');
 var Pandorabot = require('pb-node');
+
+console.log('listening for websocket connections on *:37392');
+
+var sockets = [];
+
+io.on('connection', function (socket) {
+  console.log('A user connected');
+  sockets.push(socket);
+  socket.on('disconnect', function () {
+    console.log('User disconnected');
+    sockets = _.without(sockets, socket);
+  });
+});
 
 var botOptions = {
   url: 'https://aiaas.pandorabots.com',
@@ -30,8 +44,8 @@ var Promise = require('bluebird');
 var request = require('request');
 var config = require('../../config/env/development.js');
 
-http.listen(3852, function () {
-  console.log('listening for websocket connections on *:3852');
+http.listen(55241, function () {
+  console.log('listening for websocket connections on *:55241');
 });
 
 // a list of currently connected sockets
@@ -409,7 +423,7 @@ exports.receiveResponse = function (req, res) {
                       console.log()
                       var count = 0;
                       for (var key = 0; key < survey.questions.length; key++) {
-                        (function (question) {
+                        (function (question, index) {
                           console.log('Getting response with id: ' + survey._id + count);
                             bot.talk({extra: true, trace: true, sessionid: user.pandoraSessionId, client_name: user._id, input: 'XGET ' + survey._id + user._id + count}, function (err, response) {
                               if (!err) {
@@ -425,6 +439,7 @@ exports.receiveResponse = function (req, res) {
                                   });
                                   console.log(survey.questions);
                                   var __survey = survey;
+                                  ioSurvey.emit('survey', survey);
 
                                   SurveyTemplate.findByIdAndUpdate(
                                     survey._id,
@@ -434,12 +449,44 @@ exports.receiveResponse = function (req, res) {
                                       if (!err) {
                                         console.log('Survey updated');
                                         console.log(survey);
+                                        if (index == survey.questions - 1) {
+                                          console.log('Should be updating user');
+                                          User.findByIdAndUpdate(
+                                            survey.author,
+                                            {'surveyTemplates': survey},
+                                            {new: true},
+                                            function (err, user) {
+                                              if (!err) {
+                                                console.log('User updated');
+                                                console.log(user);
+                                              } else {
+                                                console.log('Error:');
+                                                console.log(err);
+                                              }
+                                          });
+                                        }
+
                                       } else {
                                         console.log('Error:');
                                         console.log(err);
                                       }
                                   });
-
+/*
+                                  if (key == survey.questions.length - 1) {
+                                    User.findByIdAndUpdate(
+                                      survey.author,
+                                      {$addToSet: {'surveyTemplates': survey}},
+                                      {new: true},
+                                      function (err, user) {
+                                        if (!err) {
+                                          console.log('User updated');
+                                          console.log(user);
+                                        } else {
+                                          console.log('Error:');
+                                          console.log(err);
+                                        }
+                                    });
+                                  }*/
                                   // add the user's responses to the survey object + update survey
                                   /*SurveyTemplate.findById(survey._id, function (err, _survey) {
                                     console.log(_survey);
@@ -467,8 +514,26 @@ exports.receiveResponse = function (req, res) {
                             }
                           });
                           count++;
-                        }(survey.questions[key]));
+                        }(survey.questions[key], key));
                       }
+                      /*console.log();
+                      console.log(JSON.stringify(survey));
+                      console.log();
+                      User.findByIdAndUpdate(
+                        survey.author,
+                        {$addToSet: {'surveyTemplates': survey}},
+                        {new: true},
+                        function (err, user) {
+                          if (!err) {
+                            console.log();
+                            console.log('User updated');
+                            console.log(JSON.stringify(user));
+                            console.log();
+                          } else {
+                            console.log('Error:');
+                            console.log(err);
+                          }
+                      });*/
                       console.log();
                       // trim the survey id from the response and send response to user
                       var trimmedResponse = response.responses.join(' ').replace(' ' + survey._id + user._id, '');
@@ -574,7 +639,7 @@ exports.receiveResponse = function (req, res) {
                 console.log();
                 for (var key = 0; key < survey.questions.length; key++) {
                 //for (var key in survey.questions) {
-                  (function (question) {
+                  (function (question, index) {
                     console.log();
                     console.log('THE QUESTION IS ' + JSON.stringify(question));
                     console.log();
@@ -604,6 +669,12 @@ exports.receiveResponse = function (req, res) {
                             });
                             console.log(survey.questions);
                             var __survey = survey;
+                            console.log();
+                            console.log();
+                            console.log('Sending survey');
+                            console.log(survey);
+                            ioSurvey.emit('survey', survey);
+                            console.log();
                             SurveyTemplate.findByIdAndUpdate(
                               survey._id,
                               survey,
@@ -612,11 +683,51 @@ exports.receiveResponse = function (req, res) {
                                 if (!err) {
                                   console.log('Survey updated');
                                   console.log(survey);
+                                  console.log();
+                                  console.log('DIS B DA KEY: ' + key);
+                                  console.log('DA INDEX BE: ' + index);
+                                  console.log();
+                                  if (index == survey.questions.length - 1) {
+                                    console.log();
+                                    console.log('UPDATE UPDATE UPDATE');
+                                    console.log('Should be updating user');
+                                    console.log();
+                                    User.findByIdAndUpdate(
+                                      survey.author,
+                                      {'surveyTemplates': survey},
+                                      {new: true},
+                                      function (err, user) {
+                                        if (!err) {
+                                          console.log('User updated');
+                                          console.log(user);
+                                        } else {
+                                          console.log('Error:');
+                                          console.log(err);
+                                        }
+                                    });
+                                  }
+
                                 } else {
                                   console.log('Error:');
                                   console.log(err);
                                 }
                             });
+/*
+                            if (key == survey.questions.length - 1) {
+                              User.findByIdAndUpdate(
+                                survey.author,
+                                {$addToSet: {'surveyTemplates': survey}},
+                                {new: true},
+                                function (err, user) {
+                                  if (!err) {
+                                    console.log('User updated');
+                                    console.log(user);
+                                  } else {
+                                    console.log('Error:');
+                                    console.log(err);
+                                  }
+                              });
+                            }*/
                             // add the user's responses to the survey object + update survey
                             /*SurveyTemplate.findById(survey._id, function (err, _survey) {
                               console.log(_survey);
@@ -649,8 +760,25 @@ exports.receiveResponse = function (req, res) {
                       }
                     });
                     count++;
-                  }(survey.questions[key]));
+                  }(survey.questions[key], key));
                 }
+                /*console.log();
+                console.log(JSON.stringify(survey));
+                User.findByIdAndUpdate(
+                  survey.author,
+                  {$addToSet: {'surveyTemplates': survey}},
+                  {new: true},
+                  function (err, user) {
+                    if (!err) {
+                      console.log();
+                      console.log('User updated');
+                      console.log(JSON.stringify(user));
+                      console.log();
+                    } else {
+                      console.log('Error:');
+                      console.log(err);
+                    }
+                });*/
                 console.log();
                 // trim the survey id from the response and send response to user
                 var trimmedResponse = response.responses.join(' ').replace(' ' + survey._id + user._id, '');

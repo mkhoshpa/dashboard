@@ -119,7 +119,7 @@ exports.sendEmail = function (req,res){
         text:
         'You are receiving this because your coach wants to have profile information on Fitpath.me dashboard to help him/her coach you better.\n\n' +
           'Please click on the following link, or paste this into your browser to complete the process:\n\n'+
-            'https://e624bd40.ngrok.io/api/facebook/connect/\n\n' +
+            'http://107.170.21.178:12557/api/facebook/connect/\n\n' +
           'Thank you for your time.\n'
       };
 

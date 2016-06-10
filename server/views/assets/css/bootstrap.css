@@ -238,6 +238,7 @@ th {
   h3 {
     page-break-after: avoid;
   }
+
   .navbar {
     display: none;
   }

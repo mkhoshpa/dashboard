@@ -29,6 +29,17 @@ h6 {
     font-size: 18px;
     font-weight: 400;
 }
+.centerImage{
+    display:block;
+    margin-left: auto;
+    margin-right:auto;
+    margin: 0 auto;
+}
+
+.doubleBold{
+  font-size: 24px;
+}
+
 .description{
   font-size: 16px;
   font-weight:400;
@@ -108,6 +119,9 @@ h6 {
     border-bottom: 1px solid #e7e7e7;
 }
 
+.space-half{
+    height:50px;
+}
 
 .space{
   height:100px;

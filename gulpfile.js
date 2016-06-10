@@ -12,6 +12,7 @@ var User = require('./server/models/user.js');
 var Pandorabot = require('pb-node');
 var _ = require('underscore');
 var SurveyTemplate = require('./server/models/surveyTemplate.js');
+var portfinder = require('portfinder');
 
 var botOptions = {
   url: 'https://aiaas.pandorabots.com',
@@ -29,7 +30,6 @@ var paths = {
   views: ['app/dist/views/*.html'],
   server: ['server/**/*.js']
 }
-
 
 gulp.task('sass', function () {
   return gulp.src('app/dist/triangular/**/*.scss')

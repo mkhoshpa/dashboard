@@ -146,7 +146,8 @@ var UserSchema = new Schema({
   email: String,
   pandoraSessionId: String,
   // This is a hack for Pandorabots
-  pandoraBotSaid: String
+  pandoraBotSaid: String,
+  betaCode: String
 });
 
 // Set the 'fullname' virtual property

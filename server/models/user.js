@@ -177,6 +177,10 @@ UserSchema.pre('save', function(next) {
     this.password = this.hashPassword(this.password);
   }
   this.messenger = this.messagingService();
+  console.log();
+  console.log('User should have hashed password:');
+  console.log(this);
+  console.log();
   // Removed because will throw error if user is not coming from slack
 	next();
 });

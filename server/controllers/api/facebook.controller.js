@@ -37,7 +37,7 @@ exports.send = function(req, res) {
 
 exports.connectUser = function (req, res) {
   res.writeHead(302, {
-    'Location': 'https://www.facebook.com/dialog/oauth?client_id=' + config.facebook.clientID + '&redirect_uri=http://e624bd40.ngrok.io/api/facebook/getclientprofile'
+    'Location': 'https://www.facebook.com/dialog/oauth?client_id=' + config.facebook.clientID + '&redirect_uri=http://107.170.21.178:12557/api/facebook/getclientprofile'
   });
   res.end();
 }
@@ -45,7 +45,7 @@ exports.connectUser = function (req, res) {
 exports.getClientProfile = function (req, res) {
   console.log('Getting client\'s profile from Facebook');
   console.log(req.query.code);
-  request('https://graph.facebook.com/v2.6/oauth/access_token?client_id=' + config.facebook.clientID + '&redirect_uri=http://e624bd40.ngrok.io/api/facebook/getclientprofile&client_secret=' + config.facebook.clientSecret + '&code=' + req.query.code, function (err, res, body) {
+  request('https://graph.facebook.com/v2.6/oauth/access_token?client_id=' + config.facebook.clientID + '&redirect_uri=http://107.170.21.178:12557/api/facebook/getclientprofile&client_secret=' + config.facebook.clientSecret + '&code=' + req.query.code, function (err, res, body) {
     if (!err && res.statusCode == 200) {
       console.log('Printing body');
       console.log(body);

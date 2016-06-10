@@ -2,6 +2,7 @@
 'use strict';
 
 // Set the 'development' environment configuration object
+//'mongodb://thom:letmein1@ds011251.mlab.com:11251/fitpath'
 module.exports = {
   // If I push this code to dev and the db is still localhost I owe Josh + Thom $5 each - Shane
 	db: 'mongodb://thom:letmein1@ds011251.mlab.com:11251/fitpath',

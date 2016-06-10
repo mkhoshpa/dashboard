@@ -115,8 +115,8 @@ gulp.task('clean', function() {
         });
       });
     })
-  })
-  /*var conn = mongoose.connection;
+  })*/
+  var conn = mongoose.connection;
   conn.on('error', console.error.bind(console, 'connection error:'));
   conn.once('open', function() {
     conn.collection('reminders').drop(function (err) {
@@ -136,7 +136,7 @@ gulp.task('clean', function() {
       });
       console.log('Reminders dropped.');
     });
-    /*conn.collection('users').drop(function(err) {
+    conn.collection('users').drop(function(err) {
       console.log('Users dropped');
       var colin = new User({
         firstName: 'Colin',
@@ -161,9 +161,18 @@ gulp.task('clean', function() {
         if (err) {
           console.log('DB is now broken, good luck.');
         }
+      });
+      conn.collection('surveytemplates').drop(function (err) {
+        if (!err) {
+          conn.collection('messages').drop(function (err) {
+            if (!err) {
+              console.log('DB successfully wiped');
+            }
+          })
+        }
       })
-    });/
-  });*/
+    });
+  });
 });
 
 gulp.task("heroku:production", function(){

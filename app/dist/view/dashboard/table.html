@@ -26,6 +26,24 @@
           </md-button>
 
           <!-- adding selector so we can pick the columns we want -->
+          <md-select  ng-model = "vm.selectedRostrSurvey"  aria-label = "UDOP" placeholder = "Select Survey">
+
+            <md-checkbox aria-label="Select All"
+                           ng-checked="vm.isChecked()"
+                           md-indeterminate="vm.isIndeterminate()"
+                           ng-click="vm.toggleAll()">
+                <span ng-if="vm.isChecked()">Un-</span>Select All
+            </md-checkbox>
+            <md-list class="demo-select-all-checkboxes"  ng-value = "c" >
+              <md-checkbox layout = "row"  ng-repeat = "c in vm.columns" ng-checked = "vm.exists(c, vm.selectSurveyUser) " ng-click = "vm.toggle(c, vm.selectSurveyUser)">
+                  {{}}
+              </md-checkbox>
+
+            </md-list>
+          </md-select>
+
+
+
 
 
           <md-select  ng-model = "vm.selectedColumns"  aria-label = "UDOP" placeholder = "Pick Columns">
@@ -80,7 +98,10 @@
                <table md-table class="md-primary md-data-table" multiple md-row-select ng-model="vm.selected" id="client-table">
                   <thead md-head md-order="vm.query.order">
                         <tr md-row>
-                            <th md-column ng-hide="true"><span translate>Image</span></th>
+                            <th md-column  ng-repeat = "question in vm.user.surveyTemplates[0].questions"><span translate> {{question.questionHeader}}</span></th>
+
+                            <!--
+                            {vm.user.surveytemple[0].questions}
                             <th md-column md-order-by="username"><span translate>{{vm.columns.name}}</span></th>
                               <th md-column md-order-by="pipelineStage"><span translate>Stage</span></th>
                               <th md-column md-order-by="reminders"><span translate>lastMessage</span></th>
@@ -94,6 +115,7 @@
                             <th md-column md-order-by="willingnes"><span translate> willingness</span></th>
                           <th md-column md-order-by="status"><span translate>{{vm.columns.status}}</span></th>
                           <th md-column md-order-by="recent"><span translate>{{vm.columns.recent}}</span></th>
+                        -->
                             <!-- <th md-column md-numberic md-order-by="id"><span translate>{{vm.columns.id}}</span></th> -->
                         </tr>
                     </thead>
@@ -108,7 +130,8 @@
                             <td md-cell>
                               {{client.pipelineStage}}
                             </td>
-                            <td md-cell>
+
+                            <!-- <td md-cell>
                               {{client.reminders[client.reminders.length-1].title}}
                             </td>
                             <td md-cell>
@@ -116,7 +139,7 @@
                             </td>
                             <td md-cell>
                               {{client.surveyTemplates[client.surveyTemplates.length-1].title}}
-                            </td>
+                            </td> -->
 
 
 

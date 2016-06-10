@@ -194,6 +194,10 @@ UserSchema.methods.getStatus = function(){
 
 // Create an instance method for hashing a password
 UserSchema.methods.hashPassword = function(password) {
+  console.log();
+  console.log('Hashing password, salt:');
+  console.log(this.salt);
+  console.log();
 	return crypto.pbkdf2Sync(password, this.salt, 10000, 64).toString('base64');
 };
 

@@ -21,32 +21,20 @@
          <div class="md-toolbar-tools">
           <h2><span style="color: #444; margin-left: 10px;">Rostr</span></h2>
           <span flex></span>
-          <md-button class="md-icon-button" ng-click="vm.filter.show = true;">
-            <md-icon class="material-icon">search</md-icon>
-          </md-button>
+
 
           <!-- adding selector so we can pick the columns we want -->
-          <md-select  ng-model = "vm.selectedRostrSurvey"  aria-label = "UDOP" placeholder = "Select Survey">
 
-            <md-checkbox aria-label="Select All"
-                           ng-checked="vm.isChecked()"
-                           md-indeterminate="vm.isIndeterminate()"
-                           ng-click="vm.toggleAll()">
-                <span ng-if="vm.isChecked()">Un-</span>Select All
-            </md-checkbox>
-            <md-list class="demo-select-all-checkboxes"  ng-value = "c" >
-              <md-checkbox layout = "row"  ng-repeat = "c in vm.columns" ng-checked = "vm.exists(c, vm.selectSurveyUser) " ng-click = "vm.toggle(c, vm.selectSurveyUser)">
-                  {{}}
-              </md-checkbox>
+          <md-input-container>
+            <label>Select Survey</label>
+            <md-select  ng-model = "vm.selectedDataSurvey"  aria-label = "UDOP" >
+              <md-option ng-repeat = "s in vm.user.surveyTemplates" ng-value = "s">
+                {{s.title}}
+              </md-option>
+            </md-select>
+          </md-input-container>
 
-            </md-list>
-          </md-select>
-
-
-
-
-
-          <md-select  ng-model = "vm.selectedColumns"  aria-label = "UDOP" placeholder = "Pick Columns">
+          <!-- <md-select  ng-model = "vm.selectedColumns"  aria-label = "UDOP" placeholder = "Pick Columns">
 
             <md-checkbox aria-label="Select All"
                            ng-checked="vm.isChecked()"
@@ -61,17 +49,25 @@
 
             </md-list>
           </md-select>
-
+ -->
 
          </div>
        </md-toolbar>
        <!-- Search -->
        <md-toolbar class="md-table-toolbar" style="background-color: white;" ng-show="vm.filter.show || options.rowSelection || !selected.length">
-        <div class="md-toolbar-tools">
+        <div class="md-toolbar-tools" >
           <md-icon class="material-icons">search</md-icon>
           <form flex="" name="filter.form" class="ng-valid flex ng-valid-parse ng-pristine">
+
             <input style="padding-left: 5px;" type="text" ng-model="vm.query.filter" placeholder="search" class="ng-valid ng-touched ng-valid-parse ng-pristine" aria-invalid="false">
+
           </form>
+
+<!--
+          <form flex="" name="filter.form" class="ng-valid flex ng-valid-parse ng-pristine">
+            <md-select style="padding-left: 5px;" type="text" ng-model="vm.query.filter" placeholder="SelectSurvey" class="ng-valid ng-touched ng-valid-parse ng-pristine" aria-invalid="false">
+          </form> -->
+
           <md-button class="md-icon-button md-button md-ink-ripple" ng-transclude="" ng-click="vm.removeFilter()" aria-label="close">
             <md-icon class="material-icons">close</md-icon>
             <div class="md-ripple-container"></div>
@@ -98,7 +94,9 @@
                <table md-table class="md-primary md-data-table" multiple md-row-select ng-model="vm.selected" id="client-table">
                   <thead md-head md-order="vm.query.order">
                         <tr md-row>
-                            <th md-column  ng-repeat = "question in vm.user.surveyTemplates[0].questions"><span translate> {{question.questionHeader}}</span></th>
+                            <th md-column>Clients</th>
+
+                            <th md-column  ng-repeat = "question in vm.selectedDataSurvey.questions"><span translate> {{question.questionHeader}}</span></th>
 
                             <!--
                             {vm.user.surveytemple[0].questions}
@@ -121,13 +119,13 @@
                     </thead>
                     <tbody md-body >
                         <tr md-row md-auto-select="false" md-select="client" ng-repeat="client in vm.clients | orderBy: vm.query.order | filter:vm.query.filter  | limitTo: vm.query.limit: (vm.query.page - 1) * vm.query.limit">
-                  <td md-cell>
-                              <img ng-src="{{client.imgUrl}}" style="border-radius: 50%; width: 50px; margin: 10px;" ng-hide="true"/>
-                            </td>
+
                             <td  md-cell>
+                              <img ng-src="{{client.imgUrl}}" style="border-radius: 50%; width: 50px; margin: 10px;" />
                               {{client.username}}
                             </td>
                             <td md-cell>
+
                               {{client.pipelineStage}}
                             </td>
 

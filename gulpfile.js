@@ -12,6 +12,8 @@ var User = require('./server/models/user.js');
 var Pandorabot = require('pb-node');
 var _ = require('underscore');
 var SurveyTemplate = require('./server/models/surveyTemplate.js');
+var Message = require('./server/models/message.js');
+var Reminder = require('./server/models/reminder.js');
 var portfinder = require('portfinder');
 
 var botOptions = {
@@ -166,7 +168,19 @@ gulp.task('clean', function() {
         if (!err) {
           conn.collection('messages').drop(function (err) {
             if (!err) {
-              console.log('DB successfully wiped');
+              console.log('DB successfully wiped:');
+              User.find({}, function (err, user) {
+                console.log(user);
+              });
+              Reminder.find({}, function (err, reminder) {
+                console.log(reminder);
+              });
+              SurveyTemplate.find({}, function (err, survey) {
+                console.log(survey);
+              });
+              Message.find({}, function (err, message) {
+                console.log(message);
+              });
             }
           })
         }

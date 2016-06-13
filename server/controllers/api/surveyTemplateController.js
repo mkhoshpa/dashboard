@@ -24,6 +24,9 @@ var botOptions = {
 var bot = new Pandorabot(botOptions);
 
 exports.create = function(req, res) {
+  console.log();
+  console.log('CREATING SURVEY');
+  console.log();
 
   var surveyTemplate = new SurveyTemplate(req.body);
   console.log();
@@ -176,6 +179,9 @@ exports.create = function(req, res) {
       });
     })
   });
+  console.log();
+  console.log('SURVEY CREATED aJJJJJJJJJJJJJ');
+  console.log();
   res.send(surveyTemplate);
 }
 

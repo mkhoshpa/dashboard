@@ -42,21 +42,21 @@ exports.createBio = function(req, res){
   res.send(req.body.body);
 }
 exports.createPipelineStage = function(req,res){
-  console.log(req.body.body);
+  console.log("Im here");
 
-  User.findByIdAndUpdate(req.params.id,
-  {$set: {"pipelineStage": req.body.body}},
-  {safe: true},
-  function(err, user) {
-   if(err) {
-     console.log(err);
-    }
-  });
-
-  res.send(req.body.body);
-
-
-}
+  // User.findByIdAndUpdate(req.params.id,
+  // {$set: {"pipelineStage": req.body.body}},
+  // {safe: true},
+  // function(err, user) {
+  //  if(err) {
+  //    console.log(err);
+  //   }
+  // });
+  //
+  // res.send(req.body.body);
+  //
+  res.send({});
+};
 
 exports.createPhoneNumber = function (req, res) {
   User.findByIdAndUpdate(req.params.id,

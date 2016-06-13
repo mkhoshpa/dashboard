@@ -16,6 +16,9 @@
       //vm.contents = contents(vm.clients);
       vm.selected = [];
 
+      vm.testResponses = ['Good', 'nice']
+
+
       vm.columns = {
            avatar: '',
            name: 'Name',

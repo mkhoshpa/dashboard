@@ -1,5 +1,5 @@
 <md-content>
-  <p md-if="!vm.user.surveyTemplates.length">
+  <p md-if="vm.user.surveyTemplates.length == 0">
     No surveys for {{vm.selected.firstName + " " + vm.selected.lastName}}, yet.
   </p>
   <md-card ng-repeat="survey in vm.user.surveyTemplates | orderBy: '-date':true">

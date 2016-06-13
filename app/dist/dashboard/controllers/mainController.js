@@ -1061,12 +1061,15 @@ HI Shane!                    console.log(survey);
             };
 
             MainController.prototype.isCoach = function (user) {
-                if (user.role == "coach") {
-                    return true;
+                if(user) {
+                  if(user.role){
+                    if (user && user.role && user.role == "coach") {
+                        return true;
+                    }
                 }
-                else {
-                    return false;
-                }
+
+                return false;
+              }
             };
 
             MainController.prototype.popUp = function(){

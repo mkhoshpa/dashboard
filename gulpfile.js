@@ -72,7 +72,7 @@ gulp.task('watch', function() {
 
 //TODO: allow cleaning any model
 gulp.task('clean', function() {
-  mongoose.connect(db);
+  //mongoose.connect(db);
   bot.get(function (err, res) {
     if (!err) {
       console.log(res);

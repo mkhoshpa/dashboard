@@ -22,7 +22,7 @@ var app;
                 this.newReminder = new dashboard.Reminder('', null);
 
 
-                //this.socket = io.connect('http://localhost:3001');
+                //this.socket = io.connect('http://107.170.21.178:3001');
 
                 //Survey stuff
                 this.questions1 = [{type: "Yes/No"},{type:"Scale from 1 to 5"},{type:"Written Answer"}];

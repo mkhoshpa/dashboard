@@ -118,7 +118,7 @@ gulp.task('clean', function() {
       });
     })
   })*/
-  var conn = mongoose.connection;
+  /*var conn = mongoose.connection;
   conn.on('error', console.error.bind(console, 'connection error:'));
   conn.once('open', function() {
     conn.collection('reminders').drop(function (err) {
@@ -186,7 +186,7 @@ gulp.task('clean', function() {
         }
       })
     });
-  });
+  });*/
 });
 
 gulp.task("heroku:production", function(){

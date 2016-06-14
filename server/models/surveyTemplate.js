@@ -8,7 +8,9 @@ var moment = require('moment');
 var surveyTemplateSchema =  new Schema({
   //title: {type: String, required: true},
   title: {type: String, required: true},
-  questions: Array,
+  questions: [
+    {type: mongoose.Schema.Types.Object, ref: 'SurveyQuestions'},
+  ]
   author: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
   selectedUsers: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
   daysOfTheWeek: {

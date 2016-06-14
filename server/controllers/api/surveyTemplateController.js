@@ -1,6 +1,7 @@
 'use strict'
 var mongoose = require('mongoose');
 var SurveyTemplate = require('../../models/surveyTemplate.js');
+var SurveyQuestion = require('../../models/surveyQuestion.js');
 var User = require('../../models/user.js');
 var _ = require('underscore');
 var moment = require('moment');
@@ -26,6 +27,7 @@ var bot = new Pandorabot(botOptions);
 exports.create = function(req, res) {
   console.log();
   console.log('CREATING SURVEY');
+  console.log(req.body);
   console.log();
 
   var surveyTemplate = new SurveyTemplate(req.body);

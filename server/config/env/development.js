@@ -8,6 +8,7 @@ module.exports = {
 	//db: 'mongodb://thom:letmein1@ds011251.mlab.com:11251/fitpath',
 	db: 'mongodb://shane:letmein1@ds013024.mlab.com:13024/prod',
   //db: 'mongodb://shane:letmein1@localhost/development',
+  //db: 'mongodb://shane:letmein1@107.170.21.178:27017/development',
   sessionSecret: 'developmentSessionSecret',
   phoneNumbers: {
     messages: '+12898062194',

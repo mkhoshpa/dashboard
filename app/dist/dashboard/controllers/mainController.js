@@ -30,6 +30,9 @@ var app;
                 this.questionAmount = [0];
                 this.selectSurveyUser = [];
 
+                //pipelineStage array
+                this.pipelineOptions = [{type: "lead"}, {type: "trail"}, {type: "active-client"}, {type: "previous-client"},{type: "archived"},{type: "NA"} ];
+
                 //rostr stuff for selecting columns
 
                 // this.rostr.columns =
@@ -39,7 +42,7 @@ var app;
                 //   "pipelineStage": false,
                 //   "lastMessage": false,
                 //   "lastReminder": false,
-                //   "lastResponse": false,
+                //   "lastResponse": false,#448AFF
                 //   "surveyTitle": false,
                 //   "surveyStatus": false
                 // ]
@@ -53,6 +56,7 @@ var app;
                 else if (this.user.role == "coach") {
                     this.clients = this.user.clients;
                     self.selected = this.clients[0];
+
                 }
                 self.userService.selectedUser = self.selected;
                 userSelected = self.userService.selectedUser;
@@ -319,6 +323,8 @@ var app;
             };
             MainController.prototype.addPipelineStage = function ($event) {
 
+
+              console.log(this.selected.pipelineStage);
               var _this = this;
               var self = this;
               var pipelineStage = {
@@ -1061,12 +1067,17 @@ HI Shane!                    console.log(survey);
             };
 
             MainController.prototype.isCoach = function (user) {
-                if (user.role == "coach") {
-                    return true;
+
+                if(user) {
+                  if(user.role){
+                    if (user && user.role && user.role == "coach") {
+                        return true;
+                    }
                 }
-                else {
-                    return false;
-                }
+
+
+                return false;
+              }
             };
 
             MainController.prototype.popUp = function(){

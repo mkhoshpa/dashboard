@@ -12,6 +12,9 @@ var User = require('./server/models/user.js');
 var Pandorabot = require('pb-node');
 var _ = require('underscore');
 var SurveyTemplate = require('./server/models/surveyTemplate.js');
+var Message = require('./server/models/message.js');
+var Reminder = require('./server/models/reminder.js');
+var portfinder = require('portfinder');
 
 var botOptions = {
   url: 'https://aiaas.pandorabots.com',
@@ -29,7 +32,6 @@ var paths = {
   views: ['app/dist/views/*.html'],
   server: ['server/**/*.js']
 }
-
 
 gulp.task('sass', function () {
   return gulp.src('app/dist/triangular/**/*.scss')
@@ -115,8 +117,8 @@ gulp.task('clean', function() {
         });
       });
     })
-  })
-  /*var conn = mongoose.connection;
+  })*/
+  var conn = mongoose.connection;
   conn.on('error', console.error.bind(console, 'connection error:'));
   conn.once('open', function() {
     conn.collection('reminders').drop(function (err) {
@@ -136,7 +138,7 @@ gulp.task('clean', function() {
       });
       console.log('Reminders dropped.');
     });
-    /*conn.collection('users').drop(function(err) {
+    conn.collection('users').drop(function(err) {
       console.log('Users dropped');
       var colin = new User({
         firstName: 'Colin',
@@ -161,9 +163,30 @@ gulp.task('clean', function() {
         if (err) {
           console.log('DB is now broken, good luck.');
         }
+      });
+      conn.collection('surveytemplates').drop(function (err) {
+        if (!err) {
+          conn.collection('messages').drop(function (err) {
+            if (!err) {
+              console.log('DB successfully wiped:');
+              User.find({}, function (err, user) {
+                console.log(user);
+              });
+              Reminder.find({}, function (err, reminder) {
+                console.log(reminder);
+              });
+              SurveyTemplate.find({}, function (err, survey) {
+                console.log(survey);
+              });
+              Message.find({}, function (err, message) {
+                console.log(message);
+              });
+            }
+          })
+        }
       })
-    });/
-  });*/
+    });
+  });
 });
 
 gulp.task("heroku:production", function(){

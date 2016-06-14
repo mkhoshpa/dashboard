@@ -24,6 +24,9 @@ var botOptions = {
 var bot = new Pandorabot(botOptions);
 
 exports.create = function(req, res) {
+  console.log();
+  console.log('CREATING SURVEY');
+  console.log();
 
   var surveyTemplate = new SurveyTemplate(req.body);
   console.log();
@@ -74,7 +77,10 @@ exports.create = function(req, res) {
         });
 
         //TODO: fix if IE support becomes an issue
-        var total = Object.keys(surveyTemplate.questions).length - 1;
+        console.log();
+        console.log('The amount of questions is: ' + surveyTemplate.questions.length);
+        console.log();
+        var total = surveyTemplate.questions.length - 1; //Object.keys(surveyTemplate.questions).length - 1;
         var count = 0;
         var xmlString = '';
         for (var key = 0; key < surveyTemplate.questions.length; key++)/*in surveyTemplate.questions)*/ {
@@ -176,6 +182,9 @@ exports.create = function(req, res) {
       });
     })
   });
+  console.log();
+  console.log('SURVEY CREATED aJJJJJJJJJJJJJ');
+  console.log();
   res.send(surveyTemplate);
 }
 

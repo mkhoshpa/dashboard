@@ -76,16 +76,16 @@ var UserSchema = new Schema({
   //look at this an actual comment :) was going to override the user role but I think I'll make a new field so I don't break anything.
   pipelineStage:{
     type: String,
-    enum: ['lead', 'prospect', 'trial', 'active-client', 'previous-client', 'archived', 'NA', 'test' ],
+    enum: ['lead', 'prospect', 'trial', 'active-client', 'previous-client', 'archived', 'NA'],
     /** lead is a potential coach or client that we have contact information for but haven't spoken to yet
       propect is someone that we have established contact with
       trial is someone that is being offered a free service for a fixed period of timezone
       active-client is a person that is currently paying for training
       previous-client is someone that has paid for training ON fitpath
-      acrhice is someone that we have moved out of the pipeline for some resetPasswordToken
+      archived is someone that we have moved out of the pipeline for some resetPasswordToken
       NA means they aren't part of a sales pipeline AKA a coach or a admin - or possibly a free "user"
       **/
-      default: 'test'
+      default: 'NA'
   },
   status: {
     value: {
@@ -146,7 +146,8 @@ var UserSchema = new Schema({
   email: String,
   pandoraSessionId: String,
   // This is a hack for Pandorabots
-  pandoraBotSaid: String
+  pandoraBotSaid: String,
+  betaCode: String
 });
 
 // Set the 'fullname' virtual property
@@ -162,6 +163,10 @@ var UserSchema = new Schema({
 
 // Use a pre-save middleware to hash the password
 UserSchema.pre('save', function(next) {
+  console.log();
+  console.log('Saving user:');
+  console.log(this);
+  console.log();
 	if (this.password) {
 		this.salt = new Buffer(crypto.randomBytes(16).toString('base64'), 'base64');
 		this.password = this.hashPassword(this.password);
@@ -172,6 +177,10 @@ UserSchema.pre('save', function(next) {
     this.password = this.hashPassword(this.password);
   }
   this.messenger = this.messagingService();
+  console.log();
+  console.log('User should have hashed password:');
+  console.log(this);
+  console.log();
   // Removed because will throw error if user is not coming from slack
 	next();
 });
@@ -185,6 +194,10 @@ UserSchema.methods.getStatus = function(){
 
 // Create an instance method for hashing a password
 UserSchema.methods.hashPassword = function(password) {
+  console.log();
+  console.log('Hashing password, salt:');
+  console.log(this.salt);
+  console.log();
 	return crypto.pbkdf2Sync(password, this.salt, 10000, 64).toString('base64');
 };
 

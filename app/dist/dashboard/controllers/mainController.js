@@ -444,7 +444,7 @@ var app;
                     _this.$http.post('/api/user/create', user).then(function (__response) {
                         _this.$http.post('/api/coach/newuser/' + this.user.id + '?' + __response.data.id, user).then(function (client) {
                           console.log("Here fb");
-                          self.user.clients.push(response.data);
+                          self.user.clients.push(__response.data);
                         });
                     });
                   });

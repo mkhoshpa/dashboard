@@ -72,7 +72,7 @@ gulp.task('watch', function() {
 
 //TODO: allow cleaning any model
 gulp.task('clean', function() {
-  //mongoose.connect(db);
+  mongoose.connect(db);
   bot.get(function (err, res) {
     if (!err) {
       console.log(res);
@@ -93,7 +93,7 @@ gulp.task('clean', function() {
       });
     }
   });
-  /*SurveyTemplate.find({}, function (err, surveys) {
+  SurveyTemplate.find({}, function (err, surveys) {
     _.each(surveys, function (survey) {
       User.find({}, function (err, users) {
         _.each(users, function (user) {
@@ -117,8 +117,8 @@ gulp.task('clean', function() {
         });
       });
     })
-  })*/
-  /*var conn = mongoose.connection;
+  })
+  var conn = mongoose.connection;
   conn.on('error', console.error.bind(console, 'connection error:'));
   conn.once('open', function() {
     conn.collection('reminders').drop(function (err) {
@@ -186,7 +186,7 @@ gulp.task('clean', function() {
         }
       })
     });
-  });*/
+  });
 });
 
 gulp.task("heroku:production", function(){

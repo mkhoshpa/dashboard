@@ -111,7 +111,7 @@ exports.create = function(req, res) {
             });
 
             //TODO: fix if IE support becomes an issue
-            var total = Object.keys(survey.questions).length - 1;
+            var total = survey.questions.length - 1;
             var count = 0;
             var xmlString = '';
             for (var key = 0; key < survey.questions.length; key++) {

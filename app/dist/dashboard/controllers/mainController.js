@@ -72,6 +72,18 @@ var app;
 
             //create a different controller
 
+            MainController.prototype.deleteUser = function (scope) {
+                  _this.$http.post('/api/user/delete/' + this.user._id, this.user).then(function successCallback(response) {
+                  console.log(response);
+                  console.log("Hey");
+              });
+            };
+
+
+
+
+
+
             MainController.prototype.setFormScope = function (scope) {
                 this.formScope = scope;
             };
@@ -565,6 +577,7 @@ var app;
                   self.openToast("Note added");
               }, function () {
                   console.log('You cancelled the dialog.');
+
               });
             };
 

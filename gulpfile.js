@@ -37,7 +37,7 @@ var paths = {
 
 gulp.task('config', function(){
   return gulp.src('configFile.json')
-        .pipe(gulpNgConfig('config'))
+        .pipe(gulpNgConfig('dashboard.config', {wrap:true}))
         .pipe(gulp.dest('.'))
 });
 

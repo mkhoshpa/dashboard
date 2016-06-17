@@ -71,7 +71,7 @@
         reminderQuestion: "It's time to feed the dragons",
         testReminder : 'Yes!',
         imgUrl :"/../../../assets/imgs/GoT/danny.jpg"
-      },
+      }
 
     ];
 

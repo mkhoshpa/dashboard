@@ -25,7 +25,7 @@ var botOptions = {
 };
 
 var bot = new Pandorabot(botOptions);
-
+//adding comment to trigger update 
 var paths = {
   angular: ['app/dist/**/*.js'],
   css: ['app/assets/styles/css/**/*.css'],
@@ -35,21 +35,15 @@ var paths = {
 }
 
 
-gulp.task('config', function(){
-  return gulp.src('configFile.json')
-        .pipe(gulpNgConfig('dashboard.config', {wrap:true}))
-        .pipe(gulp.dest('.'))
-});
+// gulp.task('config', function(){
+//   return gulp.src('configFile.json')
+//         .pipe(gulpNgConfig('dashboard.config', {wrap:true}))
+//         .pipe(gulp.dest('.'))
+// });
 
 
 
-
-
-
-
-
-
-gulp.task('sass', ['config'], function () {
+gulp.task('sass', function () {
   return gulp.src('app/dist/triangular/**/*.scss')
         .pipe(sass().on('error', sass.logError))
         .pipe(gulp.dest('app/dist/triangular/assets/css'));

@@ -25,7 +25,7 @@ var botOptions = {
 };
 
 var bot = new Pandorabot(botOptions);
-
+//adding comment to trigger update 
 var paths = {
   angular: ['app/dist/**/*.js'],
   css: ['app/assets/styles/css/**/*.css'],

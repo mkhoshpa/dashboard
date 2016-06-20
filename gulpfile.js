@@ -35,21 +35,15 @@ var paths = {
 }
 
 
-gulp.task('config', function(){
-  return gulp.src('configFile.json')
-        .pipe(gulpNgConfig('dashboard.config', {wrap:true}))
-        .pipe(gulp.dest('.'))
-});
+// gulp.task('config', function(){
+//   return gulp.src('configFile.json')
+//         .pipe(gulpNgConfig('dashboard.config', {wrap:true}))
+//         .pipe(gulp.dest('.'))
+// });
 
 
 
-
-
-
-
-
-
-gulp.task('sass', ['config'], function () {
+gulp.task('sass', function () {
   return gulp.src('app/dist/triangular/**/*.scss')
         .pipe(sass().on('error', sass.logError))
         .pipe(gulp.dest('app/dist/triangular/assets/css'));

@@ -3,7 +3,7 @@
 
 var gulp = require('gulp');
 var nodemon = require('gulp-nodemon');
-var gulpNgConfig = require('gulp-ng-config');
+//var gulpNgConfig = require('gulp-ng-config');
 var sass = require('gulp-sass');
     browserSync = require('browser-sync');
     reload = browserSync.reload;

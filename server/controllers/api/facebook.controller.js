@@ -137,7 +137,6 @@ exports.sendEmail = function (req,res){
       if (err) return next(err);
       //res.send(502);
     });
-
   res.send({});
 }
 

@@ -21,8 +21,8 @@ var app;
                 this.newNote = new dashboard.Note('', null);
                 this.newReminder = new dashboard.Reminder('', null);
 
-                
-                //this.socket = io.connect('http://localhost:3001');
+
+                //this.socket = io.connect('http://107.170.21.178:3001');
 
                 //Survey stuff
                 this.questions1 = [{type: "Yes/No"},{type:"Scale from 1 to 5"},{type:"Written Answer"}];
@@ -67,22 +67,10 @@ var app;
             //console.log(JSON.stringify(this));
             // convertToUsers(slack: any[]) {
             //   console.log('convertToUsers: ' + this.slack);
-            // //   this.userService.
-            // // }
-            //
-            // //create a different controller
-            //
-            // MainController.prototype.deleteUser = function ($event) {
-            //       _this.$http.post('/api/user/delete/' + this.user._id, this.user).then(function successCallback(response) {
-            //       console.log(response);
-            //       console.log("Hey");
-            //   });
-            // };
+            //   this.userService.
+            // }
 
-
-
-
-
+            //create a different controller
 
             MainController.prototype.setFormScope = function (scope) {
                 this.formScope = scope;
@@ -456,7 +444,7 @@ var app;
                     _this.$http.post('/api/user/create', user).then(function (__response) {
                         _this.$http.post('/api/coach/newuser/' + this.user.id + '?' + __response.data.id, user).then(function (client) {
                           console.log("Here fb");
-                          self.user.clients.push(response.data);
+                          self.user.clients.push(__response.data);
                         });
                     });
                   });

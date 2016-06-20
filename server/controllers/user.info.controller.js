@@ -95,7 +95,7 @@ exports.create = function(req, res) {
           xml.ele('category')
             .ele('pattern', 'XINIT ' + survey._id + user._id)
             .up()
-            .ele('tepmlate', 'Hi! Here\'s a survey your coach wanted me to send you.\n' + survey.questions[0].question);
+            .ele('template', 'Hi! Here\'s a survey your coach wanted me to send you.\n' + survey.questions[0].question);
           //Find out how the bot normalizes the first question
           var normalizedQuestion;
           bot.talk({extra: true, trace: true, input: 'XNORM ' + survey.questions[0].question}, function (err, res) {
@@ -111,7 +111,7 @@ exports.create = function(req, res) {
             });
 
             //TODO: fix if IE support becomes an issue
-            var total = Object.keys(survey.questions).length - 1;
+            var total = survey.questions.length - 1;
             var count = 0;
             var xmlString = '';
             for (var key = 0; key < survey.questions.length; key++) {

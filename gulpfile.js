@@ -72,7 +72,7 @@ gulp.task('nodemon' ,['sass'], function (cb) {
 gulp.task('browser-sync', ['nodemon'], function() {
 	browserSync.init(null, {
     injectChanges: true,
-		proxy: "http://localhost:12557",
+		proxy: "http://107.170.21.178:12557",
         files: ["app/**/*.*"],
         browser: 'google chrome',
         port: 7000,
@@ -109,7 +109,7 @@ gulp.task('clean', function() {
       });
     }
   });
-  /*SurveyTemplate.find({}, function (err, surveys) {
+  SurveyTemplate.find({}, function (err, surveys) {
     _.each(surveys, function (survey) {
       User.find({}, function (err, users) {
         _.each(users, function (user) {
@@ -133,7 +133,7 @@ gulp.task('clean', function() {
         });
       });
     })
-  })*/
+  })
   var conn = mongoose.connection;
   conn.on('error', console.error.bind(console, 'connection error:'));
   conn.once('open', function() {

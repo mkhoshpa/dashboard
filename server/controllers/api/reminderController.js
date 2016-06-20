@@ -363,7 +363,6 @@ exports.receiveResponse = function (req, res) {
           });
           io.emit('response', reminder);
         } else {
-          if (user.surveyTemplates.length > 0) {
           console.log('Must be a response to a survey question');
             // Send response out to bot, send bot's response back to user
             // if the message contains survey id, get all responses from bot and store in survey
@@ -569,7 +568,6 @@ exports.receiveResponse = function (req, res) {
               }
             });
           }
-        }
       });
       user.reminders[user.reminders.length - 1].responses.push({response: req.body.Body, createdBy: user._id});
       _user.set(user);
@@ -581,146 +579,122 @@ exports.receiveResponse = function (req, res) {
         console.log(JSON.stringify(__user));
       });
     } else {
-      User.findById(user.coaches[0], function (err, coach) {
-          if (coach.surveyTemplates.length > 0) {
-            console.log('Must be a response to a survey');
+      console.log('Must be a response to a survey');
+      console.log();
+      console.log(req.body);
+      console.log();
+      bot.talk({that: user.pandoraBotSaid, extra: true, trace: true, sessionid: user.pandoraSessionId, client_name: user._id, input: user._id + ' ' + req.body.Body}, function (err, response) {
+        if (!err) {
+          console.log('The bot responded: ' + JSON.stringify(response));
+
+          User.findByIdAndUpdate(
+            user._id,
+            {pandoraBotSaid: response.responses.join(' ')},
+            {new: true},
+            function(err, user) {
+              console.log('User updated');
+              console.log(user);
+          });
+
+          User.findOne({phoneNumber: req.body.From}, function (err, user) {
             console.log();
-            console.log(req.body);
+            console.log('The user is:');
+            console.log(JSON.stringify(user));
             console.log();
-            bot.talk({that: user.pandoraBotSaid, extra: true, trace: true, sessionid: user.pandoraSessionId, client_name: user._id, input: user._id + ' ' + req.body.Body}, function (err, response) {
-              if (!err) {
-                console.log('The bot responded: ' + JSON.stringify(response));
+            SurveyTemplate.find({author: user.coaches[0]}, function (err, surveys) {
+              console.log('The surveys are:');
+              console.log(surveys);
+              console.log();
+              var containsId = false;
+              var survey;
+              for (var i = 0; i < surveys.length; i++) {
+                survey = surveys[i];
+                if (response.responses.join(' ').indexOf(survey._id) > -1) {
+                  containsId = true;
+                  break;
+                } else {
+                  containsId = false;
+                }
+              }
+              console.log('The survey is:');
+              console.log(JSON.stringify(survey));
+              // if the response includes the survey id
+              console.log('Response included survey id: ' + response.responses.join(' ').indexOf(survey._id));
+              if (containsId) {
+                console.log('Survey has ended, retrieving results...');
 
                 User.findByIdAndUpdate(
                   user._id,
-                  {pandoraBotSaid: response.responses.join(' ')},
+                  {pandoraBotSaid: ''},
                   {new: true},
-                  function(err, user) {
+                  function (err, user) {
                     console.log('User updated');
                     console.log(user);
                 });
 
-                User.findOne({phoneNumber: req.body.From}, function (err, user) {
-                  console.log();
-                  console.log('The user is:');
-                  console.log(JSON.stringify(user));
-                  console.log();
-                  SurveyTemplate.find({author: user.coaches[0]}, function (err, surveys) {
-                    console.log('The surveys are:');
-                    console.log(surveys);
+                // get the user's responses from the bot
+                console.log()
+                var count = 0;
+                console.log('THE LENGTH IS: ' + survey.questions.length);
+                console.log();
+                for (var key = 0; key < survey.questions.length; key++) {
+                //for (var key in survey.questions) {
+                  (function (question, index) {
                     console.log();
-                    var containsId = false;
-                    var survey;
-                    for (var i = 0; i < surveys.length; i++) {
-                      survey = surveys[i];
-                      if (response.responses.join(' ').indexOf(survey._id) > -1) {
-                        containsId = true;
-                        break;
-                      } else {
-                        containsId = false;
-                      }
-                    }
-                    console.log('The survey is:');
-                    console.log(JSON.stringify(survey));
-                    // if the response includes the survey id
-                    console.log('Response included survey id: ' + response.responses.join(' ').indexOf(survey._id));
-                    if (containsId) {
-                      console.log('Survey has ended, retrieving results...');
-
-                      User.findByIdAndUpdate(
-                        user._id,
-                        {pandoraBotSaid: ''},
-                        {new: true},
-                        function (err, user) {
-                          console.log('User updated');
-                          console.log(user);
-                      });
-
-                      // get the user's responses from the bot
-                      console.log()
-                      var count = 0;
-                      console.log('THE LENGTH IS: ' + survey.questions.length);
-                      console.log();
-                      for (var key = 0; key < survey.questions.length; key++) {
-                      //for (var key in survey.questions) {
-                        (function (question, index) {
-                          console.log();
-                          console.log('THE QUESTION IS ' + JSON.stringify(question));
-                          console.log();
-                          console.log('Getting response with id: ' + survey._id + count);
-                          bot.talk({extra: true, trace: true, sessionid: user.pandoraSessionId, client_name: user._id, input: 'XGET ' + survey._id + user._id + count}, function (err, response) {
-                            if (!err) {
-                              bot.talk({extra: true, trace: true, sessionid: user.pandoraSessionId, client_name: user._id, input: 'XDENORM ' + response.responses.join(' ')}, function (err, response) {
+                    console.log('THE QUESTION IS ' + JSON.stringify(question));
+                    console.log();
+                    console.log('Getting response with id: ' + survey._id + count);
+                    bot.talk({extra: true, trace: true, sessionid: user.pandoraSessionId, client_name: user._id, input: 'XGET ' + survey._id + user._id + count}, function (err, response) {
+                      if (!err) {
+                        bot.talk({extra: true, trace: true, sessionid: user.pandoraSessionId, client_name: user._id, input: 'XDENORM ' + response.responses.join(' ')}, function (err, response) {
+                          if (!err) {
+                            // Store user's response inside survey.
+                            console.log();
+                            console.log('THE USER\'S RESPONSE IS: ' + response.responses.join(' '));
+                            console.log();
+                            console.log('THE KEY IS: ' + key);
+                            console.log('THE COUNTER IS: ' + count);
+                            console.log();
+                            console.log(survey.questions);
+                            console.log(key);
+                            console.log('The length is: ' + survey.questions.length);
+                            console.log();
+                            console.log('THE QUESTION IS: ' + JSON.stringify(question));
+                            console.log();
+                            //console.log(survey.questions[key]);
+                            question.responses.push({
+                              from: user._id,
+                              response: response.responses.join(' '),
+                              time: Date.now()
+                            });
+                            console.log(survey.questions);
+                            var __survey = survey;
+                            console.log();
+                            console.log();
+                            console.log('Sending survey');
+                            console.log(survey);
+                            ioSurvey.emit('survey', survey);
+                            console.log();
+                            SurveyTemplate.findByIdAndUpdate(
+                              survey._id,
+                              survey,
+                              {new: true},
+                              function (err, survey) {
                                 if (!err) {
-                                  // Store user's response inside survey.
-                                  console.log();
-                                  console.log('THE USER\'S RESPONSE IS: ' + response.responses.join(' '));
-                                  console.log();
-                                  console.log('THE KEY IS: ' + key);
-                                  console.log('THE COUNTER IS: ' + count);
-                                  console.log();
-                                  console.log(survey.questions);
-                                  console.log(key);
-                                  console.log('The length is: ' + survey.questions.length);
-                                  console.log();
-                                  console.log('THE QUESTION IS: ' + JSON.stringify(question));
-                                  console.log();
-                                  //console.log(survey.questions[key]);
-                                  question.responses.push({
-                                    from: user._id,
-                                    response: response.responses.join(' '),
-                                    time: Date.now()
-                                  });
-                                  console.log(survey.questions);
-                                  var __survey = survey;
-                                  console.log();
-                                  console.log();
-                                  console.log('Sending survey');
+                                  console.log('Survey updated');
                                   console.log(survey);
-                                  ioSurvey.emit('survey', survey);
                                   console.log();
-                                  SurveyTemplate.findByIdAndUpdate(
-                                    survey._id,
-                                    survey,
-                                    {new: true},
-                                    function (err, survey) {
-                                      if (!err) {
-                                        console.log('Survey updated');
-                                        console.log(survey);
-                                        console.log();
-                                        console.log('DIS B DA KEY: ' + key);
-                                        console.log('DA INDEX BE: ' + index);
-                                        console.log();
-                                        if (index == survey.questions.length - 1) {
-                                          console.log();
-                                          console.log('UPDATE UPDATE UPDATE');
-                                          console.log('Should be updating user');
-                                          console.log();
-                                          User.findByIdAndUpdate(
-                                            survey.author,
-                                            {'surveyTemplates': survey},
-                                            {new: true},
-                                            function (err, user) {
-                                              if (!err) {
-                                                console.log('User updated');
-                                                console.log(user);
-                                              } else {
-                                                console.log('Error:');
-                                                console.log(err);
-                                              }
-                                          });
-                                        }
-
-                                      } else {
-                                        console.log('Error:');
-                                        console.log(err);
-                                      }
-                                  });
-                                /*
-                                  if (key == survey.questions.length - 1) {
+                                  console.log('DIS B DA KEY: ' + key);
+                                  console.log('DA INDEX BE: ' + index);
+                                  console.log();
+                                  if (index == survey.questions.length - 1) {
+                                    console.log();
+                                    console.log('UPDATE UPDATE UPDATE');
+                                    console.log('Should be updating user');
+                                    console.log();
                                     User.findByIdAndUpdate(
                                       survey.author,
-                                      {$addToSet: {'surveyTemplates': survey}},
+                                      {'surveyTemplates': survey},
                                       {new: true},
                                       function (err, user) {
                                         if (!err) {
@@ -731,92 +705,112 @@ exports.receiveResponse = function (req, res) {
                                           console.log(err);
                                         }
                                     });
-                                  }*/
-                                  // add the user's responses to the survey object + update survey
-                                  /*SurveyTemplate.findById(survey._id, function (err, _survey) {
-                                    console.log(_survey);
-                                    var survey = _survey.toObject();
-                                    survey = __survey;
-                                    _survey.set(survey);
-                                    _survey.save(function (err, _survey) {
-                                      if (!err) {
-                                        console.log();
-                                        console.log('Survey saved.');
-                                        console.log(JSON.stringify(_survey));
-                                        console.log();
-                                      } else {
-                                        console.log();
-                                        console.log('An error occurred:');
-                                        console.log(err);
-                                        console.log();
-                                        console.log('Attempted to save survey: ' + JSON.stringify(survey));
-                                        console.log();
-                                      }
-                                    });
-                                  });*/
-                                  console.log();
+                                  }
+
                                 } else {
+                                  console.log('Error:');
                                   console.log(err);
                                 }
+                            });
+/*
+                            if (key == survey.questions.length - 1) {
+                              User.findByIdAndUpdate(
+                                survey.author,
+                                {$addToSet: {'surveyTemplates': survey}},
+                                {new: true},
+                                function (err, user) {
+                                  if (!err) {
+                                    console.log('User updated');
+                                    console.log(user);
+                                  } else {
+                                    console.log('Error:');
+                                    console.log(err);
+                                  }
                               });
-                            } else {
-                              console.log(err);
-                            }
-                          });
-                          count++;
-                        }(survey.questions[key], key));
-                      }
-                      /*console.log();
-                      console.log(JSON.stringify(survey));
-                      User.findByIdAndUpdate(
-                        survey.author,
-                        {$addToSet: {'surveyTemplates': survey}},
-                        {new: true},
-                        function (err, user) {
-                          if (!err) {
-                            console.log();
-                            console.log('User updated');
-                            console.log(JSON.stringify(user));
+                            }*/
+                            // add the user's responses to the survey object + update survey
+                            /*SurveyTemplate.findById(survey._id, function (err, _survey) {
+                              console.log(_survey);
+                              var survey = _survey.toObject();
+                              survey = __survey;
+                              _survey.set(survey);
+                              _survey.save(function (err, _survey) {
+                                if (!err) {
+                                  console.log();
+                                  console.log('Survey saved.');
+                                  console.log(JSON.stringify(_survey));
+                                  console.log();
+                                } else {
+                                  console.log();
+                                  console.log('An error occurred:');
+                                  console.log(err);
+                                  console.log();
+                                  console.log('Attempted to save survey: ' + JSON.stringify(survey));
+                                  console.log();
+                                }
+                              });
+                            });*/
                             console.log();
                           } else {
-                            console.log('Error:');
                             console.log(err);
                           }
-                      });*/
+                        });
+                      } else {
+                        console.log(err);
+                      }
+                    });
+                    count++;
+                  }(survey.questions[key], key));
+                }
+                /*console.log();
+                console.log(JSON.stringify(survey));
+                User.findByIdAndUpdate(
+                  survey.author,
+                  {$addToSet: {'surveyTemplates': survey}},
+                  {new: true},
+                  function (err, user) {
+                    if (!err) {
                       console.log();
-                      // trim the survey id from the response and send response to user
-                      var trimmedResponse = response.responses.join(' ').replace(' ' + survey._id + user._id, '');
-                      twilio.sendMessage({
-                        to: req.body.From,
-                        from: config.phoneNumbers.reminders,
-                        body: trimmedResponse
-                      }, function (err, responseData) {
-                        if (!err) {
-                          console.log(JSON.stringify(responseData));
-                        } else {
-                          console.log(err);
-                        }
-                      });
+                      console.log('User updated');
+                      console.log(JSON.stringify(user));
+                      console.log();
                     } else {
-                      twilio.sendMessage({
-                        to: req.body.From,
-                        from: config.phoneNumbers.reminders,
-                        body: response.responses.join(' ')
-                      }, function (err, responseData) {
-                        if (!err) {
-                          console.log(JSON.stringify(responseData));
-                        } else {
-                          console.log(err);
-                        }
-                      });
+                      console.log('Error:');
+                      console.log(err);
                     }
-                  });
+                });*/
+                console.log();
+                // trim the survey id from the response and send response to user
+                var trimmedResponse = response.responses.join(' ').replace(' ' + survey._id + user._id, '');
+                twilio.sendMessage({
+                  to: req.body.From,
+                  from: config.phoneNumbers.reminders,
+                  body: trimmedResponse
+                }, function (err, responseData) {
+                  if (!err) {
+                    console.log(JSON.stringify(responseData));
+                  } else {
+                    console.log(err);
+                  }
                 });
               } else {
-                console.log(err);
+                twilio.sendMessage({
+                  to: req.body.From,
+                  from: config.phoneNumbers.reminders,
+                  body: response.responses.join(' ')
+                }, function (err, responseData) {
+                  if (!err) {
+                    console.log(JSON.stringify(responseData));
+                  } else {
+                    console.log(err);
+                  }
+                });
               }
             });
-          }
+          });
+        } else {
+          console.log(err);
+        }
       });
     }
   });

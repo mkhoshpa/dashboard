@@ -13,9 +13,9 @@
     <span md-highlight-text="vm.searchText" md-highlight-flags="^i">{{item.display}}</span>
 </md-autocomplete> -->
 
-<md-content id="client-overview-container" class="dashboard-container overlay-5 padded-content-page" layout="row"  flex>
+<md-content id="client-overview-container" class="dashboard-container overlay-5 padded-content-page" layout="row"  >
   <div layout="column" layout-sm="column" layout-margin flex >
-     <md-card >
+     <md-card class = "datatableback">
        <!-- Filter Selection -->
        <md-toolbar class="md-table-toolbar" style="background-color: white;" ng-hide="vm.filter.show">
          <div class="md-toolbar-tools">
@@ -25,7 +25,14 @@
 
           <!-- adding selector so we can pick the columns we want -->
 
-
+          <md-input-container>
+            <label>Select Survey</label>
+            <md-select  ng-model = "vm.selectedDataSurvey"  aria-label = "UDOP" >
+              <md-option ng-repeat = "s in vm.user.surveyTemplates" ng-value = "s">
+                {{s.title}}
+              </md-option>
+            </md-select>
+          </md-input-container>
 
           <!-- <md-select  ng-model = "vm.selectedColumns"  aria-label = "UDOP" placeholder = "Pick Columns">
 
@@ -55,51 +62,18 @@
             <input style="padding-left: 5px;" type="text" ng-model="vm.query.filter" placeholder="search" class="ng-valid ng-touched ng-valid-parse ng-pristine" aria-invalid="false">
 
           </form>
-          <md-button class="md-icon-button md-button md-ink-ripple" ng-transclude="" ng-click="vm.removeFilter()" aria-label="close">
-            <md-icon class="material-icons">close</md-icon>
-            <div class="md-ripple-container"></div>
-          </md-button>
+
 <!--
           <form flex="" name="filter.form" class="ng-valid flex ng-valid-parse ng-pristine">
             <md-select style="padding-left: 5px;" type="text" ng-model="vm.query.filter" placeholder="SelectSurvey" class="ng-valid ng-touched ng-valid-parse ng-pristine" aria-invalid="false">
           </form> -->
+
+          <md-button class="md-icon-button md-button md-ink-ripple" ng-transclude="" ng-click="vm.removeFilter()" aria-label="close">
+            <md-icon class="material-icons">close</md-icon>
+            <div class="md-ripple-container"></div>
+          </md-button>
         </div>
        </md-toolbar>
-
-       <md-toolbar class="md-table-toolbar">
-
-         <div class = "md-toolbar-tools">
-           <md-switch ng-model="data.cb1" flex = "15" aria-label="Rostr/Survey View" class="md-primary">
-             <p ng-if = "!data.cb1">
-               Rostr
-             </p>
-             <p ng-if = "data.cb1">
-               Survey
-             </p>
-           </md-switch>
-
-           <md-input-container flex = "15" ng-hide = '!data.cb1'>
-             <label>Select Survey</label>
-             <md-select  ng-model = "vm.selectedDataSurvey"  style="margin: 5px;" aria-label = "UDOP" >
-               <md-option ng-repeat = "s in vm.user.surveyTemplates" ng-value = "s">
-                 {{s.title}}
-               </md-option>
-             </md-select>
-           </md-input-container>
-        </div>
-
-       </md-toolbar>
-
-
-
-
-
-
-
-
-
-
-
        <md-toolbar class="md-table-toolbar" ng-if="vm.selected.length > 0" style="background-color: white;">
          <!-- <md-chips ng-model="vm.selected" style="padding-right: 16px; padding-left: 13px;">
           <md-chip-template>
@@ -124,7 +98,9 @@
                             <th md-column>Pipeline</th>
                             <th md-column>Reminder</th>
                             <th md-column>Reminder Response</th>
-
+                            <th md-column>Info Survey - Title </th>
+                            <th md-column>Info Survey - Weapon </th>
+                            <th md-column>Info Survey - Home </th>
 
                             <!-- <th md-column  ng-repeat = "question in vm.selectedDataSurvey.questions"> {{question.questionHeader}}</th> -->
 
@@ -148,7 +124,7 @@
                         -->
                             <!-- <th md-column md-numberic md-order-by="id"><span translate>{{vm.columns.id}}</span></th> -->
                         </tr>
-                  </thead>
+                    </thead>
                     <tbody md-body>
                       <tr  md-row md-auto-select="false" md-select="client" ng-repeat="client in vm.persons| orderBy: vm.query.order | filter:vm.query.filter  | limitTo: vm.query.limit: (vm.query.page - 1) * vm.query.limit">
 

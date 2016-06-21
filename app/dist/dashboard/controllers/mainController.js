@@ -96,6 +96,27 @@ var app;
                 for (var key in this.questions) {
                   questions.push(this.questions[key]);
                 }
+                /*
+                 * This loop serves two purposes: transform the questions object
+                 * into a questions array, and transform some of the properties
+                 * into the correct form for the backend.
+                 */
+                var questions = [];
+                for (var key in this.questions) {
+                  // Rename the 'questionHeader' property to 'header'
+                  if (this.questions[key].hasOwnProperty('questionHeader')) {
+                    this.questions[key].header = this.questions[key].questionHeader;
+                    delete this.questions[key].questionHeader;
+                  }
+
+                  // Turn the 'type' property into the correct form for the backend
+                  if (this.questions[key].type == 'Yes/No') this.questions[key].type = 'YESNO';
+                  if (this.questions[key].type == 'Written Answer') this.questions[key].type = 'WRITTEN';
+                  if (this.questions[key].type == 'Scale from 1 to 5') this.questions[key].type = 'SCALE';
+
+                  // Add the current question to the questions array
+                  questions.push(this.questions[key]);
+                }
                 var surveyTemplate = {
                   title: this.surveyTitle,
                   questions : questions,
@@ -242,10 +263,44 @@ var app;
                   console.log();
                   console.log(_this.selectedSurvey.selectedUsers);
                   console.log();
-                  _this.$http.post('/api/surveyTemplate/schedule', _this.selectedSurvey).then(function (response) {
-                    console.log(response.data);
-                  });
-                });
+                  var updatedSurvey = {
+
+                    repeat: self.selectedSurvey.repeat,
+                    days: self.selectedSurvey.days,
+                    hour: self.selectedSurvey.timeOfDay.getHours(),
+                    minute: self.selectedSurvey.timeOfDay.getMinutes()
+                  };
+
+                  // For all of the users that were assigned a survey
+
+                  //this is making me nervous
+                  for (var i = 0; i < _this.selectedSurvey.selectedUsers.length; i++) {
+
+                    var surveyUserAssign = {
+                      repeat: updatedSurvey.repeat,
+                      days: updatedSurvey.days,
+                      hour: updatedSurvey.hour,
+                      minute: updatedSurvey.minute,
+                      userId: _this.selectedSurvey.selectedUsers[i],
+                      surveyTemplateId: _this.selectedSurvey._id
+                    }
+                    // POST the selectedSurvey to the user
+
+                    console.log("survey if " + surveyUserAssign.surveyTemplateId);
+                    console.log("user id" + surveyUserAssign.userId);
+
+                    //first make a object that can be turned into a object on the back end
+
+                    self.$http.post('/api/assignment/' , surveyUserAssign).then(function (response){
+                      console.log("this sungun worked" + response.data);
+                    });
+                  }});
+
+
+
+
+
+
 
 
               };

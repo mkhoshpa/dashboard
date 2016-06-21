@@ -87,7 +87,6 @@ module.exports = function() {
 	require('../routes/api/messageRoute.js')(app, passport);
 	require('../routes/api/phoneRoute.js')(app, passport);
 	require('../routes/api/surveyTemplateRoute.js')(app, passport);
-		require('../routes/api/pipelineStageroute.js')(app, passport);
 	// Configure static file serving
   app.use(express.static(__dirname + '/../../app'));
   app.use(express.static(__dirname + '/../views'));

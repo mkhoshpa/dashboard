@@ -291,7 +291,7 @@ var app;
 
                     //first make a object that can be turned into a object on the back end
 
-                    self.$http.post('/api/assignment/' , surveyUserAssign).then(function (response){
+                    self.$http.post('/api/assignment/create' , surveyUserAssign).then(function (response){
                       console.log("this sungun worked" + response.data);
                     });
                   }});

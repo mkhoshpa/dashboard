@@ -44,18 +44,17 @@ exports.createBio = function(req, res){
 exports.createPipelineStage = function(req,res){
   console.log("Im here");
 
-  // User.findByIdAndUpdate(req.params.id,
-  // {$set: {"pipelineStage": req.body.body}},
-  // {safe: true},
-  // function(err, user) {
-  //  if(err) {
-  //    console.log(err);
-  //   }
-  // });
-  //
-  // res.send(req.body.body);
-  //
-  res.send({});
+  User.findByIdAndUpdate(req.params.id,
+  {$set: {"pipelineStage": req.body.body}},
+  {safe: true},
+  function(err, user) {
+   if(err) {
+     console.log(err);
+    }
+  });
+
+  res.send(req.body.body);
+
 };
 
 exports.createPhoneNumber = function (req, res) {
@@ -372,7 +371,7 @@ exports.update = function(req,res) {
 exports.delete = function(req, res){
   console.log("hey");
   console.log(req.body);
-  
+
   res.send("403");
 
 

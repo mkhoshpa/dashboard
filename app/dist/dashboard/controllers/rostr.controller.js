@@ -99,17 +99,17 @@
       vm.query = {
         filter: '',
         order: 'username',
-        limit: 10,
+        limit: 15,
         page: 1
       }
 
       vm.removeFilter = function () {
-        vm.filter.show = false;
+        console.log(vm.query);
          vm.query.filter = '';
 
-         if(vm.filter.form.$dirty) {
-           vm.filter.form.$setPristine();
-         }
+        //  if(vm.filter.form.$dirty) {
+        //    vm.filter.form.$setPristine();
+        //  }
       };
 
 

@@ -11,6 +11,10 @@ var User = require('./user.js');
 var assignmentSchema = new Schema({
 
   repeat: {type: Boolean},
+  type: {
+    type: String,
+    enum: ['reminder', 'survey'],
+    default: 'reminder'},
 
   days: [{type: Number, min: 0, max: 6}],
   hour: {type: Number, min: 0, max: 23},
@@ -18,7 +22,9 @@ var assignmentSchema = new Schema({
 
   userId: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
 
-  surveyTemplateId: {type: mongoose.Schema.Types.ObjectId, ref: 'SurveyTemplate'}
+  surveyTemplateId: {type: mongoose.Schema.Types.ObjectId, ref: 'SurveyTemplate'},
+
+  reminderId: {type: mongoose.Schema.Types.ObjectId, ref: 'Reminder'}
 
 });
 

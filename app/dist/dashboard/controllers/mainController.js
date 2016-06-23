@@ -282,7 +282,8 @@ var app;
                       hour: updatedSurvey.hour,
                       minute: updatedSurvey.minute,
                       userId: _this.selectedSurvey.selectedUsers[i],
-                      surveyTemplateId: _this.selectedSurvey._id
+                      surveyTemplateId: _this.selectedSurvey._id,
+                      type: "survey"
                     }
                     // POST the selectedSurvey to the user
 
@@ -291,7 +292,7 @@ var app;
 
                     //first make a object that can be turned into a object on the back end
 
-                    self.$http.post('/api/assignment/' , surveyUserAssign).then(function (response){
+                    self.$http.post('/api/assignment/create' , surveyUserAssign).then(function (response){
                       console.log("this sungun worked" + response.data);
                     });
                   }});

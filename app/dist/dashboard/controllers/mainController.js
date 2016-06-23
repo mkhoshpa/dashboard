@@ -282,7 +282,8 @@ var app;
                       hour: updatedSurvey.hour,
                       minute: updatedSurvey.minute,
                       userId: _this.selectedSurvey.selectedUsers[i],
-                      surveyTemplateId: _this.selectedSurvey._id
+                      surveyTemplateId: _this.selectedSurvey._id,
+                      type: "survey"
                     }
                     // POST the selectedSurvey to the user
 

@@ -20,11 +20,13 @@ var assignmentSchema = new Schema({
   hour: {type: Number, min: 0, max: 23},
   minute: {type: Number, min:0, max:59},
 
-  userId: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+  //TODO get populate to work
 
-  surveyTemplateId: {type: mongoose.Schema.Types.ObjectId, ref: 'SurveyTemplate'},
+  userId: {type: mongoose.Schema.Types.Object, ref: 'User'},
 
-  reminderId: {type: mongoose.Schema.Types.ObjectId, ref: 'Reminder'}
+  surveyTemplateId: {type: mongoose.Schema.Types.Object, ref: 'SurveyTemplate'},
+
+  reminderId: {type: mongoose.Schema.Types.Object, ref: 'Reminder'}
 
 });
 

@@ -29,5 +29,5 @@ var surveyTemplateSchema =  new Schema({
   minute: {type: Number, min: 0, max: 59}
 });
 
-var surveyTemplate = mongoose.model('surveyTemplate',surveyTemplateSchema);
-module.exports = surveyTemplate;
+var SurveyTemplate = mongoose.model('SurveyTemplate',surveyTemplateSchema);
+module.exports = SurveyTemplate;

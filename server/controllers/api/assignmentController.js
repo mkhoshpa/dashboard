@@ -36,7 +36,7 @@ exports.update = function(req, res) {
 exports.delete = function(req, res) {
 
 }
-exports.listNow = function(req, res) {
+exports.convosNow = function(req, res) {
   var now = new Date();
   var hoursNow = now.getHours();
   var minutesNow = now.getMinutes();
@@ -45,13 +45,57 @@ exports.listNow = function(req, res) {
   Assignment.find({days: dayNow})
        .where('hour').equals(hoursNow)
        .where('minute').equals(minutesNow)
-       // .populate('userId')
+       .populate('userId')
+       .populate('surveyTemplateId')
+       .populate('reminderId')
        // we might need these but I doubt it .populate('surveyTemplateId')
-       .exec(function(err, docs){
-         console.log(docs);
+
+       .exec(function(err, assignments){
+
+
+         console.log("testing" + assignments);
+         console.log(assignments);
          console.log('exec assignments/now');
-         if(docs){
-           res.json(docs);
+         if(assignments){
+
+           //ok so first I need to iterate thru the assignments array
+
+           //create a variable to store the trimmed data in
+           var convos = [];
+
+
+           for (var i = 0; i < assignments.length; i++) {
+             var convo = new Object;
+             convo.assignmentId = assignments[i]._id;
+
+             convo.userId  =  assignments[i].userId._id;
+             convo.defaultCommsMedium  =  assignments[i].userId.defaultCommsMedium;
+             //coni].userContactInfo  =  assignments[i].userContactInfo;
+             //coni].questions  =  assignments[i].questions;
+             convo.type  =  assignments[i].type;
+
+             if(convo.type == "survey"){
+               console.log("we got a survey over here");
+               convo.questions = assignments[i].surveyTemplateId.questions;
+               //get survey template id
+               convo.surveyTemplateId = assignments[i].surveyTemplateId._id;
+             } else if (convo.type == "reminder"){
+                console.log("we got a reminder");
+                convo.reminderId = assignments[i].reminderId._id;
+                convo.questions = assignments[i].reminderId.questions;
+             } else {
+               console.error("invalid assignment type");
+             }
+           }
+
+           //need to add time in here ? maybe not
+
+           convos.push(convo);
+           //trim the data so I can make a convo object
+
+
+           //create the convo object
+           res.json(convos);
          }
          else
            console.log(err);

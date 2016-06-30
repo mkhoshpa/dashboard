@@ -69,29 +69,31 @@ exports.convosNow = function(req, res) {
 
            //ok now we need to get the questions
 
-           res.send(assignments);
+           //res.send(assignments);
 
            //ok so first I need to iterate thru the assignments array
 
            //create a variable to store the trimmed data in
-          //  var convos = [];
-           //
-           //
-          //  for (var i = 0; i < assignments.length; i++) {
-          //    //var convo = new Object;
-          //    convo.assignmentId = assignments[i]._id;
-           //
-          //    convo.userId  =  assignments[i].userId._id;
-          //    convo.defaultCommsMedium  =  assignments[i].userId.defaultCommsMedium;
-          //    //coni].userContactInfo  =  assignments[i].userContactInfo;
-          //    //coni].questions  =  assignments[i].questions;
-          //    convo.type  =  assignments[i].type;
-           //
-          //    if(convo.type == "survey"){
-          //      console.log("we got a survey over here");
-          //      convo.questions = assignments[i].surveyTemplateId.questions;
+           var convos = [];
+
+          for (var i = 0; i < assignments.length; i++) {
+            console.log(assignments[i]);
+            var convo = new Object;
+            convo.assignmentId = assignments[i]._id;
+
+            convo.userId  =  assignments[i].userId._id;
+            convo.userMedium  =  assignments[i].userId.defaultCommsMedium;
+            convo.userContactInfo = {};
+            convo.userContactInfo.phoneNumber  =  assignments[i].userId.phoneNumber;
+            //convo.questions  =  assignments[i].questions;
+            convo.type  =  assignments[i].type;
+
+            if(convo.type == "survey"){
+              console.log("we got a survey over here");
+              convo.questions = assignments[i].surveyTemplateId.questions;
           //      //get survey template id
-          //      convo.surveyTemplateId = assignments[i].surveyTemplateId._id;
+              convo.surveyId = assignments[i].surveyTemplateId._id;
+            }
           //    } else if (convo.type == "reminder"){
           //       console.log("we got a reminder");
           //       convo.reminderId = assignments[i].reminderId._id;
@@ -99,11 +101,12 @@ exports.convosNow = function(req, res) {
           //    } else {
           //      console.error("invalid assignment type");
           //    }
-          //  }
+          convos.push(convo);
+            }
+            res.json(convos);
            //
           //  //need to add time in here ? maybe not
            //
-          //  convos.push(convo);
           //  //trim the data so I can make a convo object
            //
            //

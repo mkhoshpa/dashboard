@@ -9,7 +9,15 @@ var surveyTemplateSchema =  new Schema({
   //title: {type: String, required: true},
   title: {type: String, required: true},
   questions: [
-    {type: mongoose.Schema.Types.Object, ref: 'SurveyQuestions'},
+
+    {
+      question:{type: String, required: true},
+      header: {type: String, required: true},
+      type: {
+        type: String,
+        enum: ['YESNO', 'SCALE', 'WRITTEN'],
+      }
+     },
   ],
   author: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
   selectedUsers: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
@@ -29,5 +37,5 @@ var surveyTemplateSchema =  new Schema({
   minute: {type: Number, min: 0, max: 59}
 });
 
-var surveyTemplate = mongoose.model('surveyTemplate',surveyTemplateSchema);
-module.exports = surveyTemplate;
+var SurveyTemplate = mongoose.model('SurveyTemplate',surveyTemplateSchema);
+module.exports = SurveyTemplate;

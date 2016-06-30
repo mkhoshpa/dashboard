@@ -862,12 +862,12 @@ exports.sendReminders = function () {
       }
     });
 }
-
-// Every minute all day every day
-var rule = new schedule.RecurrenceRule();
-rule.dayOfWeek = [new schedule.Range(0, 6)];
-var job = schedule.scheduleJob(rule, function() {
-    exports.sendReminders();
-});
+//
+// // Every minute all day every day
+// var rule = new schedule.RecurrenceRule();
+// rule.dayOfWeek = [new schedule.Range(0, 6)];
+// var job = schedule.scheduleJob(rule, function() {
+//     exports.sendReminders();
+// });
 
 //need a method to find all the reminders that need to go out

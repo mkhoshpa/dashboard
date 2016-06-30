@@ -28,6 +28,7 @@ exports.create = function(req, res) {
   var surveyTemplate = new SurveyTemplate(req.body);
   surveyTemplate.save(function(err, surveyTemplate) {
     if(!err) {
+      console.log("this worked");
           User.findByIdAndUpdate(
             surveyTemplate.author,
             // $addToSet works like $push but prevents duplicates
@@ -38,12 +39,14 @@ exports.create = function(req, res) {
                 console.log(err);
               }
               else {
-                console.log();
+                console.log(surveyTemplate);
                 console.log('Printing user...');
                 console.log(user);
               }
             }
           );
+    } else {
+      console.log(err);
     }
   });
 

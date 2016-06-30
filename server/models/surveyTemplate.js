@@ -9,7 +9,15 @@ var surveyTemplateSchema =  new Schema({
   //title: {type: String, required: true},
   title: {type: String, required: true},
   questions: [
-    {type: mongoose.Schema.Types.Object, ref: 'SurveyQuestions'},
+
+    {
+      question:{type: String, required: true},
+      header: {type: String, required: true},
+      type: {
+        type: String,
+        enum: ['YESNO', 'SCALE', 'WRITTEN'],
+      }
+     },
   ],
   author: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
   selectedUsers: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],

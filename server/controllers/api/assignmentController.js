@@ -2,6 +2,7 @@
 
 var mongoose = require('mongoose');
 var User = require('../../models/user.js'),
+
 Assignment = require('../../models/assignment.js');
 
 ///create a assignment.js or change as assignment for right now is only a string.
@@ -54,9 +55,20 @@ exports.convosNow = function(req, res) {
 
 
         // console.log("testing" + assignments);
-         //console.log(assignments);
+         console.log(assignments);
          console.log('exec assignments/now');
-         if(assignments){
+         if(!err){
+          //  for(var i = 0; i <assignments.length; i++){
+          //    var questionsId = assignments[i].surveyTemplateId.questions;
+          //    for (var j = 0; j < questionsId.length; j++){
+          //      SurveyQuestion.findById(questionsId._id)
+          //    }
+          //
+          //  SurveyQuestion.findById
+
+
+           //ok now we need to get the questions
+
            res.send(assignments);
 
            //ok so first I need to iterate thru the assignments array

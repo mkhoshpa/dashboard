@@ -39,7 +39,6 @@ exports.delete = function(req, res) {
 }
 
 
-}
 
 exports.list = function(req, res) {
   Response.find({}, function(err, obj) {

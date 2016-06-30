@@ -1,6 +1,7 @@
 'use strict';
 //not used
 var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
 //response schema is super dumb and doesn't figure out status by itself -
 //might not be a bad idea to make a status model actually

@@ -377,6 +377,24 @@ exports.delete = function(req, res){
 
 }
 
+exports.getUser = function(req,res){
+  console.log("getUser");
+  console.log(req.params.id);
+  User.findOne({_id: req.params.id}, function(err, obj){
+    if(err){
+      console.log("crap");
+    }
+    else {
+      console.log(obj);
+      res.json(obj);
+    }
+  });
+}
+
+
+
+
+
 exports.parseCSV = function (req, res) {
   console.log(req.body.textToParse);
   parse(req.body.textToParse, function (err, output) {

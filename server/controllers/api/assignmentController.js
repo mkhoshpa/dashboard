@@ -127,3 +127,17 @@ exports.list = function(req, res) {
 
 
 }
+exports.selectedlist  = function (req, res) {
+  console.log(req.params.id);
+  Assignment.find(req.params.id, function(err, obj){
+    if(err){
+      console.log("crap");
+    }
+    else {
+      console.log(obj);
+      res.json(obj);
+    }  
+  });
+
+
+}

@@ -5,12 +5,16 @@
     .module('dashboard')
     .controller('ClientOverviewController', ClientOverviewController);
 
-    ClientOverviewController.$inject = ['user', '$scope'];
+    ClientOverviewController.$inject = ['user', '$scope', '$mdToast', '$http', '$mdEditDialog'];
 
-    function ClientOverviewController(user, $scope) {
+    function ClientOverviewController(user, $scope, $mdToast, $http, $mdEditDialog) {
       var vm = this;
       vm.bookmark;
       vm.user = user.current;
+      vm.$mdToast = $mdToast;
+      vm.$http = $http;
+
+
       //vm.clients2 = vm.user.clients;
 
       //vm.clients2[0].username = "Jon Snow";
@@ -79,22 +83,39 @@
 
 
 
-      vm.possibleColumns = {};
+      vm.possibleColumns = [];
       //vm.contents = contents(vm.clients);
       vm.selected = [];
 
       vm.testResponses = ['Good', 'nice']
 
+      //Selecting the columns in the md-select
+      vm.columns = [
 
-      vm.columns = {
-           avatar: '',
-           name: 'Name',
-           status: 'Status',
-           recent: 'Most Recent Activity'
-          //  id: 'TABLE.COLUMNS.ID'
-       };
+          {
+            index: "0",
+            name: "Pipeline",
+            order: "pipelineStage"
+          },
+          {
+            index: "1",
+            name: "Most Recent Activity",
+            order: ""
+          },
+          {
+            index: "2",
+            name: "Latest Reminder",
+            order: ""
+          },
+          {
+            index: "3",
+            name: "Latest Response",
+            order: ""
+          }
+       ];
 
-
+      //Selected the columns in the md-select
+      vm.selectedColumns = [];
 
       vm.query = {
         filter: '',
@@ -103,13 +124,144 @@
         page: 1
       }
 
+      //Used for the pipeline
+      vm.pipelineOptions = [{type: "lead"}, {type: "trail"}, {type: "active-client"}, {type: "previous-client"},{type: "archived"},{type: "NA"} ];
+
+      //Updating the pipeline
+      vm.addPipelineStage = function (client) {
+        console.log("add pipeline to backend");
+        console.log(client);
+        console.log($mdToast);
+        if(!client.tempPipelineStage){
+          console.log('No client');
+        }
+        else
+        {
+          var pipelineStage = {
+            body: client.tempPipelineStage,
+            author: vm.user.id,
+            assignee: client.id
+          }
+
+
+          console.log(pipelineStage);
+
+          //Will neeed to change when we update the backend. Need two post one to creat and another adding to the user.
+          vm.$http.post('/api/pipelineStage/create/' + pipelineStage.assignee, pipelineStage).then(function successCallback(response) {
+             console.log(response.data);
+             console.log();
+             console.log('HERE');
+             //Does not update on front line on switch back but backend is good
+             client.pipelineStage = response.data.body;
+          });
+          console.log(vm.user);
+          this.openToast("Pipeline Stage Updated");
+
+        }
+      };
+
+
+
+      vm.surveyViewClients = [];
+
+
+
+
+
+
+
+
+
+
+      vm.updateTable = function(){
+        vm.surveyViewClients = [];
+        console.log('hey');
+        if(vm.selectedDataSurvey){
+          console.log(vm.selectedDataSurvey._id);
+
+        vm.$http.get('/api/assigment/selectedSurvey/' + vm.selectedDataSurvey._id).then(function successCallback(response){
+
+            if(response.data.length !== 0){
+              console.log(response.data);
+              response.data.forEach(function(assignment){
+                console.log("this should be the assigments");
+                console.log(assignment);
+                console.log("this should be the userId");
+                  console.log(assignment.userId);
+                 vm.$http.get('/api/user/selectedAssignment/'+ assignment.userId).then(function successCallback(response2){
+                   console.log(response2);
+                   vm.$http.get('/api/responses/selecetedAssignment/' + assignment._id).then(function successCallback(response3){
+                     console.log(response3);
+                     if(response3.data[0]){
+                       console.log('good');
+                       var client = {
+                         info: response2.data,
+                         //Change this
+                         responses: response3.data[0]
+                       }
+                     }
+                     else{
+                       console.log('bad');
+                       var client = {
+                         info: response2.data,
+                         responses: []
+                       }
+                     }
+                     vm.surveyViewClients.push(client);
+                     console.log(client)
+                   });
+
+                 })
+
+              });
+            }
+        })
+
+
+
+
+        }
+      };
+
+
+
+      //search engine filter
       vm.removeFilter = function () {
         console.log(vm.query);
          vm.query.filter = '';
+      };
 
-        //  if(vm.filter.form.$dirty) {
-        //    vm.filter.form.$setPristine();
-        //  }
+
+
+      //For the md-select and checkboxes all 5 methods
+      vm.toggle = function (item, list) {
+          var idx = list.indexOf(item);
+          if (idx > -1)
+              list.splice(idx, 1);
+          else
+              list.push(item);
+      };
+
+      vm.exists = function (item, list) {
+          return list.indexOf(item) > -1;
+      };
+
+      vm.toggleAll = function () {
+          if (this.selectedColumns.length === vm.columns.length) {
+            this.selectedColumns = [];
+          }
+          else if (this.selectedColumns.length === 0 || this.selectedColumns.length > 0) {
+            this.selectedColumns = vm.columns.slice(0);
+          }
+      };
+
+      vm.isChecked = function () {
+          return this.selectedColumns.length === vm.columns.length;
+      };
+      ;
+      vm.isIndeterminate = function () {
+          return (this.selectedColumns.length  !== 0 &&
+              this.selectedColumns.length  !== vm.columns.length);
       };
 
 
@@ -131,6 +283,85 @@
       // });
 
       // Get list of clients that match query
+
+  //   vm.addNote = function (event, client) {
+  //      // in case autoselect is enabled
+  //   console.log("here lol");
+  //   var editDialog = {
+  //     modelValue:client.comment,
+  //     placeholder: 'Add a comment',
+  //     save: function (input) {
+  //       if(input.$modelValue === 'Donald Trump') {
+  //         return $q.reject();
+  //       }
+  //       if(input.$modelValue === 'Bernie Sanders') {
+  //         return dessert.comment = 'FEEL THE BERN!'
+  //       }
+  //       dessert.comment = input.$modelValue;
+  //     },
+  //     targetEvent: event,
+  //     title: 'Add a comment',
+  //     validators: {
+  //       'md-maxlength': 30
+  //     }
+  //   };
+  // };
+
+    vm.addNote = function (event, client) {
+     // in case autoselect is enabled
+
+     console.log(vm.selectedDataSurvey);
+
+
+
+
+      // var editDialog = {
+      //   modelValue: client.tempNote,
+      //   placeholder: 'Add a comment',
+      //   save: function (input) {
+      //     if(input.$modelValue === 'Donald Trump') {
+      //       console.log("Haha");
+      //       return $q.reject();
+      //     }
+      //     if(input.$modelValue === 'Bernie Sanders') {
+      //       return dessert.comment = 'FEEL THE BERN!'
+      //     }
+      //     dessert.comment = input.$modelValue;
+      //   },
+      //   targetEvent: event,
+      //   title: 'Add a Note',
+      //   validators: {
+      //     'md-maxlength': 160
+      //   }
+      // };
+      //
+      // var promise = $mdEditDialog.small(editDialog);
+      // var input;
+      // promise.then(function (ctrl) {
+      //   input = ctrl.getInput();
+      //   console.log(input);
+      //   input.$viewChangeListeners.push(function () {
+      //     console.log(input.$modelValue);
+      //   });
+      //
+      // });
+
+    };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       function getClients() {
 
       }

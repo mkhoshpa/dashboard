@@ -47,3 +47,19 @@ exports.list = function(req, res) {
 
 
 }
+
+exports.userResponses = function (req, res) {
+  console.log("userResponses");
+  Response.find({assignment: req.params.id}, function (err, obj) {
+    if(err){
+      console.log("crap");
+    }
+    else {
+      console.log(obj);
+      res.json(obj);
+    }
+  })
+
+
+
+}

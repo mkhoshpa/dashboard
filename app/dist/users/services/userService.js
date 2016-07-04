@@ -18,6 +18,7 @@ var app;
                 this.slackService = slackService;
             }
             UserService.prototype.get = function () {
+                console.log(this.$window);
                 if (this.user.role == "coach") {
                     return this.user;
                 }

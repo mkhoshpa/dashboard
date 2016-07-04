@@ -129,7 +129,7 @@ var app;
                 console.log(this.user);
                 this.user.surveyTemplates.push(response.data);
 
-                //TODO add a post here to add a survey to a coach 
+                //TODO add a post here to add a survey to a coach
 
 
 
@@ -599,7 +599,7 @@ var app;
 
               var _this = this;
               var self = this;
-              console.log(this.user);
+              console.log(this);
               var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
               this.$mdDialog.show({
                   templateUrl: './dist/view/dashboard/notes/noteModal.html',

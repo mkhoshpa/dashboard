@@ -174,10 +174,14 @@
 
 
       vm.updateTable = function(){
-        vm.surveyViewClients = [];
+
         console.log('hey');
         if(vm.selectedDataSurvey){
+          vm.surveyViewClients = [];
+
           console.log(vm.selectedDataSurvey._id);
+          console.log(vm.selectedDataSurvey);
+          console.log(vm.surveyViewClients);
 
         vm.$http.get('/api/assigment/selectedSurvey/' + vm.selectedDataSurvey._id).then(function successCallback(response){
 

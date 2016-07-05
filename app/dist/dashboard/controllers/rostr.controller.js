@@ -183,17 +183,21 @@
           console.log(vm.selectedDataSurvey);
           console.log(vm.surveyViewClients);
 
+        //This gets the assigments []
         vm.$http.get('/api/assigment/selectedSurvey/' + vm.selectedDataSurvey._id).then(function successCallback(response){
 
             if(response.data.length !== 0){
               console.log(response.data);
+
               response.data.forEach(function(assignment){
                 console.log("this should be the assigments");
                 console.log(assignment);
                 console.log("this should be the userId");
-                  console.log(assignment.userId);
+                console.log(assignment.userId);
+                //gets each user one by one
                  vm.$http.get('/api/user/selectedAssignment/'+ assignment.userId).then(function successCallback(response2){
                    console.log(response2);
+                   //each user responses
                    vm.$http.get('/api/responses/selecetedAssignment/' + assignment._id).then(function successCallback(response3){
                      console.log(response3);
                      if(response3.data[0]){

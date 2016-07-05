@@ -11,7 +11,8 @@ module.exports = {
   sessionSecret: 'developmentSessionSecret',
   phoneNumbers: {
     messages: '+12898062194',
-    reminders: '+12044005478'
+		//real 12044005478
+    reminders: '+15065000639'
   },
 	facebook: {
 		clientID: '237058900007908',

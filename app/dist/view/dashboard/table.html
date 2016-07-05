@@ -105,11 +105,11 @@
 
                         <td md-cell class = "md-cell">
                           <img ng-src="{{client.info.imgUrl}}" style="border-radius: 50%; width: 50px; margin: 10px;" >
-                          {{client.info.username}}
+                          {{client.info.firstName +" " +client.info.lastName}}
                         </td>
 
-                        <td md-cell class = "md-cell" ng-repeat = "response in client.responses">
-
+                        <td md-cell class = "md-cell" ng-repeat = "response in client.responses.questions">
+                          {{response.answer}}
                         </td>
                         <!-- <td md-cell  class = "md-cell">
                           <img ng-src="{{client.reminderStatus}}" style="border-radius: 50%; width: 15px; margin: 10px;" >

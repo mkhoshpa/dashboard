@@ -47,7 +47,7 @@
 
            </md-input-container>
 
-           <md-input-container flex = "15" ng-hide = 'vm.switch'>
+           <md-input-container flex = "15" ng-show = '!vm.switch'>
 
              <md-select  ng-model = "vm.selectedColumns"  aria-label = "cols" placeholder = "Select Columns" class="md-primary">
 
@@ -67,7 +67,7 @@
            </md-input-container>
 
 
-           <md-input-container flex = "15" ng-hide = '!vm.switch'>
+           <md-input-container flex = "15" ng-show = 'vm.switch'>
              <md-select  ng-model = "vm.selectedDataSurvey" ng-blur = "vm.updateTable()"  style="margin: 5px;" aria-label = "UDOP" placeholder = "Select Survey" class="md-primary">
                <md-option ng-repeat = "s in vm.user.surveyTemplates" ng-value = "s">
                  {{s.title}}
@@ -84,23 +84,35 @@
         <md-table-container  >
                <table md-table class="md-primary md-data-table" ng-model="vm.selected" id="client-table" >
                   <thead md-head md-order="vm.query.order">
+
                         <tr md-row ng-show = "!vm.switch">
-                            <!-- <th md-column> Activity Level </th> -->
-                            <th md-column  md-order-by="username"> Clients</th>
+
+                            <th md-column  md-order-by="username">Clients</th>
                             <th md-column ng-repeat = "c in vm.selectedColumns" md-order-by="{{c.order}}">{{c.name}}</th>
-                            <th md-column> Create a Note </th>
-                            <!-- <th md-column md-order-by="pipelineStage">Pipeline</th>
-                            <th md-column md-order-by="recent"><span translate>Most Recent Activity</span></th>
-                            <th md-column md-order-by=""><span translate>Latest Reminder</span></th>
-                            <th md-column md-order-by=""><span translate>Latest Response</span></th> -->
+
                         </tr>
-                        <tr md-row ng-show = "vm.switch">
-                          <th md-column>Clients</th>
+
+                        <tr md-row ng-show = "vm.switch && vm.selectedDataSurvey">
+
+                          <th md-column  md-order-by="username">Clients</th>
                           <th md-column ng-repeat = "question in vm.selectedDataSurvey.questions" ><span>{{question.header}}<span></th>
+
+                        </tr>
+
+                        <tr md-row ng-show = "vm.switch && !vm.selectedDataSurvey">
+
+                          <th md-column  md-order-by="username">Clients</th>
+                          <th md-column> PipelineStage</th>
+                          <th md-column> Latest Reminder</th>
+                          <th md-column> Latest Response</th>
+                          <th md-column> Position </th>
+                          <th md-column> Weapon </th>
+                          <th md-column> Home </th>
+
                         </tr>
 
                   </thead>
-                    <tbody md-body ng-show = "vm.switch">
+                    <tbody md-body ng-show = "vm.switch && vm.selectedDataSurvey">
                       <tr  md-row md-auto-select="false" md-select="client" ng-repeat="client in vm.surveyViewClients| orderBy: vm.query.order | filter:vm.query.filter  | limitTo: vm.query.limit: (vm.query.page - 1) * vm.query.limit">
 
                         <td md-cell class = "md-cell">
@@ -111,20 +123,36 @@
                         <td md-cell class = "md-cell" ng-repeat = "response in client.responses.questions">
                           {{response.answer}}
                         </td>
-                        <!-- <td md-cell  class = "md-cell">
-                          <img ng-src="{{client.reminderStatus}}" style="border-radius: 50%; width: 15px; margin: 10px;" >
-                          {{client.reminderQuestion}}
-                        </td>
-                        <td md-cell  class = "md-cell">
-                          {{client.testReminder}}
-                        </td>
-                        <td md-cell  class = "md-cell" ng-repeat = "r in client.testResponses">
-                          {{r}}
-                        </td> -->
 
                       </tr>
 
                     </tbody>
+                    <tbody md-body ng-show = "vm.switch && !vm.selectedDataSurvey">
+                      <tr  md-row md-auto-select="false" md-select="client" ng-repeat="client in vm.persons| orderBy: vm.query.order | filter:vm.query.filter  | limitTo: vm.query.limit: (vm.query.page - 1) * vm.query.limit">
+
+                        <td md-cell class = "md-cell">
+                          <img ng-src="{{client.imgUrl}}" style="border-radius: 50%; width: 50px; margin: 10px;" >
+                          {{client.username}}
+                        </td>
+                        <td md-cell class = "md-cell">
+                          {{client.pipelineStage}}
+                        </td>
+                        <td md-cell class = "md-cell">
+
+                          {{client.reminderQuestion}}
+                        </td>
+                        <td md-cell class = "md-cell">
+                          {{client.testReminder}}
+                        </td>
+
+                        <td md-cell class = "md-cell" ng-repeat = "response in client.testResponses">
+                          {{response}}
+                        </td>
+
+                      </tr>
+
+                    </tbody>
+
                     <tbody md-body ng-show = "!vm.switch">
                       <tr  md-row md-auto-select="false" md-select="client" ng-repeat="client in vm.user.clients| orderBy: vm.query.order | filter:vm.query.filter  | limitTo: vm.query.limit: (vm.query.page - 1) * vm.query.limit">
 
@@ -149,11 +177,6 @@
                         <td md-cell  class = "md-cell">
                           <most-recent selected="client"></most-recent>
                         </td>
-
-                        <td md-cell  ng-click="vm.addNote($event, client)" ng-class="{'md-placeholder': !client.comment}">
-                          {{dessert.comment || 'Add a Note'}}
-                        </td>
-
 
                       </tr>
 

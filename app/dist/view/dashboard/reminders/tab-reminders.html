@@ -6,6 +6,9 @@
   <md-button  class="md-fab" aria-label="Add" ng-click="vm.addReminder($event)" style = "right: 5px;">
     <ng-md-icon icon="add"></ng-md-icon>
   </md-button>
+  <p>
+    {{vm}}
+  </p>
 
   <p  ng-if="!vm.selected.reminders.length">No reminders for  {{vm.selected.firstName +" " + vm.selected.lastName}}, yet.</p>
 
@@ -38,7 +41,7 @@
             <md-subheader>
               Responses
             </md-subheader>
-            <md-list-item ng-repeat = "response in reminder.responses" >
+            <md-list-item ng-repeat = "response in vm.responses" >
                 <p> {{$index + 1}}{{". " + response.response}}</p>
             </md-list-item>
 

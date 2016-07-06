@@ -129,7 +129,7 @@ var app;
                 console.log(this.user);
                 this.user.surveyTemplates.push(response.data);
 
-                //TODO add a post here to add a survey to a coach 
+                //TODO add a post here to add a survey to a coach
 
 
 
@@ -584,15 +584,38 @@ var app;
                     // after promise is succesful add to
                     // reminder.assigne.reminders.push()
 
+
+                    // First step, create the reminder and save it on the db
                     _this.$http.post('/api/reminder/create', reminder).then(function successCallback(response) {
+                        // Push the reminder to the user
                         self.selected.reminders.push(response.data);
                         console.log(response.data);
+                        // Create the assignment object
+                        var reminderUserAssign = {
+                          repeat: true,
+                          days: reminder.days,
+                          hour: reminder.hour,
+                          minute: reminder.minute,
+                          userId: response.data.assignee,
+                          reminderId: response.data._id,
+                          type: 'reminder' // Default is reminder but there's no harm in specifying it here
+                        };
+                        // Call sendOutReminder
+                        _this.sendOutReminder(reminderUserAssign);
                     });
 
                     self.openToast("Reminder added");
                 }, function () {
                     console.log('You cancelled the dialog.');
                 });
+            };
+
+            MainController.prototype.sendOutReminder = function (reminderUserAssign) {
+              console.log('Inside sendOutReminder');
+              console.log(reminderUserAssign);
+              this.$http.post('/api/assignment/create', reminderUserAssign).then(function (response) {
+                console.log('Frontend works' + JSON.stringify(response.data));
+              });
             };
 
             MainController.prototype.addNote = function ($event) {

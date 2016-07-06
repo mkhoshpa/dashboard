@@ -93,14 +93,14 @@ exports.convosNow = function(req, res) {
               convo.questions = assignments[i].surveyTemplateId.questions;
           //      //get survey template id
               convo.surveyId = assignments[i].surveyTemplateId._id;
+            } else if (convo.type == "reminder"){
+                 console.log("we got a reminder");
+                 convo.reminderId = assignments[i].reminderId._id;
+                 convo.questions = [];
+                 convo.questions[0] = assignments[i].reminderId.title;
+            } else {
+                console.error("invalid assignment type");
             }
-          //    } else if (convo.type == "reminder"){
-          //       console.log("we got a reminder");
-          //       convo.reminderId = assignments[i].reminderId._id;
-          //       convo.questions = assignments[i].reminderId.questions;
-          //    } else {
-          //      console.error("invalid assignment type");
-          //    }
           convos.push(convo);
             }
             res.json(convos);

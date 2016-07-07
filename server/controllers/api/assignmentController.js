@@ -35,8 +35,29 @@ exports.update = function(req, res) {
 }
 
 exports.delete = function(req, res) {
+  var assignment = new Assignment(req.body);
+  assignment.remove(function (err, assignment) {
+    if (!err) {
+      res.send(assignment);
+    }
+  });
+};
 
-}
+exports.removeByReminderId = function (req, res) {
+  // Find all of the assignments with the reminder id that was passed in
+  Assignment.find({reminderId: res.body}, function (err, assignments) {
+    // Go through all of the assignments
+    for (var i = 0; i < assignments.length; i++) {
+      var assignment = assignments[i];
+      // Remove the assignment
+      Assignment.findByIdAndRemove(assignment._id, function (err, assignment) {
+        // Do nothing in the callback
+      });
+    }
+  });
+  res.sendStatus(200);
+};
+
 exports.convosNow = function(req, res) {
   var now = new Date();
   var hoursNow = now.getHours();

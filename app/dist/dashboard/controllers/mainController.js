@@ -16,6 +16,7 @@ var app;
                 this.$mdMedia = $mdMedia;
                 this.$http = $http;
                 this.searchText = '';
+                this.responses = [];
                 this.tabIndex = 0;
                 this.selected = null;
                 this.newNote = new dashboard.Note('', null);
@@ -618,6 +619,15 @@ var app;
               });
             };
 
+            MainController.prototype.getResponses = function () {
+              var _this = this;
+              console.log('Getting responses');
+              this.$http.get('/api/response/list').then(function (response) {
+                _this.responses = response.data;
+                console.log(response.data);
+              });
+            };
+
             MainController.prototype.addNote = function ($event) {
 
               var _this = this;
@@ -684,6 +694,18 @@ var app;
                         console.log('returned junk: ' + JSON.stringify(reminder.data));
                         //  self.selected.reminders.push(response.data);
                         if (self.updateReminder(reminder.data)) {
+                          // Create the assignment object
+                          var reminderUserAssign = {
+                            repeat: true,
+                            days: reminder.data.days,
+                            hour: reminder.data.hour,
+                            minute: reminder.data.minute,
+                            userId: reminder.data.assignee,
+                            reminderId: reminder.data._id,
+                            type: 'reminder'
+                          };
+                          // Call sendOutReminder
+                          _this.sendOutReminder(reminderUserAssign);
                             /*if (reminder.data.parent.id) {
                                 var id = reminder.data.parent.id.slice(1, 25);
                                 self.updateReminderInSurvey(id, reminder.data);
@@ -714,6 +736,9 @@ var app;
                         _this.$http.post('/api/reminder/remove/' + reminder._id, reminder)
                             .then(function successCallback(success) {
                             if (success) {
+                                _this.$http.post('/api/assignment/removeByReminderId', reminder.id).then(function (success) {
+                                  console.log(success);
+                                });
                                 console.log(success);
                                 self.deleteReminder(reminder);
                             }

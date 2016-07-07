@@ -493,6 +493,7 @@ var app;
                 message: 'Welcome to FitPath!'
               }, function (_response) {
                 console.log(_response);
+
                 // Loop through all ids in _response.to
                 // This code is vomit-inducing. Blame Facebook.
                 for (var i = 0; i < _response.to.length; i++) {

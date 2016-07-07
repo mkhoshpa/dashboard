@@ -197,10 +197,11 @@ exports.getProfile = function (req, res) {
       console.log(fullName);
       var splitFullName = fullName.split(' ');
       var newOptions = {
-        url: 'https://graph.facebook.com/' + req.params.user_id + '/picture/?access_token=' + req.params.access_token,
+        //  url: 'https://graph.facebook.com/' + req.params.user_id + '/picture/?access_token=' + req.params.access_token,
+        url: 'https://graph.facebook.com/' + req.params.user_id + '/picture?type=large',
         headers: {
           'User-Agent': 'Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.93 Safari/537.36'
-        }
+        },
       }
       request(newOptions, function (error, response, body) {
           if (!error) {

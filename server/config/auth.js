@@ -4,9 +4,13 @@
 module.exports = {
 
     'facebookAuth' : {
-        'clientID'      : '995814307175903', // your App ID
-        'clientSecret'  : '30bf3ea1731fdf9822c2a9526c9a39f0', // your App Secret
-        'callbackURL'   : 'http://107.170.21.178:8080/oauth/facebook/callback'
+        // 'clientID'      : '995814307175903', // your App ID
+        // 'clientSecret'  : '30bf3ea1731fdf9822c2a9526c9a39f0', // your App Secret
+        // 'callbackURL'   : 'http://107.170.21.178:8080/oauth/facebook/callback'
+
+        'clientID'      : '263815477332250', // your App ID
+        'clientSecret'  : '538d5a2fa3b070dc66070700b8229a64', // your App Secret
+        'callbackURL'   : 'http://localhost:12557/oauth/facebook/callback'
     },
 
     'twitterAuth' : {

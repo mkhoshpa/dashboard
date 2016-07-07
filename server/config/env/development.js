@@ -15,9 +15,12 @@ module.exports = {
     reminders: '+15065000639'
   },
 	facebook: {
-		clientID: '237058900007908',
-		clientSecret: '756eb97b58fb72f845277f0e2f51fda2',
-		callbackURL: 'http://107.170.21.178:12557/oauth/facebook/callback'
+		// clientID: '237058900007908',
+		// clientSecret: '756eb97b58fb72f845277f0e2f51fda2',
+		// callbackURL: 'http://107.170.21.178:12557/oauth/facebook/callback'
+		clientID: '263815477332250',
+		clientSecret: '538d5a2fa3b070dc66070700b8229a64',
+		callbackURL: ' http://localhost:12557/oauth/facebook/callback'
 	},
 	twitter: {
 		clientID: 'Twitter Application ID',

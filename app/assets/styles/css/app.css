@@ -1,3 +1,6 @@
+
+
+
 html, body {
   font-family: 'Roboto', sans-serif;
   font-size:14px;
@@ -16,12 +19,63 @@ md-dialog.SurveyBuilder{
   height: 1000px;
 }
 
+.profileTop{
+  text-align: center;
+  min-height: 100px;
+}
+
+.profileText{
+  text-align: center;
+  min-height: 25px;
+
+}
+
+
+
 
 
 .datatable{
 
   overflow: auto;
 }
+
+.profileImg{
+  background-color: #fff;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  height: 120px;
+  margin-top: -62px;
+  width: 120px;
+  cursor: pointer;
+  position: relative;
+
+  display: inline-block;
+    overflow: hidden;
+    /*margin: 0px;*/
+    vertical-align: middle;
+  /*.avatar {
+
+
+    zoom:0.70;
+    transform: translateZ(0);
+    -webkit-transform: scale(0.70);
+    -moz-transform:scale(0.70);*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
+
+
 
 
 textarea.bioBox {
@@ -30,6 +84,12 @@ textarea.bioBox {
   font-size: 18px;
   height: 200px;
   width: 450px;
+}
+
+p.profileName{
+  font-family:  'Roboto', sans-serif;
+  font-size: 14px;
+  color: rgb(33,150,243);
 }
 
 

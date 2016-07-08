@@ -1,15 +1,16 @@
-<section>
+<!-- <section>
 
 
     <div  layout = "row" layout-padding style="background-color: pink; margin: 25px;" >
       <md-card md-whiteframe = "3"  flex = "100" layout = "column" style="background-color: blue; margin: 15px;">
         <div  layout = "row"class = "profileTop" style="background-color: red;">
 
-                      <md-input-container layout = "column" flex = "40" style = "height: 150px" >
+                      <md-input-container  layout = "column" flex = "40" style = "height: 150px" >
                         <label>Biography</label>
                         <textarea ng-model="vm.selected.bio" md-select-on-focus ng-blur = "vm.addBio()"></textarea>
                       </md-input-container>
                       <div flex = "20">
+                        <img  class="profileImg" ng-src = "{{vm.selected.imgUrl}}"> </img>
                       </div>
                     <div layout="column" flex="40"  style="height: 150px">
                       <md-input-container layout="column" >
@@ -27,14 +28,14 @@
 
 
 
-                    </div>
+        </div>
 
         </div>
         <div>
 
         </div>
         <div  class = "profileText" style="background-color: yellow; ">
-          <img  class="profileImg" ng-src = "{{vm.selected.imgUrl}}"> </img>
+
           <p class = "profileName">
               {{vm.selected.firstName +" "+ vm.selected.lastName}}
           </p>
@@ -42,6 +43,10 @@
 
 
         </div>
+
+      </md-card>
+    </div>
+ </section> -->
         <!-- <div md-whiteframe = "3"  flex = "15" layout = "column" style="background-color: #FFFFFF; margin: 5px;"  >
           <div ng-if="vm.isCoach(vm.selected)">
             <a class="secondary-content"><i class="material-icons" style="color:#FFFFFF; margin-top: 15px; font-size: 60px;">face</i></a>
@@ -109,76 +114,63 @@
         </div> -->
 
 
-      </md-card>
-    </div>
- </section>
 
-<!--
+
+
 <section>
 
 
     <div  layout = "row" layout-padding style="background-color: white; margin: 5px;" >
 
-        <div md-whiteframe = "3"  flex = "15" layout = "column" style="background-color: #FFFFFF; margin: 5px;"  >
+        <div md-whiteframe = "3"  flex = "15" layout = "column" style="background-color: #FFFFFF; margin: 5px; min-width: 150px;"  >
           <div ng-if="vm.isCoach(vm.selected)">
             <a class="secondary-content"><i class="material-icons" style="color:#FFFFFF; margin-top: 15px; font-size: 60px;">face</i></a>
-            <md-content style="background-color; #FFFFFF; margin: 5px;">
+            <md-content class = "profileName" style="background-color; #FFFFFF; margin: 5px;">
               <h1>{{vm.selected.username}}</h1>
             </md-content>
           </div>
 
 
-            <div ng-if="!vm.isCoach(vm.selected)">
-              <img ng-src="{{vm.selected.imgUrl}}" class="avatar"></md-icon>
-              <md-content style="background-color:#FFFFFF; margin: 5px;">
-                <h1>
-                  {{vm.selected.firstName +" "+ vm.selected.lastName}}
-                </h1>
-              </md-content>
-            </div>
+          <div ng-if="!vm.isCoach(vm.selected)">
+            <img ng-src="{{vm.selected.imgUrl}}" class="profileImg"></img>
+            <md-content style="background-color:#FFFFFF; margin: 5px;">
+              <h1 class = "profileName">
+                {{vm.selected.firstName +" "+ vm.selected.lastName}}
+              </h1>
+            </md-content>
+          </div>
 
-      <h1 ng-if="vm.isUser">{{vm.selected.username}}</h1>
 
-        </div>
-        <div md-whiteframe = "3"  flex = "5" layout = "column" style = "background-color: #C3E1EE; margin: 5px;">
-
-            <md-icon md-font-set = "material-icons"> mail </md-icon>
-
-            <md-icon md-font-set = "material-icons"> call </md-icon>
-
-            <md-icon md-font-set = "material-icons"> cake </md-icon>
-
-            <md-icon md-font-set = "material-icons"> info </md-icon>
         </div>
 
         <div  md-whiteframe = "3"  flex = "80" layout = "row" style = "background-color:#FFFFFF; margin: 5px;"  >
           <md-content flex  layout style = "height: 200px; background-color:#FFFFFF;">
 
-            <md-input-container layout = "column" flex = "95" style = "height: 150px" >
+            <md-input-container layout = "column" flex = "100" style = "height: 150px; padding-right: 50px" >
               <label>Biography</label>
-              <textarea ng-model="vm.selected.bio" md-select-on-focus ng-blur = "vm.addBio()"></textarea>
+              <textarea class = "bioText" ng-model="vm.selected.bio" md-select-on-focus ng-blur = "vm.addBio()" style="min-height: 100px"></textarea>
             </md-input-container>
 
-            <md-input-container layout="column" flex="95" style="height: 150px">
+            <md-input-container layout="column" flex="100" style="height: 150px; padding-right: 50px; min-width:300px; max-width:500px ">
               <label>Phone Number</label>
-              <textarea ng-model="vm.selected.phoneNumber" md-select-on-focus ng-blur="vm.addPhoneNumber()"></textarea>
+              <textarea  ng-model="vm.selected.phoneNumber" md-select-on-focus ng-blur="vm.addPhoneNumber()"></textarea>
             </md-input-container>
 
-            <md-input-container layout = "column" flex = "95" style = "height: 150px" >
-              <label>pipelineStage</label>
-              <md-select ng-model ="vm.selected.pipelineStage" md-select-on-focus ng-blur = "vm.addPipelineStage()" >
-                <md-option ng-repeat = "pipe in vm.pipelineOptions" ng-value = "pipe.type">{{pipe.type}}
+            <md-input-container layout = "column" flex = "100" style = "height: 100px; margin-top: 42px; " >
+              <label>Pipeline Stage</label>
+              <md-select style="min-width:300px" ng-model ="vm.selected.pipelineStage" md-select-on-focus ng-blur = "vm.addPipelineStage()" >
+                <md-option   ng-repeat = "pipe in vm.pipelineOptions" ng-value = "pipe.type">{{pipe.type}}
 
                 </md-option>
               </md-select>
 
-
-               <label>Pipeline Stage</label>
-                <textarea ng-model="vm.selected.pipelineStage" md-select-on-focus ng-blur = "vm.addPipelineStage()"></textarea>
-
-
-
             </md-input-container>
+               <!-- <label>Pipeline Stage</label>
+              <textarea ng-model="vm.selected.pipelineStage" md-select-on-focus ng-blur = "vm.addPipelineStage()"></textarea>
+ -->
+
+
+
 
           </md-content>
 
@@ -189,7 +181,7 @@
 
     </div>
 </section>
- -->
+
 
 
 <!--

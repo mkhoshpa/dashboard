@@ -71,6 +71,14 @@ var app;
             // }
 
             //create a different controller
+            MainController.prototype.testing = function(){
+              console.log(this.editSurvey);
+            }
+
+
+
+
+
 
             MainController.prototype.setFormScope = function (scope) {
                 this.formScope = scope;

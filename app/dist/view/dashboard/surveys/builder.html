@@ -1,6 +1,42 @@
 <section flex  layout-padding  style = >
+  <md-toolbar md-whiteframe= "3">
+    <div class = "md-toolbar-tools">
+      <md-select ng-model = "vm.changeSurvey" placeholder = "Options" ng-blur = "vm.testing()">
+        <md-option ng-repeat = "s in vm.user.surveyTemplates" ng-value = "s">
+          {{s.title}}
+        </md-option>
+        <md-option ng-value = "new">
+          New Survey
+        </md-option>
+      </md-select>
+    </div>
+  </md-toolbar>
 
-  <md-content layout-padding="">
+  <md-content ng-if = "vm.changeSurvey">
+    <div>
+      <form md-whiteframe = "3" name="questionForm" ng-submit = "vm.oldSurvey()">
+        <div  layout-padding layout-gt-sm="row"  >
+          <md-input-container layout-padding class="md-block" flex="50" >
+            <label> Title of Convo  </label>
+            <input  ng-model = "vm.surveyTitle" required >
+            <div ng-messages="questionForm.$error">
+              <div ng-message="required">This is required.</div>
+            </div>
+          </md-input-container>
+          <div  flex = "10" layout-padding>
+            <md-button   ng-click = "vm.anotherQuestion()" ng-if = "vm.questionAmount.length < 5" >
+              Another Question
+            </md-button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </md-content>
+
+
+
+
+  <md-content layout-padding="" ng-if = "vm.changeSurvey === new ">
     <div>
       <form  md-whiteframe = "3" name="questionForm" ng-submit = "vm.saveSurvey()">
 

@@ -14,21 +14,60 @@
 
   <md-content ng-if = "vm.changeSurvey">
     <div>
-      <form md-whiteframe = "3" name="questionForm" ng-submit = "vm.oldSurvey()">
-        <div  layout-padding layout-gt-sm="row"  >
+      <form md-whiteframe = "3" name="changeForm" ng-submit = "vm.oldSurvey()">
+        <div  layout-padding layout="row"  >
           <md-input-container layout-padding class="md-block" flex="50" >
             <label> Title of Convo  </label>
-            <input  ng-model = "vm.surveyTitle" required >
-            <div ng-messages="questionForm.$error">
+            <input  ng-model = "vm.changeTitle" required >
+            <div ng-messages="changeForm.$error">
               <div ng-message="required">This is required.</div>
             </div>
           </md-input-container>
-          <div  flex = "10" layout-padding>
+          <div  flex = "30" layout-padding layout = "row">
             <md-button   ng-click = "vm.anotherQuestion()" ng-if = "vm.questionAmount.length < 5" >
               Another Question
             </md-button>
+            <md-button ng-click = "vm.removeQuestion()" ng-if = "vm.questionAmount.length > 1">
+              Remove Question
+            </md-button>
           </div>
         </div>
+        <md-content  ng-repeat = "i in vm.questionAmount"  layout-padding>
+          <div layout ="row" >
+
+
+              <md-input-container  class = "md-block" flex = "40">
+                <label>Question {{i +1}}</label>
+                <input ng-model = "vm.questions[i].question" required >
+              </md-input-container>
+              <!-- placeholder="vm.changeSurvey.questions[i].question"
+            required placeholder="vm.changeSurvey.questions[i].header"
+ placeholder = "vm.changeSurvey.type"
+          -->
+
+
+              <md-input-container  class = "md-block" flex = "20">
+                <label>Question {{i +1}} Header </label>
+                <input ng-model = "vm.questions[i].questionHeader" required>
+              </md-input-container>
+
+
+
+              <md-input-container class = "form-input-container padded-input md-block" flex = "10" >
+                <label>Answer Type</label>
+                <md-select  name = "type" ng-model = "vm.questions[i].type" required>
+                  <md-option ng-repeat = "index in vm.questions1" ng-value = "index.type" >
+                    {{index.type}}
+                  </md-option>
+                </md-select>
+                <div class ="errors" ng-messages="changeForm.type.$error" ng-if = "changeForm.$dirty">
+                  <div ng-message="required">Required</div>
+                </div>
+              </md-input-container>
+
+
+          </div>
+        </md-content>
       </form>
     </div>
   </md-content>
@@ -48,9 +87,12 @@
               <div ng-message="required">This is required.</div>
             </div>
           </md-input-container>
-          <div  flex = "10" layout-padding>
+          <div  flex = "30" layout-padding>
             <md-button   ng-click = "vm.anotherQuestion()" ng-if = "vm.questionAmount.length < 5" >
               Another Question
+            </md-button>
+            <md-button ng-click = "vm.removeQuestion()" ng-if = "vm.questionAmount.length > 1">
+              Remove Question
             </md-button>
           </div>
         </div>

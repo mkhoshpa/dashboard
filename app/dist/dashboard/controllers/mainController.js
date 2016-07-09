@@ -92,6 +92,14 @@ var app;
               self.openToast("Next Question");
               };
 
+
+            MainController.prototype.removeQuestion = function(){
+              var _this = this;
+              var self = this;
+              this.questionAmount.pop()
+              this.counter--;
+            }
+
               MainController.prototype.saveSurvey = function($event){
                 var _this = this;
                 var self = this;

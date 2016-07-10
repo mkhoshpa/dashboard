@@ -72,7 +72,7 @@ var app;
 
             //create a different controller
             MainController.prototype.testing = function(){
-              console.log(this.editSurvey);
+              console.log(this.changeSurvey);
             }
 
 

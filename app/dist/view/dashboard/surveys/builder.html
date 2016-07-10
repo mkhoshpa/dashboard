@@ -18,7 +18,8 @@
         <div  layout-padding layout="row"  >
           <md-input-container layout-padding class="md-block" flex="50" >
             <label> Title of Convo  </label>
-            <input  ng-model = "vm.changeTitle" required >
+            <input  ng-model = "vm.changeSurvey.title" required>
+
             <div ng-messages="changeForm.$error">
               <div ng-message="required">This is required.</div>
             </div>
@@ -27,7 +28,7 @@
             <md-button   ng-click = "vm.anotherQuestion()" ng-if = "vm.questionAmount.length < 5" >
               Another Question
             </md-button>
-            <md-button ng-click = "vm.removeQuestion()" ng-if = "vm.questionAmount.length > 1">
+            <md-button ng-click = "vm.removeQuestion()" ng-if = "vm.questionAmount.length > 1" ng-click =  "vm.testing">
               Remove Question
             </md-button>
           </div>
@@ -38,7 +39,7 @@
 
               <md-input-container  class = "md-block" flex = "40">
                 <label>Question {{i +1}}</label>
-                <input ng-model = "vm.questions[i].question" required >
+                <input ng-model = "vm.changeSurvey.questions[i].question" required >
               </md-input-container>
               <!-- placeholder="vm.changeSurvey.questions[i].question"
             required placeholder="vm.changeSurvey.questions[i].header"
@@ -48,14 +49,14 @@
 
               <md-input-container  class = "md-block" flex = "20">
                 <label>Question {{i +1}} Header </label>
-                <input ng-model = "vm.questions[i].questionHeader" required>
+                <input ng-model = "vm.changeSurvey.questions[i].header" required>
               </md-input-container>
 
 
 
               <md-input-container class = "form-input-container padded-input md-block" flex = "10" >
                 <label>Answer Type</label>
-                <md-select  name = "type" ng-model = "vm.questions[i].type" required>
+                <md-select  name = "type" ng-model = "vm.changeSurvey.questions[i].type" required >
                   <md-option ng-repeat = "index in vm.questions1" ng-value = "index.type" >
                     {{index.type}}
                   </md-option>

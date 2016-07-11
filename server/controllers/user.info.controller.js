@@ -69,6 +69,19 @@ exports.createPhoneNumber = function (req, res) {
   res.send(req.body.number);
 };
 
+exports.addSurvey = function(req, res){
+  User.findByIdAndUpdate(req.params.id,
+  {$push:{"surveyTemplates": req.body._id}},
+  {safe:true},
+  function(err, user){
+    if(err){
+      console.log(err);
+    }
+  });
+  res.send(req.body);
+};
+
+
 exports.create = function(req, res) {
   console.log("Im before new User.");
   console.log(req.body);

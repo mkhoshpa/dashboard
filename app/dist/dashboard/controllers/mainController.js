@@ -154,6 +154,7 @@ var app;
 
               _this.$http.post('/api/surveyTemplate/update/' + this.changeSurvey._id, this.changeSurvey).then(function successCallback(response) {
                   console.log(response.data);
+
               })
 
 
@@ -210,6 +211,11 @@ var app;
                 console.log(surveyTemplate);
 
                 _this.$http.post('/api/surveyTemplate/create', surveyTemplate).then(function successCallback(response) {
+
+                  //Start here
+                  _this.$http.post('/api/user/surveyTemplate/add/'+this.user._id, this.changeSurvey).then(function(response2){
+                    console.log(response2.data);
+                  })
                 console.log(response.data);
                 console.log(this.user);
                 this.user.surveyTemplates.push(response.data);

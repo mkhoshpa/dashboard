@@ -135,8 +135,8 @@
               <md-input-container class = "form-input-container padded-input md-block" flex = "10" >
                 <label>Answer Type</label>
                 <md-select  name = "type" ng-model = "vm.questions[i].type" required>
-                  <md-option ng-repeat = "index in vm.questions1" ng-value = "index.type"  >
-                    {{index.type}}
+                  <md-option ng-repeat = "index in vm.questions1" ng-value = "index.value"  >
+                    {{index.display}}
                   </md-option>
                 </md-select>
                 <div class ="errors" ng-messages="questionForm.type.$error" ng-if = "questionForm.$dirty">

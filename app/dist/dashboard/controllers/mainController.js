@@ -25,7 +25,19 @@ var app;
                 //this.socket = io.connect('http://107.170.21.178:3001');
 
                 //Survey stuff
-                this.questions1 = [{type: "Yes/No"},{type:"Scale from 1 to 5"},{type:"Written Answer"}];
+                this.questions1 = [
+                  {
+                    display: "Yes/No",
+                    value: "YESNO"
+                  },
+                  {
+                    display:"Scale from 1 to 5",
+                    value:"SCALE"
+                  },
+                  {
+                      display:"Written Answer",
+                      value:"WRITTEN"
+                  }];
                 this.counter = 0;
                 this.questionAmount = [0];
                 this.selectSurveyUser = [];
@@ -71,13 +83,6 @@ var app;
             // }
 
             //create a different controller
-            MainController.prototype.testing = function(){
-              console.log(this.changeSurvey);
-            }
-
-
-
-
 
 
             MainController.prototype.setFormScope = function (scope) {
@@ -98,6 +103,70 @@ var app;
               var self = this;
               this.questionAmount.pop()
               this.counter--;
+            }
+
+
+
+            MainController.prototype.anotherChangeQuestion = function () {
+              var _this = this;
+              var self = this;
+              console.log("here");
+              var question = {
+                header:null,
+                question:null,
+                type:null
+              };
+              this.changeSurvey.questions.push(question);
+
+              console.log(this.changeSurvey.questions);
+              self.openToast("Added Question");
+            }
+
+            MainController.prototype.removeChangeQuestion = function (index) {
+              var _this = this;
+              var self = this;
+              if(index > -1){
+                this.changeSurvey.questions.splice(index, 1);
+              }
+              //this.changeSurvey.questions.pop();
+              console.log(this.changeSurvey.questions);
+              self.openToast("Removed Question");
+            }
+
+
+
+
+
+
+            MainController.prototype.cancelChangeSurvey = function(){
+              var _this = this;
+              var self = this;
+              //need to refresh the page
+              this.changeSurvey = "new";
+              self.openToast("Editing Cancel");
+            }
+
+            MainController.prototype.saveChangeSurvey = function(){
+              var _this = this;
+              var self = this;
+              console.log("hey");
+              console.log(this.changeSurvey);
+
+              _this.$http.post('/api/surveyTemplate/update/' + this.changeSurvey._id, this.changeSurvey).then(function successCallback(response) {
+                  console.log(response.data);
+              })
+
+
+
+
+
+
+
+
+
+
+
+              self.openToast("Saved Convo")
             }
 
               MainController.prototype.saveSurvey = function($event){

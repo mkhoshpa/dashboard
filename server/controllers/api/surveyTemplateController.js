@@ -16,8 +16,35 @@ var config = require('../../config/env/development.js');
 var builder = require('xmlbuilder');
 var fs = require('fs');
 
+exports.update = function(req, res){
+  console.log("Im updating");
+  console.log(req.params.id);
+  console.log(req.body);
+
+  SurveyTemplate.findByIdAndUpate(
+    {_id: req.params.id},{$set: req.body},   function(err, doc){
+      if(err){
+        console.log("oh crap error");
+      }
+      else{
+        console.log(doc);
 
 
+
+
+
+      }
+    }
+
+
+  )
+  res.send({});
+
+}
+
+exports.find = function (req, res) {
+  console.log();
+}
 
 
 exports.create = function(req, res) {

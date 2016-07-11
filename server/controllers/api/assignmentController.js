@@ -11,7 +11,7 @@ winston = require('winston');
 exports.create = function(req, res) {
   var assignment = new Assignment(req.body);
   winston.info("assignment controller");
-  winston.info(assignment);
+  //winston.info(assignment);
   assignment.save(function(err, assignment){
     // if(!err){
     //   User.findByIdAndUpate(
@@ -76,7 +76,7 @@ exports.convosNow = function(req, res) {
 
 
         // console.log("testing" + assignments);
-         winston.info(assignments);
+         winston.info(JSON.stringify(assignments));
          winston.info('exec assignments/now');
          if(!err){
            //ok so first I need to iterate thru the assignments array
@@ -85,7 +85,7 @@ exports.convosNow = function(req, res) {
            var convos = [];
 
           for (var i = 0; i < assignments.length; i++) {
-            winston.info(assignments[i]);
+            winston.info(JSON.stringify(assignments[i]));
             var convo = new Object;
             convo.assignmentId = assignments[i]._id;
 

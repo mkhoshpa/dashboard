@@ -18,7 +18,7 @@ exports.webhook = function(req, res) {
 }
 
 exports.recieve = function(req, res) {
-  winston.info(req.body);
+  //winston.info(req.body);
   var messaging_events = req.body.entry[0].messaging;
   winston.info(messaging_events);
   for (var i = 0; i < messaging_events.length - 1; i++) {
@@ -38,7 +38,7 @@ exports.send = function(req, res) {
 
 exports.connectUser = function (req, res) {
   res.writeHead(302, {
-    'Location': 'https://www.facebook.com/dialog/oauth?client_id=' + config.facebook.clientID + '&redirect_uri=http://107.170.21.178:12557/api/facebook/getclientprofile'
+    'Location': 'https://www.facebook.com/dialog/oauth?client_id=' + config.facebook.clientID + '&redirect_uri=http://localhost:12557/api/facebook/getclientprofile'
   });
   res.end();
 }
@@ -46,7 +46,7 @@ exports.connectUser = function (req, res) {
 exports.getClientProfile = function (req, res) {
   winston.info('Getting client\'s profile from Facebook');
   winston.info(req.query.code);
-  request('https://graph.facebook.com/v2.6/oauth/access_token?client_id=' + config.facebook.clientID + '&redirect_uri=http://107.170.21.178:12557/api/facebook/getclientprofile&client_secret=' + config.facebook.clientSecret + '&code=' + req.query.code, function (err, res, body) {
+  request('https://graph.facebook.com/v2.6/oauth/access_token?client_id=' + config.facebook.clientID + '&redirect_uri=http://localhost:12557/api/facebook/getclientprofile&client_secret=' + config.facebook.clientSecret + '&code=' + req.query.code, function (err, res, body) {
     if (!err && res.statusCode == 200) {
       winston.info('Printing body');
       winston.info(body);
@@ -120,7 +120,7 @@ exports.sendEmail = function (req,res){
         text:
         'You are receiving this because your coach wants to have profile information on Fitpath.me dashboard to help him/her coach you better.\n\n' +
           'Please click on the following link, or paste this into your browser to complete the process:\n\n'+
-            'http://107.170.21.178:12557/api/facebook/connect/\n\n' +
+            'http://localhost:12557/api/facebook/connect/\n\n' +
           'Thank you for your time.\n'
       };
 

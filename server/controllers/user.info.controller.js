@@ -72,7 +72,7 @@ exports.createPhoneNumber = function (req, res) {
 
 exports.create = function(req, res) {
   winston.info("Im before new User.");
-  winston.info(req.body);
+  //winston.info(req.body);
   var user = new User(req.body);
   user.provider = 'local';
   user.fullName = user.firstName + ' ' + user.lastName;
@@ -250,7 +250,7 @@ exports.change = function(req, res) {
 
 
 exports.update = function(req,res) {
-  winston.info(req.body);
+  //winston.info(req.body);
   if(!req.user) {
     // Use the 'response' object to render the signup page
     res.render('pages/signin', {
@@ -272,7 +272,7 @@ exports.update = function(req,res) {
 
 exports.delete = function(req, res){
   winston.info("hey");
-  winston.info(req.body);
+  //winston.info(req.body);
 
   res.send("403");
 };

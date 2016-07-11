@@ -17,7 +17,7 @@ var fs = require('fs');
 exports.create = function(req, res) {
   winston.info();
   winston.info('CREATING SURVEY');
-  winston.info(req.body);
+  //winston.info(req.body);
   winston.info();
 
   var surveyTemplate = new SurveyTemplate(req.body);

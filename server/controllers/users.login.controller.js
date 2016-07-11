@@ -73,7 +73,7 @@ exports.signup = function(req, res, next) {
 	// If user is not connected, create and login a new user, otherwise redirect the user back to the main application page
 	if (!req.user) {
 		// Create a new 'User' model instance
-    winston.info(req.body);
+    //winston.info(req.body);
 		var user = new User(req.body);
 		var message = null;
 		// Set the user provider property

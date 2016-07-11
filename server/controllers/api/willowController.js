@@ -6,7 +6,7 @@ var Willow = require('../../models/willow');
 var winston = require('winston');
 
 exports.create = function(req, res) {
-  winston.info(req.body);
+  //winston.info(req.body);
   new Willow({
     token: req.body.token,
     team_id: req.body.team_id,

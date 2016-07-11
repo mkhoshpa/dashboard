@@ -12,7 +12,7 @@ var winston = require('winston');
 exports.create = function(req, res) {
   var response = new Response(req.body);
   winston.info("response controller");
-  winston.info(response);
+  winston.info(JSON.stringify(response));
   response.save(function(err, response){
   });
   res.send({});

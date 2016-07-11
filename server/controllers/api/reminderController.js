@@ -64,7 +64,7 @@ io.on('connection', function (socket) {
 exports.create = function(req, res) {
   var reminder = new Reminder(req.body);
   winston.info("reminder controller hit");
-  winston.info(reminder);
+  //winston.info(reminder);
   reminder.save(function(err, reminder) {
     if(!err) {
       res.send(reminder);
@@ -100,7 +100,7 @@ exports.read = function(req, res) {
 
 //TODO change routes so this method gets called
 exports.addResponse = function(req, res) {
-  winston.info(req.body);
+  //winston.info(req.body);
   winston.info('add response triggerd');
   var reminder;
 
@@ -144,7 +144,7 @@ exports.addResponse = function(req, res) {
 exports.update = function(req, res) {
   winston.info('Updating reminder');
   winston.info();
-  winston.info(req.body);
+  ////winston.info(req.body);
   Reminder.findOneAndUpdate({'_id': req.body._id},
   {
     title: req.body.title,
@@ -175,14 +175,14 @@ exports.delete = function(req, res) {
     req.params.id,
     function(err, reminder) {
       if(reminder) {
-        winston.info(reminder);
+        //winston.info(reminder);
         User.findByIdAndUpdate(reminder.assignee,
           {$pull : {reminders: {_id: reminder._id}}},
           {new: true},
           function(err, model) {
             winston.info();
             winston.info('Should output a user with the specified reminder removed.');
-            winston.info(model);
+            //winston.info(model);
             res.sendStatus(200);
           if(err) {
             // Do some flash message

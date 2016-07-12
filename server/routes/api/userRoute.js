@@ -9,6 +9,8 @@ module.exports = function(app) {
   app.post('/api/user/create', user.create);
   app.post('/api/user/delete/:id', user.delete);
   app.post('/api/coach/newuser/:id', user.updateCoach);
+  app.post('/api/user/updateMedium/:id', user.updateMedium);
+  app.post('/api/user/updateSlackId/:id', user.updateSlackId);
 
   app.post('/api/user/parse-csv', user.parseCSV);
 

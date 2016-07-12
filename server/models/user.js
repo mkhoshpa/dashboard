@@ -44,7 +44,7 @@ var UserSchema = new Schema({
 		// Validate the 'password' value length
     //minlength: [5, 'Password too short']
 	},
-  slack_id : {type: String},
+
   slack : {
     email: {type: String},
     id: {type: String},
@@ -147,6 +147,7 @@ var UserSchema = new Schema({
 		default: Date.now
 	},
   phoneNumber: String,
+  slack_id : String,
   facebookId: Number,
   email: String,
   pandoraSessionId: String,

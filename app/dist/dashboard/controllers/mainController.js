@@ -343,6 +343,38 @@ var app;
 
 
 
+            MainController.prototype.addMedium = function ($event) {
+              var _this = this;
+              var self = this;
+
+              var medium = {
+                text: this.selected.medium
+
+              };
+
+              _this.$http.post('/api/user/updateMedium/' + this.selected.id, medium).then(function successCallback(response) {
+              console.log(response.data);
+              console.log(this.selected);
+
+            })
+              self.openToast("Medium Updated");
+            };
+            MainController.prototype.addSlackId = function ($event) {
+              var _this = this;
+              var self = this;
+
+              var slack = {
+                text: this.selected.slackId
+
+              };
+
+              _this.$http.post('/api/user/updateSlackId/' + this.selected.id, slack).then(function successCallback(response) {
+              console.log(response.data);
+              console.log(this.selected);
+
+            })
+              self.openToast("SlackId Updated");
+            };
 
 
 
@@ -369,6 +401,7 @@ var app;
               self.openToast("Bio Updated");
 
             };
+
 
             MainController.prototype.addPhoneNumber = function ($event) {
               var _this = this;

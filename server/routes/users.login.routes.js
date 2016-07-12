@@ -21,14 +21,19 @@ module.exports = function(app) {
 						console.log('passport authentication eror');
 						return next(err);
 					}
+					else{
+						console.log("This better come here");
+					}
 	    		if (!user) {
 	    					if (info) {
+									console.log("weird");
 	    						console.log(info);
 	    					}
 						req.flash('status', 'Information Entered Incorrect');
 						return res.redirect('/signin');
 					}
 			    req.logIn(user, function(err) {
+						console.log("This has to be here");
 						console.log(user);
 			      if (err) {
 							console.log('err');
@@ -37,6 +42,7 @@ module.exports = function(app) {
 						}
 
 						else if(user.role == 'coach') {
+							console.log("coaches");
 							var slack = [];
 
 							var headers = {
@@ -54,7 +60,8 @@ module.exports = function(app) {
 							}
 
 							request(options, function (error, response, body) {
-							    if (!error && response.statusCode == 200) {
+									console.log("Did i have it this far??");
+									if (!error && response.statusCode == 200) {
 							        	var members = JSON.parse(body).members;
 											_.forEach(members, function(member) {
 												if(member.profile.email && !member.deleted){

@@ -15,7 +15,7 @@ exports.update = function(req, res){
   console.log(req.params.id);
   console.log(req.body);
 
-  SurveyTemplate.findByIdAndUpate(
+  SurveyTemplate.findByIdAndUpdate(
     {_id: req.params.id},{$set: req.body},   function(err, doc){
       if(err){
         console.log("oh crap error");
@@ -23,16 +23,13 @@ exports.update = function(req, res){
       else{
         console.log(doc);
 
-        res.send(doc);
+
 
 
 
       }
-    }
-
-
-  )
-
+    })
+    res.send(req.body);
 
 }
 

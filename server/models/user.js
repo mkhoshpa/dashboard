@@ -243,11 +243,7 @@ UserSchema.methods.isUnique = function (email) {
   })
 }
 
-UserSchema.methods.calcStatus = function() {
 
-
-
-}
 
 // If we need this later
 UserSchema.statics.findByPhoneNumber = function (phoneNumber, callback) {

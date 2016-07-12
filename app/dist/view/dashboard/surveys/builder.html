@@ -25,7 +25,7 @@
             </div>
           </md-input-container>
           <div  flex = "30" layout-padding layout = "row">
-            <md-button   ng-click = "vm.anotherChangeQuestion() " ng-if = "vm.changeSurvey.questions.length < 5" >
+            <md-button   ng-click = "vm.anotherQuestion(vm.changeSurvey) " ng-if = "vm.changeSurvey.questions.length < 5" >
               Another Question
             </md-button>
 
@@ -64,7 +64,7 @@
                 </div>
               </md-input-container>
               <div>
-                <md-button ng-click = "vm.removeChangeQuestion($index)" ng-if = "vm.changeSurvey.questions.length > 1" >
+                <md-button ng-click = "vm.removeQuestion($index, vm.changeSurvey)" ng-if = "vm.changeSurvey.questions.length > 1" >
                   Remove Question
                 </md-button>
               </div>
@@ -99,42 +99,39 @@
         <div  layout-padding layout-gt-sm="row"  >
           <md-input-container layout-padding class="md-block" flex="50" >
             <label>Title of Survey</label>
-            <input  ng-model = "vm.surveyTitle" required >
+            <input  ng-model = "vm.newSurvey.title" required >
             <div ng-messages="questionForm.$error">
               <div ng-message="required">This is required.</div>
             </div>
           </md-input-container>
           <div  flex = "30" layout-padding>
-            <md-button   ng-click = "vm.anotherQuestion()" ng-if = "vm.questionAmount.length < 5" >
+            <md-button   ng-click = "vm.anotherQuestion(vm.newSurvey)" ng-if = "vm.newSurvey.questions.length < 5" >
               Another Question
-            </md-button>
-            <md-button ng-click = "vm.removeQuestion()" ng-if = "vm.questionAmount.length > 1">
-              Remove Question
             </md-button>
           </div>
         </div>
 
-        <md-content  ng-repeat = "i in vm.questionAmount"  layout-padding>
+        <md-content  ng-repeat = "q in vm.newSurvey.questions"  layout-padding>
           <div layout ="row" >
 
 
               <md-input-container  class = "md-block" flex = "40">
-                <label>Question {{i +1}}</label>
-                <input ng-model = "vm.questions[i].question" required>
+                <label>Question {{$index + 1}}</label>
+                <input ng-model = "vm.newSurvey.questions[$index].question" required>
               </md-input-container>
 
 
 
               <md-input-container  class = "md-block" flex = "20">
-                <label>Question {{i +1}} Header </label>
-                <input ng-model = "vm.questions[i].questionHeader" required>
+                <label>Question {{$index +1}} Header </label>
+                <input ng-model = "vm.newSurvey.questions[$index].header" required>
               </md-input-container>
 
 
 
               <md-input-container class = "form-input-container padded-input md-block" flex = "10" >
                 <label>Answer Type</label>
-                <md-select  name = "type" ng-model = "vm.questions[i].type" required>
+                <md-select  name = "type" ng-model = "vm.newSurvey.questions[$index].type" required>
                   <md-option ng-repeat = "index in vm.questions1" ng-value = "index.value"  >
                     {{index.display}}
                   </md-option>
@@ -143,7 +140,11 @@
                   <div ng-message="required">Required</div>
                 </div>
               </md-input-container>
-
+              <div>
+                <md-button ng-click = "vm.removeQuestion($index, vm.newSurvey)" ng-if = "vm.newSurvey.questions.length > 1" >
+                  Remove Question
+                </md-button>
+              </div>
 
           </div>
         </md-content>

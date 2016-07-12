@@ -70,6 +70,7 @@ exports.createPhoneNumber = function (req, res) {
 };
 
 exports.addSurvey = function(req, res){
+  console.log(req.body._id);
   User.findByIdAndUpdate(req.params.id,
   {$push:{"surveyTemplates": req.body._id}},
   {safe:true},

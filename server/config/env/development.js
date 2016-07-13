@@ -17,6 +17,7 @@ module.exports = {
     messages: '+12898062194',
     reminders: '+12044005478'
   },
+  mandrillApiKey: 'g0tWnJ18NBP7EFHirXvGUQ',
 	facebook: {
 		clientID: '237058900007908',
 		clientSecret: '756eb97b58fb72f845277f0e2f51fda2',

@@ -10,4 +10,4 @@ module.exports = function(app) {
   app.post('/api/reminder/update/:id', reminder.update);
   app.post('/api/reminder/remove/:id', reminder.delete);
 
-}
+};

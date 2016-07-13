@@ -1,8 +1,7 @@
-'use strict'
+'use strict';
 
 var User 		 = require('mongoose').model('User'),
     Reminder = require('mongoose').model('Reminder'),
-    ReminderResponse = require('mongoose').model('ReminderResponse'),
     path     = require('path'),
 		passport = require('passport');
 
@@ -17,34 +16,15 @@ exports.render = function(req, res, next) {
           populate: {
             path: 'reminders',
             model: 'Reminder',
-            /*populate: {
-              path: 'responses',
-              model: 'ReminderResponse'
-            }*/
           }
         },
         {
           path: 'clients',
           model: 'User',
-          populate: {
-            path: 'mostRecentResponse',
-            model: 'ReminderResponse',
-          }
         },
         {
           path: 'clients',
           model: 'User',
-          populate: {
-            path: 'surveys',
-            model: 'Survey',
-            populate: {
-              path: 'goals',
-              populate: {
-                path: 'reminder',
-                model: 'Reminder'
-              }
-            }
-          }
         },
         {
           path: 'mostRecentResponse'
@@ -88,22 +68,7 @@ exports.render = function(req, res, next) {
         {
           path: 'reminders',
           model: 'Reminder',
-          populate: {
-            path: 'responses',
-            model: 'ReminderResponse'
-          }
         },
-        {
-          path: 'surveys',
-          model: 'Survey',
-          populate: {
-            path: 'goals',
-            populate: {
-              path: 'reminder',
-              model: 'Reminder'
-            }
-          }
-        }
       ]
 
       User.populate(req.user,
@@ -124,7 +89,6 @@ exports.render = function(req, res, next) {
         });
     }
   } else {
-    //req.session.returnTo = req.path;
 		return res.redirect('/signin');
 	}
 }

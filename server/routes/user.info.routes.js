@@ -15,4 +15,4 @@ module.exports = function(app) {
   app.get('/reset/:token', profile.token);
   app.post('/reset/:token', profile.change);
 
-}
+};

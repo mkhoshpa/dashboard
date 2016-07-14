@@ -115,10 +115,12 @@
                         </tr>
                         <tr md-row ng-show = "vm.switch && vm.selectedDataSurvey == 'coach'">
                           <th md-column  md-order-by="username">Coaches</th>
-                          <th md-column> Response Time </th>
-                          <th md-column> Success Rate </th>
-                          <th md-column> Hours per Week </th>
+                          <th md-column> Response Time (M)</th>
+                          <th md-column> Success Rate (%) </th>
+                          <th md-column> Hours per Week (H) </th>
                           <th md-column> NPS </th>
+                          <th md-column> Active Clients </th>
+                          <th md-column> Dormant Clients </th>
                         </tr>
 
                   </thead>
@@ -170,7 +172,24 @@
                           {{client.username}}
                         </td>
 
-
+                        <td md-cell class = "md-cell">
+                          {{client.rs}}
+                        </td>
+                        <td md-cell class = "md-cell">
+                          {{client.suc}}
+                        </td>
+                        <td md-cell class = "md-cell">
+                          {{client.hpw}}
+                        </td>
+                        <td md-cell class = "md-cell">
+                          {{client.nps}}
+                        </td>
+                        <td md-cell class = "md-cell">
+                          {{client.al}}
+                        </td>
+                        <td md-cell class = "md-cell">
+                          {{client.dl}}
+                        </td>
                       </tr>
 
                     </tbody>

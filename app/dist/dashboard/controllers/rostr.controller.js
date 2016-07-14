@@ -86,31 +86,47 @@
 
     vm.persons2 = [{
       username : "Coach Snow",
-
-
+      rs: '1:30',
+      suc: '50%',
+      hpw: '30',
+      nps: '40',
       reminderStatus : "/../../../assets/imgs/GoT/green.png",
-
+      al: '20',
+      dl: '5',
       imgUrl :"/../../../assets/imgs/GoT/snow.png"
     },
     {
       username : "Coach J. Lannister",
-
-
+      rs: '0:50',
+      suc: '70%',
+      hpw: '50',
+      nps: '60',
+      al: '20',
+      dl: '15',
       reminderStatus : "/../../../assets/imgs/GoT/green.png",
 
       imgUrl :"/../../../assets/imgs/GoT/jamie.png"
     },
     {
       username : "Coach T. Lannister",
-
-
+      rs: '3:00',
+      suc: '85%',
+      hpw: '10',
+      nps: '-40',
+      al: '10',
+      dl: '2',
       reminderStatus : "/../../../assets/imgs/GoT/green.png",
 
       imgUrl :"/../../../assets/imgs/GoT/dwarf.png"
     },
     {
       username : "Coach Hound",
-
+      rs: '5:00',
+      suc: '30%',
+      hpw: '15',
+      nps: '90',
+      al: '2',
+      dl: '12',
 
       reminderStatus : "/../../../assets/imgs/GoT/red.jpg",
 
@@ -118,7 +134,12 @@
     },
     {
       username : "Coach Hodor",
-
+      rs: '0:47',
+      suc: '99%',
+      hpw: '20',
+      nps: '99',
+      al: '30',
+      dl: '0',
 
       reminderStatus : "/../../../assets/imgs/GoT/orange.png",
 
@@ -126,7 +147,12 @@
     },
     {
       username : "Coach Targaryen",
-
+      rs: '2:00',
+      suc: '44%',
+      hpw: '12',
+      nps: '-70',
+      al: '14',
+      dl: '22',
 
       reminderStatus : "/../../../assets/imgs/GoT/green.png",
 

@@ -83,6 +83,58 @@
 
 
 
+
+    vm.persons2 = [{
+      username : "Coach Snow",
+
+
+      reminderStatus : "/../../../assets/imgs/GoT/green.png",
+
+      imgUrl :"/../../../assets/imgs/GoT/snow.png"
+    },
+    {
+      username : "Coach J. Lannister",
+
+
+      reminderStatus : "/../../../assets/imgs/GoT/green.png",
+
+      imgUrl :"/../../../assets/imgs/GoT/jamie.png"
+    },
+    {
+      username : "Coach T. Lannister",
+
+
+      reminderStatus : "/../../../assets/imgs/GoT/green.png",
+
+      imgUrl :"/../../../assets/imgs/GoT/dwarf.png"
+    },
+    {
+      username : "Coach Hound",
+
+
+      reminderStatus : "/../../../assets/imgs/GoT/red.jpg",
+
+      imgUrl :"/../../../assets/imgs/GoT/theHound.png"
+    },
+    {
+      username : "Coach Hodor",
+
+
+      reminderStatus : "/../../../assets/imgs/GoT/orange.png",
+
+      imgUrl :"/../../../assets/imgs/GoT/hodor.png"
+    },
+    {
+      username : "Coach Targaryen",
+
+
+      reminderStatus : "/../../../assets/imgs/GoT/green.png",
+
+      imgUrl :"/../../../assets/imgs/GoT/danny.jpg"
+    }
+
+  ];
+
       vm.possibleColumns = [];
       //vm.contents = contents(vm.clients);
       vm.selected = [];
@@ -165,7 +217,7 @@
       vm.surveyViewClients = [];
 
 
-
+      vm.coach = 'coach';
 
 
 
@@ -176,7 +228,12 @@
       vm.updateTable = function(){
 
         console.log('hey');
-        if(vm.selectedDataSurvey){
+        console.log(vm.selectedDataSurvey);
+
+        if(vm.selectedDataSurvey === 'coach'){
+          console.log('coach');
+        }
+        else if(vm.selectedDataSurvey){
           vm.surveyViewClients = [];
 
           console.log(vm.selectedDataSurvey._id);

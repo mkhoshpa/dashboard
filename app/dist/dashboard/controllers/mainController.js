@@ -40,7 +40,7 @@ var app;
                      value:"WRITTEN"
                 }];
                 
-                this.questions1 = [{type: "Yes/No"},{type:"Scale from 1 to 5"},{type:"Written Answer"}];
+                //this.questions1 = [{type: "Yes/No"},{type:"Scale from 1 to 5"},{type:"Written Answer"}];
                 this.counter = 0;
                 this.questionAmount = [0];
                 this.selectSurveyUser = [];

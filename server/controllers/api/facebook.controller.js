@@ -4,8 +4,8 @@ var User = require('../../models/user.js');
 var request = require('request');
 var async = require('async');
 var crypto = require('crypto');
-var smtpTransport = require('nodemailer-smtp-transport');
 var nodemailer = require('nodemailer');
+var mandrillTransport = require('nodemailer-mandrill-transport');
 var config = require('../../config/env/development.js');
 var winston = require('winston');
 
@@ -72,25 +72,29 @@ exports.sendEmail = function (req,res){
     },
     function(token, user, done) {
 
-      var transporter = nodemailer.createTransport(
-          smtpTransport({
-            service: 'gmail',
-            auth: {
-              user: 'fitpathmailer@gmail.com',
-              pass: 'fitpathmail'
-            }
-          })
-      );
-      winston.info(user.email);
+      var transporter = nodemailer.createTransport(mandrillTransport({
+        auth: {
+          apiKey: config.mandrillApiKey
+        }
+      }));
+      console.log(user.email);
+
       var mailOptions = {
         to: user.email, //user.username,
-        from: 'fitpathmailer@gmail.com',
+        from: 'Willow the Habit Hound <willow@fitpath.me>',
         subject: 'Fitpath.me Profile Generator',
-        text:
-        'You are receiving this because your coach wants to have profile information on Fitpath.me dashboard to help him/her coach you better.\n\n' +
-          'Please click on the following link, or paste this into your browser to complete the process:\n\n'+
-            'http://localhost:12557/api/facebook/connect/\n\n' +
-          'Thank you for your time.\n'
+        mandrillOptions: {
+          template_name: 'fitpath-welcome-email',
+          template_content: {},
+          message: {
+            merge: true,
+            merge_language: 'handlebars',
+            global_merge_vars: [{
+              name: 'client_name',
+              content: user.firstName
+            }]
+          }
+        }
       };
 
       transporter.sendMail(mailOptions, function(err,info) {

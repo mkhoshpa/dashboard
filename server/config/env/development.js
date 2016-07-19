@@ -21,6 +21,7 @@ module.exports = {
 		//real 12044005478
     reminders: '+15065000639'
   },
+  mandrillApiKey: 'g0tWnJ18NBP7EFHirXvGUQ',
 	facebook: {
 		clientID: '237058900007908',
 		clientSecret: '756eb97b58fb72f845277f0e2f51fda2',

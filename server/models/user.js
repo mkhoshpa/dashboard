@@ -203,18 +203,6 @@ UserSchema.methods.isUnique = function (email) {
   })
 };
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-
-=======
-
-=======
-UserSchema.methods.calcStatus = function() {
-};
->>>>>>> code-cleanup
-
->>>>>>> dev
 // If we need this later
 UserSchema.statics.findByPhoneNumber = function (phoneNumber, callback) {
   console.log("Inside findByPhoneNumber, attempting to find: " + phoneNumber);

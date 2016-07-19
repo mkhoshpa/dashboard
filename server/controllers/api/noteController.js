@@ -1,14 +1,8 @@
-'use strict'
+'use strict';
 
-var mongoose = require('mongoose');
 var Note = require('../../models/note.js');
 var User = require('../../models/user.js');
 var _ = require('underscore');
-var moment = require('moment');
-var Promise = require('bluebird');
-var request = require('request');
-var winston = require('winston');
-
 
 exports.create = function(req, res) {
   var note = new Note(req.body);
@@ -78,9 +72,9 @@ exports.update = function(req, res) {
       winston.error("crap");
     }
 
-  })
+  });
 
-}
+};
 
 exports.delete = function(req, res) {
   winston.info("Here note.delete");
@@ -105,10 +99,10 @@ exports.delete = function(req, res) {
       }
     }
   )
-}
+};
 
 exports.list = function(req, res) {
   Note.find({}, function(err, obj){
     res.json(obj);
   })
-}
+};

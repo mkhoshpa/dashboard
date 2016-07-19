@@ -2,11 +2,7 @@
 
 // Load the module dependencies
 var User 		 = require('mongoose').model('User'),
-		passport = require('passport'),
-		ObjectId = require('mongoose').Types.ObjectId,
     winston  = require('winston');
-
-
 
 // Create a new error handling controller method
 var getErrorMessage = function(err) {
@@ -189,27 +185,18 @@ exports.saveOAuthUserProfile = function(req, profile, done) {
 					firstName: name[0],
 					lastName: name[1],
 					username: profile.providerData.name,
-					//bio: this.bio,
-					//username: this.username,
-					//password: this.password,
 					provider: profile.provider,
 					providerData: profile.providerData,
 					role: 'coach',
-					//slack_id: this.slack_id,
 					slack_id: profile.providerData.name,
 					slack: {
-						//email: this.slack.email,
-						//id: this.slack.id,
 						id: profile.providerData.name,
 						name: profile.providerData.name,
 						real_name: profile.providerData.name
-						//img: ''
 					},
 					coaches: [],
 					providerId: profile.providerId,
 					facebookId: profile.providerData.id
-					//imgUrl:
-					//phoneNumber:
 				});
 				user.save(function(err){
 					winston.info('New user created: ' + JSON.stringify(user));
@@ -236,4 +223,4 @@ exports.find = function(req, res) {
 	User.find({}, function(err, obj){
 		res.json(obj);
 	})
-}
+};

@@ -1,26 +1,18 @@
-'use strict'
+'use strict';
 
-var mongooose = require('mongoose');
 var Message = require('../../models/message.js');
 var User = require('../../models/user.js');
 var Reminder = require('../../models/reminder.js');
 var _ = require('underscore');
-var moment = require('moment');
-var Promise = require('bluebird');
-var request = require('request');
+var config = require('../../config/env/development.js');
 var twilio = require('twilio')('ACf83693e222a7ade08080159c4871c9e3', '20b36bd42a33cd249e0079a6a1e8e0dd');
 var twiml = require('twilio');
-var app = require('express')();
-var http = require('http').Server(app);
-var io = require('socket.io')(45874);
-var bodyParser = require('body-parser');
-//var Bot = require('messenger-bot');
 var config = require('../../config/env/development.js');
 var winston = require('winston');
 
-//http.listen(3853, function () {
-  winston.info('listening for websocket connections on *:45874');
-//});
+var io = require('socket.io')(config.messageSocketPort);
+
+winston.info('listening for websocket connections on *:' + config.messageSocketPort);
 
 // a list of currently connected sockets
 var sockets = [];
@@ -34,34 +26,6 @@ io.on('connection', function (socket) {
   });
 });
 
-
-/*exports.sendFB = function (req, res) {
-  var message = new Message(req.body);
-  console.log('Begin sendFB');
-
-  message.save(function(err, message) {
-    if (!err) {
-      User.findByIdAndUpdate(
-        message.sentTo,
-        {$push: {"messages": message}},
-        {safe: true},
-        function (err, user) {
-          if (err) {
-            console.log(err);
-          } else {
-            console.log('User\'s fb is is: ' + user.facebookId);
-            console.log('message.body is: ' + message.body);
-            bot.sendMessage(user.facebookId, {text: message.body}, function (err, info) {
-              console.log(JSON.stringify(info));
-            });
-          }
-        }
-      )
-      res.send(message);
-    }
-  });
-};
-*/
 exports.sendSMS = function (req, res) {
   var message = new Message(req.body);
   winston.info('Begin sendSMS');
@@ -91,7 +55,6 @@ exports.sendSMS = function (req, res) {
                 }, function (err, responseData) {
                   if (!err) {
                     winston.info(JSON.stringify(responseData));
-                    //`console.log('Message successfully sent to: ' + userSentTo.phoneNumber);
                   }
                 });
               }
@@ -109,7 +72,6 @@ exports.receiveSMS = function (req, res) {
   winston.info('Begin receiveSMS');
   var resp = new twiml.TwimlResponse();
   winston.info('Received SMS from: ' + req.body.From);
-  //resp.message('You wrote: ' + req.body.Body);
   res.writeHead(200, {
     'Content-Type': 'text/xml'
   });
@@ -137,4 +99,4 @@ exports.receiveSMS = function (req, res) {
       });
     });
     res.end(resp.toString());
-}
+};

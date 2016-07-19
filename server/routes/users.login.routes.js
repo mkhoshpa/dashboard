@@ -259,6 +259,7 @@ var users    = require('../controllers/users.login.controller'),
 	  passport = require('passport'),
 		request = require('request'),
 		_ = require('underscore');
+
 // Define the routes module' method
 module.exports = function(app) {
 	// Set up the 'signup' routes
@@ -366,10 +367,6 @@ module.exports = function(app) {
 		});
 
 	app.post('/generate', users.generateUser);
-		// function(req,res) {
-		// 	res.redirect(req.session.returnTo || '/');
-		// 	delete req.session.returnTo;
-		// }
 
 	// Set up the Facebook OAuth routes
 	app.get('/oauth/facebook', passport.authenticate('facebook', {

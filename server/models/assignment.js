@@ -1,12 +1,9 @@
 'use strict';
-//not used
+
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var ObjectId = mongoose.Schema.Types.ObjectId;
 var User = require('./user.js');
-
-
-
 
 var assignmentSchema = new Schema({
 
@@ -19,8 +16,6 @@ var assignmentSchema = new Schema({
   days: [{type: Number, min: 0, max: 6}],
   hour: {type: Number, min: 0, max: 23},
   minute: {type: Number, min:0, max:59},
-
-  //TODO get populate to work
 
   userId: {type: mongoose.Schema.Types.Object, ref: 'User'},
 

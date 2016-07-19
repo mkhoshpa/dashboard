@@ -12,13 +12,7 @@ var config = require('./config'),
 		cookieParser = require('cookie-parser'),
 		session = require('express-session'),
 		flash = require('connect-flash'),
-		passport = require('passport'),
-		cloudinary = require('cloudinary'),
-		nodemailer = require('nodemailer'),
-		crypto = require('crypto'),
-		client = require('twilio')('AC3408c09dc79f2d5c0bc09342ae5c0fde', '7c139025f034ae9e3e66854a0d3a152f'),
-		async = require('async');
-
+		passport = require('passport');
 
 // Define the Express configuration method
 module.exports = function() {
@@ -54,13 +48,8 @@ module.exports = function() {
 	app.use(bodyParser.json());
 	app.use(methodOverride());
 
-
-
 	//thom added this in to implement easy node authentincation setup
 	app.use(cookieParser());
-
-
-
 
 	// Configure the 'session' middleware
 	app.use(session({
@@ -85,18 +74,10 @@ module.exports = function() {
 	require('../routes/index.server.routes.js')(app, passport);
 	require('../routes/users.login.routes.js')(app, passport);
 	require('../routes/dashboard.route.js')(app, passport);
-	require('../routes/api/slackRoute.js')(app, passport);
-	require('../routes/api/willowRoute.js')(app, passport);
-	require('../routes/api/habitRoute.js')(app, passport);
-	require('../routes/api/willow-surveyRoute.js')(app, passport);
 	require('../routes/api/reminderRoute.js')(app, passport);
 	require('../routes/user.info.routes.js')(app, passport);
-	require('../routes/twilio.js')(app, client, passport);
 	require('../routes/api/assignmentRoute.js')(app, passport);
   require('../routes/api/responseRoute.js')(app, passport);
-
-	//Take it out
-	//require('../routes/triangular.routes.js')(app, passport);
 	require('../routes/api/facebook.routes.js')(app, passport);
 	require('../routes/api/userRoute.js')(app, passport);
 	require('../routes/api/bioRoute.js')(app, passport);
@@ -104,7 +85,8 @@ module.exports = function() {
 	require('../routes/api/messageRoute.js')(app, passport);
 	require('../routes/api/phoneRoute.js')(app, passport);
 	require('../routes/api/surveyTemplateRoute.js')(app, passport);
-		require('../routes/api/pipelineStageroute.js')(app, passport);
+	require('../routes/api/pipelineStageroute.js')(app, passport);
+
 	// Configure static file serving
   app.use(express.static(__dirname + '/../../app'));
   app.use(express.static(__dirname + '/../views'));

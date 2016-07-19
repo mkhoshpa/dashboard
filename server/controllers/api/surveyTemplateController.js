@@ -1,11 +1,7 @@
 'use strict'
-var mongoose = require('mongoose');
 var SurveyTemplate = require('../../models/surveyTemplate.js');
-var SurveyQuestion = require('../../models/surveyQuestion.js');
 var User = require('../../models/user.js');
 var _ = require('underscore');
-var moment = require('moment');
-var Promise = require('bluebird');
 var request = require('request');
 
 exports.update = function(req, res){
@@ -20,11 +16,6 @@ exports.update = function(req, res){
       }
       else{
         console.log(doc);
-
-
-
-
-
       }
     })
     res.send(req.body);
@@ -32,6 +23,13 @@ exports.update = function(req, res){
 }
 
 exports.find = function (req, res) {
+var config = require('../../config/env/development.js');
+}
+
+exports.create = function(req, res) {
+  console.log();
+  console.log('CREATING SURVEY');
+  console.log(req.body);
   console.log();
 }
 
@@ -75,10 +73,9 @@ exports.create = function(req, res) {
   winston.info('SURVEY CREATED aJJJJJJJJJJJJJ');
   winston.info();
   res.send(surveyTemplate);
-}
+};
 
 exports.preview = function (req, res) {
-  //TODO: fix preview to use bot code
   winston.info();
   winston.info('Inside preview');
   var surveyTemplate = new SurveyTemplate(req.body);
@@ -115,4 +112,4 @@ exports.preview = function (req, res) {
   });
   winston.info(surveyTemplate);
   res.send(surveyTemplate);
-}
+};

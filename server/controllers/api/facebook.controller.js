@@ -1,6 +1,5 @@
 'use strict'
 
-var mongoose = require('mongoose');
 var User = require('../../models/user.js');
 var request = require('request');
 var async = require('async');
@@ -10,43 +9,15 @@ var nodemailer = require('nodemailer');
 var config = require('../../config/env/development.js');
 var winston = require('winston');
 
-exports.webhook = function(req, res) {
-  winston.info(req.query);
-  if (req.query['hub.verify_token'] === 'a_token') {
-    res.send(req.query['hub.challenge']);
-  }
-}
-
-exports.recieve = function(req, res) {
-  //winston.info(req.body);
-  var messaging_events = req.body.entry[0].messaging;
-  winston.info(messaging_events);
-  for (var i = 0; i < messaging_events.length - 1; i++) {
-    event = req.body.entry[0].messaging[i];
-    sender = event.sender.id;
-    if (event.message && event.message.text) {
-      text = event.message.text;
-      // Handle a text message from this sender
-    }
-  }
-  res.sendStatus(200);
-}
-
-exports.send = function(req, res) {
-
-}
-
 exports.connectUser = function (req, res) {
   res.writeHead(302, {
-    'Location': 'https://www.facebook.com/dialog/oauth?client_id=' + config.facebook.clientID + '&redirect_uri=http://localhost:12557/api/facebook/getclientprofile'
+    'Location': 'https://www.facebook.com/dialog/oauth?client_id=' + config.facebook.clientID + '&redirect_uri=http://' + config.server.ip + ':' + config.server.port + '/api/facebook/getclientprofile'
   });
   res.end();
 }
 
 exports.getClientProfile = function (req, res) {
-  winston.info('Getting client\'s profile from Facebook');
-  winston.info(req.query.code);
-  request('https://graph.facebook.com/v2.6/oauth/access_token?client_id=' + config.facebook.clientID + '&redirect_uri=http://localhost:12557/api/facebook/getclientprofile&client_secret=' + config.facebook.clientSecret + '&code=' + req.query.code, function (err, res, body) {
+  request('https://graph.facebook.com/v2.6/oauth/access_token?client_id=' + config.facebook.clientID + '&redirect_uri=http://' + config.server.ip + ':' + config.server.port + '/api/facebook/getclientprofile&client_secret=' + config.facebook.clientSecret + '&code=' + req.query.code, function (err, res, body) {
     if (!err && res.statusCode == 200) {
       winston.info('Printing body');
       winston.info(body);
@@ -93,8 +64,6 @@ exports.sendEmail = function (req,res){
           return res.send('502');
         }
         winston.info("did  i get here!"  + user);
-        //user.resetPasswordToken = token;
-        //user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
 
         user.save(function(err) {
           done(err, token, user);
@@ -139,48 +108,7 @@ exports.sendEmail = function (req,res){
       //res.send(502);
     });
   res.send({});
-}
-
-exports.echo = function(req,res) {
-  var token = "EAAOJsBYKnd8BAPT6ZCIcnqR3hFfk5rg8zS2laSfx6MLjU71xouZAE2ZBuZBHQZBgdoOW4sAJRRx8z0ZCQxvqKUXtGT6EH0ZCZCqSdOGNCs7AUxn1z80No85OfWo0nP73PoiTRjiRn66yN67XjHvRHrMKPF3DwIYjoq26UD1EUfTYCAZDZD";
-  var messaging_events = req.body.entry[0].messaging;
-  winston.info(req.body.entry.length);
-
-
-
-  // for (var i = 0; i < messaging_events.length; i++) {
-  //   var event = req.body.entry[0].messaging[i];
-  //   var sender = event.sender.id;
-  //   if (event.message && event.message.text) {
-  //     var text = event.message.text;
-  //     sendTextMessage(sender,text);
-  //   }
-  // }
-
-
-
-
-  function sendTextMessage(sender, text) {
-    var messageData = {
-      text:text
-    }
-    request({
-      url: 'https://graph.facebook.com/v2.6/me/messages',
-      qs: {access_token:token},
-      method: 'POST',
-      json: {
-        recipient: {id:sender},
-        message: messageData,
-      }
-    }, function(error, response, body) {
-      if (error) {
-        winston.info('Error sending message: ', error);
-      } else if (response.body.error) {
-        winston.info('Error: ', response.body.error);
-      }
-    });
-  }
-}
+};
 
 exports.getProfile = function (req, res) {
   winston.info('User id: ' + req.params.user_id);

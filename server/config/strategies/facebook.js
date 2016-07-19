@@ -3,7 +3,6 @@
 
 // Load the module dependencies
 var passport = require('passport'),
-	url = require('url'),
 	FacebookStrategy = require('passport-facebook').Strategy,
 	config = require('../config'),
 	users = require('../../controllers/users.login.controller'),
@@ -27,10 +26,7 @@ module.exports = function() {
 
 			// Create the user OAuth profile
 			var providerUserProfile = {
-				//firstName: profile.name.givenName,
-				//lastName: profile.name.familyName,
 				fullName: profile.name,
-				//email: profile.emails[0].value,
 				username: profile.name,
 				provider: 'facebook',
 				providerId: profile.id,

@@ -1,6 +1,5 @@
-'use strict'
+'use strict';
 
-var mongoose = require('mongoose');
 var User = require('../models/user.js');
 var SurveyTemplate = require('../models/surveyTemplate.js');
 var async = require('async');
@@ -10,19 +9,6 @@ var nodemailer = require('nodemailer');
 var dashboard = require('./dashboard.controller');
 var parse = require('csv-parse');
 var _ = require('underscore');
-var Pandorabot = require('pb-node');
-var builder = require('xmlbuilder');
-var fs = require('fs');
-var winston = require('winston');
-
-var botOptions = {
-  url: 'https://aiaas.pandorabots.com',
-  app_id: '1409612709792',
-  user_key: '83a7e3b5fa60385bd676a05cb4951e98',
-  botname: 'willow'
-};
-
-var bot = new Pandorabot(botOptions);
 
 /**
   Node Mailer Config
@@ -42,6 +28,7 @@ exports.createBio = function(req, res){
 
   res.send(req.body.body);
 }
+
 exports.createPipelineStage = function(req,res){
   winston.info("Im here");
 
@@ -83,7 +70,6 @@ exports.addSurvey = function(req, res){
   res.send(req.body);
 };
 
-
 exports.create = function(req, res) {
   winston.info("Im before new User.");
   //winston.info(req.body);
@@ -124,14 +110,9 @@ exports.create = function(req, res) {
 exports.updateCoach = function(req, res){
   winston.info("Im a coach!");
   var user = new User(req.body);
-  /*
-  User.findByIdAndUpdate(
-
-  );
-  */
   winston.info('ima a saf');
   res.send(user);
-}
+};
 
 
 exports.render = function(req, res) {
@@ -153,7 +134,6 @@ exports.render = function(req, res) {
     });
 	}
 }
-
 
 exports.forgot = function(req, res) {
   res.render('pages/reset', {
@@ -262,7 +242,6 @@ exports.change = function(req, res) {
    });
 }
 
-
 exports.update = function(req,res) {
   //winston.info(req.body);
   if(!req.user) {
@@ -274,15 +253,10 @@ exports.update = function(req,res) {
       messages: req.flash('You must be logged In!')
     });
   } else {
-  /*   User.findByIdAndUpdate({
-
-*/
-    //});
 
     res.redirect('/');
   }
 };
-
 
 exports.delete = function(req, res){
   winston.info("hey");
@@ -304,10 +278,6 @@ exports.getUser = function(req,res){
     }
   });
 }
-
-
-
-
 
 exports.parseCSV = function (req, res) {
   winston.info(req.body.textToParse);

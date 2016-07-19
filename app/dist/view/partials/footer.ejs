@@ -4,19 +4,19 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
   <script src="../../../bower_components/moment/moment.js"></script>
 
-  <!-- For sending messages to clients "http://localhost:45874/socket.io/socket.io.js" 'http://localhost:45874'-->
+  <!-- For sending messages to clients -->
   <script src = "http://localhost:45874/socket.io/socket.io.js"> </script>
   <script>
     var messageSocket = io.connect('http://localhost:45874');
   </script>
 
-  <!-- For sending reminder responses to clients http://localhost:55241/socket.io/socket.io.js 'http://localhost:55241-->
+  <!-- For sending reminder responses to clients -->
   <script src="http://localhost:55241/socket.io/socket.io.js"></script>
   <script>
     var responseSocket = io.connect('http://localhost:55241');
   </script>
 
-  <!-- For sending survey responses to clients http://107.170.21.178:37392/socket.io/socket.io.js http://107.170.21.178:37392-->
+  <!-- For sending survey responses to clients -->
   <script src="http://localhost:37392/socket.io/socket.io.js"></script>
   <script>
     var surveySocket = io.connect('http://localhost:37392');
@@ -39,11 +39,6 @@
   <script src="../../../dist/dashboard/models.js"></script>
   <script src="../../../dist/dashboard/controllers/reminderController.js"></script>
   <script src="../../../dist/dashboard/controllers/userController.js"></script>
-<!--
-  <script src="../../../dist/dashboard/controllers/surveyController.js"></script>
-
-  <script src="../../../dist/dashboard/controllers/tableController.js"></script>
--->
   <script src="../../../dist/dashboard/controllers/surveySelectorController.js"></script>
   <script src="../../../dist/dashboard/controllers/noteController.js"></script>
   <script src="../../../dist/dashboard/controllers/messageController.js"></script>
@@ -54,7 +49,6 @@
   <script src="../../../dist/dashboard/controllers/contactPanelController.js"></script>
   <script src="../../../dist/dashboard/controllers/mainController.js"></script>
   <script src="../../../dist/dashboard/boot.js"></script>
-
 
   <!-- Rostr -->
   <script src="../../../dist/dashboard/controllers/rostr.controller.js"></script>

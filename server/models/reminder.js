@@ -4,9 +4,6 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var ObjectId = mongoose.Schema.Types.ObjectId;
 var User = require('./user.js');
-var moment = require('moment');
-var ReminderResponse = require('./reminderResponse.js');
-var hooker = require('hooker');
 
 var reminderSchema = new Schema({
   title: {type: String, required: true},
@@ -14,14 +11,6 @@ var reminderSchema = new Schema({
   start: {type: Date, default: Date.now},
   timeOfDay: {
     type: Date, default: Date.now
-      // validate:{
-      //   validator: function(v) {
-      //     return formatTime(v);
-      //
-      //   },
-      //   message: '{value} is not a valid time'
-      // },
-      // required: [true, 'you gotta tell us when to remind you !']
     },
   selectedDates: [String],
   daysOfTheWeek: {
@@ -83,37 +72,6 @@ reminderSchema.method.response = function(){
   return 'hello';
 };
 
-/*
-*  Decides if based on the date and contents on the response if we want
-*  to increment their status point
-*  Returns Boolean Value
-*/
-/*reminderSchema.methods.increment = function() {
-
-  var currentResponse = this.responses[this.responses.length - 1];
-  var lastResponse = this.lastGenuine();
-  var lastNonResponse = this.lastNonResponse();
-
-  // Genuine response
-  if(currentResponse.responded === true) {
-
-    var currentDate = moment(currentResponse.timeStamp);
-    var lastResponseDate = moment(lastResponseDate.timeStamp);
-
-    // If the last genuine response happend atleast a day ago
-    if(currentDate.subtract(1, 'days').isSameOrBefore(lastResponseDate))
-      return true;
-    // Else, last genuine response happend on the same day, thus do not increment
-    else
-      return false;
-  }
-  // Blank response
-  else{
-    return false;
-  }
-
-}
-*/
 // We want to decrement if the last response
 reminderSchema.methods.decrement = function() {
 
@@ -185,44 +143,12 @@ reminderSchema.methods.parseDates = function() {
   this.hour = this.timeOfDay.getHours();
   this.minute = this.timeOfDay.getMinutes();
 
-}
-
-/*reminderSchema.pre('save', function(next) {
-    this.parseDates();
-    next();
-});*/
-
-//make a virtual that returns the most recent response on the responses array
-
-
+};
 
 var Reminder = mongoose.model('Reminder', reminderSchema);
-
-hooker.hook(Reminder, 'update', {
-  pre: function () {
-    this.parseDates();
-  },
-  post: function () {
-
-  }
-});
 
 //lets make making reminders a piece of cake !
 
 //create a static method to make a default reminders object
-
-
-
-
-
-
-
-
-
-// console.log(formatTime(" 1:00"));
-// console.log(formatTime("1:00 "));
-// console.log(formatTime("1:00"));
-// console.log(formatTime("2100"));
-// console.log(formatTime("90:00"));
 
 module.exports = Reminder;

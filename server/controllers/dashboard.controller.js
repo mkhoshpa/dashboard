@@ -1,9 +1,8 @@
-'use strict'
+'use strict';
 
 var User 		 = require('mongoose').model('User'),
     SurveyTemplate = require('mongoose').model('SurveyTemplate'),
     Reminder = require('mongoose').model('Reminder'),
-    ReminderResponse = require('mongoose').model('ReminderResponse'),
     path     = require('path'),
 		passport = require('passport'),
     winston = require('winston');
@@ -16,49 +15,19 @@ exports.render = function(req, res, next) {
         {
           path: 'clients',
           model: 'User',
-          // populate: {
-          //   path: 'surveyTemplates',
-          //   model: 'SurveyTemplate',
-          //   /*populate: {
-          //     path: 'responses',
-          //     model: 'ReminderResponse'
-          //   }*/
-          // }
+          populate: {
+            path: 'reminders',
+            model: 'Reminder',
+          }
         },
-        // {
-        //   path: 'clients',
-        //   model: 'User',
-        //   populate: {
-        //     path: 'mostRecentResponse',
-        //     model: 'ReminderResponse',
-        //   }
-        // },
-        // {
-        //   path: 'clients',
-        //   model: 'User',
-        //   populate: {
-        //     path: 'surveys',
-        //     model: 'Survey',
-        //     populate: {
-        //       path: 'goals',
-        //       populate: {
-        //         path: 'reminder',
-        //         model: 'Reminder'
-        //       }
-        //     }
-        //   }
-        // },
-        // {
-        //   path: 'mostRecentResponse'
-        // },
+        {
+          path: 'clients',
+          model: 'User',
+        },
         {
           path: 'surveyTemplates',
           model: 'SurveyTemplate'
         }
-        // },
-        // {
-        //   path: 'reminders'
-        // }
       ]
 
       winston.info('User.populate');
@@ -93,22 +62,7 @@ exports.render = function(req, res, next) {
         {
           path: 'reminders',
           model: 'Reminder',
-          populate: {
-            path: 'responses',
-            model: 'ReminderResponse'
-          }
         },
-        {
-          path: 'surveys',
-          model: 'Survey',
-          populate: {
-            path: 'goals',
-            populate: {
-              path: 'reminder',
-              model: 'Reminder'
-            }
-          }
-        }
       ]
       console.log("where am I?");
       User.populate(req.user,
@@ -129,7 +83,6 @@ exports.render = function(req, res, next) {
         });
     }
   } else {
-    //req.session.returnTo = req.path;
 		return res.redirect('/signin');
 	}
 }

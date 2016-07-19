@@ -1,4 +1,3 @@
-
 // Invoke 'strict' JavaScript mode
 'use strict';
 
@@ -6,14 +5,10 @@
 var mongoose = require('mongoose'),
   	crypto = require('crypto'),
   	Schema = mongoose.Schema,
-    Slack = require('./slack.js'),
-
     reminder = require('./reminder.js'),
     note = require('./note.js'),
     message = require('./message.js'),
-    reminderResponse = require('./reminderResponse.js'),
     surveyTemplate = require('./surveyTemplate.js');
-
 
 // Define a new 'UserSchema'
 var UserSchema = new Schema({
@@ -21,28 +16,14 @@ var UserSchema = new Schema({
 	lastName: String,
   fullName: String,
   bio: String,
-	// email: {
-	// 	type: String,
-	// 	// Validate the email format
-  //   index: true,
-  //   unique: true,
-	// 	match: [/.+\@.+\..+/, "Please fill a valid email address"]
-	// },
   // Username is the unique itendifier,
 	username: {
 		type: String
 		// Set a unique 'username' index
 		//unique: true,
-    //index: true
-		// Validate 'username' value existance
-		//required: 'Email is required',
-		// Trim the 'username' field
-    //match: [/.+\@.+\..+/, "Please fill a valid email address"]
 	},
 	password: {
 		type: String,
-		// Validate the 'password' value length
-    //minlength: [5, 'Password too short']
 	},
 
   slack : {
@@ -56,9 +37,6 @@ var UserSchema = new Schema({
   },
   reminders: [
     {type: mongoose.Schema.Types.Object, ref: 'Reminder'}
-  ],
-  surveys: [
-    {type: mongoose.Schema.Types.ObjectId, ref: 'Survey'}
   ],
 
   surveyTemplates:[
@@ -108,13 +86,7 @@ var UserSchema = new Schema({
   messages: [
     {type: mongoose.Schema.Types.Object, ref: 'Message'}
   ],
-    // reminder: {type: mongoose.Schema.Types.ObjectId, ref: 'Reminder'},
-    // survey: {type: mongoose.Schema.Types.ObjectId, ref: 'Survey'}
 
-  mostRecentResponse: {type: mongoose.Schema.Types.ObjectId, ref: 'ReminderResponse'},
-  responses: [{
-    type: mongoose.Schema.Types.ObjectId, ref: 'ReminderResponse'
-  }],
   coaches: [
     { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
   ],
@@ -156,17 +128,6 @@ var UserSchema = new Schema({
   betaCode: String
 });
 
-// Set the 'fullname' virtual property
-// UserSchema.virtual('fullName').get(function() {
-//   if(this.firstName && this.lastName){
-//   return this.firstName + ' ' + this.lastName;
-// } else return this.name;
-// }).set(function(fullName) {
-// 	var splitName = fullName.split(' ');
-// 	this.firstName = splitName[0] || '';
-// 	this.lastName = splitName[1] || '';
-// });
-
 // Use a pre-save middleware to hash the password
 UserSchema.pre('save', function(next) {
   console.log();
@@ -194,9 +155,7 @@ UserSchema.pre('save', function(next) {
 UserSchema.methods.getStatus = function(){
   console.log("is this thing getting called");
   return status.value;
-
-
-}
+};
 
 // Create an instance method for hashing a password
 UserSchema.methods.hashPassword = function(password) {
@@ -218,7 +177,7 @@ UserSchema.methods.generatePassword = function () {
   for( var i=0; i < 5; i++ )
     text += possible.charAt(Math.floor(Math.random() * possible.length));
   return text;
-}
+};
 
 UserSchema.methods.messagingService = function() {
   if(this.provider == 'slack') {
@@ -229,7 +188,7 @@ UserSchema.methods.messagingService = function() {
   }
   else
     return 'text';
-}
+};
 
 UserSchema.methods.isUnique = function (email) {
   this.findOne({
@@ -242,46 +201,25 @@ UserSchema.methods.isUnique = function (email) {
       return false;
     }
   })
-}
+};
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 
 =======
 
+=======
+UserSchema.methods.calcStatus = function() {
+};
+>>>>>>> code-cleanup
 
 >>>>>>> dev
 // If we need this later
 UserSchema.statics.findByPhoneNumber = function (phoneNumber, callback) {
   console.log("Inside findByPhoneNumber, attempting to find: " + phoneNumber);
   return this.findOne({ 'phoneNumber': phoneNumber }, callback);
-}
-
-// Find possible not used username
-// UserSchema.statics.findUniqueUsername = function(username, suffix, callback) {
-// 	var _this = this;
-//
-// 	// Add a 'username' suffix
-// 	var possibleUsername = username + (suffix || '');
-//
-// 	// Use the 'User' model 'findOne' method to find an available unique username
-// 	_this.findOne({
-// 		username: possibleUsername
-// 	}, function(err, user) {
-// 		// If an error occurs call the callback with a null value, otherwise find find an available unique username
-// 		if (!err) {
-// 			// If an available unique username was found call the callback method, otherwise call the 'findUniqueUsername' method again with a new suffix
-// 			if (!user) {
-// 				callback(possibleUsername);
-// 			} else {
-// 				return _this.findUniqueUsername(username, (suffix || 0) + 1, callback);
-// 			}
-// 		} else {
-// 			callback(null);
-// 		}
-// 	});
-// };
-
+};
 
 // Configure the 'UserSchema' to use getters and virtuals when transforming to JSON
 UserSchema.set('toJSON', {

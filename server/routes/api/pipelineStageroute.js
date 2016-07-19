@@ -8,4 +8,4 @@ module.exports = function(app) {
 
   app.post('/api/pipelineStage/create/:id', user.createPipelineStage);
 
-}
+};

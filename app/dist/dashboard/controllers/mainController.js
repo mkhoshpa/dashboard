@@ -252,7 +252,6 @@ var app;
 
 
               self.openToast("Saved Convo")
-            }
                 _this.$http.post('/api/surveyTemplate/create', this.newSurvey).then(function successCallback(response) {
                   console.log(response);
                   _this.$http.post('/api/user/surveyTemplate/add/'+ this.user._id, response.data).then(function(response2){
@@ -260,6 +259,7 @@ var app;
                     this.user.surveyTemplates.push(response.data);
                   })
                 });
+              }
 
 
               MainController.prototype.saveSurvey = function($event){

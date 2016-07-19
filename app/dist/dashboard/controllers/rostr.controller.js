@@ -184,7 +184,7 @@
           console.log(vm.surveyViewClients);
 
         //This gets the assigments []
-        vm.$http.get('/api/assigment/selectedSurvey/' + vm.selectedDataSurvey._id).then(function successCallback(response){
+        vm.$http.get('/api/assignment/selectedSurvey/' + vm.selectedDataSurvey._id).then(function successCallback(response){
 
             if(response.data.length !== 0){
               console.log(response.data);

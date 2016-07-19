@@ -39,7 +39,7 @@ var app;
                      display:"Written Answer",
                      value:"WRITTEN"
                 }];
-                
+
                 //this.questions1 = [{type: "Yes/No"},{type:"Scale from 1 to 5"},{type:"Written Answer"}];
                 this.counter = 0;
                 this.questionAmount = [0];
@@ -1269,9 +1269,26 @@ HI Shane!                    console.log(survey);
 
 
             MainController.prototype.selectUser = function (user) {
+                var _this = this;
+                var self = this;
+
                 this.selected = user;
                 this.userService.selectedUser = this.selected;
                 userSelected = user;
+
+
+
+                // _this.$http.get('/api/userSelected/responses' + user._id)
+                // .then(function successCallback(response) {
+                //   if (response.data.length !== 0) {
+                //
+                //   }
+                //   else {
+                //
+                //   }
+                //
+                // }
+
                 var sidebar = this.$mdSidenav('left');
                 if (sidebar.isOpen()) {
                     sidebar.close();

@@ -182,16 +182,9 @@ var app;
 
 
               self.openToast("Saved Convo")
-            }
-
-
-
 
 
               survey.questions.push(question);
-
-
-
 
 
               console.log(survey.questions);

@@ -534,6 +534,8 @@ var app;
                     console.log(response);
                     var user = response.data;
                     user.coaches = _this.user._id;
+                    // TODO: change this
+                    user.phoneNumber = '+15064261732';
                     _this.$http.post('/api/user/create', user).then(function (__response) {
                         _this.$http.post('/api/coach/newuser/' + this.user.id + '?' + __response.data.id, user).then(function (client) {
                           console.log("Here fb");
@@ -618,25 +620,40 @@ var app;
                     // after promise is succesful add to
                     // reminder.assigne.reminders.push()
 
+                    console.log(_this.selected);
 
                     // First step, create the reminder and save it on the db
-                    _this.$http.post('/api/reminder/create', reminder).then(function successCallback(response) {
-                        // Push the reminder to the user
-                        self.selected.reminders.push(response.data);
-                        console.log(response.data);
-                        // Create the assignment object
-                        var reminderUserAssign = {
-                          repeat: true,
-                          days: reminder.days,
-                          hour: reminder.hour,
-                          minute: reminder.minute,
-                          userId: response.data.assignee,
-                          reminderId: response.data._id,
-                          type: 'reminder' // Default is reminder but there's no harm in specifying it here
-                        };
-                        // Call sendOutReminder
-                        _this.sendOutReminder(reminderUserAssign);
+                    var messengerReminder = {
+                      hour: reminder.hour,
+                      minute: reminder.minute,
+                      text: reminder.title,
+                      originalMessage: {
+                        channel: _this.selected.facebookId,
+                        user: _this.selected.facebookId
+                      }
+                    };
+
+                    console.log(messengerReminder);
+                    _this.$http.post('/api/reminder/createMessenger', messengerReminder).then(function successCallback(response) {
+                      console.log('Reminder created');
                     });
+                    // // _this.$http.post('/api/reminder/create', reminder).then(function successCallback(response) {
+                    // //     // Push the reminder to the user
+                    // //     self.selected.reminders.push(response.data);
+                    // //     console.log(response.data);
+                    // //     // Create the assignment object
+                    // //     var reminderUserAssign = {
+                    // //       repeat: true,
+                    // //       days: reminder.days,
+                    // //       hour: reminder.hour,
+                    // //       minute: reminder.minute,
+                    // //       userId: response.data.assignee,
+                    // //       reminderId: response.data._id,
+                    // //       type: 'reminder' // Default is reminder but there's no harm in specifying it here
+                    // //     };
+                    // //     // Call sendOutReminder
+                    // //     _this.sendOutReminder(reminderUserAssign);
+                    // });
 
                     self.openToast("Reminder added");
                 }, function () {

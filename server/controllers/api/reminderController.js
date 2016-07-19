@@ -2,6 +2,7 @@
 
 var mongoose = require('mongoose');
 var Reminder = require('../../models/reminder.js');
+var MessengerReminder = require('../../models/messengerReminder.js');
 var ReminderResponse = require('../../models/reminderResponse.js');
 var User = require('../../models/user.js');
 var Message = require('../../models/message.js');
@@ -17,6 +18,8 @@ var io = require('socket.io')(http);
 var ioSurvey = require('socket.io')(37392);
 var schedule = require('node-schedule');
 var Pandorabot = require('pb-node');
+
+var compiled = false;
 
 console.log('listening for websocket connections on *:37392');
 
@@ -106,6 +109,10 @@ exports.create = function(req, res) {
       res.send(reminder);
     }
   });
+}
+
+exports.createMessenger = function(req, res) {
+  MessengerReminder.create(req.body);
 }
 
 exports.receiveSMS = function (req, res) {

@@ -1076,7 +1076,7 @@ var app;
             };
 
             // socket.io code ahead
-            responseSocket.on('response', function (response) {
+            /*responseSocket.on('response', function (response) {
               console.log('Server sent a reminder response');
               MainController.prototype.updateReminder(response);
             });

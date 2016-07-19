@@ -5,7 +5,8 @@ var User 		 = require('mongoose').model('User'),
     Reminder = require('mongoose').model('Reminder'),
     ReminderResponse = require('mongoose').model('ReminderResponse'),
     path     = require('path'),
-		passport = require('passport');
+		passport = require('passport'),
+    winston = require('winston');
 
 exports.render = function(req, res, next) {
   if (req.user) {
@@ -59,25 +60,23 @@ exports.render = function(req, res, next) {
         //   path: 'reminders'
         // }
       ]
-      console.log(req.user);
-      console.log('User.populate');
+
+      winston.info('User.populate');
       User.populate(req.user, populateCoach,
         function(err, user) {
         if(user) {
-          console.log(user.clients.length);
-          console.log(user.clients);
-          console.log('populate dashboard2');
-
-          // for(var i = 0; i < user.clients.length; i++) {
-          //   user.clients[i].calcStatus();
-          // }
+          winston.info(user.clients.length);
+          winston.info('populate dashboard');
+          for(var i = 0; i < user.clients.length; i++) {
+            user.clients[i].calcStatus();
+          }
 
           res.render(path.resolve('app/index'), {
             user: JSON.stringify(user)
           });
         }
         else {
-          console.log('ERROR LOADING DASHBOARD FOR SOME ODD REASON');
+          winston.error('ERROR LOADING DASHBOARD FOR SOME ODD REASON');
           res.render('landing', {
       			// Set the page title variable
       			title: 'Fitpath',

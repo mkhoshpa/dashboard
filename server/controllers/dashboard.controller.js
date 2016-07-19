@@ -87,7 +87,6 @@ exports.render = function(req, res, next) {
         }
       });
       console.log("after:");
-      
 
     } else if (req.user.role == "user")  {
 

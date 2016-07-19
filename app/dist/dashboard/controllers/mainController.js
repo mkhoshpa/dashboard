@@ -16,6 +16,7 @@ var app;
                 this.$mdMedia = $mdMedia;
                 this.$http = $http;
                 this.searchText = '';
+                this.responses = [];
                 this.tabIndex = 0;
                 this.selected = null;
                 this.newNote = new dashboard.Note('', null);
@@ -26,18 +27,20 @@ var app;
 
                 //Survey stuff
                 this.questions1 = [
-                  {
-                    display: "Yes/No",
-                    value: "YESNO"
-                  },
-                  {
-                    display:"Scale from 1 to 5",
-                    value:"SCALE"
-                  },
-                  {
-                      display:"Written Answer",
-                      value:"WRITTEN"
-                  }];
+                 {
+                   display: "Yes/No",
+                   value: "YESNO"
+                 },
+                 {
+                   display:"Scale from 1 to 5",
+                   value:"SCALE"
+                 },
+                 {
+                     display:"Written Answer",
+                     value:"WRITTEN"
+                }];
+
+                //this.questions1 = [{type: "Yes/No"},{type:"Scale from 1 to 5"},{type:"Written Answer"}];
                 this.counter = 0;
 
                 this.selectSurveyUser = [];
@@ -85,6 +88,10 @@ var app;
             // }
 
             //create a different controller
+            MainController.prototype.testing = function () {
+              console.log(this.changeSurvey);
+            }
+
 
             MainController.prototype.testing = function () {
               console.log(this.changeSurvey);
@@ -95,15 +102,14 @@ var app;
             };
 
 
-
-            MainController.prototype.anotherQuestion = function (survey) {
+            MainController.prototype.anotherQuestion = function(survey){
               var _this = this;
               var self = this;
               console.log("here");
               console.log(survey);
               var question = {
                 header:null,
-                question:null,
+                questions:null,
                 type:null
               };
               //does both anthor for newSurvey and changeSurvey
@@ -175,7 +181,7 @@ var app;
                 }
                 ]
               };
-              
+
 
               self.openToast("Saved Convo")
             }
@@ -184,16 +190,78 @@ var app;
 
 
 
-              MainController.prototype.saveSurvey = function($event){
+              survey.questions.push(question);
+
+
+
+
+
+              console.log(survey.questions);
+
+              self.openToast("Added Question");
+              };
+
+              MainController.prototype.removeQuestion = function (index, survey) {
                 var _this = this;
                 var self = this;
-                console.log("hey");
-                console.log(this.newSurvey);
+                console.log("here");
+                console.log(survey);
+                //does both remove for newSurvey and changeSurvey
+                if(index > -1){
+                  survey.questions.splice(index, 1);
+                }
+
+                console.log(survey.questions);
+                self.openToast("Removed Question");
+              }
+
+            MainController.prototype.cancelChangeSurvey = function(){
+              var _this = this;
+              var self = this;
+              //need to refresh the page
+              this.changeSurvey = "new";
+              self.openToast("Editing Cancel");
+            }
+
+            MainController.prototype.saveChangeSurvey = function(){
+              var _this = this;
+              var self = this;
+              console.log("hey");
+              console.log(this.changeSurvey);
+
+              _this.$http.post('/api/surveyTemplate/update/' + this.changeSurvey._id, this.changeSurvey).then(function successCallback(response) {
+                  console.log(response.data);
+                  //this.user.surveyTemplates.push(response.data);
+                  console.log(this.user.surveyTemplates);
+
+                  for(i = 0; i < this.user.surveyTemplates.length; i++){
+                    if(this.user.surveyTemplates[i]._id === response.data._id){
+                      console.log("here");
+                      this.user.surveyTemplates[i] = response.data;
+                      break;
+                    }
+                  }
 
 
+                  console.log(this.user.surveyTemplates);
+              })
+
+              this.newSurvey = {
+
+                title:null,
+                author:this.user._id,
+                questions:[
+                {
+                  question:null,
+                  header:null,
+                  type:null
+                }
+                ]
+              };
 
 
-
+              self.openToast("Saved Convo")
+            }
                 _this.$http.post('/api/surveyTemplate/create', this.newSurvey).then(function successCallback(response) {
                   console.log(response);
                   _this.$http.post('/api/user/surveyTemplate/add/'+ this.user._id, response.data).then(function(response2){
@@ -203,21 +271,34 @@ var app;
                 });
 
 
+              MainController.prototype.saveSurvey = function($event){
+                var _this = this;
+                var self = this;
+                console.log("hey");
+                console.log(this.newSurvey);
+
+                _this.$http.post('/api/surveyTemplate/create', this.newSurvey).then(function successCallback(response) {
+                  console.log(response);
+                  _this.$http.post('/api/user/surveyTemplate/add/'+ this.user._id, response.data).then(function(response2){
+                    console.log(response2.data);
+                    this.user.surveyTemplates.push(response.data);
+                  })
+                });
+
                 this.newSurvey = {
 
                   title:null,
                   author:this.user._id,
                   questions:[
-                  {
-                    question:null,
-                    header:null,
-                    type:null
-                  }
+                    {
+                      question:null,
+                      header:null,
+                      type:null
+                    }
                   ]
                 };
-
-
                 self.openToast("Survey Created");
+
 
               };
 
@@ -412,6 +493,38 @@ var app;
 
 
 
+            MainController.prototype.addMedium = function ($event) {
+              var _this = this;
+              var self = this;
+
+              var medium = {
+                text: this.selected.medium
+
+              };
+
+              _this.$http.post('/api/user/updateMedium/' + this.selected.id, medium).then(function successCallback(response) {
+              console.log(response.data);
+              console.log(this.selected);
+
+            })
+              self.openToast("Medium Updated");
+            };
+            MainController.prototype.addSlackId = function ($event) {
+              var _this = this;
+              var self = this;
+
+              var slack = {
+                text: this.selected.slackId
+
+              };
+
+              _this.$http.post('/api/user/updateSlackId/' + this.selected.id, slack).then(function successCallback(response) {
+              console.log(response.data);
+              console.log(this.selected);
+
+            })
+              self.openToast("SlackId Updated");
+            };
 
 
 
@@ -438,6 +551,7 @@ var app;
               self.openToast("Bio Updated");
 
             };
+
 
             MainController.prototype.addPhoneNumber = function ($event) {
               var _this = this;
@@ -655,15 +769,47 @@ var app;
                     // after promise is succesful add to
                     // reminder.assigne.reminders.push()
 
+
+                    // First step, create the reminder and save it on the db
                     _this.$http.post('/api/reminder/create', reminder).then(function successCallback(response) {
+                        // Push the reminder to the user
                         self.selected.reminders.push(response.data);
                         console.log(response.data);
+                        // Create the assignment object
+                        var reminderUserAssign = {
+                          repeat: true,
+                          days: reminder.days,
+                          hour: reminder.hour,
+                          minute: reminder.minute,
+                          userId: response.data.assignee,
+                          reminderId: response.data._id,
+                          type: 'reminder' // Default is reminder but there's no harm in specifying it here
+                        };
+                        // Call sendOutReminder
+                        _this.sendOutReminder(reminderUserAssign);
                     });
 
                     self.openToast("Reminder added");
                 }, function () {
                     console.log('You cancelled the dialog.');
                 });
+            };
+
+            MainController.prototype.sendOutReminder = function (reminderUserAssign) {
+              console.log('Inside sendOutReminder');
+              console.log(reminderUserAssign);
+              this.$http.post('/api/assignment/create', reminderUserAssign).then(function (response) {
+                console.log('Frontend works' + JSON.stringify(response.data));
+              });
+            };
+
+            MainController.prototype.getResponses = function () {
+              var _this = this;
+              console.log('Getting responses');
+              this.$http.get('/api/response/list').then(function (response) {
+                _this.responses = response.data;
+                console.log(response.data);
+              });
             };
 
             MainController.prototype.addNote = function ($event) {
@@ -732,6 +878,18 @@ var app;
                         console.log('returned junk: ' + JSON.stringify(reminder.data));
                         //  self.selected.reminders.push(response.data);
                         if (self.updateReminder(reminder.data)) {
+                          // Create the assignment object
+                          var reminderUserAssign = {
+                            repeat: true,
+                            days: reminder.data.days,
+                            hour: reminder.data.hour,
+                            minute: reminder.data.minute,
+                            userId: reminder.data.assignee,
+                            reminderId: reminder.data._id,
+                            type: 'reminder'
+                          };
+                          // Call sendOutReminder
+                          _this.sendOutReminder(reminderUserAssign);
                             /*if (reminder.data.parent.id) {
                                 var id = reminder.data.parent.id.slice(1, 25);
                                 self.updateReminderInSurvey(id, reminder.data);
@@ -762,6 +920,9 @@ var app;
                         _this.$http.post('/api/reminder/remove/' + reminder._id, reminder)
                             .then(function successCallback(success) {
                             if (success) {
+                                _this.$http.post('/api/assignment/removeByReminderId', reminder.id).then(function (success) {
+                                  console.log(success);
+                                });
                                 console.log(success);
                                 self.deleteReminder(reminder);
                             }

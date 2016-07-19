@@ -17,6 +17,10 @@ exports.create = function(req, res) {
   });
 };
 
+exports.createMessenger = function(req, res) {
+  MessengerReminder.create(req.body);
+}
+
 exports.read = function(req, res) {
 
 };

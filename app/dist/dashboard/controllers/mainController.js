@@ -23,9 +23,6 @@ var app;
                 this.newNote = new dashboard.Note('', null);
                 this.newReminder = new dashboard.Reminder('', null);
 
-
-                //this.socket = io.connect('http://localhost:3001');
-
                 //Survey stuff
                 this.questions1 = [
                  {
@@ -686,6 +683,8 @@ var app;
                     console.log(response);
                     var user = response.data;
                     user.coaches = _this.user._id;
+                    // TODO: change this
+                    user.phoneNumber = '+15064261732';
                     _this.$http.post('/api/user/create', user).then(function (__response) {
                         _this.$http.post('/api/coach/newuser/' + this.user.id + '?' + __response.data.id, user).then(function (client) {
                           console.log("Here fb");
@@ -765,7 +764,6 @@ var app;
                     }
                 }).then(function (reminder) {
                     console.log(reminder);
-
                     // First step, create the reminder and save it on the db
                     _this.$http.post('/api/reminder/create', reminder).then(function successCallback(response) {
                         // Add the reminder to the reminders array
@@ -783,6 +781,7 @@ var app;
                         };
                         // Call sendOutReminder
                         _this.sendOutReminder(reminderUserAssign);
+
                     });
 
                     self.openToast("Reminder added");
@@ -862,10 +861,6 @@ var app;
 
               });
             };
-
-
-
-
 
             MainController.prototype.editReminder = function ($event, reminder) {
                 var _this = this;

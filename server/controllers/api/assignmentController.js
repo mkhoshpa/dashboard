@@ -147,6 +147,43 @@ exports.convosNow = function(req, res) {
        });
 
 }
+exports.selectedlist = function (req, res) {
+  console.log(req.params.id);
+  Assignment.find({surveyTemplateId: req.params.id}, function(err, obj){
+    if(err){
+      console.log("crap");
+    }
+    else {
+      console.log(obj);
+      res.json(obj);
+    }
+  })
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 exports.list = function(req, res) {
   Assignment.find({}, function(err, obj) {

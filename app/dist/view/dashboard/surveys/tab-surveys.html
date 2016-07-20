@@ -1,31 +1,6 @@
 <md-content>
-  <md-card ng-repeat="survey in vm.selected.surveys | orderBy: '-date':true">
-    <md-card-header ng-style="{'background-color': survey.status}">
-      <md-card-avatar>
-        <md-icon class="md-avatar-icon" md-svg-icon="img/icons/menu.svg"></md-icon>
-      </md-card-avatar>
-      <md-card-header-text>
-        <div layout="row">
+  <md-card ng-repeat="response in vm.selected.response | orderBy: '-date':true">
 
-          <div flex=90>
-            <span class="md-title">{{survey.author}}</span>
-          </br>
-            <span class="md-subhead">subhead</span>
-          </div>
-
-           <div ng-if="survey.status=='green'" flex=10>
-            <i class="material-icons" style="font-size: 32px; color:white;">check</i>
-          </div>
-          <div ng-if="survey.status=='yellow'" flex=10>
-            <i class="material-icons" style="font-size: 32px; color:#444;">warning</i>
-          </div>
-          <div ng-if="survey.status=='red'" flex=10>
-            <i class="material-icons" style="font-size: 32px; color:white;">priority_high</i>
-          </div>
-
-        </div>
-      </md-card-header-text>
-    </md-card-header>
   <div layout="column" flex=grow>
     <div layout="row" flex=grow>
       <div layout="column" flex=80>

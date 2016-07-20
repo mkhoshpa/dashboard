@@ -26,7 +26,21 @@ var app;
                 //this.socket = io.connect('http://107.170.21.178:3001');
 
                 //Survey stuff
-                this.questions1 = [{type: "Yes/No"},{type:"Scale from 1 to 5"},{type:"Written Answer"}];
+                this.questions1 = [
+                 {
+                   display: "Yes/No",
+                   value: "YESNO"
+                 },
+                 {
+                   display:"Scale from 1 to 5",
+                   value:"SCALE"
+                 },
+                 {
+                     display:"Written Answer",
+                     value:"WRITTEN"
+                }];
+
+                //this.questions1 = [{type: "Yes/No"},{type:"Scale from 1 to 5"},{type:"Written Answer"}];
                 this.counter = 0;
                 this.questionAmount = [0];
                 this.selectSurveyUser = [];
@@ -34,19 +48,7 @@ var app;
                 //pipelineStage array
                 this.pipelineOptions = [{type: "lead"}, {type: "trail"}, {type: "active-client"}, {type: "previous-client"},{type: "archived"},{type: "NA"} ];
 
-                //rostr stuff for selecting columns
 
-                // this.rostr.columns =
-                // [
-                //   {"headerTitle" : "image", "display": false},
-                //   "userName": false,
-                //   "pipelineStage": false,
-                //   "lastMessage": false,
-                //   "lastReminder": false,
-                //   "lastResponse": false,#448AFF
-                //   "surveyTitle": false,
-                //   "surveyStatus": false
-                // ]
 
                 var self = this;
                 this.user = this.userService.get();
@@ -64,6 +66,24 @@ var app;
                 scope = $scope;
                 this._ = window['_'];
 
+
+                this.newSurvey = {
+
+                  title:null,
+                  author:this.user._id,
+                  questions:[
+                  {
+                    question:null,
+                    header:null,
+                    type:null
+                  }
+                  ]
+                };
+
+
+
+
+
             }
             //console.log(JSON.stringify(this));
             // convertToUsers(slack: any[]) {
@@ -72,83 +92,135 @@ var app;
             // }
 
             //create a different controller
+            MainController.prototype.testing = function () {
+              console.log(this.changeSurvey);
+            }
+
 
             MainController.prototype.setFormScope = function (scope) {
                 this.formScope = scope;
             };
 
 
-            MainController.prototype.anotherQuestion = function(questionNum){
+            MainController.prototype.anotherQuestion = function(survey){
               var _this = this;
               var self = this;
-              this.questionAmount.push(++this.counter);
-              self.openToast("Next Question");
+              console.log("here");
+              console.log(survey);
+              var question = {
+                header:null,
+                questions:null,
+                type:null
               };
+
+              survey.questions.push(question);
+
+
+
+
+
+              console.log(survey.questions);
+
+              self.openToast("Added Question");
+              };
+
+              MainController.prototype.removeQuestion = function (index, survey) {
+                var _this = this;
+                var self = this;
+                console.log("here");
+                console.log(survey);
+                //does both remove for newSurvey and changeSurvey
+                if(index > -1){
+                  survey.questions.splice(index, 1);
+                }
+
+                console.log(survey.questions);
+                self.openToast("Removed Question");
+              }
+
+            MainController.prototype.cancelChangeSurvey = function(){
+              var _this = this;
+              var self = this;
+              //need to refresh the page
+              this.changeSurvey = "new";
+              self.openToast("Editing Cancel");
+            }
+
+            MainController.prototype.saveChangeSurvey = function(){
+              var _this = this;
+              var self = this;
+              console.log("hey");
+              console.log(this.changeSurvey);
+
+              _this.$http.post('/api/surveyTemplate/update/' + this.changeSurvey._id, this.changeSurvey).then(function successCallback(response) {
+                  console.log(response.data);
+                  //this.user.surveyTemplates.push(response.data);
+                  console.log(this.user.surveyTemplates);
+
+                  for(i = 0; i < this.user.surveyTemplates.length; i++){
+                    if(this.user.surveyTemplates[i]._id === response.data._id){
+                      console.log("here");
+                      this.user.surveyTemplates[i] = response.data;
+                      break;
+                    }
+                  }
+
+
+                  console.log(this.user.surveyTemplates);
+              })
+
+              this.newSurvey = {
+
+                title:null,
+                author:this.user._id,
+                questions:[
+                {
+                  question:null,
+                  header:null,
+                  type:null
+                }
+                ]
+              };
+
+
+              self.openToast("Saved Convo")
+            }
+
+
+
+
+
+
+
 
               MainController.prototype.saveSurvey = function($event){
                 var _this = this;
                 var self = this;
                 console.log("hey");
-                console.log(this.questions);
-                for (var key in this.questions) {
-                  this.questions[key].responses = [];
-                }
-                var questions = [];
-                for (var key in this.questions) {
-                  questions.push(this.questions[key]);
-                }
-                /*
-                 * This loop serves two purposes: transform the questions object
-                 * into a questions array, and transform some of the properties
-                 * into the correct form for the backend.
-                 */
-                var questions = [];
-                for (var key in this.questions) {
-                  // Rename the 'questionHeader' property to 'header'
-                  if (this.questions[key].hasOwnProperty('questionHeader')) {
-                    this.questions[key].header = this.questions[key].questionHeader;
-                    delete this.questions[key].questionHeader;
-                  }
+                console.log(this.newSurvey);
 
-                  // Turn the 'type' property into the correct form for the backend
-                  if (this.questions[key].type == 'Yes/No') this.questions[key].type = 'YESNO';
-                  if (this.questions[key].type == 'Written Answer') this.questions[key].type = 'WRITTEN';
-                  if (this.questions[key].type == 'Scale from 1 to 5') this.questions[key].type = 'SCALE';
-
-                  // Add the current question to the questions array
-                  questions.push(this.questions[key]);
-                }
-                var surveyTemplate = {
-                  title: this.surveyTitle,
-                  questions : questions,
-                  author : this.user._id
-                };
-                console.log(surveyTemplate);
-
-                _this.$http.post('/api/surveyTemplate/create', surveyTemplate).then(function successCallback(response) {
-                console.log(response.data);
-                console.log(this.user);
-                this.user.surveyTemplates.push(response.data);
-
-                //TODO add a post here to add a survey to a coach
-
-
-
-                console.log("reseting save!");
-
-                console.log("HEWGFRBHI");
-
+                _this.$http.post('/api/surveyTemplate/create', this.newSurvey).then(function successCallback(response) {
+                  console.log(response);
+                  _this.$http.post('/api/user/surveyTemplate/add/'+ this.user._id, response.data).then(function(response2){
+                    console.log(response2.data);
+                    this.user.surveyTemplates.push(response.data);
+                  })
                 });
-                console.log(this.questions);
-                this.questions = null;
-                this.surveyTitle = null;
-                this.counter = 0;
-                this.questionAmount = null;
-                this.questionAmount = [
-                  0
-                ];
 
+                this.newSurvey = {
+
+                  title:null,
+                  author:this.user._id,
+                  questions:[
+                    {
+                      question:null,
+                      header:null,
+                      type:null
+                    }
+                  ]
+                };
                 self.openToast("Survey Created");
+
 
               };
 
@@ -665,7 +737,7 @@ var app;
 
               var _this = this;
               var self = this;
-              console.log(this.user);
+              console.log(this);
               var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
               this.$mdDialog.show({
                   templateUrl: './dist/view/dashboard/notes/noteModal.html',
@@ -1197,9 +1269,26 @@ HI Shane!                    console.log(survey);
 
 
             MainController.prototype.selectUser = function (user) {
+                var _this = this;
+                var self = this;
+
                 this.selected = user;
                 this.userService.selectedUser = this.selected;
                 userSelected = user;
+
+
+
+                // _this.$http.get('/api/userSelected/responses' + user._id)
+                // .then(function successCallback(response) {
+                //   if (response.data.length !== 0) {
+                //
+                //   }
+                //   else {
+                //
+                //   }
+                //
+                // }
+
                 var sidebar = this.$mdSidenav('left');
                 if (sidebar.isOpen()) {
                     sidebar.close();

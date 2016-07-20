@@ -1,8 +1,8 @@
 <md-content>
-  <p ng-if="vm.user.surveyTemplates.length == 0">
+  <p ng-if="vm.selected.assignments.length == 0">
     No surveys for {{vm.selected.firstName + " " + vm.selected.lastName}}, yet.
   </p>
-  <md-card ng-repeat="survey in vm.user.surveyTemplates | orderBy: '-date':true">
+   <md-card ng-repeat="survey in vm.selected.surveyTemplates | orderBy: '-date':true">
     <md-card-header>
       <md-card-header-text>
         <div layout="row">
@@ -11,15 +11,6 @@
             <span class="md-title">{{survey.title}}</span>
           </div>
 
-          <!-- <div ng-if="survey.status=='green'" flex=10>
-            <i class="material-icons" style="font-size: 32px; color:white;">check</i>
-          </div>
-          <div ng-if="survey.status=='yellow'" flex=10>
-            <i class="material-icons" style="font-size: 32px; color:#444;">warning</i>
-          </div>
-          <div ng-if="survey.status=='red'" flex=10>
-            <i class="material-icons" style="font-size: 32px; color:white;">priority_high</i>
-          </div> -->
 
         </div>
       </md-card-header-text>
@@ -36,9 +27,7 @@
           </p>
       </div>
     </md-card-content>
-    <!-- <md-card-content flex=grow>
+     <md-card-content flex=grow>
       <p>{{survey.status}}</p>
-    </md-card-content> -->
-  </div>
+    </md-card-content>
   </md-card>
-</md-content>

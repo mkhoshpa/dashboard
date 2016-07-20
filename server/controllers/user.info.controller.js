@@ -99,7 +99,6 @@ exports.create = function(req, res) {
           else {
             winston.info('adding user ' + user._id + ' ot coac');
             user.clients.push(user._id);
-            winston.info(coach);
             winston.info('success');
             res.send(user);
           }

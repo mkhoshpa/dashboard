@@ -51,11 +51,11 @@ exports.update = function(req, res) {
         var user = user.toObject();
         winston.info('The user is: ' + JSON.stringify(user));
         winston.info('The user\'s id is: ' + user._id);
-        winston.info('User.reminders is: ' + JSON.stringify(user.notes));
+        winston.info('User.notes is: ' + JSON.stringify(user.notes));
         for (var i = 0; i < user.notes.length; i++) {
           if (user.notes[i]._id == req.body._id) {
             user.notes[i] = note;
-            winston.info(user.notes[i]);
+            winston.info(JSON.stringify(user.notes[i]));
             res.send(req.body);
           }
         }

@@ -72,6 +72,9 @@
                <md-option ng-repeat = "s in vm.user.surveyTemplates" ng-value = "s">
                  {{s.title}}
                </md-option>
+               <md-option ng-value ="vm.coach">
+                 Coach View
+              </md-option>
              </md-select>
            </md-input-container>
 
@@ -92,7 +95,7 @@
 
                         </tr>
 
-                        <tr md-row ng-show = "vm.switch && vm.selectedDataSurvey">
+                        <tr md-row ng-show = "vm.switch && vm.selectedDataSurvey != 'coach' ">
 
                           <th md-column  md-order-by="username">Clients</th>
                           <th md-column ng-repeat = "question in vm.selectedDataSurvey.questions" ><span>{{question.header}}<span></th>
@@ -109,6 +112,15 @@
                           <th md-column> Weapon </th>
                           <th md-column> Home </th>
 
+                        </tr>
+                        <tr md-row ng-show = "vm.switch && vm.selectedDataSurvey == 'coach'">
+                          <th md-column  md-order-by="username">Coaches</th>
+                          <th md-column> Response Time (M)</th>
+                          <th md-column> Success Rate (%) </th>
+                          <th md-column> Hours per Week (H) </th>
+                          <th md-column> NPS </th>
+                          <th md-column> Active Clients </th>
+                          <th md-column> Dormant Clients </th>
                         </tr>
 
                   </thead>
@@ -152,7 +164,35 @@
                       </tr>
 
                     </tbody>
+                    <tbody md-body ng-show = "vm.switch && vm.selectedDataSurvey == 'coach' ">
+                      <tr  md-row md-auto-select="false" md-select="client" ng-repeat="client in vm.persons2| orderBy: vm.query.order | filter:vm.query.filter  | limitTo: vm.query.limit: (vm.query.page - 1) * vm.query.limit">
 
+                        <td md-cell class = "md-cell">
+                          <img ng-src="{{client.imgUrl}}" style="border-radius: 50%; width: 50px; margin: 10px;" >
+                          {{client.username}}
+                        </td>
+
+                        <td md-cell class = "md-cell">
+                          {{client.rs}}
+                        </td>
+                        <td md-cell class = "md-cell">
+                          {{client.suc}}
+                        </td>
+                        <td md-cell class = "md-cell">
+                          {{client.hpw}}
+                        </td>
+                        <td md-cell class = "md-cell">
+                          {{client.nps}}
+                        </td>
+                        <td md-cell class = "md-cell">
+                          {{client.al}}
+                        </td>
+                        <td md-cell class = "md-cell">
+                          {{client.dl}}
+                        </td>
+                      </tr>
+
+                    </tbody>
                     <tbody md-body ng-show = "!vm.switch">
                       <tr  md-row md-auto-select="false" md-select="client" ng-repeat="client in vm.user.clients| orderBy: vm.query.order | filter:vm.query.filter  | limitTo: vm.query.limit: (vm.query.page - 1) * vm.query.limit">
 

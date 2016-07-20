@@ -3,11 +3,11 @@
 var Note = require('../../models/note.js');
 var User = require('../../models/user.js');
 var _ = require('underscore');
+var winston = require('winston');
 
 exports.create = function(req, res) {
   var note = new Note(req.body);
   winston.info("note controller hit");
-  winston.info(note);
 
   note.save(function(err, note) {
     if(!err) {
@@ -27,7 +27,6 @@ exports.create = function(req, res) {
         }
       );
 
-      winston.info(note);
       res.send(note);
     }
   });
@@ -55,7 +54,6 @@ exports.update = function(req, res) {
         winston.info('User.reminders is: ' + JSON.stringify(user.notes));
         for (var i = 0; i < user.notes.length; i++) {
           if (user.notes[i]._id == req.body._id) {
-            winston.info(user.notes[i]);
             user.notes[i] = note;
             winston.info(user.notes[i]);
             res.send(req.body);

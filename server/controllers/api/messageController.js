@@ -62,7 +62,6 @@ exports.sendSMS = function (req, res) {
           }
         }
       )
-      winston.info(message);
       res.send(message);
     }
   });

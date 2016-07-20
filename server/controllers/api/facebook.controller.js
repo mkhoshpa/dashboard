@@ -99,7 +99,7 @@ exports.sendEmail = function (req,res){
 
       transporter.sendMail(mailOptions, function(err,info) {
         if(err){
-          return winston.info("this is an "+ err);
+          return winston.info("this is an "+ JSON.stringify(err));
         }
         winston.info('Message sent: ' + info.response);
 

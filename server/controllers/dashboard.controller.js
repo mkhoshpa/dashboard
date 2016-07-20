@@ -36,9 +36,6 @@ exports.render = function(req, res, next) {
         if(user) {
           winston.info(user.clients.length);
           winston.info('populate dashboard');
-          for(var i = 0; i < user.clients.length; i++) {
-            user.clients[i].calcStatus();
-          }
 
           res.render(path.resolve('app/index'), {
             user: JSON.stringify(user)

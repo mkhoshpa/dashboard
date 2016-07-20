@@ -25,7 +25,6 @@ exports.render = function(req, res, next) {
           populate: {path: 'reminder'}
         },
         {
-          path: 'reminders'
 
           path: 'surveyTemplates',
           model: 'SurveyTemplate'

@@ -9,6 +9,7 @@ var nodemailer = require('nodemailer');
 var dashboard = require('./dashboard.controller');
 var parse = require('csv-parse');
 var _ = require('underscore');
+var winston = require('winston');
 
 /**
   Node Mailer Config

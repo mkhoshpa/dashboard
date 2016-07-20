@@ -420,7 +420,7 @@ var app;
               var self = this;
 
               var medium = {
-                text: this.selected.medium
+                text: this.selected.defaultCommsMedium
 
               };
 
@@ -436,7 +436,7 @@ var app;
               var self = this;
 
               var slack = {
-                text: this.selected.slackId
+                text: this.selected.slack_id 
 
               };
 

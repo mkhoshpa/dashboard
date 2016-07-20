@@ -4,7 +4,6 @@ var assignment = require('../../controllers/api/assignmentController.js');
 
 module.exports = function(app) {
 
-
   app.post('/api/assignment/create', assignment.create);
   app.get('/api/assignment/list', assignment.list);
   //app.post('/api/assignment/removeByReminderId', assignment.removeByReminderId);
@@ -12,7 +11,4 @@ module.exports = function(app) {
   //app.get('/api/assigment/selectedSurvey/:id', assignment.selectedlist);
   app.get('/api/assignment/convosNow', assignment.convosNow);
 
-  // app.post('/api/assignment/update/:id', assignment.update);
-  // app.post('/api/assignment/remove/:id', assignment.delete);
-
-}
+};

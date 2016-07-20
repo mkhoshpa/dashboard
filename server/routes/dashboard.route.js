@@ -7,4 +7,4 @@ var dashboard    = require('../controllers/dashboard.controller'),
 // Define the routes module' method
 module.exports = function(app) {
   app.get('/dashboard', dashboard.render);
-}
+};

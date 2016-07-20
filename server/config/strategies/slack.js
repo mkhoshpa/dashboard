@@ -3,10 +3,8 @@
 
 // Load the module dependencies
 var passport = require('passport'),
-  url = require('url'),
   SlackStrategy = require('passport-slack').OAuth2Strategy,
   config = require('../config'),
-  users = require('../../controllers/users.login.controller');
 
 module.exports = function() {
     passport.use(new SlackStrategy({

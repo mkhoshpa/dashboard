@@ -4,7 +4,6 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var ObjectId = mongoose.Schema.Types.ObjectId;
 var User = require('./user.js');
-var moment = require('moment');
 
 var noteSchema =  new Schema({
   //title: {type: String, required: true},

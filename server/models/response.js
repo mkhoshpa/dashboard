@@ -1,12 +1,10 @@
 'use strict';
-//not used
+
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 //response schema is super dumb and doesn't figure out status by itself -
 //might not be a bad idea to make a status model actually
-
-
 
 var responseSchema = new Schema({
 
@@ -14,8 +12,6 @@ var responseSchema = new Schema({
     type: String,
     enum: ['reminder', 'survey'],
     default: 'reminder'},
-
-
 
   //TODO get populate to work
   timeStamp: {type: Date, default: Date.now},

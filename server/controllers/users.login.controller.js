@@ -1,11 +1,7 @@
 'use strict';
 
 // Load the module dependencies
-var User 		 = require('mongoose').model('User'),
-		passport = require('passport'),
-		ObjectId = require('mongoose').Types.ObjectId;
-
-
+var User 		 = require('mongoose').model('User');
 
 // Create a new error handling controller method
 var getErrorMessage = function(err) {
@@ -183,53 +179,28 @@ exports.saveOAuthUserProfile = function(req, profile, done) {
 				var possibleUsername = profile.providerData.name || ((profile.email) ? profile.email.split('@')[0] : '');
 				console.log("made it here");
 				console.log("profile" + JSON.stringify(profile));
-				//console.log("profile.providerData: " + JSON.stringify(profile.providerData));
 				var name = profile.providerData.name.split(' ');
 				user = new User({
 					firstName: name[0],
 					lastName: name[1],
 					username: profile.providerData.name,
-					//bio: this.bio,
-					//username: this.username,
-					//password: this.password,
 					provider: profile.provider,
 					providerData: profile.providerData,
 					role: 'coach',
-					//slack_id: this.slack_id,
 					slack_id: profile.providerData.name,
 					slack: {
-						//email: this.slack.email,
-						//id: this.slack.id,
 						id: profile.providerData.name,
 						name: profile.providerData.name,
 						real_name: profile.providerData.name
-						//img: ''
 					},
 					coaches: [],
 					providerId: profile.providerId,
 					facebookId: profile.providerData.id
-					//imgUrl:
-					//phoneNumber:
 				});
 				user.save(function(err){
 					console.log('New user created: ' + JSON.stringify(user));
 					return done(err, user);
 				})
-				// Find a unique available username
-				// User.findUniqueUsername(possibleUsername, null, function(availableUsername) {
-				// 	// Set the available user name
-				// 	profile.username = availableUsername;
-				//
-				// 	// Create the user
-				// 	user = new User(profile);
-				//
-				// 	// Try saving the new user document
-				// 	user.save(function(err) {
-				// 		// Continue to the next middleware
-				// 		return done(err, user);
-				// 	});
-				// });
-
 			} else {
 				// Continue to the next middleware
 				return done(err, user);

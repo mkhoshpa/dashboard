@@ -8,6 +8,7 @@ var mongoose = require('mongoose'),
   	Schema = mongoose.Schema,
     Slack = require('./slack.js'),
 
+    
     reminder = require('./reminder.js'),
     note = require('./note.js'),
     message = require('./message.js'),
@@ -113,7 +114,7 @@ var UserSchema = new Schema({
 
   mostRecentResponse: {type: mongoose.Schema.Types.ObjectId, ref: 'ReminderResponse'},
   responses: [{
-    type: mongoose.Schema.Types.ObjectId, ref: 'ReminderResponse'
+    type: mongoose.Schema.Types.ObjectId, ref: 'Response'
   }],
   coaches: [
     { type: mongoose.Schema.Types.ObjectId, ref: 'User' }

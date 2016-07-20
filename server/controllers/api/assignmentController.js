@@ -106,6 +106,13 @@ exports.convosNow = function(req, res) {
             convo.userMedium  =  assignments[i].userId.defaultCommsMedium;
             convo.userContactInfo = {};
             convo.userContactInfo.phoneNumber  =  assignments[i].userId.phoneNumber;
+            if(assignments[i].userId.slack_id){
+              console.log("getting slack_id");
+              convo.userContactInfo.slack_Id = assignments[i].userId.slack_id;
+            }
+            else{
+              console.log("no slack_Id");
+            }
             //convo.questions  =  assignments[i].questions;
             convo.type  =  assignments[i].type;
 
@@ -140,6 +147,43 @@ exports.convosNow = function(req, res) {
        });
 
 }
+exports.selectedlist = function (req, res) {
+  console.log(req.params.id);
+  Assignment.find({surveyTemplateId: req.params.id}, function(err, obj){
+    if(err){
+      console.log("crap");
+    }
+    else {
+      console.log(obj);
+      res.json(obj);
+    }
+  })
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 exports.list = function(req, res) {
   Assignment.find({}, function(err, obj) {

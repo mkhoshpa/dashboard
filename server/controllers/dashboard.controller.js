@@ -1,6 +1,7 @@
 'use strict';
 
 var User 		 = require('mongoose').model('User'),
+    SurveyTemplate = require('mongoose').model('SurveyTemplate'),
     Reminder = require('mongoose').model('Reminder'),
     path     = require('path'),
 		passport = require('passport');
@@ -10,19 +11,9 @@ exports.render = function(req, res, next) {
     if(req.user.role == "coach") {
 
       var populateCoach = [
+
         {
-          path: 'clients',
-          model: 'User',
-          populate: {
-            path: 'reminders',
-            model: 'Reminder',
-          }
-        },
-        {
-          path: 'clients',
-          model: 'User',
-        },
-        {
+
           path: 'clients',
           model: 'User',
         },
@@ -35,18 +26,28 @@ exports.render = function(req, res, next) {
         },
         {
           path: 'reminders'
-        }
-      ]
 
+          path: 'surveyTemplates',
+          model: 'SurveyTemplate'
+
+        }
+        // },
+        // {
+        //   path: 'reminders'
+        // }
+      ]
+      console.log(req.user);
       console.log('User.populate');
       User.populate(req.user, populateCoach,
         function(err, user) {
         if(user) {
           console.log(user.clients.length);
-          console.log('populate dashboard');
-          for(var i = 0; i < user.clients.length; i++) {
-            user.clients[i].calcStatus();
-          }
+          console.log(user.clients);
+          console.log('populate dashboard2');
+
+          // for(var i = 0; i < user.clients.length; i++) {
+          //   user.clients[i].calcStatus();
+          // }
 
           res.render(path.resolve('app/index'), {
             user: JSON.stringify(user)
@@ -62,6 +63,9 @@ exports.render = function(req, res, next) {
       		});
         }
       });
+      console.log("after:");
+
+
     } else if (req.user.role == "user")  {
 
       var populateClient = [
@@ -70,7 +74,7 @@ exports.render = function(req, res, next) {
           model: 'Reminder',
         },
       ]
-
+      console.log("where am I?");
       User.populate(req.user,
         populateClient, function(err, user) {
           if(user) {

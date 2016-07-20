@@ -16,12 +16,59 @@ md-dialog.SurveyBuilder{
   height: 1000px;
 }
 
+.profileTop{
+  text-align: center;
+  min-height: 100px;
+  max-height: 150px;
+}
 
+.profileText{
+  text-align: center;
+  max-height: 35px;
+
+}
+
+.profileName{
+  font-family:  'Roboto', sans-serif;
+  font-size: 16px;
+  color: rgb(33,150,243);
+  text-align: center;
+}
+
+.textBio{
+  overflow-y: scroll;
+  height: 150px;
+  resize: none;
+}
+
+textarea.bioText{
+  height: 150px;
+  min-height: 100px;
+  resize: both;
+}
 
 .datatable{
 
   overflow: auto;
 }
+.profileImg{
+  /*background-color: #fff;
+  border: 2px solid #fff;*/
+  border-radius: 10%;
+  height: 120px;
+  margin-top: 10px;
+  margin-left: 40px;
+  margin-right: 10px;
+
+  width: 120px;
+  cursor: pointer;
+  position: relative;
+
+
+
+}
+
+
 
 
 textarea.bioBox {

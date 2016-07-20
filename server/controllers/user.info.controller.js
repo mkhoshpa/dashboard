@@ -28,6 +28,7 @@ exports.createBio = function(req, res){
 
   res.send(req.body.body);
 }
+
 exports.updateMedium = function(req, res){
   console.log(req.body.text);
 
@@ -57,6 +58,7 @@ exports.updateSlackId = function(req, res){
   res.send(req.body.text);
 };
 
+
 exports.createPipelineStage = function(req,res){
   console.log("Im here");
 
@@ -84,6 +86,20 @@ exports.createPhoneNumber = function (req, res) {
   });
   res.send(req.body.number);
 };
+
+exports.addSurvey = function(req, res){
+  console.log(req.body._id);
+  User.findByIdAndUpdate(req.params.id,
+  {$push:{"surveyTemplates": req.body._id}},
+  {safe:true},
+  function(err, user){
+    if(err){
+      console.log(err);
+    }
+  });
+  res.send(req.body);
+};
+
 
 exports.create = function(req, res) {
   console.log("Im before new User.");
@@ -284,6 +300,24 @@ exports.delete = function(req, res){
 
 
 }
+
+exports.getUser = function(req,res){
+  console.log("getUser");
+  console.log(req.params.id);
+  User.findOne({_id: req.params.id}, function(err, obj){
+    if(err){
+      console.log("crap");
+    }
+    else {
+      console.log(obj);
+      res.json(obj);
+    }
+  });
+}
+
+
+
+
 
 exports.parseCSV = function (req, res) {
   console.log(req.body.textToParse);

@@ -436,7 +436,7 @@ var app;
               var self = this;
 
               var slack = {
-                text: this.selected.slack_id 
+                text: this.selected.slack_id
 
               };
 
@@ -992,31 +992,31 @@ var app;
             };
 
             // socket.io code ahead
-            responseSocket.on('response', function (response) {
-              console.log('Server sent a reminder response');
-              MainController.prototype.updateReminder(response);
-            });
-
-            surveySocket.on('survey', function (response) {
-              console.log('Server sent a survey response');
-              MainController.prototype.updateSurveyResponses(response);
-            });
-
-            messageSocket.on('message', function (message) {
-              console.log('Server sent a message');
-              MainController.prototype.receiveMessage(message);
-            });/*function (message) {
-              console.log(this.selected);
-              console.log('Message received from server');
-              console.log(message);
-              if (this.selected) {
-                console.log(this.selected._id);
-                if (this.selected._id == message.sentBy) {
-                  console.log('Message pushed.');
-                  this.selected.messages.push(message);
-                }
-              }
-            });*/
+            // responseSocket.on('response', function (response) {
+            //   console.log('Server sent a reminder response');
+            //   MainController.prototype.updateReminder(response);
+            // });
+            //
+            // surveySocket.on('survey', function (response) {
+            //   console.log('Server sent a survey response');
+            //   MainController.prototype.updateSurveyResponses(response);
+            // });
+            //
+            // messageSocket.on('message', function (message) {
+            //   console.log('Server sent a message');
+            //   MainController.prototype.receiveMessage(message);
+            // });/*function (message) {
+            //   console.log(this.selected);
+            //   console.log('Message received from server');
+            //   console.log(message);
+            //   if (this.selected) {
+            //     console.log(this.selected._id);
+            //     if (this.selected._id == message.sentBy) {
+            //       console.log('Message pushed.');
+            //       this.selected.messages.push(message);
+            //     }
+            //   }
+            // });*/
 
             MainController.prototype.receiveMessage = function (message) {
               console.log('userSelected is: ' + JSON.stringify(userSelected));

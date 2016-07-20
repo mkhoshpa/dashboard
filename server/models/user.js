@@ -5,6 +5,10 @@
 var mongoose = require('mongoose'),
   	crypto = require('crypto'),
   	Schema = mongoose.Schema,
+
+
+
+
     reminder = require('./reminder.js'),
     note = require('./note.js'),
     message = require('./message.js'),
@@ -87,6 +91,10 @@ var UserSchema = new Schema({
     {type: mongoose.Schema.Types.Object, ref: 'Message'}
   ],
 
+
+  responses: [{
+    type: mongoose.Schema.Types.ObjectId, ref: 'Response'
+  }],
   coaches: [
     { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
   ],
@@ -202,6 +210,7 @@ UserSchema.methods.isUnique = function (email) {
     }
   })
 };
+
 
 // If we need this later
 UserSchema.statics.findByPhoneNumber = function (phoneNumber, callback) {

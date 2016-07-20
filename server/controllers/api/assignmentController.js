@@ -60,33 +60,56 @@ exports.convosNow = function(req, res) {
          console.log(assignments);
          console.log('exec assignments/now');
          if(!err){
-            //ok now we need to get the questions
-            //ok so first I need to iterate thru the assignments array
-            //create a variable to store the trimmed data in
-            var convos = [];
 
-            for (var i = 0; i < assignments.length; i++) {
-              console.log(assignments[i]);
-              var convo = new Object;
-              convo.assignmentId = assignments[i]._id;
+          //  for(var i = 0; i <assignments.length; i++){
+          //    var questionsId = assignments[i].surveyTemplateId.questions;
+          //    for (var j = 0; j < questionsId.length; j++){
+          //      SurveyQuestion.findById(questionsId._id)
+          //    }
+          //
+          //  SurveyQuestion.findById
 
-              convo.userId  =  assignments[i].userId._id;
-              convo.userMedium  =  assignments[i].userId.defaultCommsMedium;
-              convo.userContactInfo = {};
-              convo.userContactInfo.phoneNumber  =  assignments[i].userId.phoneNumber;
-              convo.type  =  assignments[i].type;
 
-              if(convo.type == "survey"){
-                console.log("we got a survey over here");
-                convo.questions = assignments[i].surveyTemplateId.questions;
-                //get survey template id
-                convo.surveyId = assignments[i].surveyTemplateId._id;
-              } else if (convo.type == "reminder"){
-               console.log("we got a reminder");
-               convo.reminderId = assignments[i].reminderId._id;
-               convo.questions = [];
-               convo.questions[0] = assignments[i].reminderId.title;
-              } else {
+           //ok now we need to get the questions
+
+           //res.send(assignments);
+
+           //ok so first I need to iterate thru the assignments array
+
+           //create a variable to store the trimmed data in
+           var convos = [];
+
+          for (var i = 0; i < assignments.length; i++) {
+            console.log(assignments[i]);
+            var convo = new Object;
+            convo.assignmentId = assignments[i]._id;
+
+            convo.userId  =  assignments[i].userId._id;
+            convo.userMedium  =  assignments[i].userId.defaultCommsMedium;
+            convo.userContactInfo = {};
+            convo.userContactInfo.phoneNumber  =  assignments[i].userId.phoneNumber;
+            if(assignments[i].userId.slack_id){
+              console.log("getting slack_id");
+              convo.userContactInfo.slack_Id = assignments[i].userId.slack_id;
+            }
+            else{
+              console.log("no slack_Id");
+            }
+            //convo.questions  =  assignments[i].questions;
+            convo.type  =  assignments[i].type;
+
+            if(convo.type == "survey"){
+              console.log("we got a survey over here");
+              convo.questions = assignments[i].surveyTemplateId.questions;
+          //      //get survey template id
+              convo.surveyId = assignments[i].surveyTemplateId._id;
+            } else if (convo.type == "reminder"){
+                 console.log("we got a reminder");
+                 convo.reminderId = assignments[i].reminderId._id;
+                 convo.questions = [];
+                 convo.questions[0] = assignments[i].reminderId.title;
+            } else {
+
                 console.error("invalid assignment type");
               }
               convos.push(convo);
@@ -94,10 +117,12 @@ exports.convosNow = function(req, res) {
             res.json(convos);
           }
          else
+
            winston.error(err);
        });
 
 };
+
 
 exports.list = function(req, res) {
   Assignment.find({}, function(err, obj) {

@@ -12,7 +12,9 @@ exports.render = function(req, res, next) {
     if(req.user.role == "coach") {
 
       var populateCoach = [
+
         {
+
           path: 'clients',
           model: 'User',
           populate: {
@@ -27,6 +29,7 @@ exports.render = function(req, res, next) {
         {
           path: 'surveyTemplates',
           model: 'SurveyTemplate'
+
         }
       ]
 

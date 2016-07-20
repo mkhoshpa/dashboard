@@ -30,6 +30,38 @@ exports.createBio = function(req, res){
   res.send(req.body.body);
 }
 
+
+exports.updateMedium = function(req, res){
+  console.log(req.body.text);
+
+  User.findByIdAndUpdate(req.params.id,
+  {$set: {"defaultCommsMedium": req.body.text}},
+  {safe: true},
+  function(err, user) {
+   if(err) {
+     console.log(err);
+   } else {console.log("worked");}
+  });
+
+  res.send(req.body.text);
+}
+exports.updateSlackId = function(req, res){
+  console.log(req.body);
+
+  User.findByIdAndUpdate(req.params.id,
+  {$set: {"slack_id": req.body.text}},
+  {safe: true},
+  function(err, user) {
+   if(err) {
+     console.log(err);
+    }
+  });
+
+  res.send(req.body.text);
+};
+
+
+
 exports.createPipelineStage = function(req,res){
   winston.info("Im here");
 

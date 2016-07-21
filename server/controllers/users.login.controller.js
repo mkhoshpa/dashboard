@@ -1,8 +1,7 @@
 'use strict';
 
 // Load the module dependencies
-var User 		 = require('mongoose').model('User'),
-    winston  = require('winston');
+var User 		 = require('mongoose').model('User');
 
 // Create a new error handling controller method
 var getErrorMessage = function(err) {
@@ -48,7 +47,6 @@ exports.renderSignin = function(req, res, next) {
 	}
 };
 
-// Create a new controller method that renders the signup page
 exports.renderSignup = function(req, res, next) {
 	// If user is not connected render the signup page, otherwise redirect the user back to the main application page
 	if (!req.user) {
@@ -64,50 +62,56 @@ exports.renderSignup = function(req, res, next) {
 	}
 };
 
-// Create a new controller method that creates new 'regular' users
+// Create a new controller method that renders the signup page
+
+
+
+//Create a new controller method that creates new 'regular' users
 exports.signup = function(req, res, next) {
 	// If user is not connected, create and login a new user, otherwise redirect the user back to the main application page
 	if (!req.user) {
 		// Create a new 'User' model instance
-    //winston.info(req.body);
-		var user = new User(req.body);
-		var message = null;
-		// Set the user provider property
-		user.provider = 'local';
+    console.log(req.body);
+		if(req.body.betacode == "123456"){
+			var user = new User(req.body);
+			var message = null;
+			// Set the user provider property
+			user.provider = 'local';
 
-		// Try saving the new user document
-		user.save(function(err) {
-			// If an error occurs, use flash messages to report the error
-			if (err) {
-				// Use the error handling method to get the error message
-				var message = getErrorMessage(err);
-				// Set the flash messages
-				req.flash('error', message);
+			// Try saving the new user document
+			user.save(function(err) {
+				// If an error occurs, use flash messages to report the error
+				if (err) {
+					// Use the error handling method to get the error message
+					var message = getErrorMessage(err);
+					// Set the flash messages
+					req.flash('error', message);
 
-				// Redirect the user back to the signup page
-				res.redirect('/signup');
-			}
+					// Redirect the user back to the signup page
+					res.redirect('/signup');
+				}
 
-			// If the user was created successfully use the Passport 'login' method to login
-			req.login(user, function(err) {
-				winston.info('logged in');
-				// If a login error occurs move to the next middleware
-				winston.error(err);
-				if (err) return next(err);
+				// If the user was created successfully use the Passport 'login' method to login
+				req.login(user, function(err) {
+					console.log('logged in');
+					// If a login error occurs move to the next middleware
+					console.log(err);
+					if (err) return next(err);
 
-				// Redirect the user back to the main application page
-				return res.redirect('/');
+					// Redirect the user back to the main application page
+					return res.redirect('/');
+				});
 			});
-		});
+			} else {console.log("something wrong with betacode");}
 	} else {
-		winston.info("Already logged in");
+		console.log("Already logged in");
 		return res.redirect('/');
 	}
 };
 
 // Generate and Check if Exists
 exports.generateUser = function(req, res, next) {
-	winston.info('generate attempted');
+	console.log('generate attempted');
 	if (req.body.client) {
 		// Create a new 'User' model instance
 		if(true) {
@@ -125,8 +129,8 @@ exports.generateUser = function(req, res, next) {
 						if (err) {
 							// Use the error handling method to get the error message
 							var message = getErrorMessage(err);
-							winston.info(err);
-						  winston.info(message);
+							console.log(err);
+							console.log(message);
 							// Set the flash messages
 							// req.flash('Error auto generating from slack', message);
 						}
@@ -141,7 +145,7 @@ exports.generateUser = function(req, res, next) {
 								{safe: true},
 								function(err, model) {
 									if(err) {
-										winston.error(err);
+										console.log(err);
 									}
 									else {
 										//console.log(model);
@@ -151,13 +155,13 @@ exports.generateUser = function(req, res, next) {
 						}
 					});
 				} else {
-					winston.info('user exists');
+					console.log('user exists');
 					return;
 				}
 			});
 		}
 	} else {
-		winston.info("Access Denied.")
+		console.log("Access Denied.")
 		res.send('Access Denied')
 	}
 }
@@ -178,8 +182,8 @@ exports.saveOAuthUserProfile = function(req, profile, done) {
 
 				// Set a possible base username
 				var possibleUsername = profile.providerData.name || ((profile.email) ? profile.email.split('@')[0] : '');
-				winston.info("made it here");
-				winston.info("profile" + JSON.stringify(profile));
+				console.log("made it here");
+				console.log("profile" + JSON.stringify(profile));
 				var name = profile.providerData.name.split(' ');
 				user = new User({
 					firstName: name[0],
@@ -199,7 +203,7 @@ exports.saveOAuthUserProfile = function(req, profile, done) {
 					facebookId: profile.providerData.id
 				});
 				user.save(function(err){
-					winston.info('New user created: ' + JSON.stringify(user));
+					console.log('New user created: ' + JSON.stringify(user));
 					return done(err, user);
 				})
 			} else {
@@ -223,4 +227,4 @@ exports.find = function(req, res) {
 	User.find({}, function(err, obj){
 		res.json(obj);
 	})
-};
+}

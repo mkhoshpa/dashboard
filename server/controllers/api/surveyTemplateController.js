@@ -44,15 +44,15 @@ exports.update = function(req, res){
 
 
 exports.create = function(req, res) {
-  winston.info();
-  winston.info('CREATING SURVEY');
-  //winston.info(req.body);
-  winston.info();
+  console.log();
+  console.log('CREATING SURVEY');
+  //console.log(req.body);
+  console.log();
 
   var surveyTemplate = new SurveyTemplate(req.body);
   surveyTemplate.save(function(err, surveyTemplate) {
     if(!err) {
-      winston.info("this worked");
+      console.log("this worked");
       User.findByIdAndUpdate(
         surveyTemplate.author,
         // $addToSet works like $push but prevents duplicates
@@ -63,9 +63,9 @@ exports.create = function(req, res) {
             winston.error(err);
           }
           else {
-            winston.info(surveyTemplate);
-            winston.info('Printing user...');
-            winston.info(user);
+            console.log(surveyTemplate);
+            console.log('Printing user...');
+            console.log(user);
           }
         }
       );
@@ -74,8 +74,8 @@ exports.create = function(req, res) {
     }
   });
 
-  winston.info();
-  winston.info('SURVEY CREATED aJJJJJJJJJJJJJ');
-  winston.info();
+  console.log();
+  console.log('SURVEY CREATED aJJJJJJJJJJJJJ');
+  console.log();
   res.send(surveyTemplate);
 };

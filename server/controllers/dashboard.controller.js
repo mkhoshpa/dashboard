@@ -33,12 +33,12 @@ exports.render = function(req, res, next) {
         }
       ]
 
-      winston.info('User.populate');
+      console.log('User.populate');
       User.populate(req.user, populateCoach,
         function(err, user) {
         if(user) {
-          winston.info(user.clients.length);
-          winston.info('populate dashboard');
+          console.log(user.clients.length);
+          console.log('populate dashboard');
 
           res.render(path.resolve('app/index'), {
             user: JSON.stringify(user)

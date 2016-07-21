@@ -12,39 +12,39 @@ var winston = require('winston');
 
 var io = require('socket.io')(config.messageSocketPort);
 
-winston.info('listening for websocket connections on *:' + config.messageSocketPort);
+console.log('listening for websocket connections on *:' + config.messageSocketPort);
 
 // a list of currently connected sockets
 var sockets = [];
 
 io.on('connection', function (socket) {
-  winston.info('A user connected');
+  console.log('A user connected');
   sockets.push(socket);
   socket.on('disconnect', function () {
-    winston.info('User disconnected');
+    console.log('User disconnected');
     sockets = _.without(sockets, socket);
   });
 });
 
 exports.sendSMS = function (req, res) {
   var message = new Message(req.body);
-  winston.info('Begin sendSMS');
+  console.log('Begin sendSMS');
 
   message.save(function(err, message) {
     if (!err) {
-      winston.info("Message saved.");
-      winston.info('Message is: ' + JSON.stringify(message));
+      console.log("Message saved.");
+      console.log('Message is: ' + JSON.stringify(message));
       User.findByIdAndUpdate(
         message.sentTo,
         {$push: {"messages": message}},
         {safe: true},
         function(err, user) {
           if (err) {
-            winston.info("ERROR!!!!!!");
-            winston.info(err);
+            console.log("ERROR!!!!!!");
+            console.log(err);
           } else {
-            winston.info('Message pushed to user');
-            winston.info('User is ' + JSON.stringify(user));
+            console.log('Message pushed to user');
+            console.log('User is ' + JSON.stringify(user));
             var sentToPhoneNumber = '';
             User.findById(message.sentTo, function (err, userSentTo) {
               if (!err) {
@@ -54,7 +54,7 @@ exports.sendSMS = function (req, res) {
                   body: message.body
                 }, function (err, responseData) {
                   if (!err) {
-                    winston.info(JSON.stringify(responseData));
+                    console.log(JSON.stringify(responseData));
                   }
                 });
               }
@@ -68,18 +68,18 @@ exports.sendSMS = function (req, res) {
 }
 
 exports.receiveSMS = function (req, res) {
-  winston.info('Begin receiveSMS');
+  console.log('Begin receiveSMS');
   var resp = new twiml.TwimlResponse();
-  winston.info('Received SMS from: ' + req.body.From);
+  console.log('Received SMS from: ' + req.body.From);
   res.writeHead(200, {
     'Content-Type': 'text/xml'
   });
-  winston.info("The client wrote: " + req.body.Body);
-  winston.info('req.body.From is: ' + req.body.From);
+  console.log("The client wrote: " + req.body.Body);
+  console.log('req.body.From is: ' + req.body.From);
   // Find user by phone num and actually create valid message object
   User.findOne({phoneNumber: req.body.From}, function (err, user) {
-    winston.info('User is: ' + JSON.stringify(user));
-    winston.info('We should be adding a message');
+    console.log('User is: ' + JSON.stringify(user));
+    console.log('We should be adding a message');
     var message = new Message({
       body: req.body.Body,
       sentBy: user._id,
@@ -91,9 +91,9 @@ exports.receiveSMS = function (req, res) {
       {safe: true},
       function (err, user) {
         if (!err) {
-          winston.info('The user with that phone number is: ' + user.slack.name);
+          console.log('The user with that phone number is: ' + user.slack.name);
           io.emit('message', message);
-          winston.info('Message saved and pushed to user');
+          console.log('Message saved and pushed to user');
         }
       });
     });

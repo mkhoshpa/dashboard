@@ -183,13 +183,6 @@ var app;
 
               self.openToast("Saved Convo")
 
-
-              survey.questions.push(question);
-
-
-              console.log(survey.questions);
-
-              self.openToast("Added Question");
               };
 
               MainController.prototype.removeQuestion = function (index, survey) {
@@ -214,52 +207,6 @@ var app;
               self.openToast("Editing Cancel");
             }
 
-            MainController.prototype.saveChangeSurvey = function(){
-              var _this = this;
-              var self = this;
-              console.log("hey");
-              console.log(this.changeSurvey);
-
-              _this.$http.post('/api/surveyTemplate/update/' + this.changeSurvey._id, this.changeSurvey).then(function successCallback(response) {
-                  console.log(response.data);
-                  //this.user.surveyTemplates.push(response.data);
-                  console.log(this.user.surveyTemplates);
-
-                  for(i = 0; i < this.user.surveyTemplates.length; i++){
-                    if(this.user.surveyTemplates[i]._id === response.data._id){
-                      console.log("here");
-                      this.user.surveyTemplates[i] = response.data;
-                      break;
-                    }
-                  }
-
-
-                  console.log(this.user.surveyTemplates);
-              })
-
-              this.newSurvey = {
-
-                title:null,
-                author:this.user._id,
-                questions:[
-                {
-                  question:null,
-                  header:null,
-                  type:null
-                }
-                ]
-              };
-
-
-              self.openToast("Saved Convo")
-                _this.$http.post('/api/surveyTemplate/create', this.newSurvey).then(function successCallback(response) {
-                  console.log(response);
-                  _this.$http.post('/api/user/surveyTemplate/add/'+ this.user._id, response.data).then(function(response2){
-                    console.log(response2.data);
-                    this.user.surveyTemplates.push(response.data);
-                  })
-                });
-              }
 
 
               MainController.prototype.saveSurvey = function($event){

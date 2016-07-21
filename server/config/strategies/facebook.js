@@ -20,7 +20,7 @@ module.exports = function() {
 		function(req, accessToken, refreshToken, profile, done) {
 			// Set the user's provider data and include tokens
 			var providerData = profile._json;
-			winston.info(providerData);
+			console.log(providerData);
 			providerData.accessToken = accessToken;
 			providerData.refreshToken = refreshToken;
 

@@ -26,8 +26,8 @@ var responseSchema = new Schema({
   questions: [
 
     {
-      question:{type: String, required: true},
-      header: {type: String, required: true},
+      question:{type: String},
+      header: {type: String},
       type: {
         type: String,
         enum: ['YESNO', 'SCALE', 'WRITTEN'],
@@ -39,17 +39,17 @@ var responseSchema = new Schema({
 
 });
 
-responseSchema.post('save', function (response) {
-  amqp.connect('amqp://localhost', function (err, conn) {
-    conn.createChannel(function (err, channel) {
-      var queue = 'responses';
-
-      ch.assertQueue(queue, {durable: true});
-      // new Buffer(JSON.stringify(response.toObject())) converts the document from mongodb to a buffer
-      ch.sendToQueue(queue, new Buffer(JSON.stringify(response.toObject())), {persistent: true});
-    });
-  });
-});
+// responseSchema.post('save', function (response) {
+//   amqp.connect('amqp://localhost', function (err, conn) {
+//     conn.createChannel(function (err, channel) {
+//       var queue = 'responses';
+//
+//       ch.assertQueue(queue, {durable: true});
+//       // new Buffer(JSON.stringify(response.toObject())) converts the document from mongodb to a buffer
+//       ch.sendToQueue(queue, new Buffer(JSON.stringify(response.toObject())), {persistent: true});
+//     });
+//   });
+// });
 
 var Response = mongoose.model('Response', responseSchema);
 

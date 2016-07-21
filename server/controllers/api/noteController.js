@@ -7,11 +7,11 @@ var winston = require('winston');
 
 exports.create = function(req, res) {
   var note = new Note(req.body);
-  winston.info("note controller hit");
+  console.log("note controller hit");
 
   note.save(function(err, note) {
     if(!err) {
-      winston.info("NO Error")
+      console.log("NO Error")
       User.findByIdAndUpdate(
         note.assignee,
         {$push: {"notes": note}},
@@ -21,8 +21,8 @@ exports.create = function(req, res) {
             winston.error(err);
           }
           else {
-            winston.info("Note pushed to user.");
-            winston.info("User is: " + JSON.stringify(user));
+            console.log("Note pushed to user.");
+            console.log("User is: " + JSON.stringify(user));
           }
         }
       );
@@ -33,8 +33,8 @@ exports.create = function(req, res) {
 }
 
 exports.update = function(req, res) {
-  winston.info('Updating Note');
-  winston.info();
+  console.log('Updating Note');
+  console.log();
   Note.findOneAndUpdate({'_id': req.body._id},
   {
     body: req.body.body,
@@ -42,26 +42,26 @@ exports.update = function(req, res) {
     assignee:req.body.assignee
   }, {new:true}, function(err, note){
     if(!err){
-      winston.info('Note updated: ' + note);
+      console.log('Note updated: ' + note);
       User.findById(req.body.assignee, function(err, user){
         if(err){
-          winston.info(err);
+          console.log(err);
         }
         var _user = user;
         var user = user.toObject();
-        winston.info('The user is: ' + JSON.stringify(user));
-        winston.info('The user\'s id is: ' + user._id);
-        winston.info('User.notes is: ' + JSON.stringify(user.notes));
+        console.log('The user is: ' + JSON.stringify(user));
+        console.log('The user\'s id is: ' + user._id);
+        console.log('User.notes is: ' + JSON.stringify(user.notes));
         for (var i = 0; i < user.notes.length; i++) {
           if (user.notes[i]._id == req.body._id) {
             user.notes[i] = note;
-            winston.info(JSON.stringify(user.notes[i]));
+            console.log(JSON.stringify(user.notes[i]));
             res.send(req.body);
           }
         }
         _user.set(user);
         _user.save(function (err, doc) {
-          winston.info(JSON.stringify(doc));
+          console.log(JSON.stringify(doc));
         });
 
       });
@@ -75,8 +75,8 @@ exports.update = function(req, res) {
 };
 
 exports.delete = function(req, res) {
-  winston.info("Here note.delete");
-  winston.info("id:" + req.params.id);
+  console.log("Here note.delete");
+  console.log("id:" + req.params.id);
   Note.findByIdAndRemove(
     req.params.id,
     function(err, note){
@@ -85,13 +85,13 @@ exports.delete = function(req, res) {
           {$pull : {'notes': note}},
           function(err, model){
             if(err){
-              winston.info("Help");
+              console.log("Help");
             }
           });
           res.sendStatus(200);
       }
       else{
-        winston.info();
+        console.log();
         winston.error(err);
         res.sendStatus(500);
       }

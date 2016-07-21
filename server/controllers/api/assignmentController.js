@@ -6,7 +6,7 @@ winston = require('winston');
 
 exports.create = function(req, res) {
   var assignment = new Assignment(req.body);
-  winston.info("assignment controller");
+  console.log("assignment controller");
   assignment.save(function(err, assignment){
   })
   res.send({});
@@ -106,8 +106,13 @@ exports.convosNow = function(req, res) {
             } else if (convo.type == "reminder"){
                  console.log("we got a reminder");
                  convo.reminderId = assignments[i].reminderId._id;
-                 convo.questions = [];
-                 convo.questions[0] = assignments[i].reminderId.title;
+                 convo.questions = [
+                   {
+                     question:null
+                   }
+                 ];
+                 convo.questions[0].question = assignments[i].reminderId.title;
+                 console.log(convo);
             } else {
 
                 console.error("invalid assignment type");

@@ -10,7 +10,7 @@ var mongoose = require('./server/config/mongoose'),
 		passport = require('./server/config/passport'),
     winston = require('winston');
 
-winston.info(process.env.NODE_ENV);
+console.log(process.env.NODE_ENV);
 
 // Create a new Mongoose connection instance
 var db = mongoose();
@@ -26,7 +26,7 @@ var passport = passport();
 app.listen(12557);
 
 // Log the server status to the console
-winston.info('Server running at http://localhost:12557/');
+console.log('Server running at http://localhost:12557/');
 
 // Use the module.exports property to expose our Express application instance for external usage
 module.exports = app;

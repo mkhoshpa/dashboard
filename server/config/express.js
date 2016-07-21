@@ -91,7 +91,7 @@ module.exports = function() {
   app.use(express.static(__dirname + '/../../app'));
   app.use(express.static(__dirname + '/../views'));
 	app.use(express.static(__dirname + '/../../app/dist/triangular'));
-	winston.info(__dirname);
+	console.log(__dirname);
 	// Return the Express application instance
 	return app;
 };

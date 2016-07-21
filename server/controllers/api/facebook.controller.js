@@ -19,24 +19,24 @@ exports.connectUser = function (req, res) {
 exports.getClientProfile = function (req, res) {
   request('https://graph.facebook.com/v2.6/oauth/access_token?client_id=' + config.facebook.clientID + '&redirect_uri=http://' + config.server.ip + ':' + config.server.port + '/api/facebook/getclientprofile&client_secret=' + config.facebook.clientSecret + '&code=' + req.query.code, function (err, res, body) {
     if (!err && res.statusCode == 200) {
-      winston.info('Printing body');
-      winston.info(body);
-      winston.info();
-      winston.info(JSON.parse(body).access_token);
+      console.log('Printing body');
+      console.log(body);
+      console.log();
+      console.log(JSON.parse(body).access_token);
       request('https://graph.facebook.com/v2.6/me?access_token=' + JSON.parse(body).access_token, function (err, res, body) {
-        winston.info(err);
+        console.log(err);
         //console.log(res);
-        winston.info(body);
+        console.log(body);
         var _body = JSON.parse(body);
         request('https://graph.facebook.com/' + JSON.parse(body).id + '/picture/', function (err, res, body) {
-          winston.info(res.request.href);
+          console.log(res.request.href);
           User.findOneAndUpdate({fullName: _body.name}, {imgUrl: res.request.href}, {new: true}, function (err, user) {
             if (!err) {
-              winston.info('User updated successfully');
-              winston.info(user);
+              console.log('User updated successfully');
+              console.log(user);
             } else {
-              winston.info('Error');
-              winston.info(err);
+              console.log('Error');
+              console.log(err);
             }
           })
         });
@@ -47,7 +47,7 @@ exports.getClientProfile = function (req, res) {
 }
 
 exports.sendEmail = function (req,res){
-  winston.info("Here");
+  console.log("Here");
 
   async.waterfall([
     function(done) {
@@ -59,11 +59,11 @@ exports.sendEmail = function (req,res){
     function(token, done) {
       User.findOne({ username: req.body.username }, function(err, user) {
         if (!user) {
-          winston.info('no user found');
+          console.log('no user found');
           req.flash('status', 'No user with that email was found!');
           return res.send('502');
         }
-        winston.info("did  i get here!"  + user);
+        console.log("did  i get here!"  + user);
 
         user.save(function(err) {
           done(err, token, user);
@@ -99,9 +99,9 @@ exports.sendEmail = function (req,res){
 
       transporter.sendMail(mailOptions, function(err,info) {
         if(err){
-          return winston.info("this is an "+ JSON.stringify(err));
+          return console.log("this is an "+ JSON.stringify(err));
         }
-        winston.info('Message sent: ' + info.response);
+        console.log('Message sent: ' + info.response);
 
         req.flash('status', 'An e-mail has been dispatched!');
         done(err, 'done');
@@ -115,8 +115,8 @@ exports.sendEmail = function (req,res){
 };
 
 exports.getProfile = function (req, res) {
-  winston.info('User id: ' + req.params.user_id);
-  winston.info('Access token: ' + req.params.access_token);
+  console.log('User id: ' + req.params.user_id);
+  console.log('Access token: ' + req.params.access_token);
   var options = {
     url: 'https://graph.facebook.com/' + req.params.user_id + '?access_token=' + req.params.access_token,
     headers: {
@@ -125,9 +125,9 @@ exports.getProfile = function (req, res) {
   };
   request(options, function (error, response, body) {
     if (!error) {
-      winston.info(body);
+      console.log(body);
       var fullName = JSON.parse(body).name;
-      winston.info(fullName);
+      console.log(fullName);
       var splitFullName = fullName.split(' ');
       var newOptions = {
         //  url: 'https://graph.facebook.com/' + req.params.user_id + '/picture/?access_token=' + req.params.access_token,
@@ -138,8 +138,8 @@ exports.getProfile = function (req, res) {
       }
       request(newOptions, function (error, response, body) {
           if (!error) {
-            winston.info(response.request.uri.href);
-            winston.info(body);
+            console.log(response.request.uri.href);
+            console.log(body);
             var profilePic = response.request.uri.href;
             var user = {
               firstName: splitFullName[0],

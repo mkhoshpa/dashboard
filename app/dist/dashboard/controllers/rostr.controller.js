@@ -281,7 +281,7 @@
                  vm.$http.get('/api/user/selectedAssignment/'+ assignment.userId).then(function successCallback(response2){
                    console.log(response2);
                    //each user responses
-                   vm.$http.get('/api/responses/selecetedAssignment/' + assignment._id).then(function successCallback(response3){
+                   vm.$http.get('/api/responses/selectedAssignment/' + assignment._id).then(function successCallback(response3){
                      console.log(response3);
                      if(response3.data[0]){
                        console.log('good');

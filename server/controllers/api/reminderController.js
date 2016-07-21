@@ -5,8 +5,8 @@ var User = require('../../models/user.js');
 
 exports.create = function(req, res) {
   var reminder = new Reminder(req.body);
-  winston.info("reminder controller hit");
-  //winston.info(reminder);
+  console.log("reminder controller hit");
+  //console.log(reminder);
   reminder.save(function(err, reminder) {
     if(!err) {
       res.send(reminder);
@@ -27,9 +27,9 @@ exports.read = function(req, res) {
 
 //from http://stackoverflow.com/questions/15621970/pushing-object-into-array-schema-in-mongoose
 exports.update = function(req, res) {
-  winston.info('Updating reminder');
-  winston.info();
-  ////winston.info(req.body);
+  console.log('Updating reminder');
+  console.log();
+  ////console.log(req.body);
   Reminder.findOneAndUpdate({'_id': req.body._id},
   {
     title: req.body.title,
@@ -43,7 +43,7 @@ exports.update = function(req, res) {
     assignee: req.body.assignee
   }, {new: true}, function (err, reminder) {
     if (!err) {
-      winston.info('Reminder updated: ' + reminder);
+      console.log('Reminder updated: ' + reminder);
       res.send(reminder);
     } else {
       res.status(500);
@@ -53,21 +53,21 @@ exports.update = function(req, res) {
 }
 
 exports.delete = function(req, res) {
-  winston.info();
-  winston.info('Inside reminder.delete');
-  winston.info('id: ' + req.params.id);
+  console.log();
+  console.log('Inside reminder.delete');
+  console.log('id: ' + req.params.id);
   Reminder.findByIdAndRemove(
     req.params.id,
     function(err, reminder) {
       if(reminder) {
-        //winston.info(reminder);
+        //console.log(reminder);
         User.findByIdAndUpdate(reminder.assignee,
           {$pull : {reminders: {_id: reminder._id}}},
           {new: true},
           function(err, model) {
-            winston.info();
-            winston.info('Should output a user with the specified reminder removed.');
-            //winston.info(model);
+            console.log();
+            console.log('Should output a user with the specified reminder removed.');
+            //console.log(model);
             res.sendStatus(200);
           if(err) {
             // Do some flash message
@@ -75,8 +75,8 @@ exports.delete = function(req, res) {
         });
       }
       else{
-        winston.info();
-        winston.info(err);
+        console.log();
+        console.log(err);
         res.sendStatus(500);
       }
     }
@@ -96,8 +96,8 @@ exports.listNow = function(req,res) {
            .populate('assignee')
            .populate('slack')
            .exec(function(err, docs){
-             winston.info(docs);
-             winston.info('exec reminder/now');
+             console.log(docs);
+             console.log('exec reminder/now');
              if(docs){
                res.json(docs);
              }

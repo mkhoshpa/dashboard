@@ -16,14 +16,14 @@ var winston = require('winston');
 */
 
 exports.createBio = function(req, res){
-  winston.info(req.body.body);
+  console.log(req.body.body);
 
   User.findByIdAndUpdate(req.params.id,
   {$set: {"bio": req.body.body}},
   {safe: true},
   function(err, user) {
    if(err) {
-     winston.info(err);
+     console.log(err);
     }
   });
 
@@ -63,7 +63,7 @@ exports.updateSlackId = function(req, res){
 
 
 exports.createPipelineStage = function(req,res){
-  winston.info("Im here");
+  console.log("Im here");
 
   User.findByIdAndUpdate(req.params.id,
   {$set: {"pipelineStage": req.body.body}},
@@ -104,8 +104,8 @@ exports.addSurvey = function(req, res){
 };
 
 exports.create = function(req, res) {
-  winston.info("Im before new User.");
-  //winston.info(req.body);
+  console.log("Im before new User.");
+  //console.log(req.body);
   var user = new User(req.body);
   user.provider = 'local';
   user.fullName = user.firstName + ' ' + user.lastName;
@@ -116,10 +116,10 @@ exports.create = function(req, res) {
       res.send(err);
     }
     else {
-      winston.info(user._id);
+      console.log(user._id);
 
-      winston.info("User controller hit");
-      winston.info(user._id);
+      console.log("User controller hit");
+      console.log(user._id);
 
         User.findByIdAndUpdate(user.coaches[0],
         {$push: {"clients": user._id}},
@@ -129,9 +129,9 @@ exports.create = function(req, res) {
             winston.error(err);
           }
           else {
-            winston.info('adding user ' + user._id + ' ot coac');
+            console.log('adding user ' + user._id + ' ot coac');
             user.clients.push(user._id);
-            winston.info('success');
+            console.log('success');
             res.send(user);
           }
         });
@@ -140,9 +140,9 @@ exports.create = function(req, res) {
   };
 
 exports.updateCoach = function(req, res){
-  winston.info("Im a coach!");
+  console.log("Im a coach!");
   var user = new User(req.body);
-  winston.info('ima a saf');
+  console.log('ima a saf');
   res.send(user);
 };
 
@@ -188,7 +188,7 @@ exports.reset = function(req,res,next) {
           req.flash('status', 'No user with that email was found!');
           return res.redirect('/forgot');
         }
-        winston.info(user);
+        console.log(user);
         user.resetPasswordToken = token;
         user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
 
@@ -223,7 +223,7 @@ exports.reset = function(req,res,next) {
         if(err){
           return winston.error(err);
         }
-        winston.info('Message sent: ' + info.response);
+        console.log('Message sent: ' + info.response);
 
         req.flash('status', 'An e-mail has been dispatched!');
         done(err, 'done');
@@ -275,7 +275,7 @@ exports.change = function(req, res) {
 }
 
 exports.update = function(req,res) {
-  //winston.info(req.body);
+  //console.log(req.body);
   if(!req.user) {
     // Use the 'response' object to render the signup page
     res.render('pages/signin', {
@@ -291,8 +291,8 @@ exports.update = function(req,res) {
 };
 
 exports.delete = function(req, res){
-  winston.info("hey");
-  //winston.info(req.body);
+  console.log("hey");
+  //console.log(req.body);
 
   res.send("403");
 };
@@ -312,9 +312,9 @@ exports.getUser = function(req,res){
 }
 
 exports.parseCSV = function (req, res) {
-  winston.info(req.body.textToParse);
+  console.log(req.body.textToParse);
   parse(req.body.textToParse, function (err, output) {
-    winston.info(JSON.stringify(output));
+    console.log(JSON.stringify(output));
     res.send(output);
   });
 };

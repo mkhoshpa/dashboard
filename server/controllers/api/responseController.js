@@ -49,5 +49,6 @@ exports.userResponses = function (req, res) {
       console.log(obj);
       res.json(obj);
     }
+    res.json({});
   })
 }

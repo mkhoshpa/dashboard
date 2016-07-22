@@ -7,8 +7,9 @@ var app;
         var userCoach;
         var scope;
         var MainController = (function () {
-            function MainController($scope, userService, $mdSidenav, $mdBottomSheet, $mdToast, $mdDialog, $mdMedia, $http) {
+            function MainController($scope, userService, responseService, $mdSidenav, $mdBottomSheet, $mdToast, $mdDialog, $mdMedia, $http) {
                 this.userService = userService;
+                this.responseService = responseService;
                 this.$mdSidenav = $mdSidenav;
                 this.$mdBottomSheet = $mdBottomSheet;
                 this.$mdToast = $mdToast;
@@ -22,6 +23,9 @@ var app;
                 this.selected = null;
                 this.newNote = new dashboard.Note('', null);
                 this.newReminder = new dashboard.Reminder('', null);
+
+                this.convoSurveyResponse = [];
+
 
                 //Survey stuff
                 this.questions1 = [
@@ -79,21 +83,65 @@ var app;
 
 
             }
-            //console.log(JSON.stringify(this));
-            // convertToUsers(slack: any[]) {
-            //   console.log('convertToUsers: ' + this.slack);
-            //   this.userService.
-            // }
 
-            //create a different controller
+            MainController.prototype.getConvoResponses = function () {
+              console.log('getConvoResponses');
+              var _this = this;
+              var self = this;
+
+              _this.responseService.surveyAssignments(this.selected, function(response){
+                console.log(response);
+
+
+                response.data.forEach(function(assignment){
+                  console.log('hug');
+                  console.log(assignment);
+                  _this.$http.get('/api/responses/selectedAssignment/' + assignment._id, function(response1){
+                    console.log("hebwfhbwefh");
+                    if(response1.data.length === 0){
+                      console.log("nope");
+                      var rA = {
+                        info: assignment
+                      }
+                      this.convoSurveyResponse.push(rA);
+                      console.log(this.convoSurveyResponse);
+                    }
+                    else{
+                      console.log("yeah");
+                      var rA = {
+                        info: assignment,
+                        res: response1.data
+                      }
+                      this.convoSurveyResponse.push(rA);
+                      console.log(this.convoSurveyResponse);
+                    }
+
+
+                  })
+
+                })
+
+              })
+
+
+
+            }
+
+
+
+
+
+
+
+
+
+
+
             MainController.prototype.testing = function () {
               console.log(this.changeSurvey);
             }
 
 
-            MainController.prototype.testing = function () {
-              console.log(this.changeSurvey);
-            }
 
             MainController.prototype.setFormScope = function (scope) {
                 this.formScope = scope;
@@ -773,7 +821,7 @@ var app;
 
               var _this = this;
               var self = this;
-              console.log(this);
+              console.log(convoSurveyResponse);
               var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
               this.$mdDialog.show({
                   templateUrl: './dist/view/dashboard/notes/noteModal.html',
@@ -1296,10 +1344,10 @@ HI Shane!                    console.log(survey);
                 //
                 // }
 
-                var sidebar = this.$mdSidenav('left');
-                if (sidebar.isOpen()) {
-                    sidebar.close();
-                }
+                // var sidebar = this.$mdSidenav('left');
+                // if (sidebar.isOpen()) {
+                //     sidebar.close();
+                // }
                 this.tabIndex = 0;
             };
 

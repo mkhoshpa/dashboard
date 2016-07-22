@@ -88,41 +88,47 @@ var app;
               console.log('getConvoResponses');
               var _this = this;
               var self = this;
-
-              _this.responseService.surveyAssignments(this.selected, function(response){
-                console.log(response);
+              _this.convoSurveyResponse = [];
 
 
-                response.data.forEach(function(assignment){
-                  console.log('hug');
-                  console.log(assignment);
-                  _this.$http.get('/api/responses/selectedAssignment/' + assignment._id, function(response1){
-                    console.log("hebwfhbwefh");
-                    if(response1.data.length === 0){
-                      console.log("nope");
-                      var rA = {
-                        info: assignment
+
+                _this.$http.get('/api/assignment/selectedUser/'+ this.selected._id).then(function(response){
+                  console.log(_this.convoSurveyResponse );
+
+                  response.data.forEach(function(assignment){
+                    console.log('hug');
+                    console.log(assignment._id);
+                      console.log(_this.convoSurveyResponse );
+                    _this.$http.get('/api/responses/selectedAssignment/' + assignment._id).then( function(response1){
+                      console.log("hebwfhbwefh");
+                      console.log(response1);
+                      if(response1.data.length === 0){
+                        console.log("nope");
+
+                        var rA = {
+                          info: assignment,
+                          res: []
+                        }
+
+                        _this.convoSurveyResponse.push(rA);
+                        console.log(_this.convoSurveyResponse);
                       }
-                      this.convoSurveyResponse.push(rA);
-                      console.log(this.convoSurveyResponse);
-                    }
-                    else{
-                      console.log("yeah");
-                      var rA = {
-                        info: assignment,
-                        res: response1.data
+                      else{
+                        console.log("yeah");
+                        var rA = {
+                          info: assignment,
+                          res: response1.data
+                        }
+                        _this.convoSurveyResponse.push(rA);
+                        console.log(_this.convoSurveyResponse);
                       }
-                      this.convoSurveyResponse.push(rA);
-                      console.log(this.convoSurveyResponse);
-                    }
 
+
+                    });
 
                   })
 
                 })
-
-              })
-
 
 
             }
@@ -821,7 +827,7 @@ var app;
 
               var _this = this;
               var self = this;
-              console.log(convoSurveyResponse);
+              console.log(this.convoSurveyResponse);
               var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
               this.$mdDialog.show({
                   templateUrl: './dist/view/dashboard/notes/noteModal.html',

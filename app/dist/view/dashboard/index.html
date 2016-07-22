@@ -20,7 +20,7 @@
           <div ng-include="'/dist/view/dashboard/reminders/tab-reminders.html'"></div>
         </md-tab>
 
-        <md-tab label="Survey Responses">
+        <md-tab label="Survey Responses" md-on-select = "vm.getConvoResponses()">
           <div ng-include="'/dist/view/dashboard/surveyBuilder/tab-surveys.html'"></div>
         </md-tab>
 

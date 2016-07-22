@@ -16,7 +16,6 @@ var app;
 
 
             if(user){
-              console.log(user);
               console.log('sadasds');
               _this.$http.get('/api/assignment/selectedUser/'+ user._id).then(function(response){
                 console.log(response);

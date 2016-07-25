@@ -7,9 +7,8 @@ var app;
         var userCoach;
         var scope;
         var MainController = (function () {
-            function MainController($scope, userService, responseService, $mdSidenav, $mdBottomSheet, $mdToast, $mdDialog, $mdMedia, $http) {
+            function MainController($scope, userService, $mdSidenav, $mdBottomSheet, $mdToast, $mdDialog, $mdMedia, $http) {
                 this.userService = userService;
-                this.responseService = responseService;
                 this.$mdSidenav = $mdSidenav;
                 this.$mdBottomSheet = $mdBottomSheet;
                 this.$mdToast = $mdToast;
@@ -175,22 +174,6 @@ var app;
               console.log(survey.questions);
               self.openToast("Added Question");
             }
-
-            MainController.prototype.removeQuestion = function (index, survey) {
-              var _this = this;
-              var self = this;
-              console.log("here");
-              console.log(survey);
-              //does both remove for newSurvey and changeSurvey
-              if(index > -1){
-                survey.questions.splice(index, 1);
-              }
-
-              console.log(survey.questions);
-              self.openToast("Removed Question");
-            }
-
-
 
 
 
@@ -827,6 +810,25 @@ var app;
                 console.log(response.data);
               });
             };
+
+
+            MainController.prototype.getRemindersResponses = function () {
+              var _this = this;
+              console.log("Get Reminder");
+              this.$http.get('/api/asssignment/reminder/selectedUser/' + this.selected._id).then(function(response){
+
+              })
+
+
+            }
+
+
+
+
+
+
+
+
 
             MainController.prototype.addNote = function ($event) {
 

@@ -11,5 +11,6 @@ module.exports = function(app) {
   app.get('/api/assignment/selectedSurvey/:id', assignment.selectedlist);
   app.get('/api/assignment/convosNow', assignment.convosNow);
   app.get('/api/assignment/selectedUser/:id', assignment.selectedByUserId);
+  app.get('/api/assignment/reminder/selectedUser/:id', assignment.reminderSelectedByUserId)
 
 };

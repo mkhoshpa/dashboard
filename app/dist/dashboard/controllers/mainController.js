@@ -114,7 +114,12 @@ var app;
                         console.log(_this.convoSurveyResponse);
                       }
                       else{
-                        console.log("yeah");
+                        response1.data.forEach(function(re){
+                          var s = re.timeStamp.substring(11, 16);
+                          console.log(s);
+                          re.timeStamp = s;
+                        })
+
                         var rA = {
                           info: assignment,
                           res: response1.data

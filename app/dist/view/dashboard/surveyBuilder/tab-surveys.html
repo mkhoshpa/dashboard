@@ -33,11 +33,14 @@
 
       <md-card-content ng-show = 'ass.res.length !== 0' flex=100>
         <div ng-repeat="re in ass.res">
-          {{re.timeStamp}}
-          <br>
+          <p>
+            {{re.timeStamp}}
+          </p>
+
+          
           <div ng-repeat=" q in re.questions">
             <br>
-            {{q.question +': ' + q.answer}}
+            {{q.question +' ' + q.answer}}
             <br>
           </div>
         </div>
@@ -45,6 +48,7 @@
       </md-card-content>
       <md-card-content ng-show = 'ass.res.length === 0' flex=100>
         No response Yet!
+
         <div ng-repeat="q in ass.info.surveyTemplateId.questions">
           <br>
           {{q.question}}

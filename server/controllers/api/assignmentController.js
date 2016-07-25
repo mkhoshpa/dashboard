@@ -44,45 +44,6 @@ exports.removeByReminderId = function (req, res) {
   res.sendStatus(200);
 };
 
-
-exports.selectedByUserId = function (req, res) {
-  console.log(req.params.id);
-  Assignment.find({userId: req.params.id, type: 'survey'})
-  .populate('surveyTemplateId')
-  .populate('userId')
-  .exec(function(err, assignments) {
-
-
-    if(err){
-      console.log(err);
-    }
-    else{
-      console.log(assignments);
-      res.json(assignments);
-    }
-
-  });
-
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 exports.convosNow = function(req, res) {
   var now = new Date();
   var hoursNow = now.getHours();

@@ -33,7 +33,7 @@ exports.delete = function(req, res) {
 };
 
 exports.list = function(req, res) {
-  Response.find({assignment: req.params.id, type: 'reminder'}, function(err, obj) {
+  Response.find({assigment: req.params.id, type: 'reminder'}, function(err, obj) {
     res.json(obj);
 
   })
@@ -41,18 +41,13 @@ exports.list = function(req, res) {
 
 exports.userResponses = function (req, res) {
   console.log("userResponses");
-  console.log(req.params.id);
   Response.find({assignment: req.params.id}, function (err, obj) {
     if(err){
       console.log("crap");
-      console.log(err);
     }
     else {
       console.log(obj);
-      console.log("I got to here");
-      console.log(JSON.stringify(obj));
       res.json(obj);
     }
-
   })
 }

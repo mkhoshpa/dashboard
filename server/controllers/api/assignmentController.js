@@ -70,7 +70,7 @@ exports.selectedByUserId = function (req, res) {
 exports.reminderSelectedByUserId = function(req, res){
   console.log(req.params.id);
   Assignment.find({userId: req.params.id, type: 'reminder'})
-  .populate('surveyTemplateId')
+  .populate('reminderId')
   .exec(function (err, assignments) {
     if(err){
       console.log(err);

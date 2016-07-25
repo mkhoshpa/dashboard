@@ -7,31 +7,28 @@
     <ng-md-icon icon="add"></ng-md-icon>
   </md-button>
 
-  <p  ng-if="!vm.hasReminders(vm.selected)">No reminders for  {{vm.selected.firstName +" " + vm.selected.lastName}}, yet.</p>
+  <p  ng-if="vm.convoReminderResponse ">No reminders for  {{vm.selected.firstName +" " + vm.selected.lastName}}, yet.</p>
 
-  <md-card md-whiteframe = "3" ng-repeat="reminder in vm.reminders | filter:{'assignee': vm.selected._id}:true | orderBy: '-date':true track by reminder._id" >
+  <md-card md-whiteframe = "3" ng-repeat="reminder in vm.convoReminderResponse |  orderBy: '-date'" >
 
     <div layout="row" >
 
       <md-card-content  flex="60"  >
         <div layout="row">
 
-          <p>
-            {{reminder._id}}
-          </p>
 
           <md-card-content layout-padding layout = "column" flex = "40" >
-            <h3> {{reminder.title}} </h3>
+            <h3> {{reminder.info.reminderId.title}} </h3>
           </md-card-content>
 
           <md-card-content layout = "column"  flex = "60" layout-padding>
             <div layout = "row">
-              <div ng-repeat = "day in reminder.selectedDates">
+              <div ng-repeat = "day in reminder.info.reminderId.selectedDates">
                 <p> {{day}} <br></p>
               </div>
             </div>
 
-            <p>Time of Day: {{reminder.timeOfDay | date:'h:mma'}}</p>
+            <p>Time of Day: {{reminder.info.reminderId.timeOfDay | date:'h:mma'}}</p>
           </md-card-content>
 
         </div>
@@ -41,7 +38,7 @@
             <md-subheader>
               Responses
             </md-subheader>
-            <md-list-item ng-repeat = "response in vm.responses | filter:{'reminderId': reminder._id}:true" >
+            <md-list-item ng-repeat = "response in reminder.res" >
                 <p> {{$index + 1}}{{". " + response.questions[0].answer}}</p>
             </md-list-item>
 
@@ -52,10 +49,10 @@
 
       <div layout="column" flex= "10" layout-padding>
         <md-card-actions flex="20" layout-align="end right">
-          <md-button ng-click="vm.removeReminder($event, reminder)">Remove</md-button>
+          <md-button ng-click="vm.removeReminder($event, reminder.info.reminderId)">Remove</md-button>
         </md-card-actions>
         <md-card-actions flex="20" layout-align="end right">
-          <md-button ng-click="vm.editReminder($event,reminder)">Edit</md-button>
+          <md-button ng-click="vm.editReminder($event,reminder.info.reminderId)">Edit</md-button>
         </md-card-actions>
       </div>
 

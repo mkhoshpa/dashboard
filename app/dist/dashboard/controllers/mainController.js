@@ -24,7 +24,7 @@ var app;
                 this.newReminder = new dashboard.Reminder('', null);
 
                 this.convoSurveyResponse = [];
-
+                this.convoReminderResponse = [];
 
                 //Survey stuff
                 this.questions1 = [
@@ -814,8 +814,42 @@ var app;
 
             MainController.prototype.getRemindersResponses = function () {
               var _this = this;
+
+              _this.convoReminderResponse = [];
               console.log("Get Reminder");
-              this.$http.get('/api/asssignment/reminder/selectedUser/' + this.selected._id).then(function(response){
+              _this.$http.get('/api/assignment/reminder/selectedUser/' + this.selected._id).then(function(response){
+                _this.reminders = response.data;
+
+                response.data.forEach(function (assignment) {
+                    _this.$http.get('/api/responses/selectedAssignment/' + assignment._id).then(function(response1){
+                      console.log("sadasdasd");
+                      console.log(response1);
+                      if(response1.data.length === 0){
+                        console.log("nope res");
+
+                        var rA = {
+                          info: assignment,
+                          res: []
+                        }
+                        _this.convoReminderResponse.push(rA)
+                          console.log(_this.convoReminderResponse);
+                      }
+                      else{
+                        response1.data.forEach(function(re){
+                          var s = re.timeStamp.substring(11, 16);
+                          console.log(s);
+                          re.timeStamp = s;
+                        })
+                        console.log('yeah');
+                        var rA = {
+                          info: assignment,
+                          res: response1.data
+                        }
+                        _this.convoReminderResponse.push(rA)
+                          console.log(_this.convoReminderResponse);
+                      }
+                    })
+                })
 
               })
 
@@ -934,7 +968,7 @@ var app;
                         _this.$http.post('/api/reminder/remove/' + reminder._id, reminder)
                             .then(function successCallback(success) {
                             if (success) {
-                                _this.$http.post('/api/assignment/removeByReminderId', reminder.id).then(function (success) {
+                                _this.$http.post('/api/assignment/removeByReminderId', reminder._id).then(function (success) {
                                   console.log(success);
                                 });
                                 console.log(success);

@@ -1,62 +1,33 @@
 <md-content>
-  <p ng-if="vm.convoSurveyResponse.length === 0">
+  <p ng-if="vm.selected.assignments.length == 0">
     No surveys for {{vm.selected.firstName + " " + vm.selected.lastName}}, yet.
   </p>
-   <md-card ng-repeat="ass in vm.convoSurveyResponse">
-    <div layout = "row">
+   <md-card ng-repeat="survey in vm.selected.surveyTemplates | orderBy: '-date':true">
+    <md-card-header>
+      <md-card-header-text>
+        <div layout="row">
 
-      <md-card-header flex=100>
-        <md-card-header-text>
-          <div layout="row">
-
-            <div flex=100>
-              <span class="md-title">{{ass.info.surveyTemplateId.title}}</span>
-              <!--change -->
-              <div layout = "row">
-                <div   ng-repeat = "d in ass.info.days">
-
-                  <p ng-show = 'd == 0'> Sun <br></p>
-                  <p ng-show = 'd == 1'> Mon <br></p>
-                  <p ng-show = 'd == 2'> Tues <br></p>
-                  <p ng-show = 'd == 3'> Wed <br></p>
-                  <p ng-show = 'd == 4'> Thurs <br></p>
-                  <p ng-show = 'd == 5'> Fri <br></p>
-                  <p ng-show = 'd == 6'> Sat <br></p>
-
-                </div>
-              </div>
-              <p>{{ass.info.hour + ':' + ass.info.minute}} </p>
-
+          <div flex=90>
+            <span class="md-title">{{survey.title}}</span>
           </div>
-        </md-card-header-text>
-      </md-card-header>
 
-      <md-card-content ng-show = 'ass.res.length !== 0' flex=100>
-        <div ng-repeat="re in ass.res">
+
+        </div>
+      </md-card-header-text>
+    </md-card-header>
+    <md-card-content>
+      <div ng-repeat="question in survey.questions">
           <p>
-            {{re.timeStamp}}
+            {{$index + 1}}. {{question.question}}
+            <ul ng-repeat="response in question.responses">
+              <div ng-if="response.from == vm.selected._id">
+                <li>{{response.response}}</li>
+              </div>
+            </ul>
           </p>
-
-          
-          <div ng-repeat=" q in re.questions">
-            <br>
-            {{q.question +' ' + q.answer}}
-            <br>
-          </div>
-        </div>
-        <br>
-      </md-card-content>
-      <md-card-content ng-show = 'ass.res.length === 0' flex=100>
-        No response Yet!
-
-        <div ng-repeat="q in ass.info.surveyTemplateId.questions">
-          <br>
-          {{q.question}}
-          <br>
-        </div>
-        <br>
-      </md-card-content>
-
-    </div>
+      </div>
+    </md-card-content>
+     <md-card-content flex=grow>
+      <p>{{survey.status}}</p>
+    </md-card-content>
   </md-card>
-</md-content>

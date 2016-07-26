@@ -39,9 +39,7 @@ var UserSchema = new Schema({
     team: {type: String},
     timezone: {type: String}
   },
-  reminders: [
-    {type: mongoose.Schema.Types.Object, ref: 'Reminder'}
-  ],
+
 
   surveyTemplates:[
     {type: mongoose.Schema.Types.Object, ref: 'SurveyTemplate'}
@@ -92,9 +90,6 @@ var UserSchema = new Schema({
   ],
 
 
-  responses: [{
-    type: mongoose.Schema.Types.ObjectId, ref: 'Response'
-  }],
   coaches: [
     { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
   ],

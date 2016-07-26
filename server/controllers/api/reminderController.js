@@ -7,12 +7,14 @@ exports.create = function(req, res) {
   var reminder = new Reminder(req.body);
   console.log("reminder controller hit");
   //console.log(reminder);
-  reminder.save(function(err, reminder) {
-    if(!err) {
-      res.send(reminder);
-    } else {
+  reminder.save(function(err, reminder){
+    if(err) {
+      console.log(err);
       res.status(500);
-      res.send(err);
+
+
+    } else {
+      res.send(reminder)
     }
   });
 };
@@ -59,25 +61,13 @@ exports.delete = function(req, res) {
   Reminder.findByIdAndRemove(
     req.params.id,
     function(err, reminder) {
-      if(reminder) {
-        //console.log(reminder);
-        User.findByIdAndUpdate(reminder.assignee,
-          {$pull : {reminders: {_id: reminder._id}}},
-          {new: true},
-          function(err, model) {
-            console.log();
-            console.log('Should output a user with the specified reminder removed.');
-            //console.log(model);
-            res.sendStatus(200);
-          if(err) {
-            // Do some flash message
-          }
-        });
-      }
-      else{
-        console.log();
+      if(err){
         console.log(err);
         res.sendStatus(500);
+      }
+      else{
+        console.log(reminder);
+        res.sendStatus(200);
       }
     }
   );

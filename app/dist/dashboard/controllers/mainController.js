@@ -733,6 +733,7 @@ var app;
                 var _this = this;
                 var self = this;
                 var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
+                console.log(_this.convoReminderResponse);
                 this.$mdDialog.show({
                     templateUrl: './dist/view/dashboard/reminders/modal.html',
                     parent: angular.element(document.body),
@@ -749,6 +750,7 @@ var app;
                     // First step, create the reminder and save it on the db
                     _this.$http.post('/api/reminder/create', reminder).then(function successCallback(response) {
                         // Add the reminder to the reminders array
+                        console.log("creating assignment");
                         _this.reminders.push(response.data);
                         console.log(response.data);
                         // Create the assignment object
@@ -773,43 +775,26 @@ var app;
             };
 
             MainController.prototype.sendOutReminder = function (reminderUserAssign) {
+              var _this = this;
+              var self = this;
               console.log('Inside sendOutReminder');
               console.log(reminderUserAssign);
               this.$http.post('/api/assignment/create', reminderUserAssign).then(function (response) {
                 console.log('Frontend works' + JSON.stringify(response.data));
-              });
-            };
 
-            MainController.prototype.hasReminders = function (user) {
-              // Go through all of the reminders
-              for (var i = 0; i < this.reminders.length; i++) {
-                // If the user's id matches any of the reminder's assignee
-                if (this.reminders[i].assignee === user._id) {
-                  // The user has a reminder, so return true
-                  return true;
+                var rA = {
+                  info: response.data,
+                  res: []
                 }
-              }
-              // If the user's id doesn't match any of the reminder's assignee, return false
-              return false;
-            };
+                console.log(_this.convoReminderResponse);
+                _this.convoReminderResponse.push(rA);
+                console.log(_this.convoReminderResponse);
 
-            MainController.prototype.getReminders = function () {
-              var _this = this;
-              console.log('Getting reminders');
-              _this.$http.get('/api/reminder/list').then(function (response) {
-                _this.reminders = response.data;
-                console.log(response.data);
+
               });
             };
 
-            MainController.prototype.getResponses = function () {
-              var _this = this;
-              console.log('Getting responses');
-              this.$http.get('/api/response/list').then(function (response) {
-                _this.responses = response.data;
-                console.log(response.data);
-              });
-            };
+
 
 
             MainController.prototype.getRemindersResponses = function () {
@@ -897,7 +882,49 @@ var app;
               });
             };
 
-            MainController.prototype.editReminder = function ($event, reminder) {
+            MainController.prototype.removeReminder = function ($event, reminder, index) {
+                var _this = this;
+                console.log(index);
+                console.log(reminder);
+                var confirm = this.$mdDialog.confirm()
+                    .textContent('Are you sure you want to remove this reminder?')
+                    .ariaLabel('Remove')
+                    .targetEvent($event)
+                    .ok('Yes')
+                    .cancel('No');
+                var self = this;
+                this.$mdDialog.show(confirm).then(function (result) {
+                    console.log(reminder);
+                    if (result) {
+                        console.log('removing reminder id: ' + reminder._id);
+                        _this.$http.post('/api/reminder/remove/' + reminder._id, reminder)
+                            .then(function successCallback(success) {
+                            if (success) {
+                                console.log(reminder._id);
+                                _this.$http.post('/api/assignment/reminderId/remove/'+ reminder._id).then(function (success) {
+                                  console.log(success);
+                                });
+                                console.log(success);
+                                self.deleteReminder(reminder);
+                            }
+                            else {
+                            }
+                        });
+                    }
+                    else {
+                    }
+                    self.openToast("Reminder Removed.");
+                });
+            };
+
+            MainController.prototype.deleteReminder = function (index) {
+                var _this = this;
+                console.log("del" + index);
+                _this.convoReminderResponse.splice(index + 1, 1);
+
+            };
+
+            MainController.prototype.editReminder = function ($event, reminder, index) {
                 var _this = this;
                 console.log('main controller edit reminder');
                 console.log(reminder);
@@ -952,49 +979,9 @@ var app;
                     console.log('You cancelled the dialog.');
                 });
             };
-            MainController.prototype.removeReminder = function ($event, reminder) {
-                var _this = this;
-                var confirm = this.$mdDialog.confirm()
-                    .textContent('Are you sure you want to remove this reminder?')
-                    .ariaLabel('Remove')
-                    .targetEvent($event)
-                    .ok('Yes')
-                    .cancel('No');
-                var self = this;
-                this.$mdDialog.show(confirm).then(function (result) {
-                    console.log(reminder);
-                    if (result) {
-                        console.log('removing reminder id: ' + reminder._id);
-                        _this.$http.post('/api/reminder/remove/' + reminder._id, reminder)
-                            .then(function successCallback(success) {
-                            if (success) {
-                                _this.$http.post('/api/assignment/removeByReminderId', reminder._id).then(function (success) {
-                                  console.log(success);
-                                });
-                                console.log(success);
-                                self.deleteReminder(reminder);
-                            }
-                            else {
-                            }
-                        });
-                    }
-                    else {
-                    }
-                    self.openToast("Reminder Removed.");
-                });
-            };
 
-            MainController.prototype.updateSurveyResponses = function (survey) {
-              console.log('Inside updateSurveyResponses');
-              console.log(userCoach);
-              for (var i = 0; i < userCoach.surveyTemplates.length; i++) {
-                if (survey._id == userCoach.surveyTemplates[i]._id) {
-                  userCoach.surveyTemplates[i] = survey;
-                }
-              }
-              scope.$apply();
-              console.log(survey);
-            };
+
+
 
             MainController.prototype.updateReminder = function (reminder) {
                 console.log('Inside updateReminder');
@@ -1009,11 +996,7 @@ var app;
                 }
                 return false;
             };
-            MainController.prototype.deleteReminder = function (reminder) {
-                this.reminders = _.without(this.reminders, reminder);
-                /*var foundIndex = this.selected.reminders.indexOf(reminder);
-                this.selected.reminders.splice(foundIndex, 1);*/
-            };
+
             MainController.prototype.slackList = function () {
                 // var test = this.userService.slack().then((members: any) => {
                 //   console.log('here');
@@ -1034,20 +1017,20 @@ var app;
             //   this.selected.reminders.splice(foundIndex, 1);
             //   this.openToast("Reminder removed");
             // }
-            MainController.prototype.clearReminders = function ($event) {
-                var confirm = this.$mdDialog.confirm()
-                    .title('Are you sure you want to delete all reminders?')
-                    .textContent('All reminders will be deleted, you can\'t undo this action.')
-                    .ariaLabel('Delete all reminders')
-                    .targetEvent($event)
-                    .ok('Yes')
-                    .cancel('No');
-                var self = this;
-                this.$mdDialog.show(confirm).then(function () {
-                    self.selected.reminders = [];
-                    self.openToast("Cleared reminders");
-                });
-            };
+            // MainController.prototype.clearReminders = function ($event) {
+            //     var confirm = this.$mdDialog.confirm()
+            //         .title('Are you sure you want to delete all reminders?')
+            //         .textContent('All reminders will be deleted, you can\'t undo this action.')
+            //         .ariaLabel('Delete all reminders')
+            //         .targetEvent($event)
+            //         .ok('Yes')
+            //         .cancel('No');
+            //     var self = this;
+            //     this.$mdDialog.show(confirm).then(function () {
+            //         self.selected.reminders = [];
+            //         self.openToast("Cleared reminders");
+            //     });
+            // };
 
 
 

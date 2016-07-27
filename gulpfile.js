@@ -17,7 +17,7 @@ var Message = require('./server/models/message.js');
 var Reminder = require('./server/models/reminder.js');
 var portfinder = require('portfinder');
 var raven = require('raven');
-var client = new raven.Client('https://f755c390bd98419eb0ef404e519d8e4a:f3b90e92e81d42108d066106353e23d6@app.getsentry.com/88385');
+var client = new raven.Client('https://dbbf7fed9a0745c799cdd065e2d5b43a:1781bb8df2c74d13993691e539bc7ab3@app.getsentry.com/89293');
 
 client.patchGlobal();
 

@@ -49,27 +49,59 @@ exports.removeByReminderId = function (req, res) {
   // Find all of the assignments with the reminder id that was passed in
     console.log(req.params.id);
 
-    Assignment.findOneAndRemove({reminderId: req.params.id}, function(err, assignment){
+
+
+    Assignment.findOneAndRemove({reminderId: req.params.id},  function(err, assignment){
       if(err){
         console.log(err);
       }
       else{
+
         res.send(assignment);
       }
 
     })
-    //
-    // Assignment.findByIdAndRemove({reminderId: req.params.id}, function (err, assignment) {
-    //   if(err){
-    //     console.log(err);
-    //   }
-    //   else{
-    //     res.send(assignment);
-    //   }
-    // });
-    //
-
 };
+
+exports.updateByReminderId = function (req, res) {
+  console.log(req.params.id);
+  console.log(req.body);
+
+  Assignment.findOneAndUpdate({reminderId: req.params.id}, {
+    repeat: req.body.repeat,
+    type: req.body.type,
+    days: req.body.days,
+    hour: req.body.hour,
+    minute: req.body.minute,
+    userId: req.body.userId,
+    reminderId: req.body.reminderId
+
+  }, {new: true},function(err, assignment){
+    if(err){
+      console.log(err);
+    }
+    else{
+      console.log("after" + assignment);
+      Assignment.populate(assignment,{path:'reminderId', model: 'Reminder' }, function(err, info){
+        if(err){
+          console.log(err);
+        }
+        else{
+          console.log("pop");
+          console.log(info);
+          res.send(info);
+        }
+      })
+    }
+  })
+}
+
+
+
+
+
+
+
 
 
 exports.selectedByUserId = function (req, res) {

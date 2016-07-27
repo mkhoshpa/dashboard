@@ -9,7 +9,7 @@
 
   <p  ng-if="vm.convoReminderResponse ">No reminders for  {{vm.selected.firstName +" " + vm.selected.lastName}}, yet.</p>
 
-  <md-card md-whiteframe = "3" ng-repeat="reminder in vm.convoReminderResponse |  orderBy: '-date'" >
+  <md-card md-whiteframe = "3" ng-repeat="reminder in vm.convoReminderResponse" >
 
     <div layout="row" >
 
@@ -52,7 +52,7 @@
           <md-button ng-click="vm.removeReminder($event, reminder.info.reminderId, $index)">Remove</md-button>
         </md-card-actions>
         <md-card-actions flex="20" layout-align="end right">
-          <md-button ng-click="vm.editReminder($event,reminder.info.reminderId)">Edit</md-button>
+          <md-button ng-click="vm.editReminder($event,reminder.info.reminderId, $index)">Edit</md-button>
         </md-card-actions>
       </div>
 

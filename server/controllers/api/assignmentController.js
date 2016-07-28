@@ -1,15 +1,31 @@
 'use strict'
 
-var User = require('../../models/user.js'),
-Assignment = require('../../models/assignment.js'),
-winston = require('winston');
-
+var User = require('../../models/user.js');
+var Assignment = require('../../models/assignment.js');
+var winston = require('winston');
+var Reminder = require('../../models/reminder.js');
 exports.create = function(req, res) {
   var assignment = new Assignment(req.body);
   console.log("assignment controller");
   assignment.save(function(err, assignment){
+    if(err){
+      console.log(err);
+    }
+    else{
+
+      Assignment.populate(assignment,{path:'reminderId', model: 'Reminder' }, function(err, info){
+        if(err){
+          console.log(err);
+        }
+        else{
+          console.log(info);
+          res.send(info);
+        }
+      })
+
+    }
   })
-  res.send({});
+
 };
 
 exports.read = function(req, res) {
@@ -31,18 +47,115 @@ exports.delete = function(req, res) {
 
 exports.removeByReminderId = function (req, res) {
   // Find all of the assignments with the reminder id that was passed in
-  Assignment.find({reminderId: res.body}, function (err, assignments) {
-    // Go through all of the assignments
-    for (var i = 0; i < assignments.length; i++) {
-      var assignment = assignments[i];
-      // Remove the assignment
-      Assignment.findByIdAndRemove(assignment._id, function (err, assignment) {
-        // Do nothing in the callback
-      });
-    }
-  });
-  res.sendStatus(200);
+    console.log(req.params.id);
+
+
+
+    Assignment.findOneAndRemove({reminderId: req.params.id},  function(err, assignment){
+      if(err){
+        console.log(err);
+      }
+      else{
+
+        res.send(assignment);
+      }
+
+    })
 };
+
+
+exports.updateByReminderId = function (req, res) {
+  console.log(req.params.id);
+  console.log(req.body);
+
+  Assignment.findOneAndUpdate({reminderId: req.params.id}, {
+    repeat: req.body.repeat,
+    type: req.body.type,
+    days: req.body.days,
+    hour: req.body.hour,
+    minute: req.body.minute,
+    userId: req.body.userId,
+    reminderId: req.body.reminderId
+
+  }, {new: true},function(err, assignment){
+    if(err){
+      console.log(err);
+    }
+    else{
+      console.log("after" + assignment);
+      Assignment.populate(assignment,{path:'reminderId', model: 'Reminder' }, function(err, info){
+        if(err){
+          console.log(err);
+        }
+        else{
+          console.log("pop");
+          console.log(info);
+          res.send(info);
+        }
+      })
+    }
+  })
+}
+
+
+
+
+
+
+
+
+
+exports.selectedByUserId = function (req, res) {
+  console.log(req.params.id);
+  Assignment.find({userId: req.params.id, type: 'survey'})
+  .populate('surveyTemplateId')
+  .populate('userId')
+  .exec(function(err, assignments) {
+
+
+    if(err){
+      console.log(err);
+    }
+    else{
+      console.log(assignments);
+      res.json(assignments);
+    }
+
+  });
+
+
+}
+
+
+exports.reminderSelectedByUserId = function(req, res){
+  console.log(req.params.id);
+  Assignment.find({userId: req.params.id, type: 'reminder'})
+  .populate('reminderId')
+  .exec(function (err, assignments) {
+    if(err){
+      console.log(err);
+    }
+    else{
+      console.log(assignments);
+      res.json(assignments);
+    }
+  })
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 exports.convosNow = function(req, res) {
   var now = new Date();

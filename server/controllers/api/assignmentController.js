@@ -63,6 +63,7 @@ exports.removeByReminderId = function (req, res) {
     })
 };
 
+
 exports.updateByReminderId = function (req, res) {
   console.log(req.params.id);
   console.log(req.body);
@@ -140,6 +141,7 @@ exports.reminderSelectedByUserId = function(req, res){
     }
   })
 }
+
 
 
 

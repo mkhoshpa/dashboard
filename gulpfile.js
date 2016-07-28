@@ -16,15 +16,11 @@ var SurveyTemplate = require('./server/models/surveyTemplate.js');
 var Message = require('./server/models/message.js');
 var Reminder = require('./server/models/reminder.js');
 var portfinder = require('portfinder');
+var raven = require('raven');
+var client = new raven.Client('https://dbbf7fed9a0745c799cdd065e2d5b43a:1781bb8df2c74d13993691e539bc7ab3@app.getsentry.com/89293');
 
-var botOptions = {
-  url: 'https://aiaas.pandorabots.com',
-  app_id: '1409612709792',
-  user_key: '83a7e3b5fa60385bd676a05cb4951e98',
-  botname: 'willow'
-};
+client.patchGlobal();
 
-var bot = new Pandorabot(botOptions);
 //adding comment to trigger update 
 var paths = {
   angular: ['app/dist/**/*.js'],

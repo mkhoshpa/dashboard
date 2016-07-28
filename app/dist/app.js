@@ -9,7 +9,7 @@ var app;
 
 
 
-    angular.module('app', ['dashboard', 'ngMaterial', 'md.data.table','common']);
+    angular.module('app', ['dashboard','ngMaterial', 'md.data.table','common']);
     console.log("KJnsdkfandskansjdnasjdnjasndj");
 
     //

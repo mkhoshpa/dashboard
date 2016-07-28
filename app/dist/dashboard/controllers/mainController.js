@@ -22,9 +22,11 @@ var app;
                 this.selected = null;
                 this.newNote = new dashboard.Note('', null);
                 this.newReminder = new dashboard.Reminder('', null);
+
                 this.index = null;
                 this.convoSurveyResponse = [];
                 this.convoReminderResponse = [];
+
 
                 //Survey stuff
                 this.questions1 = [
@@ -83,76 +85,21 @@ var app;
 
 
             }
+            //console.log(JSON.stringify(this));
+            // convertToUsers(slack: any[]) {
+            //   console.log('convertToUsers: ' + this.slack);
+            //   this.userService.
+            // }
 
-            MainController.prototype.getConvoResponses = function () {
-              console.log('getConvoResponses');
-              var _this = this;
-              var self = this;
-              _this.convoSurveyResponse = [];
-
-
-
-                _this.$http.get('/api/assignment/selectedUser/'+ this.selected._id).then(function(response){
-                  console.log(_this.convoSurveyResponse );
-
-                  response.data.forEach(function(assignment){
-                    console.log('hug');
-                    console.log(assignment._id);
-                      console.log(_this.convoSurveyResponse );
-                    _this.$http.get('/api/responses/selectedAssignment/' + assignment._id).then( function(response1){
-                      console.log("hebwfhbwefh");
-                      console.log(response1);
-                      if(response1.data.length === 0){
-                        console.log("nope");
-
-                        var rA = {
-                          info: assignment,
-                          res: []
-                        }
-
-                        _this.convoSurveyResponse.push(rA);
-                        console.log(_this.convoSurveyResponse);
-                      }
-                      else{
-                        response1.data.forEach(function(re){
-                          var s = re.timeStamp.substring(11, 16);
-                          console.log(s);
-                          re.timeStamp = s;
-                        })
-
-                        var rA = {
-                          info: assignment,
-                          res: response1.data
-                        }
-                        _this.convoSurveyResponse.push(rA);
-                        console.log(_this.convoSurveyResponse);
-                      }
-
-
-                    });
-
-                  })
-
-                })
-
-
-            }
-
-
-
-
-
-
-
-
-
-
-
+            //create a different controller
             MainController.prototype.testing = function () {
               console.log(this.changeSurvey);
             }
 
 
+            MainController.prototype.testing = function () {
+              console.log(this.changeSurvey);
+            }
 
             MainController.prototype.setFormScope = function (scope) {
                 this.formScope = scope;
@@ -797,7 +744,6 @@ var app;
 
 
 
-
             MainController.prototype.getRemindersResponses = function () {
               var _this = this;
 
@@ -1376,10 +1322,10 @@ HI Shane!                    console.log(survey);
                 //
                 // }
 
-                // var sidebar = this.$mdSidenav('left');
-                // if (sidebar.isOpen()) {
-                //     sidebar.close();
-                // }
+                var sidebar = this.$mdSidenav('left');
+                if (sidebar.isOpen()) {
+                    sidebar.close();
+                }
                 this.tabIndex = 0;
             };
 

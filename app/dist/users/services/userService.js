@@ -40,22 +40,6 @@ var app;
                     return user;
                 });
             };
-
-
-            UserService.prototype.getAssignments = function(userId){
-              this.$http.get('/api/selectedUser/assignments' + userId).then(function(response){
-
-              })
-            }
-
-
-            UserService.prototype.getResponses = function(asId){
-              this.$http.get('/api/selectedAssigmnent/responses/'+ asId).then(function (response) {
-
-              })
-            }
-
-
             // loadClients(): ng.IPromise<any> {
             //   return this.$http.get('/users')
             //   .then(response => response.data);

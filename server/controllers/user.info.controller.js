@@ -31,6 +31,23 @@ exports.createBio = function(req, res){
 }
 
 
+
+exports.bySalckId = function (req, res) {
+  console.log(req.params.id);
+  console.log("slack ID");
+  User.findOne({slack_id: req.params.id}, function(err, obj){
+    if(err){
+      console.log("crap");
+      console.log(err);
+    }
+    else {
+      console.log(obj);
+      res.json(obj);
+    }
+  });
+}
+
+
 exports.updateMedium = function(req, res){
   console.log(req.body.text);
 

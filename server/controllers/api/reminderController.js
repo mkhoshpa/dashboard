@@ -14,6 +14,7 @@ exports.create = function(req, res) {
 
 
     } else {
+      console.log("reminder Good");
       res.send(reminder)
     }
   });

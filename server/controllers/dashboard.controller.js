@@ -46,7 +46,7 @@ exports.render = function(req, res, next) {
         }
         else {
           winston.error('ERROR LOADING DASHBOARD FOR SOME ODD REASON');
-          res.render('landing', {
+          res.render('index', {
       			// Set the page title variable
       			title: 'Fitpath',
       			// Set the flash message variable
@@ -73,7 +73,7 @@ exports.render = function(req, res, next) {
             });
           }
           else {
-            res.render('landing', {
+            res.render('index', {
               // Set the page title variable
               title: 'Fitpath',
               // Set the flash message variable

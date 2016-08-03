@@ -1,0 +1,13 @@
+<% include ../partials/header.ejs %>
+
+<div class="section">
+	<div class="col-offset-lg-2 col-lg-8 vertical-center">
+		<div>
+			<% for(var i=0; i < initialQuestionBoxes.length; i++) { %>
+			   <p><%= initialQuestionBoxes[i].text %></p>
+			<% } %>
+		</div>
+	</div>
+</div>
+
+<% include ../partials/footer.ejs %>

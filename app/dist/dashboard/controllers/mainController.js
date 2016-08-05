@@ -92,14 +92,27 @@ var app;
             // }
 
             //create a different controller
-            MainController.prototype.testing = function () {
-              console.log(this.changeSurvey);
-            }
 
+            MainController.prototype.openSettings = function($event){
+              console.log("settings");
+              var useFullScreen = (this.$mdMedia('lg') || this.$mdMedia('xs'));
+              this.$mdDialog.show({
+                  templateUrl: './dist/view/dashboard/settings/settingsModal.html',
+                  parent: angular.element(document.body),
+                  targetEvent: $event,
+                  controller: dashboard.SettingsController,
+                  controllerAs: "ctrl",
+                  clickOutsideToClose: true,
+                  fullscreen: useFullScreen,
+                  locals: {
+                    selected: null
+                  }
+              }).then(function (surveyInfo) {
 
-            MainController.prototype.testing = function () {
-              console.log(this.changeSurvey);
-            }
+                console.log("hey");
+              });
+
+             }
 
             MainController.prototype.setFormScope = function (scope) {
                 this.formScope = scope;
@@ -345,12 +358,18 @@ var app;
                   console.log();
                   console.log(_this.selectedSurvey.selectedUsers);
                   console.log();
+
+                  var clientTime = moment.tz({hour: self.selectedSurvey.timeOfDay.getHours(),
+                                           minute: self.selectedSurvey.timeOfDay.getMinutes()}, self.selected.timezone);
+                  // Server's timezone is UTC
+                  var serverTime = clientTime.clone().tz('Etc/UTC');
+
                   var updatedSurvey = {
 
                     repeat: self.selectedSurvey.repeat,
                     days: self.selectedSurvey.days,
-                    hour: self.selectedSurvey.timeOfDay.getHours(),
-                    minute: self.selectedSurvey.timeOfDay.getMinutes()
+                    hour: serverTime.hour(),
+                    minute: serverTime.minute()
                   };
 
                   // For all of the users that were assigned a survey
@@ -478,6 +497,22 @@ var app;
 
               self.openToast("Bio Updated");
 
+            };
+
+            MainController.prototype.addTimezone = function ($event) {
+              console.log('Inside addTimezone');
+              var _this = this;
+              var self = this;
+
+              var timezone = {
+                text: this.selected.timezone
+              };
+
+              _this.$http.post('/api/user/updateTimezone/' + this.selected.id, timezone).then(function successCallback(response) {
+                console.log(response.data);
+                console.log(this.selected);
+              })
+              self.openToast("Timezone Updated");
             };
 
 
@@ -701,12 +736,18 @@ var app;
                         console.log("creating assignment");
                         _this.reminders.push(response.data);
                         console.log(response.data);
+
+                        // Convert the time for the reminder from the client's timezone into UTC
+                        var clientTime = moment.tz({hour: reminder.hour, minute: reminder.minute}, self.selected.timezone);
+                        // Server's timezone is set to UTC
+                        var serverTime = clientTime.clone().tz('Etc/UTC');
+
                         // Create the assignment object
                         var reminderUserAssign = {
                           repeat: true,
                           days: reminder.days,
-                          hour: reminder.hour,
-                          minute: reminder.minute,
+                          hour: serverTime.hour(),
+                          minute: serverTime.minute(),
                           userId: response.data.assignee,
                           reminderId: response.data._id,
                           type: 'reminder' // Default is reminder but there's no harm in specifying it here
@@ -874,11 +915,17 @@ var app;
                     _this.$http.post('/api/reminder/update/' + reminder._id, reminder).then(function successCallback(reminder) {
                         console.log('returned junk: ' + JSON.stringify(reminder.data));
                         //  self.selected.reminders.push(response.data);
+
+                        // Convert the time for the reminder from the client's timezone into UTC
+                        var clientTime = moment.tz({hour: reminder.data.hour, minute: reminder.data.minute}, self.selected.timezone);
+                        // Server's timezone is set to UTC
+                        var serverTime = clientTime.clone().tz('Etc/UTC');
+
                         var reminderUserAssign = {
                           repeat: true,
                           days: reminder.data.days,
-                          hour: reminder.data.hour,
-                          minute: reminder.data.minute,
+                          hour: serverTime.hour(),
+                          minute: serverTime.minute(),
                           userId: reminder.data.assignee,
                           reminderId: reminder.data._id,
                           type: 'reminder'

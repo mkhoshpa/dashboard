@@ -13,6 +13,7 @@ module.exports = function(app) {
   app.get('/api/user/selectedAssignment/:id', user.getUser);
   //app.post('/api/user/updateMedium/:id', user.updateMedium);
   //app.post('/api/user/updateSlackId/:id', user.updateSlackId);
+  app.post('/api/user/updateTimezone/:id', user.updateTimezone);
   app.post('/api/user/parse-csv', user.parseCSV);
 
 };

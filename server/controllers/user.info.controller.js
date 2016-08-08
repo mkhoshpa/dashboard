@@ -77,7 +77,20 @@ exports.updateSlackId = function(req, res){
   res.send(req.body.text);
 };
 
+exports.updateTimezone = function(req, res){
+  console.log(req.body);
 
+  User.findByIdAndUpdate(req.params.id,
+  {$set: {"timezone": req.body.text}},
+  {safe: true},
+  function(err, user) {
+   if(err) {
+     console.log(err);
+    }
+  });
+
+  res.send(req.body.text);
+};
 
 exports.createPipelineStage = function(req,res){
   console.log("Im here");

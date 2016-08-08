@@ -202,13 +202,7 @@ var app;
                 self.openToast("Removed Question");
               }
 
-            MainController.prototype.cancelChangeSurvey = function(){
-              var _this = this;
-              var self = this;
-              //need to refresh the page
-              this.changeSurvey = "new";
-              self.openToast("Editing Cancel");
-            }
+
 
 
 
@@ -443,7 +437,7 @@ var app;
             MainController.prototype.addMedium = function ($event) {
               var _this = this;
               var self = this;
-
+              console.log("medium");
               var medium = {
                 text: this.selected.defaultCommsMedium
 

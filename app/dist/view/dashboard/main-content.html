@@ -144,24 +144,30 @@
 
 
         </div>
+        <!---
 
+
+        CHANGE THIS SO BAD
+
+
+        --->
         <div  md-whiteframe = "3"  flex = "100" layout = "row" style = "background-color:#FFFFFF; margin: 5px;"  >
-          <md-content flex  layout style = "height: 200px; background-color:#FFFFFF;">
+          <md-content layout = "row" layout-padding style = "height: 200px; background-color:#FFFFFF;">
             <md-input-container layout = "column" flex = "100" style = "height: 150px; padding-right: 50px" >
               <label>Biography</label>
               <textarea class = "bioText" ng-model="vm.selected.bio" md-select-on-focus ng-blur = "vm.addBio()" style="min-height: 100px; min-width:300px"></textarea>
             </md-input-container>
 
-            <md-input-container layout="column" flex="95" style="height: 150px; min-width: 300px; max-width: 500px">
+            <md-input-container layout="column" flex="100" style="height: 150px; min-width: 300px; max-width: 500px">
               <timezone-selector ng-model="vm.selected.timezone" md-select-on-focus ng-change="vm.addTimezone()"></timezone-selector>
             </md-input-container>
 
-            <!--<md-input-container layout = "column" flex = "95" style = "height: 150px; min-width:300px; max-width:500px " >
+            <md-input-container layout = "column" flex = "100" style = "height: 150px; min-width:300px; max-width:500px " >
               <label>Contact Medium</label>
               <textarea ng-model="vm.selected.defaultCommsMedium" md-select-on-focus ng-blur = "vm.addMedium()"></textarea>
             </md-input-container>
 
-            <md-input-container layout="column" flex="95" style="height: 150px; min-width:300px; max-width:500px ">
+            <md-input-container layout="column" flex="100" style="height: 150px; min-width:300px; max-width:500px ">
               <label>Slack ID</label>
               <textarea ng-model="vm.selected.slack_id " md-select-on-focus ng-blur="vm.addSlackId()"></textarea>
             </md-input-container>
@@ -179,7 +185,7 @@
                 <md-option   ng-repeat = "pipe in vm.pipelineOptions" ng-value = "pipe.type">{{pipe.type}}
 
                 </md-option>
-              </md-select>-->
+              </md-select>
 
             </md-input-container>
                <!-- <label>Pipeline Stage</label>

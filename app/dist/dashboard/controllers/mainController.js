@@ -355,8 +355,14 @@ var app;
 
                   var clientTime = moment.tz({hour: self.selectedSurvey.timeOfDay.getHours(),
                                            minute: self.selectedSurvey.timeOfDay.getMinutes()}, self.selected.timezone);
-                  // Server's timezone is UTC
-                  var serverTime = clientTime.clone().tz('Etc/UTC');
+                  // Get the server's timezone
+                  var req = new XMLHttpRequest();
+                  req.open('HEAD', document.location, false);
+                  req.send(null);
+                  var serverTimezone = req.getResponseHeader('x-server-timezone');
+
+                 // Do the timezone conversion
+                 var serverTime = clientTime.clone().tz(serverTimezone);
 
                   var updatedSurvey = {
 
@@ -737,9 +743,16 @@ var app;
                         console.log(response.data);
 
                         // Convert the time for the reminder from the client's timezone into UTC
-                        var clientTime = moment.tz({hour: reminder.hour, minute: reminder.minute}, self.selected.timezone);
-                        // Server's timezone is set to UTC
-                        var serverTime = clientTime.clone().tz('Etc/UTC');
+                        var clientTime = moment.tz({hour: reminder.data.hour, minute: reminder.data.minute}, self.selected.timezone);
+
+                        // Get the server's timezone
+                        var req = new XMLHttpRequest();
+                        req.open('HEAD', document.location, false);
+                        req.send(null);
+                        var serverTimezone = req.getResponseHeader('x-server-timezone');
+
+                        // Do the timezone conversion
+                        var serverTime = clientTime.clone().tz(serverTimezone);
 
                         // Create the assignment object
                         var reminderUserAssign = {
@@ -917,8 +930,15 @@ var app;
 
                         // Convert the time for the reminder from the client's timezone into UTC
                         var clientTime = moment.tz({hour: reminder.data.hour, minute: reminder.data.minute}, self.selected.timezone);
-                        // Server's timezone is set to UTC
-                        var serverTime = clientTime.clone().tz('Etc/UTC');
+
+                        // Get the server's timezone
+                        var req = new XMLHttpRequest();
+                        req.open('HEAD', document.location, false);
+                        req.send(null);
+                        var serverTimezone = req.getResponseHeader('x-server-timezone');
+
+                        // Do the timezone conversion
+                        var serverTime = clientTime.clone().tz(serverTimezone);
 
                         var reminderUserAssign = {
                           repeat: true,

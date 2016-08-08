@@ -1,6 +1,6 @@
 // Fix browserSync
 // Fix Watch / Restart
-
+//
 var gulp = require('gulp');
 var nodemon = require('gulp-nodemon');
 //var gulpNgConfig = require('gulp-ng-config');
@@ -21,7 +21,7 @@ var client = new raven.Client('https://dbbf7fed9a0745c799cdd065e2d5b43a:1781bb8d
 
 client.patchGlobal();
 
-//adding comment to trigger update 
+//adding comment to trigger update
 var paths = {
   angular: ['app/dist/**/*.js'],
   css: ['app/assets/styles/css/**/*.css'],

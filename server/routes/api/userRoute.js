@@ -11,6 +11,7 @@ module.exports = function(app) {
   app.post('/api/coach/newuser/:id', user.updateCoach);
   app.post('/api/user/surveyTemplate/add/:id', user.addSurvey);
   app.get('/api/user/selectedAssignment/:id', user.getUser);
+  app.get('/api/user/slackId/:id', user.bySalckId)
   //app.post('/api/user/updateMedium/:id', user.updateMedium);
   //app.post('/api/user/updateSlackId/:id', user.updateSlackId);
   app.post('/api/user/updateTimezone/:id', user.updateTimezone);

@@ -124,7 +124,9 @@ var UserSchema = new Schema({
 		// Create a default 'created' value
 		default: Date.now
 	},
-  phoneNumber: String,
+  // phoneNumber: {type : String, unique : true},
+  phoneNumber:{type: String, unique : true, sparse: true, index: true},
+
   slack_id : String,
   facebookId: Number,
   email: String,

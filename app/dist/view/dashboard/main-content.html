@@ -122,7 +122,7 @@
 
     <div  layout = "row" layout-padding style="background-color: white; margin: 5px;" >
 
-        <div md-whiteframe = "3"  flex = "15" layout = "column" style="background-color: #FFFFFF; margin: 5px; min-width: 150px;"  >
+        <div md-whiteframe = "3"  flex = "20" layout = "column" style="background-color: #FFFFFF; margin: 5px; min-width: 200px;"  >
           <div ng-if="vm.isCoach(vm.selected)">
             <a class="secondary-content"><i class="material-icons" style="color:#FFFFFF; margin-top: 15px; font-size: 60px;">face</i></a>
             <md-content class = "profileName" style="background-color; #FFFFFF; margin: 5px;">
@@ -132,11 +132,10 @@
 
 
           <div ng-if="!vm.isCoach(vm.selected)">
-            <img ng-src="{{vm.selected.imgUrl}}" class="profileImg"></img>
-            <md-content layout = "row" style="background-color:#FFFFFF; ">
-              <md-button ng-click = "vm.openSettings()">
-                <md-icon>settings</md-icon>
-              </md-button>
+
+            <img ng-src="{{vm.selected.imgUrl}}" class="profileImg" layout = "center"></img>
+            <md-content style="background-color:#FFFFFF; margin: 5px;">
+
               <h1 class = "profileName">
                 {{vm.selected.firstName +" "+ vm.selected.lastName}}
               </h1>

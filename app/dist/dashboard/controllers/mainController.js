@@ -578,23 +578,28 @@ var app;
                     //  console.log('The user\'s _id is: ' + response.data._id);
                       //this.user.clients.push(response.data.id);
 
-                      if (response.data.id) {
-                        console.log("done");
-                        _this.$http.post('/api/coach/newuser/' + this.user.id + '?' + response.data.id,  user).then(function successCallback(client){
+                      console.log(response);
+
+
+                      console.log("done");
+                      _this.$http.post('/api/coach/newuser/' + this.user._id, response.data).then(function successCallback(client){
                           console.log("done2");
                           self.user.clients.push(response.data);
                           console.log("User created:")
                           console.log(response.data);
-                          self.openToast("User added And Email Sent!");
+
                           _this.$http.post('api/facebook/email/', user).then(function successCallback(response) {
                             console.log("email done!");
                             //console.log(response);
+                            self.openToast("User added And Email Sent!");
                           });
                         });
-                      } else {
-                        self.openToast('User not added. ' + response.data.errors.password.message);
-                      }
 
+                    },function errorCallback(response){
+                        console.log(response);
+                        if(!response.data.success){
+                          self.openToast(response.data.message);
+                        }
                     });
                 }, function () {
                     console.log('You cancelled the dialog.');

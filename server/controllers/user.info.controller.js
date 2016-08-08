@@ -31,6 +31,23 @@ exports.createBio = function(req, res){
 }
 
 
+
+exports.bySalckId = function (req, res) {
+  console.log(req.params.id);
+  console.log("slack ID");
+  User.findOne({slack_id: req.params.id}, function(err, obj){
+    if(err){
+      console.log("crap");
+      console.log(err);
+    }
+    else {
+      console.log(obj);
+      res.json(obj);
+    }
+  });
+}
+
+
 exports.updateMedium = function(req, res){
   console.log(req.body.text);
 
@@ -97,10 +114,20 @@ exports.createPhoneNumber = function (req, res) {
   {safe: true},
   function (err, user) {
     if (err) {
-      winston.error(err);
+      //console.log(err);
+      if (err.name === 'MongoError' && err.code === 11000) {
+        // Duplicate username
+        console.log("Am i in here");
+        res.status(500).send({ success: false, message: 'User already exist!' });
+      }
+      res.status(500).send(err);
+    }
+    else{
+      console.log("good");
+      res.send(req.body.number);
     }
   });
-  res.send(req.body.number);
+
 };
 
 exports.addSurvey = function(req, res){
@@ -116,7 +143,68 @@ exports.addSurvey = function(req, res){
   res.send(req.body);
 };
 
-exports.create = function(req, res) {
+exports.create = function (req, res) {
+  console.log("new user");
+  var user = new User(req.body);
+  user.provider = 'local';
+  user.fullName = user.firstName + ' ' + user.lastName;
+  user.pandoraBotSaid = '';
+
+  user.save(function(err, user){
+    if(err){
+      if (err.name === 'MongoError' && err.code === 11000) {
+        // Duplicate username
+        console.log("Am i in here");
+        console.log(err);
+        res.status(500).send({ success: false, message: "Phone number already in use." });
+      }
+      else{
+        console.log(err);
+      }
+    }
+    else{
+      console.log("Good");
+      res.send(user);
+    }
+  })
+
+
+}
+exports.updateCoach = function(req, res){
+  console.log("Im a coach!");
+  console.log(req.params.id);
+  var user = new User(req.body);
+  console.log('ima a saf');
+
+  User.findByIdAndUpdate({_id: req.params.id},
+    {$push: {"clients": user._id}},
+    {safe: true},
+    function(err, coach) {
+      if(err) {
+        console.log(err);
+      }
+      else {
+        console.log('adding user ' + user._id + ' ot coac');
+        user.clients.push(user._id);
+        console.log('success');
+        res.send(user);
+      }
+    });
+
+
+};
+
+
+
+
+
+
+
+
+
+
+
+exports.create2 = function(req, res) {
   console.log("Im before new User.");
   //console.log(req.body);
   var user = new User(req.body);
@@ -125,8 +213,14 @@ exports.create = function(req, res) {
   user.pandoraBotSaid = '';
   user.save(function(err) {
     if (err) {
-      winston.error(err);
-      res.send(err);
+      if (err.name === 'MongoError' && err.code === 11000) {
+        // Duplicate username
+        console.log("Am i in here");
+        res.status(500).send({ success: false, message: 'User already exist!' });
+      }
+      else{
+        console.log(err);
+      }
     }
     else {
       console.log(user._id);
@@ -152,12 +246,7 @@ exports.create = function(req, res) {
     });
   };
 
-exports.updateCoach = function(req, res){
-  console.log("Im a coach!");
-  var user = new User(req.body);
-  console.log('ima a saf');
-  res.send(user);
-};
+
 
 
 exports.render = function(req, res) {

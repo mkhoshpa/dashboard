@@ -12,7 +12,8 @@ var config = require('./config'),
 		cookieParser = require('cookie-parser'),
 		session = require('express-session'),
 		flash = require('connect-flash'),
-		passport = require('passport');
+		passport = require('passport'),
+    timezone = require('jstimezonedetect');
 
 // Define the Express configuration method
 module.exports = function() {
@@ -33,6 +34,11 @@ module.exports = function() {
 
 	// Create a new Express application instance
 	var app = express();
+
+  app.use(function (req, res, next) {
+    res.header('X-Server-Timezone', timezone.determine().name());
+    next();
+  });
 
 	// Use the 'NDOE_ENV' variable to activate the 'morgan' logger or 'compress' middleware
 	if (process.env.NODE_ENV === 'development') {

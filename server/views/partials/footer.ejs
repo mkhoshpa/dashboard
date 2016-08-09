@@ -2,10 +2,11 @@
 
 <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script src="../assets/js/bootstrap.min.js"></script>
+<script src="../assets/js/bootstrap-dropdowns-enhancement.js"></script>
 <script>
   // Change the displayed text on the button based on which option was chosen
   $('.dropdown-menu li a').click(function () {
-    $(this).parents('.dropdown').find('.btn').html($(this).text() + ' <span class="caret"></span>');
+    $(this).parents('.dropdown').find('.btn').html($(this).text());
     $(this).parents('.dropdown').find('.btn').html($(this).data('value'));
   });
 </script>

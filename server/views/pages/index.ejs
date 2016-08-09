@@ -1,24 +1,32 @@
 <% include ../partials/header.ejs %>
 
 <div class="section">
-	<div class="col-offset-lg-2 col-lg-8 vertical-center">
-		<div>
-      <h1><%= initialText %></h1>
-      <% for (var i = 0; i < initialQuestionBoxes.length; i++) { %>
-        <h3><%= initialQuestionBoxes[i].text %></h3>
-        <div class="dropdown">
-          <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
-            <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu">
-            <% for (var j = 0; j < initialQuestionBoxes[i].options.length; j++) { %>
-              <li><a href="#"><%= initialQuestionBoxes[i].options[j].text %></a></li>
-            <% } %>
-          </ul>
-        </div>
-      <% } %>
-		</div>
-	</div>
+  <div class="row">
+    <div class="col-xs-6 col-xs-offset-3">
+      <div>
+        <h1 class="text-center"><%= initialText %></h1>
+        <% for (var i = 0; i < initialQuestionBoxes.length; i++) { %>
+          <h3 class="text-center"><%= initialQuestionBoxes[i].text %></h3>
+          <div class="dropdown text-center">
+            <button class="btn btn-default btn-lg btn-block dropdown-toggle" type="button" data-toggle="dropdown">
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu pull-center">
+              <% for (var j = 0; j < initialQuestionBoxes[i].options.length; j++) { %>
+                <li class="text-center"><a href="#"><%= initialQuestionBoxes[i].options[j].text %></a></li>
+              <% } %>
+            </ul>
+          </div>
+        <% } %>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <br /><br />
+    <div class="col-xs-6 col-xs-offset-3 text-center">
+      <button class="btn btn-lg btn-default" href="#" type="submit">Submit</button>
+    </div>
+  </div>
 </div>
 
 <% include ../partials/footer.ejs %>

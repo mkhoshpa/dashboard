@@ -9,4 +9,28 @@
     $(this).parents('.dropdown').find('.btn').html($(this).text());
     $(this).parents('.dropdown').find('.btn').html($(this).data('value'));
   });
+
+  $('#submit').on('click', function () {
+    var profileOptions = [];
+
+    $('.dropdown .btn').each(function () {
+      profileOptions.push($(this).text());
+    });
+
+    $.ajax({
+      url: '/api/user/create',
+      data: {
+        role: 'user',
+        // Generate a random phoneNumber to fix E 1100 error
+        phoneNumber: (Math.random() + 1).toString(36).substring(12),
+        profileOptions: profileOptions
+      },
+      type: 'POST',
+      dataType: 'json'
+    }).done(function (json) {
+      console.log(json);
+      console.log('User created, id: ' + json.id);
+      window.location.href = '/profile/' + json.id;
+    });
+  });
 </script>

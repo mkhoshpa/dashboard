@@ -60,8 +60,6 @@ exports.updateSlackId = function(req, res){
   res.send(req.body.text);
 };
 
-
-
 exports.createPipelineStage = function(req,res){
   console.log("Im here");
 

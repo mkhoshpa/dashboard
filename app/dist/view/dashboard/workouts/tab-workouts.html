@@ -1,0 +1,62 @@
+
+
+<md-content layout-fix>
+
+
+  <md-button  class="md-fab" aria-label="Add" ng-click="vm.addReminder($event, vm.tabIndex)" style = "right: 5px;">
+    <ng-md-icon icon="add"></ng-md-icon>
+  </md-button>
+
+  <p  ng-if="vm.convoReminderResponse">No reminders for  {{vm.selected.firstName +" " + vm.selected.lastName}}, yet.</p>
+
+  <md-card md-whiteframe = "3" ng-repeat="reminder in vm.convoReminderResponse" >
+
+    <div layout="row" >
+
+      <md-card-content  flex="60"  >
+        <div layout="row">
+
+
+          <md-card-content layout-padding layout = "column" flex = "40" >
+            <h3> {{reminder.info.reminderId.title}} </h3>
+          </md-card-content>
+
+          <md-card-content layout = "column"  flex = "60" layout-padding>
+            <div layout = "row">
+              <div ng-repeat = "day in reminder.info.reminderId.selectedDates">
+                <p> {{day}} <br></p>
+              </div>
+            </div>
+
+            <p>Time of Day: {{reminder.info.reminderId.hour + ":" + reminder.info.reminderId.minute}}</p>
+          </md-card-content>
+
+        </div>
+      </md-card-content>
+      <div layout = "column" style = "overflow: auto; height:200px" layout-padding flex = "30" layout-fix>
+          <md-list >
+            <md-subheader>
+              Responses
+            </md-subheader>
+            <md-list-item ng-repeat = "response in reminder.res" >
+                <p> {{$index + 1}}{{". " + response.questions[0].answer}}</p>
+            </md-list-item>
+
+
+          </md-list>
+      </div>
+
+
+      <div layout="column" flex= "10" layout-padding>
+        <md-card-actions flex="20" layout-align="end right">
+          <md-button ng-click="vm.removeReminder($event, reminder.info.reminderId, $index)">Remove</md-button>
+        </md-card-actions>
+        <md-card-actions flex="20" layout-align="end right">
+          <md-button ng-click="vm.editReminder($event,reminder.info.reminderId, $index)">Edit</md-button>
+        </md-card-actions>
+      </div>
+
+    </div>
+  </md-card>
+
+</md-content>

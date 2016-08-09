@@ -245,6 +245,41 @@
 
       vm.coach = 'coach';
 
+      vm.data = [];
+
+      vm.adminView  = function(){
+        console.log("hey boss");
+        vm.data = [];
+
+        vm.$http.get('api/reminder/list').then(function successCallback(response) {
+          console.log("crap");
+          console.log(response);
+
+          if(response.data.length > 0){
+            response.data.forEach(function(reminder){
+              var log = {
+                reminderId: reminder._id,
+                client: reminder.assignee.fullName,
+                coach: reminder.author.username,
+                content: reminder.title
+              }
+             vm.data.push(log);
+             console.log(vm.data);
+            })
+          }
+
+        });
+
+      }
+
+
+
+
+
+
+
+
+
 
 
 

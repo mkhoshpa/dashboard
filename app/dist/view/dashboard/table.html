@@ -17,7 +17,8 @@
 
   <div layout="column" layout-sm="column" layout-margin flex >
      <md-card >
-
+       <md-button ng-click = "vm.adminView()"> craping button
+      </md-button>
        <!-- filter section -->
        <md-toolbar class="md-table-toolbar">
 
@@ -30,6 +31,22 @@
                Survey
              </p>
            </md-switch>
+
+           <md-switch ng-if = "vm.user._id === '57a37c6b146506cc336a6d4c'" ng-model="vm.switch2" ng-change = "vm.adminView()" flex = "10" aria-label="non-admin/admin" class="md-primary">
+             <p ng-if = "!vm.switch2">
+               non-admin
+             </p>
+             <p ng-if = "vm.switch2">
+               Admin
+             </p>
+           </md-switch>
+
+
+
+
+
+
+
 
            <md-input-container class = "md-toolbar-tools"  flex = "20">
 
@@ -83,8 +100,38 @@
 
        </md-toolbar>
 
-      <md-card-content style="padding-top: 0px; background-color: white">
-        <md-table-container  >
+      <md-card-content style="padding-top: 0px; background-color: white" ng-if = "vm.switch2">
+        <md-table-container>
+          <table md-table class="md-primary md-data-table" ng-model="vm.selected" id="client-table" >
+            <thead md-head md-order="vm.query.order">
+              <tr md-row>
+                  <th md-column> ReminderId </th>
+                  <th md-column> Name of Client </th>
+                  <th md-column> Name of Coach </th>
+                  <th md-column> Content </th>
+              </tr>
+              <tbody md-body>
+                <tr  md-row md-auto-select="false" md-select="client" ng-repeat="d in vm.data">
+                  <td md-cell class = "md-cell">
+                    {{d.reminderId}}
+                  </td>
+                  <td md-cell class = "md-cell">
+                    {{d.client}}
+                  </td>
+                  <td md-cell class = "md-cell">
+                    {{d.coach}}
+                  </td>
+                  <td md-cell class = "md-cell">
+                    {{d.content}}
+                  </td>
+                </tr>
+              </tbody>
+            </thead>
+          </table>
+        </md-table-container>
+      </md-card-content>
+      <md-card-content style="padding-top: 0px; background-color: white" ng-if = "!vm.switch2">
+        <md-table-container>
                <table md-table class="md-primary md-data-table" ng-model="vm.selected" id="client-table" >
                   <thead md-head md-order="vm.query.order">
 
@@ -198,7 +245,7 @@
 
 
                         <td md-cell  class = "md-cell">
-                          <!--  Need to change/create when i can get the backend -->
+
                           <img ng-src="{{client.activityLevel}}" style="border-radius: 50%; width: 15px; margin: 10px;" >
                           <img ng-src="{{client.imgUrl}}" style="border-radius: 50%; width: 50px; margin: 10px;" >
 
@@ -208,7 +255,7 @@
                         <td md-cell  class = "md-cell" >
                           <md-select ng-model = "client.tempPipelineStage" ng-blur = "vm.addPipelineStage(client)"  placeholder = "{{client.pipelineStage}}">
                             <md-option ng-repeat = "p in vm.pipelineOptions" ng-value = "p.type">
-                              <!-- change to be for selected user. -->
+
                             {{p.type}}
                             </md-option>
                           </md-select>
@@ -223,7 +270,7 @@
                     </tbody>
 
                </table>
-        </md-table-container>
+          </md-table-container>
         <md-table-pagination ng-show = "!vm.switch"md-limit="vm.query.limit" md-limit-options="[5, 10, 15]" md-page="vm.query.page" md-total="{{vm.user.clients.length}}" md-page-select></md-table-pagination>
         <!--Change md-total to survey cleints  -->
         <md-table-pagination ng-show = "vm.switch" md-limit="vm.query.limit" md-limit-options="[5, 10, 15]" md-page="vm.query.page" md-total="{{vm.persons.length}}" md-page-select></md-table-pagination>
@@ -231,3 +278,149 @@
     </md-card>
   </div>
 </md-content>
+
+<!-- important dont delete
+
+
+
+<!-- <md-card-content style="padding-top: 0px; background-color: white">
+  <md-table-container  >
+         <table md-table class="md-primary md-data-table" ng-model="vm.selected" id="client-table" >
+            <thead md-head md-order="vm.query.order">
+
+                  <tr md-row ng-show = "!vm.switch">
+
+                      <th md-column  md-order-by="username">Clients</th>
+                      <th md-column ng-repeat = "c in vm.selectedColumns" md-order-by="{{c.order}}">{{c.name}}</th>
+
+                  </tr>
+
+                  <tr md-row ng-show = "vm.switch && vm.selectedDataSurvey != 'coach' ">
+
+                    <th md-column  md-order-by="username">Clients</th>
+                    <th md-column ng-repeat = "question in vm.selectedDataSurvey.questions" ><span>{{question.header}}<span></th>
+
+                  </tr>
+
+                  <tr md-row ng-show = "vm.switch && !vm.selectedDataSurvey">
+
+                    <th md-column  md-order-by="username">Clients</th>
+                    <th md-column> PipelineStage</th>
+                    <th md-column> Latest Reminder</th>
+                    <th md-column> Latest Response</th>
+                    <th md-column> Position </th>
+                    <th md-column> Weapon </th>
+                    <th md-column> Home </th>
+
+                  </tr>
+                  <tr md-row ng-show = "vm.switch && vm.selectedDataSurvey == 'coach'">
+                    <th md-column  md-order-by="username">Coaches</th>
+                    <th md-column> Response Time (M)</th>
+                    <th md-column> Success Rate (%) </th>
+                    <th md-column> Hours per Week (H) </th>
+                    <th md-column> NPS </th>
+                    <th md-column> Active Clients </th>
+                    <th md-column> Dormant Clients </th>
+                  </tr>
+
+            </thead>
+              <tbody md-body ng-show = "vm.switch && vm.selectedDataSurvey">
+                <tr  md-row md-auto-select="false" md-select="client" ng-repeat="client in vm.surveyViewClients| orderBy: vm.query.order | filter:vm.query.filter  | limitTo: vm.query.limit: (vm.query.page - 1) * vm.query.limit">
+
+                  <td md-cell class = "md-cell">
+                    <img ng-src="{{client.info.imgUrl}}" style="border-radius: 50%; width: 50px; margin: 10px;" >
+                    {{client.info.firstName +" " +client.info.lastName}}
+                  </td>
+
+                  <td md-cell class = "md-cell" ng-repeat = "response in client.responses.questions">
+                    {{response.answer}}
+                  </td>
+
+                </tr>
+
+              </tbody>
+              <tbody md-body ng-show = "vm.switch && !vm.selectedDataSurvey">
+                <tr  md-row md-auto-select="false" md-select="client" ng-repeat="client in vm.persons| orderBy: vm.query.order | filter:vm.query.filter  | limitTo: vm.query.limit: (vm.query.page - 1) * vm.query.limit">
+
+                  <td md-cell class = "md-cell">
+                    <img ng-src="{{client.imgUrl}}" style="border-radius: 50%; width: 50px; margin: 10px;" >
+                    {{client.username}}
+                  </td>
+                  <td md-cell class = "md-cell">
+                    {{client.pipelineStage}}
+                  </td>
+                  <td md-cell class = "md-cell">
+
+                    {{client.reminderQuestion}}
+                  </td>
+                  <td md-cell class = "md-cell">
+                    {{client.testReminder}}
+                  </td>
+
+                  <td md-cell class = "md-cell" ng-repeat = "response in client.testResponses">
+                    {{response}}
+                  </td>
+
+                </tr>
+
+              </tbody>
+              <tbody md-body ng-show = "vm.switch && vm.selectedDataSurvey == 'coach' ">
+                <tr  md-row md-auto-select="false" md-select="client" ng-repeat="client in vm.persons2| orderBy: vm.query.order | filter:vm.query.filter  | limitTo: vm.query.limit: (vm.query.page - 1) * vm.query.limit">
+
+                  <td md-cell class = "md-cell">
+                    <img ng-src="{{client.imgUrl}}" style="border-radius: 50%; width: 50px; margin: 10px;" >
+                    {{client.username}}
+                  </td>
+
+                  <td md-cell class = "md-cell">
+                    {{client.rs}}
+                  </td>
+                  <td md-cell class = "md-cell">
+                    {{client.suc}}
+                  </td>
+                  <td md-cell class = "md-cell">
+                    {{client.hpw}}
+                  </td>
+                  <td md-cell class = "md-cell">
+                    {{client.nps}}
+                  </td>
+                  <td md-cell class = "md-cell">
+                    {{client.al}}
+                  </td>
+                  <td md-cell class = "md-cell">
+                    {{client.dl}}
+                  </td>
+                </tr>
+
+              </tbody>
+              <tbody md-body ng-show = "!vm.switch">
+                <tr  md-row md-auto-select="false" md-select="client" ng-repeat="client in vm.user.clients| orderBy: vm.query.order | filter:vm.query.filter  | limitTo: vm.query.limit: (vm.query.page - 1) * vm.query.limit">
+
+
+                  <td md-cell  class = "md-cell">
+
+                    <img ng-src="{{client.activityLevel}}" style="border-radius: 50%; width: 15px; margin: 10px;" >
+                    <img ng-src="{{client.imgUrl}}" style="border-radius: 50%; width: 50px; margin: 10px;" >
+
+                    {{client.firstName + " " + client.lastName}}
+                  </td>
+
+                  <td md-cell  class = "md-cell" >
+                    <md-select ng-model = "client.tempPipelineStage" ng-blur = "vm.addPipelineStage(client)"  placeholder = "{{client.pipelineStage}}">
+                      <md-option ng-repeat = "p in vm.pipelineOptions" ng-value = "p.type">
+
+                      {{p.type}}
+                      </md-option>
+                    </md-select>
+                  </td>
+
+                  <td md-cell  class = "md-cell">
+                    <most-recent selected="client"></most-recent>
+                  </td>
+
+                </tr>
+
+              </tbody>
+
+         </table>
+    </md-table-container> -->

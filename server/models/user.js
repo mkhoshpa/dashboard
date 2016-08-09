@@ -130,10 +130,8 @@ var UserSchema = new Schema({
   slack_id : String,
   facebookId: Number,
   email: String,
-  pandoraSessionId: String,
-  // This is a hack for Pandorabots
-  pandoraBotSaid: String,
-  betaCode: String
+  betaCode: String,
+  profileOptions: [String]
 });
 
 // Use a pre-save middleware to hash the password

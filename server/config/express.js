@@ -78,6 +78,7 @@ module.exports = function() {
 
 	// Load the routing files
 	require('../routes/index.server.routes.js')(app, passport);
+  require('../routes/profile.server.routes.js')(app, passport);
 	require('../routes/users.login.routes.js')(app, passport);
 	require('../routes/dashboard.route.js')(app, passport);
 	require('../routes/api/reminderRoute.js')(app, passport);

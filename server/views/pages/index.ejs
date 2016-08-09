@@ -3,9 +3,20 @@
 <div class="section">
 	<div class="col-offset-lg-2 col-lg-8 vertical-center">
 		<div>
-			<% for(var i=0; i < initialQuestionBoxes.length; i++) { %>
-			   <p><%= initialQuestionBoxes[i].text %></p>
-			<% } %>
+      <h1><%= initialText %></h1>
+      <% for (var i = 0; i < initialQuestionBoxes.length; i++) { %>
+        <h3><%= initialQuestionBoxes[i].text %></h3>
+        <div class="dropdown">
+          <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <% for (var j = 0; j < initialQuestionBoxes[i].options.length; j++) { %>
+              <li><a href="#"><%= initialQuestionBoxes[i].options[j].text %></a></li>
+            <% } %>
+          </ul>
+        </div>
+      <% } %>
 		</div>
 	</div>
 </div>

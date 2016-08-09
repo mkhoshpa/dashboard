@@ -119,8 +119,9 @@ exports.createPhoneNumber = function (req, res) {
         // Duplicate username
         console.log("Am i in here");
         res.status(500).send({ success: false, message: 'User already exist!' });
+      } else {
+        res.status(500).send(err);
       }
-      res.status(500).send(err);
     }
     else{
       console.log("good");

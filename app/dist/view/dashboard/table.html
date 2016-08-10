@@ -17,8 +17,7 @@
 
   <div layout="column" layout-sm="column" layout-margin flex >
      <md-card >
-       <md-button ng-click = "vm.adminView()"> craping button
-      </md-button>
+
        <!-- filter section -->
        <md-toolbar class="md-table-toolbar">
 
@@ -109,6 +108,9 @@
                   <th md-column> Name of Client </th>
                   <th md-column> Name of Coach </th>
                   <th md-column> Content </th>
+                  <th md-column> Reminder Time </th>
+                  <th md-column> Last Response </th>
+                  <th md-column> Response Time </th>
               </tr>
               <tbody md-body>
                 <tr  md-row md-auto-select="false" md-select="client" ng-repeat="d in vm.data">
@@ -124,11 +126,54 @@
                   <td md-cell class = "md-cell">
                     {{d.content}}
                   </td>
+                  <td md-cell class = "md-cell">
+                    {{d.reminderTimeHour + ':' + d.reminderTimeMinute }}
+                  </td>
+                  <td md-cell class = "md-cell">
+                    {{d.res}}
+                  </td>
+                  <td md-cell class = "md-cell">
+                    {{d.resTimeStamp}}
+                  </td>
                 </tr>
               </tbody>
+
+              <tbody md-body>
+                <tr md-row>
+                  <td  md-cell class = "md-cell">
+                    MessageId
+                  </td>
+                  <td  md-cell class = "md-cell">
+                    SentTo
+                  </td>
+                  <td  md-cell class = "md-cell">
+                    SentBy
+                  </td>
+                  <td  md-cell class = "md-cell">
+                    Content
+                  </td>
+                </tr>
+                <tr md-row md-auto-select="false" md-select="client" ng-repeat="d in vm.data2">
+                  <td md-cell class = "md-cell">
+                    {{d.messageId}}
+                  </td>
+                  <td md-cell class = "md-cell">
+                    {{d.sentTo}}
+                  </td>
+                  <td md-cell class = "md-cell">
+                    {{d.sentBy}}
+                  </td>
+                  <td md-cell class = "md-cell">
+                    {{d.body}}
+                  </td>
+
+                </tr>
+              </tbody md-body>
             </thead>
+
           </table>
         </md-table-container>
+        <md-table-pagination ng-show = "vm.switch2" md-limit="vm.query.limit" md-limit-options="[5, 10, 15]" md-page="vm.query.page" md-total="{{vm.data.length}}" md-page-select></md-table-pagination>
       </md-card-content>
       <md-card-content style="padding-top: 0px; background-color: white" ng-if = "!vm.switch2">
         <md-table-container>

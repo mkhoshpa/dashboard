@@ -99,3 +99,33 @@ exports.receiveSMS = function (req, res) {
     });
     res.end(resp.toString());
 };
+
+exports.list = function(req, res){
+  console.log("list");
+
+  Message.find({})
+      .populate('sentTo')
+      .populate('sentBy')
+      .exec(function(err, obj){
+        if(err){
+          console.log(err);
+        }
+        else {
+          res.json(obj);
+        }
+
+
+
+      })
+
+  // Message.find({}, function(err, obj){
+  //   if(err){
+  //     console.log(err);
+  //   }
+  //   else{
+  //     res.json(obj)
+  //   }
+  // })
+
+
+}

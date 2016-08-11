@@ -248,115 +248,176 @@
       vm.data = [];
       vm.data2 = [];
 
-      vm.adminView  = function(){
+      vm.adminView  = function(index, index2){
+        console.log(index);
+        console.log(index2);
         console.log("hey boss");
         vm.data = [];
         vm.data2 = [];
-        vm.$http.get('api/reminder/list').then(function successCallback(response) {
-          console.log("crap");
-          console.log(response);
+        if(index === true && !index2){
+          vm.$http.get('api/reminder/list').then(function successCallback(response) {
+            console.log("crap");
+            console.log(response);
 
-          if(response.data.length > 0){
-            response.data.forEach(function(reminder){
-              vm.$http.get('api/responses/selectedReminder/'+ reminder._id).then(function successCallback(response2){
-                console.log(response2);
+            if(response.data.length > 0){
+              response.data.forEach(function(reminder){
+                vm.$http.get('api/responses/selectedReminder/'+ reminder._id).then(function successCallback(response2){
+                  console.log(response2);
 
-                if(response2.data.length > 0){
-                  var log = {
-                    reminderId: reminder._id,
-                    client: reminder.assignee.fullName,
-                    coach: reminder.author.username,
-                    content: reminder.title,
-                    reminderTimeHour: response2.data[response2.data.length -1].assignment.hour,
-                    reminderTimeMinute: response2.data[response2.data.length -1].assignment.minute,
-                    res : response2.data[response2.data.length -1].questions[0].answer,
-                    resTimeStamp : response2.data[response2.data.length -1].timeStamp
+                  if(response2.data.length > 0){
+                    var date = reminder.createdAt.slice(0,10);
+                    var log = {
+                      createdAt: date,
+                      reminderId: reminder._id,
+                      client: reminder.assignee.fullName,
+                      coach: reminder.author.username,
+                      content: reminder.title,
+                      reminderTimeHour: response2.data[response2.data.length -1].assignment.hour,
+                      reminderTimeMinute: response2.data[response2.data.length -1].assignment.minute,
+                      res : response2.data[response2.data.length -1].questions[0].answer,
+                      resTimeStamp : response2.data[response2.data.length -1].timeStamp
+                    }
+
+                   vm.data.push(log);
+                   console.log(vm.data);
                   }
+                  else{
+                    var date = reminder.createdAt.slice(0,10)
+                    var log = {
+                      createdAt: date,
+                      reminderId: reminder._id,
+                      client: reminder.assignee.fullName,
+                      coach: reminder.author.username,
+                      content: reminder.title,
+                      reminderTimeHour: reminder.hour,
+                      reminderTimeMinute: reminder.minute,
+                      res:null,
+                      resTimeStamp: null
+                    }
+                    vm.data.push(log);
+                    console.log(vm.data);
 
-                 vm.data.push(log);
-                 console.log(vm.data);
+                  }
+                })
+
+
+              })
+            }
+
+          });
+        }
+        else if(index === true && index2 === true){
+          console.log("Message");
+          vm.$http.get('api/message/list').then(function successCallback(response3){
+            console.log(response3);
+            console.log("crappy");
+            if(response3.data.length > 1){
+              response3.data.forEach(function (message) {
+                console.log(message);
+                if((message.sentTo === null && message.sentBy === null)|| !message.sentTo || !message.sentBy){
+                  console.log("here1");
+
+                  var date =  message.createdAt.slice(0,10);
+
+                  var log = {
+                    createdAt: date,
+                    messageId: message._id,
+                    body: message.body,
+                    sentTo: 'Unknown',
+                    sentBy: 'Unknown'
+                  }
+                  vm.data2.push(log);
+                  console.log(vm.data2);
+                }
+                else if(message.sentBy === null){
+
+                  var date =  message.createdAt.slice(0,10);
+
+                  var log = {
+                    createdAt: date,
+                    messageId: message._id,
+                    body: message.body,
+                    sentTo: message.sentBy.username,
+                    sentBy: 'Unknown'
+                  }
+                  vm.data2.push(log);
+                  console.log(vm.data2);
+                }
+                else if(message.sentTo === null){
+
+                  var date =  message.createdAt.slice(0,10);
+
+                  var log = {
+                    createdAt: date,
+                    messageId: message._id,
+                    body: message.body,
+                    sentTo: 'Unknown',
+                    sentBy: message.sentTo.username
+                  }
+                  vm.data2.push(log);
+                  console.log(vm.data2);
                 }
                 else{
-                  var log = {
-                    reminderId: reminder._id,
-                    client: reminder.assignee.fullName,
-                    coach: reminder.author.username,
-                    content: reminder.title,
-                    reminderTimeHour: reminder.hour,
-                    reminderTimeMinute: reminder.minute,
-                    res:null,
-                    resTimeStamp: null
-                  }
-                  vm.data.push(log);
-                  console.log(vm.data);
+                  console.log(message);
 
+                  var date =  message.createdAt.slice(0,10);
+
+                  var log = {
+                    createdAt: date,
+                    messageId: message._id,
+                    body: message.body,
+                    sentTo: message.sentTo.username,
+                    sentBy: message.sentBy.username
+                  }
+                  vm.data2.push(log);
+                  console.log(vm.data2);
                 }
+
+
               })
 
 
-            })
-          }
-
-        });
-        console.log("done");
-        vm.$http.get('api/message/list').then(function successCallback(response3){
-          console.log(response3);
-          console.log("crappy");
-          if(response3.data.length > 1){
-            response3.data.forEach(function (message) {
-              console.log(message);
-              if((message.sentTo === null && message.sentBy === null)|| !message.sentTo || !message.sentBy){
-                console.log("here1");
-                var log = {
-                  messageId: message._id,
-                  body: message.body,
-                  sentTo: 'Unknown',
-                  sentBy: 'Unknown'
-                }
-                vm.data2.push(log);
-                console.log(vm.data2);
-              }
-              else if(message.sentBy === null){
-                var log = {
-                  messageId: message._id,
-                  body: message.body,
-                  sentTo: message.sentBy.username,
-                  sentBy: 'Unknown'
-                }
-                vm.data2.push(log);
-                console.log(vm.data2);
-              }
-              else if(message.sentTo === null){
-                var log = {
-                  messageId: message._id,
-                  body: message.body,
-                  sentTo: 'Unknown',
-                  sentBy: message.sentTo.username
-                }
-                vm.data2.push(log);
-                console.log(vm.data2);
-              }
-              else{
-                console.log(message);
-                var log = {
-                  messageId: message._id,
-                  body: message.body,
-                  sentTo: message.sentTo.username,
-                  sentBy: message.sentBy.username
-                }
-                vm.data2.push(log);
-                console.log(vm.data2);
-              }
+            }
 
 
-            })
+          });
 
+        }
 
-          }
-
-
-        });
       }
+
+      // console.log("done");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -9,6 +9,7 @@ var messageSchema = new Schema({
   body: {type: String, required: true},
   sentBy: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
   sentTo: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+  createdAt: {type: Date, default: Date.now},
   //TODO: fix so this isn't necessarry
   sentToPhoneNumber: {type: String}
 });

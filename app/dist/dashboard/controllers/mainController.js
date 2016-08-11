@@ -654,10 +654,17 @@ var app;
                     var user = response.data;
                     user.coaches = _this.user._id;
                     // TODO: change this
-                    user.phoneNumber = '+15064261732';
+                    var tempPhoneNumber = (Math.random().toString(36)+'00000000000000000').slice(2, 18);
+                    console.log(tempPhoneNumber);
+                    user.phoneNumber = tempPhoneNumber;
+                    user.userName = tempPhoneNumber;
+                    user.email = tempPhoneNumber;
+                    console.log(user.phoneNumber);
+                    console.log(user);
                     _this.$http.post('/api/user/create', user).then(function (__response) {
-                        _this.$http.post('/api/coach/newuser/' + this.user.id + '?' + __response.data.id, user).then(function (client) {
+                        _this.$http.post('/api/coach/newuser/' + this.user.id, user).then(function (client) {
                           console.log("Here fb");
+                          console.log(__response.data);
                           self.user.clients.push(__response.data);
                         });
                     });
@@ -743,7 +750,7 @@ var app;
                         console.log(response.data);
 
                         // Convert the time for the reminder from the client's timezone into UTC
-                        var clientTime = moment.tz({hour: reminder.data.hour, minute: reminder.data.minute}, self.selected.timezone);
+                        var clientTime = moment.tz({hour: response.data.hour, minute: response.data.minute}, self.selected.timezone);
 
                         // Get the server's timezone
                         var req = new XMLHttpRequest();

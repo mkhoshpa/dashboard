@@ -52,7 +52,10 @@ var reminderSchema = new Schema({
   // Who the reminder is coming from
   author: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
 
-  needsResponse: {type: Boolean, default: false}
+  needsResponse: {type: Boolean, default: false},
+  createdAt:{
+    type: Date, default: Date.now
+  }
 });
 
 reminderSchema.virtual('mostRecentResponse').get(function() {

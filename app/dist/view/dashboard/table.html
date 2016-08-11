@@ -31,7 +31,9 @@
              </p>
            </md-switch>
 
-           <md-switch ng-if = "vm.user._id === '57a37c6b146506cc336a6d4c'" ng-model="vm.switch2" ng-change = "vm.adminView()" flex = "10" aria-label="non-admin/admin" class="md-primary">
+<!-- ng-change = "vm.adminView1()" -->
+
+           <md-switch ng-if = "vm.user._id === '57a37c6b146506cc336a6d4c'" ng-model="vm.switch2" ng-change = "vm.adminView(vm.switch2)" flex = "10" aria-label="non-admin/admin" class="md-primary">
              <p ng-if = "!vm.switch2">
                non-admin
              </p>
@@ -40,6 +42,14 @@
              </p>
            </md-switch>
 
+           <md-switch ng-if = "vm.switch2" ng-model="vm.switch3" ng-change = "vm.adminView(vm.switch2, vm.switch3)" flex = "10" aria-label="messages" class="md-primary">
+             <p ng-if = "!vm.switch3">
+               Reminders
+             </p>
+             <p ng-if = "vm.switch3">
+               Messages
+             </p>
+           </md-switch>
 
 
 
@@ -99,21 +109,25 @@
 
        </md-toolbar>
 
-      <md-card-content style="padding-top: 0px; background-color: white" ng-if = "vm.switch2">
+      <md-card-content style="padding-top: 0px; background-color: white" ng-if = "vm.switch2 && !vm.switch3">
         <md-table-container>
           <table md-table class="md-primary md-data-table" ng-model="vm.selected" id="client-table" >
             <thead md-head md-order="vm.query.order">
               <tr md-row>
-                  <th md-column> ReminderId </th>
-                  <th md-column> Name of Client </th>
-                  <th md-column> Name of Coach </th>
-                  <th md-column> Content </th>
-                  <th md-column> Reminder Time </th>
-                  <th md-column> Last Response </th>
-                  <th md-column> Response Time </th>
+                  <th md-column md-order-by= "createdAt"> Date </th>
+                  <th md-column md-order-by = "reminderId"> ReminderId </th>
+                  <th md-column md-order-by = "client"> Name of Client </th>
+                  <th md-column md-order-by = "coach"> Name of Coach </th>
+                  <th md-column md-order-by = "content"> Content </th>
+                  <th md-column md-order-by = "reminderTimeHour"> Reminder Time </th>
+                  <th md-column md-order-by = "res"> Last Response </th>
+                  <th md-column md-order-by = "resTimeStamp"> Response Time </th>
               </tr>
               <tbody md-body>
-                <tr  md-row md-auto-select="false" md-select="client" ng-repeat="d in vm.data">
+                <tr  md-row md-auto-select="false" md-select="client" ng-repeat="d in vm.data | orderBy: vm.query.order | filter:vm.query.filter  | limitTo: vm.query.limit: (vm.query.page - 1) * vm.query.limit">
+                  <td md-cell class = "md-cell">
+                    {{d.createdAt}}
+                  </td>
                   <td md-cell class = "md-cell">
                     {{d.reminderId}}
                   </td>
@@ -138,22 +152,32 @@
                 </tr>
               </tbody>
 
+
+            </thead>
+
+          </table>
+        </md-table-container>
+        <md-table-pagination ng-show = "vm.switch2 && !vm.switch3" md-limit="vm.query.limit" md-limit-options="[5, 10, 15]" md-page="vm.query.page" md-total="{{vm.data.length}}" md-page-select></md-table-pagination>
+      </md-card-content>
+
+      <md-card-content style="padding-top: 0px; background-color: white" ng-if = "vm.switch2 && vm.switch3">
+        <md-table-container>
+          <table md-table class="md-primary md-data-table" ng-model="vm.selected" id="client-table" >
+            <thead md-head md-order="vm.query.order">
+              <tr md-row>
+                  <th md-column md-order-by= "createdAt"> Date </th>
+                  <th md-column md-order-by= 'messageId'> MessageId </th>
+                  <th md-column md-order-by=  'sentTo'> SentTo </th>
+                  <th md-column md-order-by= 'sentBy'> SentBy </th>
+                  <th md-column md-order-by = 'body'> Content </th>
+
+              </tr>
               <tbody md-body>
-                <tr md-row>
-                  <td  md-cell class = "md-cell">
-                    MessageId
+
+                <tr md-row md-auto-select="false" md-select="client" ng-repeat="d in vm.data2 | orderBy: vm.query.order | filter:vm.query.filter  | limitTo: vm.query.limit: (vm.query.page - 1) * vm.query.limit">
+                  <td md-cell class = "md-cell">
+                    {{d.createdAt}}
                   </td>
-                  <td  md-cell class = "md-cell">
-                    SentTo
-                  </td>
-                  <td  md-cell class = "md-cell">
-                    SentBy
-                  </td>
-                  <td  md-cell class = "md-cell">
-                    Content
-                  </td>
-                </tr>
-                <tr md-row md-auto-select="false" md-select="client" ng-repeat="d in vm.data2">
                   <td md-cell class = "md-cell">
                     {{d.messageId}}
                   </td>
@@ -169,12 +193,45 @@
 
                 </tr>
               </tbody md-body>
+
+
+
             </thead>
 
           </table>
         </md-table-container>
-        <md-table-pagination ng-show = "vm.switch2" md-limit="vm.query.limit" md-limit-options="[5, 10, 15]" md-page="vm.query.page" md-total="{{vm.data.length}}" md-page-select></md-table-pagination>
+        <md-table-pagination ng-show = "vm.switch2 && vm.switch3" md-limit="vm.query.limit" md-limit-options="[5, 10, 15]" md-page="vm.query.page" md-total="{{vm.data2.length}}" md-page-select></md-table-pagination>
       </md-card-content>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       <md-card-content style="padding-top: 0px; background-color: white" ng-if = "!vm.switch2">
         <md-table-container>
                <table md-table class="md-primary md-data-table" ng-model="vm.selected" id="client-table" >

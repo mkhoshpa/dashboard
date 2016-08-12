@@ -22,7 +22,7 @@
        <md-toolbar class="md-table-toolbar">
 
          <div class = "md-toolbar-tools">
-           <md-switch ng-model="vm.switch" flex = "10" aria-label="Rostr/Survey View" class="md-primary">
+           <md-switch ng-model="vm.switch" flex = "10" aria-label="Rostr/Survey View" class="md-primary" ng-change = "vm.getSurveys()">
              <p ng-if = "!vm.switch">
                Roster
              </p>

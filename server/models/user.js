@@ -42,11 +42,6 @@ var UserSchema = new Schema({
   reminders: [
     {type: mongoose.Schema.Types.Object, ref: 'Reminder'}
   ],
-
-  surveyTemplates:[
-    {type: mongoose.Schema.Types.Object, ref: 'SurveyTemplate'}
-  ],
-
   imgUrl: {
     type: String,
   },

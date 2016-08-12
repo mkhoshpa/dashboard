@@ -2,11 +2,20 @@
   <div md-whiteframe = "3">
     <h1>Select a survey to send out:</h1>
 
+    <md-button ng-click = "vm.st()">
+      sadsa
+    </md-button>
+
+
+
+
+
+
     <md-input-container>
 
       <md-select ng-model = "vm.selectedSurvey" >
         <label> Surveys</label>
-        <md-option ng-repeat = "st in vm.user.surveyTemplates" ng-value = "st">
+        <md-option ng-repeat = "st in vm.surveyTemplates" ng-value = "st">
           {{st.title}}
         </md-option>
       </md-select>

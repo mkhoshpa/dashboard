@@ -19,7 +19,6 @@ var surveyTemplateSchema =  new Schema({
      },
   ],
   author: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
-  selectedUsers: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
   daysOfTheWeek: {
     monday: {type: Boolean},
     tuesday: {type: Boolean},

@@ -22,6 +22,7 @@ var app;
                 this.selected = null;
                 this.newNote = new dashboard.Note('', null);
                 this.newReminder = new dashboard.Reminder('', null);
+                this.surveyTemplates = [];
 
                 //Survey stuff
                 this.questions1 = [
@@ -210,18 +211,43 @@ var app;
 
 
 
+
+            MainController.prototype.st = function () {
+              console.log(this.user.surveyTemplates);
+            }
+
+            MainController.prototype.getSurveys = function(){
+              var _this = this;
+              var self = this;
+              console.log("surveys");
+              console.log(this.surveyTemplates);
+              this.surveyTemplates = [];
+              _this.$http.get('/api/surveyTemplate/selectedUser/'+ this.user._id).then(function successCallback(response) {
+                console.log(response);
+                this.surveyTemplates = response.data;
+                console.log(this.surveyTemplates);
+              })
+
+            }
+
+
               MainController.prototype.saveSurvey = function($event){
                 var _this = this;
                 var self = this;
                 console.log("hey");
                 console.log(this.newSurvey);
+                var c = 0;
 
                 _this.$http.post('/api/surveyTemplate/create', this.newSurvey).then(function successCallback(response) {
                   console.log(response);
-                  _this.$http.post('/api/user/surveyTemplate/add/'+ this.user._id, response.data).then(function(response2){
-                    console.log(response2.data);
-                    this.user.surveyTemplates.push(response.data);
-                  })
+                  this.surveyTemplates.push(response.data);
+                  // _this.$http.post('/api/user/surveyTemplate/add/'+ this.user._id, response.data).then(function(response2){
+                  //   console.log(response2.data);
+                  //   console.log(c++);
+                  //   this.user.surveyTemplates.push(response.data);
+                  //   console.log(this.user.surveyTemplates);
+                  // })
+
                 });
 
                 this.newSurvey = {
@@ -1023,10 +1049,10 @@ var app;
               });*/
             };
 
-            // socket.io code ahead
-            socket.on('message', function (data) {
-              MainController.prototype.receiveMessage(data);
-            });
+            // // socket.io code ahead
+            // socket.on('message', function (data) {
+            //   MainController.prototype.receiveMessage(data);
+            // });
 
             MainController.prototype.receiveMessage = function (message) {
               console.log('userSelected is: ' + JSON.stringify(userSelected));

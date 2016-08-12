@@ -206,6 +206,29 @@
       vm.pipelineOptions = [{type: "lead"}, {type: "trail"}, {type: "active-client"}, {type: "previous-client"},{type: "archived"},{type: "NA"} ];
 
       //Updating the pipeline
+
+
+
+      vm.getSurveys = function(){
+        console.log('surveys');
+        console.log(vm.surveyTemplates);
+        
+
+
+      }
+
+
+
+
+
+
+
+
+
+
+
+
+
       vm.addPipelineStage = function (client) {
         console.log("add pipeline to backend");
         console.log(client);

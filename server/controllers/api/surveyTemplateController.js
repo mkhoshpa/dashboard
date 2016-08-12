@@ -36,7 +36,23 @@ exports.update = function(req, res){
 }
 
 
+exports.bySelectedUser = function(req, res){
+  console.log('survey');
+  console.log(req.params.id);
 
+  SurveyTemplate.find({author: req.params.id}, function(err, obj){
+
+    if(err){
+      console.log(err);
+    }
+    else{
+      console.log(obj);
+      res.json(obj);
+    }
+
+  })
+
+}
 
 
 

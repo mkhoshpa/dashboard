@@ -48,7 +48,7 @@
 				}
 			],
 			"request": {
-				"url": "http://localhost:7000/signup",
+				"url": "http://localhost:12557/signup",
 				"method": "POST",
 				"header": [
 					{
@@ -143,7 +143,7 @@
 				}
 			],
 			"request": {
-				"url": "http://localhost:7000/api/user/create",
+				"url": "http://localhost:12557/api/user/create",
 				"method": "POST",
 				"header": [
 					{

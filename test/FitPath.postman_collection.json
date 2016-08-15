@@ -194,7 +194,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"firstName\":\"Bob\",\"lastName\":\"The Builder\",\"bio\":\"I'm Bob\",\"username\":\"bobthebuilder\",\"email\":\"lotios611@gmail.com\",\"coaches\":[\"57b1bd94570740d4239bde90\"],\"role\":\"user\",\"imgUrl\":\"/assets/img/tiffany.png\",\"phoneNumber\":\"+15064261732\"}"
+					"raw": "{\"firstName\":\"Bob\",\"lastName\":\"The Builder\",\"bio\":\"I'm Bob\",\"username\":\"bobthebuilder\",\"email\":\"lotios611@gmail.com\",\"coaches\":[\"57b1bd94570740d4239bde90\"],\"role\":\"user\",\"imgUrl\":\"/assets/img/tiffany.png\",\"phoneNumber\":\"+{{$guid}}\"}"
 				},
 				"description": ""
 			},

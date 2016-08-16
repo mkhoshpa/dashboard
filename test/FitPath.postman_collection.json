@@ -2,7 +2,7 @@
 	"variables": [],
 	"info": {
 		"name": "FitPath",
-		"_postman_id": "431a96ea-3635-f562-79c0-fb4451a5b02e",
+		"_postman_id": "2a36cf3e-93ec-be41-7b08-61fdb3f7dfdb",
 		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
@@ -350,7 +350,7 @@
 				}
 			],
 			"request": {
-				"url": "http://localhost:7000/api/user/updateTimezone/{{user_id}}",
+				"url": "http://localhost:12557/api/user/updateTimezone/{{user_id}}",
 				"method": "POST",
 				"header": [
 					{
@@ -414,12 +414,12 @@
 					"listen": "test",
 					"script": {
 						"type": "text/javascript",
-						"exec": "var jsonData = JSON.parse(responseBody);\ntests[\"Body contains _id\"] = jsonData._id !== undefined;\ntests[\"Status code is 200\"] = responseCode.code === 200;"
+						"exec": "var jsonData = JSON.parse(responseBody);\ntests[\"Body contains _id\"] = jsonData._id !== undefined;\ntests[\"Status code is 200\"] = responseCode.code === 200;\npostman.setGlobalVariable(\"reminder_id\", jsonData._id);"
 					}
 				}
 			],
 			"request": {
-				"url": "http://localhost:7000/api/reminder/create",
+				"url": "http://localhost:12557/api/reminder/create",
 				"method": "POST",
 				"header": [
 					{
@@ -483,12 +483,12 @@
 					"listen": "test",
 					"script": {
 						"type": "text/javascript",
-						"exec": "var jsonData = JSON.parse(responseBody);\ntests[\"Body contains _id\"] = jsonData._id !== undefined;\ntests[\"Status code is 200\"] = responseCode.code === 200;"
+						"exec": "var jsonData = JSON.parse(responseBody);\ntests[\"Body contains _id\"] = jsonData._id !== undefined;\ntests[\"Status code is 200\"] = responseCode.code === 200;\npostman.setGlobalVariable(\"note_id\", jsonData._id);"
 					}
 				}
 			],
 			"request": {
-				"url": "http://localhost:7000/api/note/create",
+				"url": "http://localhost:12557/api/note/create",
 				"method": "POST",
 				"header": [
 					{
@@ -540,6 +540,444 @@
 				"body": {
 					"mode": "raw",
 					"raw": "{\"body\":\"asdfghj\",\"author\":\"57aa1b90a63c88fc06f81f61\",\"assignee\":\"57aa1ba5a63c88fc06f81f62\"}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Remove Note",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": "tests[\"Status code is 200\"] = responseCode.code === 200;"
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:12557/api/note/remove/{{note_id}}",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*",
+						"description": ""
+					},
+					{
+						"key": "Origin",
+						"value": "http://localhost:12557",
+						"description": ""
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json;charset=UTF-8",
+						"description": ""
+					},
+					{
+						"key": "DNT",
+						"value": "1",
+						"description": ""
+					},
+					{
+						"key": "Referer",
+						"value": "http://localhost:12557/dashboard",
+						"description": ""
+					},
+					{
+						"key": "Accept-Encoding",
+						"value": "gzip, deflate",
+						"description": ""
+					},
+					{
+						"key": "Accept-Language",
+						"value": "en-US,en;q=0.8,en-CA;q=0.6",
+						"description": ""
+					},
+					{
+						"key": "Cookie",
+						"value": "connect.sid=s%3A0-4RPVQ4EE-OXoaodwKoo4JwLORle-DJ.mHm%2FfWM%2FMRPIbRzetUZXVjP%2BRFvn%2FjKPfjM3JfVwfYA",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"_id\":\"57b1f8505199467c294ce519\",\"assignee\":\"57aa1ba5a63c88fc06f81f62\",\"author\":\"57aa1b90a63c88fc06f81f61\",\"body\":\"asdfghj\",\"__v\":0}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Update Bio",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": "tests[\"Status code is 200\"] = responseCode.code === 200;"
+					}
+				}
+			],
+			"request": {
+				"url": "localhost:12557/api/bio/create/{{user_id}}",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"body\": \"testing\",\n    \"author\": \"575ee573e7056a921e1bea46\",\n    \"assignee\": \"575ee59fe7056a921e1bea47\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Update Note",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": "var jsonData = JSON.parse(responseBody);\ntests[\"Status code is 200\"] = responseCode.code === 200;\ntests[\"Body has _id\"] = jsonData._id !== undefined;"
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:12557/api/note/update/{{note_id}}",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*",
+						"description": ""
+					},
+					{
+						"key": "Origin",
+						"value": "http://localhost:12557",
+						"description": ""
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json;charset=UTF-8",
+						"description": ""
+					},
+					{
+						"key": "DNT",
+						"value": "1",
+						"description": ""
+					},
+					{
+						"key": "Referer",
+						"value": "http://localhost:12557/dashboard",
+						"description": ""
+					},
+					{
+						"key": "Accept-Encoding",
+						"value": "gzip, deflate",
+						"description": ""
+					},
+					{
+						"key": "Accept-Language",
+						"value": "en-US,en;q=0.8,en-CA;q=0.6",
+						"description": ""
+					},
+					{
+						"key": "Cookie",
+						"value": "Webstorm-871c5a67=ef3258b3-f107-4ed6-8208-ae2a2a082eda; olfsk=olfsk3964287081489577; hblid=Seb6NANsqnAcbUBe3m39N9z1CSLEQN06; connect.sid=s%3AlTkuuDk1R1OrV5-npA3s3iWKN2kX9uEH.frt8rz8u6CCnED35bcoJ9KtayNdkTf5v6s3aaeFVSFk; Webstorm-871c5a67=ef3258b3-f107-4ed6-8208-ae2a2a082eda; olfsk=olfsk3964287081489577; hblid=Seb6NANsqnAcbUBe3m39N9z1CSLEQN06; connect.sid=s%3AMvpvA3qm5U-gohcyROkWgh8_xdgAVQsh.bOChT3ICqHAxAlNYhvxP9Pws9oPahJh73MbAVmo5sf8",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"_id\":\"57b1f8625199467c294ce51a\",\"body\":\"asdfghjgtgyhjkl;\",\"author\":\"57aa1b90a63c88fc06f81f61\",\"assignee\":\"57aa1ba5a63c88fc06f81f62\"}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Facebook Connect",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": "tests[\"Status code is 200\"] = responseCode.code === 200;"
+					}
+				}
+			],
+			"request": {
+				"url": "localhost:12557/api/facebook/connect",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Receive SMS",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": "tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");\ntests[\"Content-Type is text/xml\"] = postman.getResponseHeader(\"Content-Type\") === \"text/xml\";\ntests[\"Status code is 200\"] = responseCode.code === 200;"
+					}
+				}
+			],
+			"request": {
+				"url": "localhost:12557/api/message/receive",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "List Reminders",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": "tests[\"Status code is 200\"] = responseCode.code === 200;\ntests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");\ntests[\"Content-Type is application/json; charset=utf-8\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json; charset=utf-8\";"
+					}
+				}
+			],
+			"request": {
+				"url": "localhost:12557/api/reminder/list",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "List Reminders Now",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": "tests[\"Status code is 200\"] = responseCode.code === 200;\ntests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");\ntests[\"Content-Type is application/json; charset=utf-8\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json; charset=utf-8\";"
+					}
+				}
+			],
+			"request": {
+				"url": "localhost:12557/api/reminder/now",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Update Reminder",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": "tests[\"Status code is 200\"] = responseCode.code === 200;"
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:12557/api/assignment/reminder/update/{{reminder_id}}",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*",
+						"description": ""
+					},
+					{
+						"key": "Origin",
+						"value": "http://localhost:12557",
+						"description": ""
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json;charset=UTF-8",
+						"description": ""
+					},
+					{
+						"key": "DNT",
+						"value": "1",
+						"description": ""
+					},
+					{
+						"key": "Referer",
+						"value": "http://localhost:12557/dashboard",
+						"description": ""
+					},
+					{
+						"key": "Accept-Encoding",
+						"value": "gzip, deflate",
+						"description": ""
+					},
+					{
+						"key": "Accept-Language",
+						"value": "en-US,en;q=0.8,en-CA;q=0.6",
+						"description": ""
+					},
+					{
+						"key": "Cookie",
+						"value": "Webstorm-871c5a67=ef3258b3-f107-4ed6-8208-ae2a2a082eda; olfsk=olfsk3964287081489577; hblid=Seb6NANsqnAcbUBe3m39N9z1CSLEQN06; connect.sid=s%3AYu51YLq2zuiy6bGE-1EGyUklC7xKL21d.sKccmxCjzd8EFwZFnjJCRgKwH%2BV2MyhMZLgYBmUW0oI",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"repeat\":false,\"days\":[0,1,3,4,5,6],\"hour\":4,\"minute\":13,\"userId\":\"57aa1ba5a63c88fc06f81f62\",\"reminderId\":\"57ac7a7b01d600880e15e7f3\",\"type\":\"reminder\"}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Remove Reminder",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": "tests[\"Status code is 200\"] = responseCode.code === 200;"
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:12557/api/assignment/reminderId/remove/{{reminder_id}}",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*",
+						"description": ""
+					},
+					{
+						"key": "Origin",
+						"value": "http://localhost:12557",
+						"description": ""
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36",
+						"description": ""
+					},
+					{
+						"key": "DNT",
+						"value": "1",
+						"description": ""
+					},
+					{
+						"key": "Referer",
+						"value": "http://localhost:12557/dashboard",
+						"description": ""
+					},
+					{
+						"key": "Accept-Encoding",
+						"value": "gzip, deflate",
+						"description": ""
+					},
+					{
+						"key": "Accept-Language",
+						"value": "en-US,en;q=0.8,en-CA;q=0.6",
+						"description": ""
+					},
+					{
+						"key": "Cookie",
+						"value": "Webstorm-871c5a67=ef3258b3-f107-4ed6-8208-ae2a2a082eda; olfsk=olfsk3964287081489577; hblid=Seb6NANsqnAcbUBe3m39N9z1CSLEQN06; connect.sid=s%3AU_zecFWDgcmxN7VO52W7ETyNUrgS_t1X.m0UwzgJKTc%2BCsYmAflOqqCud7YdP64iAoMhXw3HTBKo",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "User Selected Assignment",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": "tests[\"Status code is 200\"] = responseCode.code === 200;\ntests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");\ntests[\"Content-Type is application/json; charset=utf-8\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json; charset=utf-8\";"
+					}
+				}
+			],
+			"request": {
+				"url": "localhost:12557/api/user/selectedAssignment/{{user_id}}",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Forgot",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": "tests[\"Status code is 200\"] = responseCode.code === 200;\ntests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");\ntests[\"Content-Type is text/html; charset=utf-8\"] = postman.getResponseHeader(\"Content-Type\") === \"text/html; charset=utf-8\";"
+					}
+				}
+			],
+			"request": {
+				"url": "localhost:12557/forgot",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
 				},
 				"description": ""
 			},

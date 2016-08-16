@@ -546,6 +546,75 @@
 			"response": []
 		},
 		{
+			"name": "Update Note",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": "var jsonData = JSON.parse(responseBody);\ntests[\"Status code is 200\"] = responseCode.code === 200;\ntests[\"Body has _id\"] = jsonData._id !== undefined;"
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:12557/api/note/update/{{note_id}}",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*",
+						"description": ""
+					},
+					{
+						"key": "Origin",
+						"value": "http://localhost:12557",
+						"description": ""
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json;charset=UTF-8",
+						"description": ""
+					},
+					{
+						"key": "DNT",
+						"value": "1",
+						"description": ""
+					},
+					{
+						"key": "Referer",
+						"value": "http://localhost:12557/dashboard",
+						"description": ""
+					},
+					{
+						"key": "Accept-Encoding",
+						"value": "gzip, deflate",
+						"description": ""
+					},
+					{
+						"key": "Accept-Language",
+						"value": "en-US,en;q=0.8,en-CA;q=0.6",
+						"description": ""
+					},
+					{
+						"key": "Cookie",
+						"value": "Webstorm-871c5a67=ef3258b3-f107-4ed6-8208-ae2a2a082eda; olfsk=olfsk3964287081489577; hblid=Seb6NANsqnAcbUBe3m39N9z1CSLEQN06; connect.sid=s%3AlTkuuDk1R1OrV5-npA3s3iWKN2kX9uEH.frt8rz8u6CCnED35bcoJ9KtayNdkTf5v6s3aaeFVSFk; Webstorm-871c5a67=ef3258b3-f107-4ed6-8208-ae2a2a082eda; olfsk=olfsk3964287081489577; hblid=Seb6NANsqnAcbUBe3m39N9z1CSLEQN06; connect.sid=s%3AMvpvA3qm5U-gohcyROkWgh8_xdgAVQsh.bOChT3ICqHAxAlNYhvxP9Pws9oPahJh73MbAVmo5sf8",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"_id\":\"57b1f8625199467c294ce51a\",\"body\":\"asdfghjgtgyhjkl;\",\"author\":\"57aa1b90a63c88fc06f81f61\",\"assignee\":\"57aa1ba5a63c88fc06f81f62\"}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
 			"name": "Remove Note",
 			"event": [
 				{
@@ -638,75 +707,6 @@
 				"body": {
 					"mode": "raw",
 					"raw": "{\n    \"body\": \"testing\",\n    \"author\": \"575ee573e7056a921e1bea46\",\n    \"assignee\": \"575ee59fe7056a921e1bea47\"\n}"
-				},
-				"description": ""
-			},
-			"response": []
-		},
-		{
-			"name": "Update Note",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": "var jsonData = JSON.parse(responseBody);\ntests[\"Status code is 200\"] = responseCode.code === 200;\ntests[\"Body has _id\"] = jsonData._id !== undefined;"
-					}
-				}
-			],
-			"request": {
-				"url": "http://localhost:12557/api/note/update/{{note_id}}",
-				"method": "POST",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json, text/plain, */*",
-						"description": ""
-					},
-					{
-						"key": "Origin",
-						"value": "http://localhost:12557",
-						"description": ""
-					},
-					{
-						"key": "User-Agent",
-						"value": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36",
-						"description": ""
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json;charset=UTF-8",
-						"description": ""
-					},
-					{
-						"key": "DNT",
-						"value": "1",
-						"description": ""
-					},
-					{
-						"key": "Referer",
-						"value": "http://localhost:12557/dashboard",
-						"description": ""
-					},
-					{
-						"key": "Accept-Encoding",
-						"value": "gzip, deflate",
-						"description": ""
-					},
-					{
-						"key": "Accept-Language",
-						"value": "en-US,en;q=0.8,en-CA;q=0.6",
-						"description": ""
-					},
-					{
-						"key": "Cookie",
-						"value": "Webstorm-871c5a67=ef3258b3-f107-4ed6-8208-ae2a2a082eda; olfsk=olfsk3964287081489577; hblid=Seb6NANsqnAcbUBe3m39N9z1CSLEQN06; connect.sid=s%3AlTkuuDk1R1OrV5-npA3s3iWKN2kX9uEH.frt8rz8u6CCnED35bcoJ9KtayNdkTf5v6s3aaeFVSFk; Webstorm-871c5a67=ef3258b3-f107-4ed6-8208-ae2a2a082eda; olfsk=olfsk3964287081489577; hblid=Seb6NANsqnAcbUBe3m39N9z1CSLEQN06; connect.sid=s%3AMvpvA3qm5U-gohcyROkWgh8_xdgAVQsh.bOChT3ICqHAxAlNYhvxP9Pws9oPahJh73MbAVmo5sf8",
-						"description": ""
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\"_id\":\"57b1f8625199467c294ce51a\",\"body\":\"asdfghjgtgyhjkl;\",\"author\":\"57aa1b90a63c88fc06f81f61\",\"assignee\":\"57aa1ba5a63c88fc06f81f62\"}"
 				},
 				"description": ""
 			},

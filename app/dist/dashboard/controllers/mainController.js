@@ -711,17 +711,25 @@ var app;
                         _this.reminders.push(response.data);
                         console.log(response.data);
                         // Create the assignment object
-                        var reminderUserAssign = {
-                          repeat: true,
-                          days: reminder.days,
-                          hour: reminder.hour,
-                          minute: reminder.minute,
-                          userId: response.data.assignee,
-                          reminderId: response.data._id,
-                          type: 'reminder' // Default is reminder but there's no harm in specifying it here
-                        };
+                        response.data.days.forEach(function(object){
+                          console.log(object);
+                          var reminderUserAssign = {
+                            repeat: true,
+                            days: object,
+                            hour: reminder.hour,
+                            minute: reminder.minute,
+                            userId: response.data.assignee,
+                            reminderId: response.data._id,
+                            type: 'reminder' // Default is reminder but there's no harm in specifying it here
+                          };
+
+
+                          _this.sendOutReminder(reminderUserAssign);
+
+
+                        })
+
                         // Call sendOutReminder
-                        _this.sendOutReminder(reminderUserAssign);
 
                     });
 
@@ -1024,9 +1032,9 @@ var app;
             };
 
             // socket.io code ahead
-            socket.on('message', function (data) {
-              MainController.prototype.receiveMessage(data);
-            });
+            // socket.on('message', function (data) {
+            //   MainController.prototype.receiveMessage(data);
+            // });
 
             MainController.prototype.receiveMessage = function (message) {
               console.log('userSelected is: ' + JSON.stringify(userSelected));

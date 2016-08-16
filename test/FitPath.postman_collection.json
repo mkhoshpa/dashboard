@@ -608,7 +608,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"_id\":\"57b1f8625199467c294ce51a\",\"body\":\"asdfghjgtgyhjkl;\",\"author\":\"57aa1b90a63c88fc06f81f61\",\"assignee\":\"57aa1ba5a63c88fc06f81f62\"}"
+					"raw": "{\"_id\":\"{{note_id}}\",\"body\":\"asdfghjgtgyhjkl;\",\"author\":\"57aa1b90a63c88fc06f81f61\",\"assignee\":\"57aa1ba5a63c88fc06f81f62\"}"
 				},
 				"description": ""
 			},

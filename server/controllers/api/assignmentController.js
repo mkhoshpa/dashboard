@@ -29,6 +29,36 @@ exports.delete = function(req, res) {
   });
 };
 
+exports.reminderlist = function(req, res){
+  console.log("backend");
+  //Assignment.find({userID: req.params.id, type: "reminder"}, function())
+  Assignment.find({userId: req.params.id, type: "reminder"})
+            .populate('reminderId')
+            .exec(function(err, obj){
+                if(err){
+                  console.log(err);
+                }
+                else{
+                  console.log(obj);
+                  res.json(obj);
+                }
+
+            });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 exports.removeByReminderId = function (req, res) {
   // Find all of the assignments with the reminder id that was passed in
   Assignment.find({reminderId: res.body}, function (err, assignments) {

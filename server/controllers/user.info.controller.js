@@ -60,6 +60,19 @@ exports.updateSlackId = function(req, res){
   res.send(req.body.text);
 };
 
+exports.getBySlackId = function(req, res){
+  console.log(req.params.id);
+  User.findOne({slack_id : req.params.id}, function(err, obj){
+    if(err){
+      console.log(err);
+    }
+    else{
+      res.json(obj);
+    }
+  })
+}
+
+
 
 
 exports.createPipelineStage = function(req,res){

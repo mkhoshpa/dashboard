@@ -54,6 +54,7 @@ var app;
                 }
                 else if (this.user.role == "coach") {
                     this.clients = this.user.clients;
+                    this.selected = this.user;
                     //self.selected = this.clients[0];
                 }
                 self.userService.selectedUser = self.selected;
@@ -1023,7 +1024,9 @@ var app;
             };
 
             // socket.io code ahead
-
+            socket.on('message', function (data) {
+              MainController.prototype.receiveMessage(data);
+            });
 
             MainController.prototype.receiveMessage = function (message) {
               console.log('userSelected is: ' + JSON.stringify(userSelected));

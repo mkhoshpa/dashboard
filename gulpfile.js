@@ -21,15 +21,6 @@ var client = new raven.Client('https://f755c390bd98419eb0ef404e519d8e4a:f3b90e92
 
 client.patchGlobal();
 
-var botOptions = {
-  url: 'https://aiaas.pandorabots.com',
-  app_id: '1409612709792',
-  user_key: '83a7e3b5fa60385bd676a05cb4951e98',
-  botname: 'willow'
-};
-
-var bot = new Pandorabot(botOptions);
-//adding comment to trigger update
 var paths = {
   angular: ['app/dist/**/*.js'],
   css: ['app/assets/styles/css/**/*.css'],

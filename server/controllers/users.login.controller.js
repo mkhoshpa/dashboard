@@ -72,7 +72,7 @@ exports.signup = function(req, res, next) {
 	if (!req.user) {
 		// Create a new 'User' model instance
     console.log(req.body);
-		if(req.body.betacode == "123456"){
+		if(req.body.betaCode == "123456"){
 			var user = new User(req.body);
 			var message = null;
 			// Set the user provider property

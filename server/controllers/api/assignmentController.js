@@ -6,10 +6,23 @@ winston = require('winston');
 
 exports.create = function(req, res) {
   var assignment = new Assignment(req.body);
+  console.log("ass");
+  console.log(assignment);
+
+  console.log("time");
+  console.log(assignment.specificDate);
+
   console.log("assignment controller");
   assignment.save(function(err, assignment){
+    if(err){
+      console.log(err);
+    }
+    else {
+      console.log(assignment);
+      res.send(assignment)
+    }
   })
-  res.send({});
+
 };
 
 exports.read = function(req, res) {
@@ -28,6 +41,48 @@ exports.delete = function(req, res) {
     }
   });
 };
+
+exports.reminderSelectedByUserId = function(req, res){
+  console.log(req.params.id);
+  var dateNow = new Date();
+
+
+  Assignment.find({userId: req.params.id, type: 'reminder'})
+  .populate('reminderId')
+  .exec(function (err, assignments) {
+    if(err){
+      console.log(err);
+    }
+    else{
+      console.log("here");
+      console.log(assignments);
+      assignments.forEach(function(assignment){
+        //wrong
+        if(assignment.date > dateNow && assignment.repeat){
+          console.log("mark 1");
+        }
+
+
+      })
+      res.json(assignments);
+
+
+
+
+
+
+
+
+    }
+  })
+}
+
+
+
+
+
+
+
 
 exports.removeByReminderId = function (req, res) {
   // Find all of the assignments with the reminder id that was passed in

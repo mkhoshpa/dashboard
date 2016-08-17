@@ -22,7 +22,7 @@ var app;
                 this.selected = null;
                 this.newNote = new dashboard.Note('', null);
                 this.newReminder = new dashboard.Reminder('', null);
-
+                this.convoReminderResponse = [];
                 //Survey stuff
                 this.questions1 = [
                  {
@@ -688,6 +688,15 @@ var app;
             };
 
 
+
+            MainController.prototype.addDays = function(date, days){
+              var result = new Date(date);
+              result.setDate(result.getDate() + days);
+              return result;
+            }
+
+
+
             MainController.prototype.addReminder = function ($event) {
                 var _this = this;
                 var self = this;
@@ -703,33 +712,74 @@ var app;
                     locals: {
                         selected: null
                     }
-                }).then(function (reminder) {
-                    console.log(reminder);
+                }).then(function (object) {
+                    console.log(object);
                     // First step, create the reminder and save it on the db
+                    var reminder = {
+                      _id: object._id,
+                      title: object.title,
+                      days: object.days,
+                      hour: object.hour,
+                      minute: object.minute,
+                      creationDate: new Date(),
+                      selectedDates: object.selectedDays,
+                      daysOfTheWeek: object.dates,
+                      author: object.author,
+                      assignee: object.assignee
+                    }
+                    console.log(reminder);
+
+                    var date = new Date();
+                    var today = date.getDay();
+                    console.log("timeOfDay");
+                    console.log(object.timeOfDay);
+                    console.log("date");
+                    console.log(date);
+
                     _this.$http.post('/api/reminder/create', reminder).then(function successCallback(response) {
-                        // Add the reminder to the reminders array
-                        _this.reminders.push(response.data);
-                        console.log(response.data);
-                        // Create the assignment object
-                        response.data.days.forEach(function(object){
-                          console.log(object);
-                          var reminderUserAssign = {
-                            repeat: true,
-                            days: object,
-                            hour: reminder.hour,
-                            minute: reminder.minute,
-                            userId: response.data.assignee,
-                            reminderId: response.data._id,
-                            type: 'reminder' // Default is reminder but there's no harm in specifying it here
-                          };
+                        console.log("im a reminder");
 
+                        response.data.days.forEach(function(daysOfTheWeek){
+                          console.log(daysOfTheWeek);
 
-                          _this.sendOutReminder(reminderUserAssign);
+                          if(today < daysOfTheWeek){
+                            console.log("<");
+                            var day = daysOfTheWeek - today;
+                            var specificDate = _this.addDays(object.timeOfDay, day);
+                            console.log(specificDate);
+                          }
+                          else if(today > daysOfTheWeek){
+                            console.log(">");
+                            var day =  7 - (today - daysOfTheWeek) ;
+                            var specificDate = _this.addDays(object.timeOfDay, day);
+                            console.log(specificDate);
+                          }
+                          else if (today === daysOfTheWeek){
+                            console.log("=");
+                            if(date.getHours() >= object.timeOfDay.getHours()){
+                              console.log("date > timeOfDay");
+                              var specificDate = _this.addDays(object.timeOfDay, 7);
+                              console.log(specificDate);
+                            }
+                            else{
+                              // same hour goes off next week
+                              console.log("date < timeOfDay");
+                              var specificDate = object.timeOfDay;
+                              console.log(specificDate);
+                            }
 
+                          }
+                             var reminderUserAssign = {
+                              repeat: object.repeat,
+                              specificDate: specificDate,
+                              userId: response.data.assignee,
+                              reminderId: response.data._id,
+                              type: 'reminder'
+                            };
 
-                        })
+                            _this.sendOutReminder(reminderUserAssign);
 
-                        // Call sendOutReminder
+                        });
 
                     });
 
@@ -740,10 +790,22 @@ var app;
             };
 
             MainController.prototype.sendOutReminder = function (reminderUserAssign) {
+              var _this = this;
+              var self = this;
               console.log('Inside sendOutReminder');
               console.log(reminderUserAssign);
               this.$http.post('/api/assignment/create', reminderUserAssign).then(function (response) {
                 console.log('Frontend works' + JSON.stringify(response.data));
+                // var rA = {
+                //   info: response.data,
+                //   res: []
+                // }
+                // console.log(_this.convoReminderResponse);
+                // _this.convoReminderResponse.push(rA);
+                // console.log(_this.convoReminderResponse);
+
+
+
               });
             };
 

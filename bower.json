@@ -15,11 +15,12 @@
     "angular-underscore": "^0.5.0",
     "moment": "^2.12.0",
     "angular-touch": "^1.5.3",
-    "sc-date-time": "^1.1.6"
+    "sc-date-time": "^1.1.6",
+    "angular-timezone-selector": "^1.6.0"
   },
   "resolutions": {
-    "moment": "^2.12.0",
-    "angular": ">1.2.8",
+    "moment": "~2.10.3",
+    "angular": "^1.4.0",
     "angular-material-data-table": "^0.10.9"
   }
 }

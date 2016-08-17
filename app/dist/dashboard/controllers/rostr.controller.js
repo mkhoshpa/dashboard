@@ -5,9 +5,9 @@
     .module('dashboard')
     .controller('ClientOverviewController', ClientOverviewController);
 
-    ClientOverviewController.$inject = ['user', '$scope', '$mdToast', '$http', '$mdEditDialog'];
+    ClientOverviewController.$inject = ['user', '$scope', '$mdToast', '$http'];
 
-    function ClientOverviewController(user, $scope, $mdToast, $http, $mdEditDialog) {
+    function ClientOverviewController(user, $scope, $mdToast, $http) {
       var vm = this;
       vm.bookmark;
       vm.user = user.current;

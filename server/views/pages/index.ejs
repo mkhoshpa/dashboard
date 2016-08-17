@@ -1,0 +1,57 @@
+<% include ../partials/header.ejs %>
+<script>
+  window.fbAsyncInit = function () {
+    FB.init({
+      appId: '237058900007908',
+      xfbml: true,
+      version: 'v2.6'
+    });
+  };
+
+  (function (d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) { return; }
+    js = d.createElement(s); js.id = id;
+    js.src = '//connect.facebook.net/en_US/sdk.js';
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+</script>
+<div class="section">
+  <div class="fb-send-to-messenger"
+    messenger_app_id="237058900007908"
+    page_id="892056954250131"
+    data-ref="TESTING_DATA_REF"
+    color="blue"
+    size="xlarge"
+  >
+  </div>
+<!--
+  <div class="row">
+    <div class="col-xs-6 col-xs-offset-3">
+      <div>
+        <h1 class="text-center"><%= initialText %></h1>
+        <% for (var i = 0; i < initialQuestionBoxes.length; i++) { %>
+          <h3 class="text-center"><%= initialQuestionBoxes[i].text %></h3>
+          <div class="dropdown text-center">
+            <button class="btn btn-default btn-lg btn-block dropdown-toggle" type="button" data-toggle="dropdown">
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu pull-center">
+              <% for (var j = 0; j < initialQuestionBoxes[i].options.length; j++) { %>
+                <li class="text-center"><a href="#"><%= initialQuestionBoxes[i].options[j].text %></a></li>
+              <% } %>
+            </ul>
+          </div>
+        <% } %>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <br /><br />
+    <div class="col-xs-6 col-xs-offset-3 text-center">
+      <button class="btn btn-lg btn-default" href="#" id="submit" type="submit">Submit</button>
+    </div>
+  </div>
+</div>
+-->
+<% include ../partials/footer.ejs %>

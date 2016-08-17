@@ -39,9 +39,7 @@ var UserSchema = new Schema({
     team: {type: String},
     timezone: {type: String}
   },
-  reminders: [
-    {type: mongoose.Schema.Types.Object, ref: 'Reminder'}
-  ],
+
 
   surveyTemplates:[
     {type: mongoose.Schema.Types.Object, ref: 'SurveyTemplate'}
@@ -59,6 +57,9 @@ var UserSchema = new Schema({
     type: String,
     enum: ['sms', 'fb', 'slack'],
     default: 'sms'
+  },
+  timezone: {
+    type: String
   },
   //look at this an actual comment :) was going to override the user role but I think I'll make a new field so I don't break anything.
   pipelineStage:{
@@ -92,9 +93,6 @@ var UserSchema = new Schema({
   ],
 
 
-  responses: [{
-    type: mongoose.Schema.Types.ObjectId, ref: 'Response'
-  }],
   coaches: [
     { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
   ],
@@ -126,14 +124,14 @@ var UserSchema = new Schema({
 		// Create a default 'created' value
 		default: Date.now
 	},
-  phoneNumber: String,
+  // phoneNumber: {type : String, unique : true},
+  phoneNumber:{type: String, unique : true, sparse: true, index: true},
+
   slack_id : String,
   facebookId: Number,
   email: String,
-  pandoraSessionId: String,
-  // This is a hack for Pandorabots
-  pandoraBotSaid: String,
-  betaCode: String
+  betaCode: String,
+  profileOptions: [String]
 });
 
 // Use a pre-save middleware to hash the password

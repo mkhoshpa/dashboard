@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "amqplib": "^0.4.2",
+    "angular-timezone-selector": "^1.2.1",
     "angularjs-scroll-glue": "^2.0.4",
     "async": "^2.0.0-rc.2",
     "bcrypt-nodejs": "0.0.3",
@@ -44,6 +45,7 @@
     "express-session": "^1.13.0",
     "gulp-install": "~0.6.0",
     "hooker": "^0.2.3",
+    "jstimezonedetect": "^1.0.6",
     "method-override": "^2.3.5",
     "moment": "^2.12.0",
     "mongoose": "^4.4.8",

@@ -12,7 +12,8 @@ var config = require('./config'),
 		cookieParser = require('cookie-parser'),
 		session = require('express-session'),
 		flash = require('connect-flash'),
-		passport = require('passport');
+		passport = require('passport'),
+    timezone = require('jstimezonedetect');
 
 // Define the Express configuration method
 module.exports = function() {
@@ -33,6 +34,11 @@ module.exports = function() {
 
 	// Create a new Express application instance
 	var app = express();
+
+  app.use(function (req, res, next) {
+    res.header('X-Server-Timezone', timezone.determine().name());
+    next();
+  });
 
 	// Use the 'NDOE_ENV' variable to activate the 'morgan' logger or 'compress' middleware
 	if (process.env.NODE_ENV === 'development') {
@@ -72,6 +78,7 @@ module.exports = function() {
 
 	// Load the routing files
 	require('../routes/index.server.routes.js')(app, passport);
+  require('../routes/profile.server.routes.js')(app, passport);
 	require('../routes/users.login.routes.js')(app, passport);
 	require('../routes/dashboard.route.js')(app, passport);
 	require('../routes/api/reminderRoute.js')(app, passport);

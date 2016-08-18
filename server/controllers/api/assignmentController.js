@@ -4,6 +4,7 @@ var User = require('../../models/user.js'),
 Assignment = require('../../models/assignment.js'),
 winston = require('winston');
 
+var request = require('request');
 exports.create = function(req, res) {
   var assignment = new Assignment(req.body);
   console.log("ass");
@@ -101,13 +102,34 @@ exports.removeByReminderId = function (req, res) {
 
 exports.convosNow = function(req, res) {
   var now = new Date();
+
+
+  var yearNow  = now.getFullYear();
+  var monthNow = now.getMonth();
+  var dateNow = now.getDate();
   var hoursNow = now.getHours();
   var minutesNow = now.getMinutes();
-  var dayNow = now.getDay();
+  console.log(yearNow);
+  console.log(monthNow);
+  console.log(dateNow);
+  console.log(hoursNow);
+  console.log(minutesNow);
+  // .where('hour').equals(hoursNow)
+  // .where('minute').equals(minutesNow)
+  var addDays = function(date, days, cb){
+    var result = new Date(date);
+    result.setDate(result.getDate() + days);
+    cb(result);
+  }
 
-  Assignment.find({days: dayNow})
-       .where('hour').equals(hoursNow)
-       .where('minute').equals(minutesNow)
+
+
+
+
+  Assignment.find({year: yearNow, month: monthNow, date: dateNow})
+       .where('hours').equals(hoursNow)
+       .where('minutes').equals(minutesNow)
+       .where('completed').equals(false)
        .populate('userId')
        .populate('surveyTemplateId')
        .populate('reminderId')
@@ -116,25 +138,57 @@ exports.convosNow = function(req, res) {
          console.log('exec assignments/now');
          if(!err){
 
-          //  for(var i = 0; i <assignments.length; i++){
-          //    var questionsId = assignments[i].surveyTemplateId.questions;
-          //    for (var j = 0; j < questionsId.length; j++){
-          //      SurveyQuestion.findById(questionsId._id)
-          //    }
-          //
-          //  SurveyQuestion.findById
-
-
-           //ok now we need to get the questions
-
-           //res.send(assignments);
-
            //ok so first I need to iterate thru the assignments array
 
            //create a variable to store the trimmed data in
-           var convos = [];
+          var convos = [];
 
           for (var i = 0; i < assignments.length; i++) {
+            if(assignments[i].repeat && assignments[i].type === "reminder"){
+              console.log('in create');
+              var date = addDays(assignments[i].specificDate, 7, function(response){
+                console.log(response);
+              });
+              console.log(date);
+
+
+              // var reminderUserAssign = {
+              //    repeat: assignments[i].repeat,
+              //    specificDate: date,
+              //    year: date.getFullYear(),
+              //    month: date.getMonth(),
+              //    date: date.getDate(),
+              //    hours: date.getHours(),
+              //    minutes: date.getMinutes(),
+              //    userId: assignments[i].userId,
+              //    reminderId: assignments[i].reminderId.author,
+              //    type: 'reminder'
+              // }
+              // console.log(reminderUserAssign);
+              //
+              // request.post('http://localhost:12557/api/assignment/create', reminderUserAssign, function (err, response, body) {
+              //
+              //   if(err){
+              //     console.log(err);
+              //   }
+              //   else if(response){
+              //     console.log(response);
+              //   }
+              //   else if(body){
+              //     console.log(body);
+              //   }
+              //
+              //
+              // });
+
+
+
+
+              // Request.post('/api/assignment/create', reminderUserAssign, function(response){
+              //   console.log("works");
+              //   console.log(response);
+              // })
+            }
             console.log(assignments[i]);
             var convo = new Object;
             convo.assignmentId = assignments[i]._id;
@@ -178,7 +232,7 @@ exports.convosNow = function(req, res) {
           }
          else
 
-           winston.error(err);
+           console.log(err);
        });
 
 };

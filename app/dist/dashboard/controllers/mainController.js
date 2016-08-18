@@ -756,7 +756,11 @@ var app;
                           }
                           else if (today === daysOfTheWeek){
                             console.log("=");
-                            if(date.getHours() >= object.timeOfDay.getHours()){
+                            console.log("date");
+                            console.log(date.getHours());
+                            console.log("spec");
+                            console.log(object.timeOfDay.getHours());
+                            if(date.getHours() > object.timeOfDay.getHours()){
                               console.log("date > timeOfDay");
                               var specificDate = _this.addDays(object.timeOfDay, 7);
                               console.log(specificDate);
@@ -772,6 +776,11 @@ var app;
                              var reminderUserAssign = {
                               repeat: object.repeat,
                               specificDate: specificDate,
+                              year: specificDate.getFullYear(),
+                              month: specificDate.getMonth(),
+                              date: specificDate.getDate(),
+                              hours: specificDate.getHours(),
+                              minutes: specificDate.getMinutes(),
                               userId: response.data.assignee,
                               reminderId: response.data._id,
                               type: 'reminder'

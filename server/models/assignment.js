@@ -13,9 +13,17 @@ var assignmentSchema = new Schema({
     enum: ['reminder', 'survey'],
     default: 'reminder'},
 
-  specificDate: {type: Date, required: true,  },
+  specificDate: {type: Date},
+
+
+  year : {type: String},
+  month : {type: String},
+  date: {type: String},
+  hours: {type: String},
+  minutes: {type: String},
 
   userId: {type: mongoose.Schema.Types.Object, ref: 'User'},
+
   creationDate: {type: Date, default: new Date()},
   completed: {type: Boolean, default: false},
   surveyTemplateId: {type: mongoose.Schema.Types.Object, ref: 'SurveyTemplate'},

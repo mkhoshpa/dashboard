@@ -92,6 +92,7 @@ var app;
                 var dateToday = new Date();
                 dateToday.setHours(hour);
                 dateToday.setMinutes(minute);
+                dateToday.setSeconds('00');
                 //dateToday.set
                 console.log("today date")
 

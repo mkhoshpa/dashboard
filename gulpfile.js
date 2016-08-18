@@ -21,7 +21,7 @@ var client = new raven.Client('https://dbbf7fed9a0745c799cdd065e2d5b43a:1781bb8d
 
 client.patchGlobal();
 
-//adding comment to trigger update 
+//adding comment to trigger update
 var paths = {
   angular: ['app/dist/**/*.js'],
   css: ['app/assets/styles/css/**/*.css'],
@@ -60,13 +60,15 @@ gulp.task('nodemon' ,['sass'], function (cb) {
 });
 
 gulp.task('browser-sync', ['nodemon'], function() {
-	browserSync.init(null, {
-    injectChanges: true,
-		proxy: "http://localhost:12557",
-        files: ["app/**/*.*"],
-        browser: 'google chrome',
-        port: 7000,
-	});
+  if (process.env.NODE_ENV === 'development') {
+    browserSync.init(null, {
+      injectChanges: true,
+      proxy: "http://localhost:12557",
+      files: ["app/**/*.*"],
+      browser: 'google chrome',
+      port: 7000,
+    });
+  }
 });
 
 gulp.task('watch', function() {

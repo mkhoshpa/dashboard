@@ -1,4 +1,5 @@
-<md-virtual-repeat-container id="vertical-container" scroll-glue>
+<div scroll-glue>
+  <md-virtual-repeat-container id="vertical-container" scroll-glue>
     <p ng-if="!vm.selected.messages.length">
       No messages for {{vm.selected.firstName +" "+ vm.selected.lastName}}, yet.
     </p>
@@ -10,7 +11,8 @@
         Received: {{message.body}}
       </span>
     </p>
-</md-virtual-repeat-container>
+  </md-virtual-repeat-container>
+</div>
 <form name="messageForm">
   <md-input-container class="md-block" flex-gt-sm>
     <label>Message</label>

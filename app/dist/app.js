@@ -9,7 +9,7 @@ var app;
 
 
 
-    angular.module('app', ['dashboard','ngMaterial', 'md.data.table', 'angular-timezone-selector', 'common']);
+    angular.module('app', ['dashboard','ngMaterial', 'md.data.table', 'angular-timezone-selector', 'luegg.directives', 'common']);
     console.log("KJnsdkfandskansjdnasjdnjasndj");
 
     //

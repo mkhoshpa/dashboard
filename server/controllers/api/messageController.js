@@ -10,7 +10,7 @@ var twiml = require('twilio');
 var config = require('../../config/env/development.js');
 var winston = require('winston');
 
-var io = require('socket.io')(config.messageSocketPort);
+var io = require('socket.io')(28104);
 
 console.log('listening for websocket connections on *:' + config.messageSocketPort);
 

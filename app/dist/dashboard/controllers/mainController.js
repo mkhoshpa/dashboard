@@ -1115,7 +1115,9 @@ var app;
             };
 
             // socket.io code ahead
-
+            socket.on('message', function (data) {
+              MainController.prototype.receiveMessage(data);
+            });
 
             MainController.prototype.receiveMessage = function (message) {
               console.log('userSelected is: ' + JSON.stringify(userSelected));

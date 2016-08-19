@@ -2,7 +2,7 @@
 	"variables": [],
 	"info": {
 		"name": "FitPath",
-		"_postman_id": "77098ae5-a896-f1d3-b45e-c4c89a03eff1",
+		"_postman_id": "45550f14-a261-a798-caa6-263620268d4b",
 		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
@@ -909,6 +909,167 @@
 				"body": {
 					"mode": "formdata",
 					"formdata": []
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Create Survey",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": "tests[\"Status code is 200\"] = responseCode.code === 200;\n\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Body contains _id\"] = jsonData._id !== 'undefined';"
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:7000/api/surveyTemplate/create",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*",
+						"description": ""
+					},
+					{
+						"key": "Origin",
+						"value": "http://localhost:7000",
+						"description": ""
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json;charset=UTF-8",
+						"description": ""
+					},
+					{
+						"key": "DNT",
+						"value": "1",
+						"description": ""
+					},
+					{
+						"key": "Referer",
+						"value": "http://localhost:7000/dashboard",
+						"description": ""
+					},
+					{
+						"key": "Accept-Encoding",
+						"value": "gzip, deflate",
+						"description": ""
+					},
+					{
+						"key": "Accept-Language",
+						"value": "en-US,en;q=0.8,en-CA;q=0.6",
+						"description": ""
+					},
+					{
+						"key": "Cookie",
+						"value": "connect.sid=s%3Aetza1imuX7cbCDMpVKrSsYRGyNdY5DV8.zA8fKoUqGrxCoW%2FDQ8meZgnYlzYfOVVXXblMtfLJuH8",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"title\":\"Meal Plan\",\"author\":\"57aa1b90a63c88fc06f81f61\",\"questions\":[{\"question\":\"Did you eat tacos at least once this week?\",\"header\":\"Tacos\",\"type\":\"YESNO\"},{\"header\":\"Next Week\",\"questions\":null,\"type\":\"WRITTEN\",\"question\":\"What one food would you most like to eat next week?\"},{\"header\":\"Happiness\",\"questions\":null,\"type\":\"SCALE\",\"question\":\"How happy were you with this week's meal plan?\"}]}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Add SurveyTemplate",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": "tests[\"Status code is 200\"] = responseCode.code === 200;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Body contains _id\"] = jsonData._id !== 'undefined';"
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:7000/api/user/surveyTemplate/add/{{user_id}}",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*",
+						"description": ""
+					},
+					{
+						"key": "Origin",
+						"value": "http://localhost:7000",
+						"description": ""
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json;charset=UTF-8",
+						"description": ""
+					},
+					{
+						"key": "DNT",
+						"value": "1",
+						"description": ""
+					},
+					{
+						"key": "Referer",
+						"value": "http://localhost:7000/dashboard",
+						"description": ""
+					},
+					{
+						"key": "Accept-Encoding",
+						"value": "gzip, deflate",
+						"description": ""
+					},
+					{
+						"key": "Accept-Language",
+						"value": "en-US,en;q=0.8,en-CA;q=0.6",
+						"description": ""
+					},
+					{
+						"key": "Cookie",
+						"value": "connect.sid=s%3Aetza1imuX7cbCDMpVKrSsYRGyNdY5DV8.zA8fKoUqGrxCoW%2FDQ8meZgnYlzYfOVVXXblMtfLJuH8",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"title\":\"Meal Plan\",\"author\":\"57aa1b90a63c88fc06f81f61\",\"_id\":\"57b4a79cf978367409669876\",\"days\":[],\"timeOfDay\":\"2016-08-17T18:06:20.089Z\",\"selectedUsers\":[],\"questions\":[{\"question\":\"Did you eat tacos at least once this week?\",\"header\":\"Tacos\",\"type\":\"YESNO\",\"_id\":\"57b4a79cf978367409669879\"},{\"header\":\"Next Week\",\"type\":\"WRITTEN\",\"question\":\"What one food would you most like to eat next week?\",\"_id\":\"57b4a79cf978367409669878\"},{\"header\":\"Happiness\",\"type\":\"SCALE\",\"question\":\"How happy were you with this week's meal plan?\",\"_id\":\"57b4a79cf978367409669877\"}]}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Delete User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": "tests[\"Status code is 200\"] = responseCode.code === 200;\n\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Body contains _id\"] = jsonData._id !== undefined;"
+					}
+				}
+			],
+			"request": {
+				"url": "localhost:12557/api/user/delete/{{user_id}}",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
 				},
 				"description": ""
 			},

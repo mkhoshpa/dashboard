@@ -201,29 +201,6 @@
 			"response": []
 		},
 		{
-			"name": "Delete User",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": "tests[\"Status code is 200\"] = responseCode.code === 200;\n\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Body contains _id\"] = jsonData._id !== undefined;"
-					}
-				}
-			],
-			"request": {
-				"url": "localhost:12557/api/user/delete/{{user_id}}",
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
-				"description": ""
-			},
-			"response": []
-		},
-		{
 			"name": "Send SMS",
 			"event": [
 				{
@@ -1070,6 +1047,29 @@
 				"body": {
 					"mode": "raw",
 					"raw": "{\"title\":\"Meal Plan\",\"author\":\"57aa1b90a63c88fc06f81f61\",\"_id\":\"57b4a79cf978367409669876\",\"days\":[],\"timeOfDay\":\"2016-08-17T18:06:20.089Z\",\"selectedUsers\":[],\"questions\":[{\"question\":\"Did you eat tacos at least once this week?\",\"header\":\"Tacos\",\"type\":\"YESNO\",\"_id\":\"57b4a79cf978367409669879\"},{\"header\":\"Next Week\",\"type\":\"WRITTEN\",\"question\":\"What one food would you most like to eat next week?\",\"_id\":\"57b4a79cf978367409669878\"},{\"header\":\"Happiness\",\"type\":\"SCALE\",\"question\":\"How happy were you with this week's meal plan?\",\"_id\":\"57b4a79cf978367409669877\"}]}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Delete User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": "tests[\"Status code is 200\"] = responseCode.code === 200;\n\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Body contains _id\"] = jsonData._id !== undefined;"
+					}
+				}
+			],
+			"request": {
+				"url": "localhost:12557/api/user/delete/{{user_id}}",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
 				},
 				"description": ""
 			},

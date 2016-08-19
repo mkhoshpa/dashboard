@@ -695,6 +695,68 @@ var app;
               return result;
             }
 
+            MainController.prototype.getRemindersResponses = function () {
+              var _this = this;
+              var content = [];
+              var fullcontent = {};
+              _this.convoReminderResponse = [];
+              console.log("Get Reminder");
+              _this.$http.get('/api/reminder/selectedUser/' + this.selected._id).then(function(response){
+                console.log(response.data);
+
+
+                response.data.forEach(function (reminder) {
+                  content = [];
+                  fullcontent = {};
+                  _this.$http.get('/api/assignment/selectedReminder/' + reminder._id).then(function(response1){
+                    console.log("sadasdasd");
+                    console.log(response1);
+                    if(response1.data.length !== 0){
+
+                      response1.data.forEach(function (assignment) {
+                        console.log(assignment);
+
+                        _this.$http.get('/api/response/selectedAssignment/' + assignment._id).then(function (response2) {
+                          console.log(response2);
+
+                          if(response2.data.length === 0){
+                            console.log("nope res");
+                            var rA = {
+                              ass: assignment
+                            }
+                            content.push(rA);
+                          }
+                          else {
+                            console.log("yes");
+                            var rA = {
+                              ass: assignment,
+                              res: response2.data[0]
+                            }
+                            content.push(rA);
+                          }
+
+                        })
+                      })
+                    }
+                  })
+
+                  fullcontent = {
+                    reminder: reminder,
+                    contentArray: content
+                  }
+                  console.log('fullcontent');
+                  console.log(fullcontent);
+
+                  _this.convoReminderResponse.push(fullcontent);
+                  console.log('convoReminderResponse');
+                  console.log(_this.convoReminderResponse);
+
+                })
+
+              })
+
+
+            }
 
 
             MainController.prototype.addReminder = function ($event) {

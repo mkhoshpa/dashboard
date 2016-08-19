@@ -39,8 +39,8 @@ exports.list = function(req, res) {
   })
 }
 
-exports.userResponses = function (req, res) {
-  console.log("userResponses");
+exports.selectedByAssignment = function (req, res) {
+  console.log("selectedByAssignment");
   Response.find({assignment: req.params.id}, function (err, obj) {
     if(err){
       console.log("crap");

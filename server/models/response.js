@@ -15,7 +15,7 @@ var responseSchema = new Schema({
     default: 'reminder'},
 
   //TODO get populate to work
-  timeStamp: {type: Date, default: Date.now},
+  creationDate: {type: Date, default: Date.now},
   assignment: {type: mongoose.Schema.Types.Object, ref: 'Assignment'},
   userId: {type: mongoose.Schema.Types.Object, ref: 'User'},
 

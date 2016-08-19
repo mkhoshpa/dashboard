@@ -1,6 +1,6 @@
 // Fix browserSync
 // Fix Watch / Restart
-//
+
 var gulp = require('gulp');
 var nodemon = require('gulp-nodemon');
 //var gulpNgConfig = require('gulp-ng-config');
@@ -17,10 +17,11 @@ var Message = require('./server/models/message.js');
 var Reminder = require('./server/models/reminder.js');
 var portfinder = require('portfinder');
 var raven = require('raven');
-var client = new raven.Client('https://f755c390bd98419eb0ef404e519d8e4a:f3b90e92e81d42108d066106353e23d6@app.getsentry.com/88385');
+var client = new raven.Client('https://dbbf7fed9a0745c799cdd065e2d5b43a:1781bb8df2c74d13993691e539bc7ab3@app.getsentry.com/89293');
 
 client.patchGlobal();
 
+//adding comment to trigger update
 var paths = {
   angular: ['app/dist/**/*.js'],
   css: ['app/assets/styles/css/**/*.css'],
@@ -59,13 +60,15 @@ gulp.task('nodemon' ,['sass'], function (cb) {
 });
 
 gulp.task('browser-sync', ['nodemon'], function() {
-	browserSync.init(null, {
-    injectChanges: true,
-		proxy: "http://localhost:12557",
-        files: ["app/**/*.*"],
-        browser: 'google chrome',
-        port: 7000,
-	});
+  if (process.env.NODE_ENV === 'development') {
+    browserSync.init(null, {
+      injectChanges: true,
+      proxy: "http://localhost:12557",
+      files: ["app/**/*.*"],
+      browser: 'google chrome',
+      port: 7000,
+    });
+  }
 });
 
 gulp.task('watch', function() {

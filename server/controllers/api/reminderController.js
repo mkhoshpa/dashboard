@@ -99,7 +99,17 @@ exports.listNow = function(req,res) {
 }
 
 exports.list = function(req, res) {
-  Reminder.find({}, function(err, obj) {
-    res.json(obj);
-  })
+  Reminder.find({})
+          .populate('author')
+          .populate('assignee')
+          .exec(function(err, docs){
+            console.log(docs);
+
+            if(docs){
+              res.json(docs)
+            }
+            else{
+              console.log(err);
+            }
+          })
 }

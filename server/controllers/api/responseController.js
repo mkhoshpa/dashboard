@@ -51,3 +51,19 @@ exports.userResponses = function (req, res) {
     }
   })
 }
+
+exports.selectedByReminder = function(req, res){
+  console.log("selected");
+  Response.find({reminderId: req.params.id})
+          .populate('assignment')
+          .exec(function (err, obj) {
+            if(err){
+              console.log('crap');
+            }
+            else{
+              console.log(obj);
+              res.json(obj);
+            }
+          })
+
+}

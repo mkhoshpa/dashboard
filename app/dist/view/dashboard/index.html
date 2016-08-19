@@ -8,8 +8,8 @@
       <div ng-include="'/dist/view/dashboard/main-content.html'"></div>
 
       <md-tabs md-dynamic-height="" md-border-bottom="" md-stretch-tabs="always" md-selected="vm.tabIndex">
-        <md-tab label="Messages">
-          <div ng-include="'/dist/view/dashboard/messages/tab-messages.html'"></div>
+        <md-tab label="Messages" scroll-glue>
+          <div ng-include="'/dist/view/dashboard/messages/tab-messages.html'" scroll-glue></div>
         </md-tab>
 
         <md-tab label="Notes">

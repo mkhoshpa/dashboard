@@ -119,6 +119,8 @@ exports.convosNow = function(req, res) {
   var addDays = function(date, days, cb){
     var result = new Date(date);
     result.setDate(result.getDate() + days);
+    console.log("date");
+    console.log(result);
     cb(result);
   }
 
@@ -146,50 +148,40 @@ exports.convosNow = function(req, res) {
           for (var i = 0; i < assignments.length; i++) {
             if(assignments[i].repeat && assignments[i].type === "reminder"){
               console.log('in create');
-              var date = addDays(assignments[i].specificDate, 7, function(response){
-                console.log(response);
+               addDays(assignments[i].specificDate, 7, function(date){
+                console.log(date);
+                var reminderUserAssign = {
+                   repeat: assignments[i].repeat,
+                   specificDate: date,
+                   year: date.getFullYear(),
+                   month: date.getMonth(),
+                   date: date.getDate(),
+                   hours: date.getHours(),
+                   minutes: date.getMinutes(),
+                   userId: assignments[i].userId._id,
+                   reminderId: assignments[i].reminderId._id,
+                   type: 'reminder'
+                }
+                console.log(reminderUserAssign);
+
+                request.post('http://localhost:12557/api/assignment/create', reminderUserAssign, function (err, response, body) {
+
+                  if(err){
+                    console.log("ERROR");
+                    console.log(err);
+                  }
+                  else {
+                    console.log('response');
+                    console.log(response.statusCode);
+                  }
+
+
+                });
+
+
               });
-              console.log(date);
-
-
-              // var reminderUserAssign = {
-              //    repeat: assignments[i].repeat,
-              //    specificDate: date,
-              //    year: date.getFullYear(),
-              //    month: date.getMonth(),
-              //    date: date.getDate(),
-              //    hours: date.getHours(),
-              //    minutes: date.getMinutes(),
-              //    userId: assignments[i].userId,
-              //    reminderId: assignments[i].reminderId.author,
-              //    type: 'reminder'
-              // }
-              // console.log(reminderUserAssign);
-              //
-              // request.post('http://localhost:12557/api/assignment/create', reminderUserAssign, function (err, response, body) {
-              //
-              //   if(err){
-              //     console.log(err);
-              //   }
-              //   else if(response){
-              //     console.log(response);
-              //   }
-              //   else if(body){
-              //     console.log(body);
-              //   }
-              //
-              //
-              // });
-
-
-
-
-              // Request.post('/api/assignment/create', reminderUserAssign, function(response){
-              //   console.log("works");
-              //   console.log(response);
-              // })
             }
-            console.log(assignments[i]);
+            //console.log(assignments[i]);
             var convo = new Object;
             convo.assignmentId = assignments[i]._id;
 

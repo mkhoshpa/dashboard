@@ -25,6 +25,7 @@ var assignmentSchema = new Schema({
   userId: {type: mongoose.Schema.Types.Object, ref: 'User'},
 
   creationDate: {type: Date, default: new Date()},
+  sent: {type: Boolean, default: false},
   completed: {type: Boolean, default: false},
   surveyTemplateId: {type: mongoose.Schema.Types.Object, ref: 'SurveyTemplate'},
   reminderId: {type: mongoose.Schema.Types.Object, ref: 'Reminder'}

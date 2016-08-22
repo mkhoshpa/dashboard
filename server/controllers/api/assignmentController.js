@@ -135,9 +135,37 @@ exports.completed = function (req, res) {
 
 
   })
+}
+
+exports.sent = function (req, res) {
+  console.log("here completed");
+  console.log(req.params.id);
+  Assignment.update({_id: req.params.id}, {$set: {sent: true}}, function(err, obj){
+    if(err){
+      console.log("err");
+      console.log(err);
+      res.sendStatus(500);
+    }
+    else{
+      console.log(obj);
+      res.sendStatus(204);
+    }
+
+
+  })
 
 
 }
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -221,6 +249,19 @@ exports.convosNow = function(req, res) {
 
           for (var i = 0; i < assignments.length; i++) {
 
+            //only gets sent if bot is on
+            request({url: 'http://localhost:12557/api/assignment/sent/update/'+  assignments[i]._id, method:"PUT"}, function(err, response){
+              console.log("sweet 2");
+              if(err){
+                console.log("error");
+                console.log(err);
+              }
+              else{
+                console.log('response');
+                console.log(response.statusCode);
+              }
+            })
+
             //Creating a new assignment if repeat === true
             if(assignments[i].repeat && assignments[i].type === "reminder"){
               console.log('in create');
@@ -254,7 +295,7 @@ exports.convosNow = function(req, res) {
             }
 
             //updating assignment to be completed
-            request({url: 'http://localhost:12557/api/assignments/completed/update/'+  assignments[i]._id, method:"PUT"}, function(err, response){
+            request({url: 'http://localhost:12557/api/assignment/completed/update/'+  assignments[i]._id, method:"PUT"}, function(err, response){
               console.log("sweet 2");
               if(err){
                 console.log("error");

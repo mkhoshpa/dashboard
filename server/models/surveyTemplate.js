@@ -19,7 +19,7 @@ var surveyTemplateSchema =  new Schema({
      },
   ],
   author: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
-  selectedUsers: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
+
   daysOfTheWeek: {
     monday: {type: Boolean},
     tuesday: {type: Boolean},
@@ -30,7 +30,7 @@ var surveyTemplateSchema =  new Schema({
     sunday: {type: Boolean}
   },
   repeat: Boolean,
-  timeOfDay: {type: Date, default: Date.now},
+  timeOfDay: {type: Date, default: new Date()},
   days: [{type: Number, min: 0, max: 6}],
   hour: {type: Number, min: 0, max: 23},
   minute: {type: Number, min: 0, max: 59}

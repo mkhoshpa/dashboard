@@ -23,6 +23,7 @@ var app;
                 this.newNote = new dashboard.Note('', null);
                 this.newReminder = new dashboard.Reminder('', null);
                 this.convoReminderResponse = [];
+                this.surveyTemplates = [];
                 //Survey stuff
                 this.questions1 = [
                  {
@@ -44,7 +45,7 @@ var app;
                 this.selectSurveyUser = [];
 
                 //pipelineStage array
-                this.pipelineOptions = [{type: "lead"}, {type: "trail"}, {type: "active-client"}, {type: "previous-client"},{type: "archived"},{type: "NA"} ];
+                this.pipelineOptions = [{type: "lead"}, {type: "trial"}, {type: "active-client"}, {type: "previous-client"},{type: "archived"},{type: "NA"} ];
 
                 var self = this;
                 this.user = this.userService.get();
@@ -111,7 +112,7 @@ var app;
                 questions:null,
                 type:null
               };
-              //does both anthor for newSurvey and changeSurvey
+              //does both for newSurvey and changeSurvey
               survey.questions.push(question);
 
               console.log(survey.questions);
@@ -208,7 +209,18 @@ var app;
               self.openToast("Editing Cancel");
             }
 
-
+            MainController.prototype.getSurveys = function(){
+              var _this = this;
+              var self = this;
+              console.log("surveys");
+              console.log(_this.surveyTemplates);
+              _this.surveyTemplates = [];
+              _this.$http.get('/api/surveyTemplate/selectedUser/'+ this.user._id).then(function successCallback(response) {
+                console.log(response);
+                _this.surveyTemplates = response.data;
+                console.log(_this.surveyTemplates);
+              })
+            }
 
               MainController.prototype.saveSurvey = function($event){
                 var _this = this;
@@ -218,10 +230,8 @@ var app;
 
                 _this.$http.post('/api/surveyTemplate/create', this.newSurvey).then(function successCallback(response) {
                   console.log(response);
-                  _this.$http.post('/api/user/surveyTemplate/add/'+ this.user._id, response.data).then(function(response2){
-                    console.log(response2.data);
-                    this.user.surveyTemplates.push(response.data);
-                  })
+                  _this.surveyTemplates.push(response.data);
+
                 });
 
                 this.newSurvey = {
@@ -308,87 +318,113 @@ var app;
                       selected: null
                     }
                 }).then(function (surveyInfo) {
-                  console.log("this is where the survey would be sent to a single person for the time being");
-                  console.log();
-                  console.log('The times to receive this survey is: ');
+
                   console.log(surveyInfo);
-                  console.log('this.selectedSurvey is: ');
-                  console.log(_this.selectedSurvey);
-                  _this.selectedSurvey.daysOfTheWeek = {};
-                  _this.selectedSurvey.selectedDays = surveyInfo.selectedDays;
-                  _this.selectedSurvey.days = [];
-                  if (_this._.contains(_this.selectedSurvey.selectedDays, 'Sun')) {
-                    _this.selectedSurvey.daysOfTheWeek.sunday = true;
-                    _this.selectedSurvey.days.push(0);
-                  }
-                  if (_this._.contains(_this.selectedSurvey.selectedDays, 'Mon')) {
-                    _this.selectedSurvey.daysOfTheWeek.monday = true;
-                    _this.selectedSurvey.days.push(1);
-                  }
-                  if (_this._.contains(_this.selectedSurvey.selectedDays, 'Tues')) {
-                    _this.selectedSurvey.daysOfTheWeek.tuesday = true;
-                    _this.selectedSurvey.days.push(2);
-                  }
-                  if (_this._.contains(_this.selectedSurvey.selectedDays, 'Wed')) {
-                    _this.selectedSurvey.daysOfTheWeek.wednesday = true;
-                    _this.selectedSurvey.days.push(3);
-                  }
-                  if (_this._.contains(_this.selectedSurvey.selectedDays, 'Thurs')) {
-                    _this.selectedSurvey.daysOfTheWeek.thursday = true;
-                    _this.selectedSurvey.days.push(4);
-                  }
-                  if (_this._.contains(_this.selectedSurvey.selectedDays, 'Fri')) {
-                    _this.selectedSurvey.daysOfTheWeek.friday = true;
-                    _this.selectedSurvey.days.push(5);
-                  }
-                  if (_this._.contains(_this.selectedSurvey.selectedDays, 'Sat')) {
-                    _this.selectedSurvey.daysOfTheWeek.saturday = true;
-                    _this.selectedSurvey.days.push(6);
-                  }
-                  _this.selectedSurvey.timeOfDay = surveyInfo.time;
-                  _this.selectedSurvey.hour = _this.selectedSurvey.timeOfDay.getHours();
-                  _this.selectedSurvey.minute = _this.selectedSurvey.timeOfDay.getMinutes();
-                  _this.selectedSurvey.repeat = surveyInfo.repeat;
-                  _this.selectedSurvey.selectedUsers = [];
-                  for (var i = 0; i < _this.selectSurveyUser.length; i++) {
-                    _this.selectedSurvey.selectedUsers.push(_this.selectSurveyUser[i]._id);
-                  }
-                  console.log();
-                  console.log(_this.selectedSurvey.selectedUsers);
-                  console.log();
-                  var updatedSurvey = {
+                  var date = new Date();
+                  var today = date.getDay();
+                  for(var i = 0; i < _this.selectSurveyUser.length; i++){
+                    surveyInfo.days.forEach(function(daysOfTheWeek){
 
-                    repeat: self.selectedSurvey.repeat,
-                    days: self.selectedSurvey.days,
-                    hour: self.selectedSurvey.timeOfDay.getHours(),
-                    minute: self.selectedSurvey.timeOfDay.getMinutes()
-                  };
+                      if(today < daysOfTheWeek){
+                        console.log("<");
+                        var day = daysOfTheWeek - today;
+                        var specificDate = _this.addDays(surveyInfo.timeOfDay, day);
+                        console.log(specificDate);
+                      }
+                      else if(today > daysOfTheWeek){
+                        console.log(">");
+                        var day =  7 - (today - daysOfTheWeek) ;
+                        var specificDate = _this.addDays(surveyInfo.timeOfDay, day);
+                        console.log(specificDate);
+                      }
+                      else if (today === daysOfTheWeek){
+                        console.log("=");
+                        console.log("date");
+                        console.log(date.getHours());
+                        console.log("spec");
+                        console.log(surveyInfo.timeOfDay.getHours());
+                        if(date.getHours() > surveyInfo.timeOfDay.getHours()){
+                          console.log("date > timeOfDay");
+                          var specificDate = _this.addDays(surveyInfo.timeOfDay, 7);
+                          console.log(specificDate);
+                        }
+                        else{
+                          // same hour goes off next week
+                          console.log("date < timeOfDay");
+                          var specificDate = surveyInfo.timeOfDay;
+                          console.log(specificDate);
+                        }
 
-                  // For all of the users that were assigned a survey
+                      }
+                        var surveyUserAssign = {
+                         repeat: surveyInfo.repeat,
+                         specificDate: specificDate,
+                         year: specificDate.getFullYear(),
+                         month: specificDate.getMonth(),
+                         date: specificDate.getDate(),
+                         hours: specificDate.getHours(),
+                         minutes: specificDate.getMinutes(),
+                         userId:  _this.selectSurveyUser[i]._id,
+                         surveyTemplateId: _this.selectedSurvey._id,
+                         type: 'survey'
+                       };
+                       console.log(surveyUserAssign);
+                       _this.$http.post('/api/assignment/create' , surveyUserAssign).then(function (response){
+                           console.log("this sungun worked" + JSON.stringify(response.data));
+                      });
+                    })
 
-                  //this is making me nervous
-                  for (var i = 0; i < _this.selectedSurvey.selectedUsers.length; i++) {
 
-                    var surveyUserAssign = {
-                      repeat: updatedSurvey.repeat,
-                      days: updatedSurvey.days,
-                      hour: updatedSurvey.hour,
-                      minute: updatedSurvey.minute,
-                      userId: _this.selectedSurvey.selectedUsers[i],
-                      surveyTemplateId: _this.selectedSurvey._id,
-                      type: "survey"
-                    }
-                    // POST the selectedSurvey to the user
+                  }
 
-                    console.log("survey if " + surveyUserAssign.surveyTemplateId);
-                    console.log("user id" + surveyUserAssign.userId);
 
-                    //first make a object that can be turned into a object on the back end
+                });
 
-                    self.$http.post('/api/assignment/create' , surveyUserAssign).then(function (response){
-                      console.log("this sungun worked" + JSON.stringify(response.data));
-                    });
-                  }});
+
+
+
+
+
+
+                  // for (var i = 0; i < _this.selectSurveyUser.length; i++) {
+                  //   _this.selectedSurvey.selectedUsers.push(_this.selectSurveyUser[i]._id);
+                  // }
+                  // console.log();
+                  // console.log(_this.selectedSurvey.selectedUsers);
+                  // console.log();
+                  // var updatedSurvey = {
+                  //
+                  //   repeat: self.selectedSurvey.repeat,
+                  //   days: self.selectedSurvey.days,
+                  //   hour: self.selectedSurvey.timeOfDay.getHours(),
+                  //   minute: self.selectedSurvey.timeOfDay.getMinutes()
+                  // };
+                  //
+                  // // For all of the users that were assigned a survey
+                  //
+                  // //this is making me nervous
+                  // for (var i = 0; i < _this.selectedSurvey.selectedUsers.length; i++) {
+                  //
+                  //   var surveyUserAssign = {
+                  //     repeat: updatedSurvey.repeat,
+                  //     days: updatedSurvey.days,
+                  //     hour: updatedSurvey.hour,
+                  //     minute: updatedSurvey.minute,
+                  //     userId: _this.selectedSurvey.selectedUsers[i],
+                  //     surveyTemplateId: _this.selectedSurvey._id,
+                  //     type: "survey"
+                  //   }
+                  //   // POST the selectedSurvey to the user
+                  //
+                  //   console.log("survey if " + surveyUserAssign.surveyTemplateId);
+                  //   console.log("user id" + surveyUserAssign.userId);
+                  //
+                  //   //first make a object that can be turned into a object on the back end
+                  //
+                  //   self.$http.post('/api/assignment/create' , surveyUserAssign).then(function (response){
+                  //     console.log("this sungun worked" + JSON.stringify(response.data));
+                  //   });
+                  //}});
 
 
 

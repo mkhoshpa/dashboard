@@ -23,6 +23,7 @@ var app;
                 this.newNote = new dashboard.Note('', null);
                 this.newReminder = new dashboard.Reminder('', null);
                 this.convoReminderResponse = [];
+                this.convoSurveyResponse = [];
                 this.surveyTemplates = [];
                 //Survey stuff
                 this.questions1 = [
@@ -300,6 +301,65 @@ var app;
               };
               ;
 
+              MainController.prototype.getSurveyResponses = function () {
+                console.log("get survey");
+                var _this = this;
+                var self = this;
+                console.log("Here");
+
+                _this.$http.get('/api/assignment/survey/user/' + this.selected._id).then( function (response) {
+                  console.log(response);
+                  response.data.forEach(function (assignment) {
+                    _this.$http.get('/api/response/selectedAssignment/' + assignment._id).then(function (response1) {
+                      console.log(response1);
+                      if(response1.data.length > 0){
+                        var info = {
+                          ass: assignment,
+                          res: response1.data[0]
+                        }
+                        _this.convoSurveyResponse.push(info)
+                      }
+                      else{
+                        var info = {
+                          ass: assignment,
+                          res: []
+                        }
+                        _this.convoSurveyResponse.push(info)
+                      }
+                      console.log(_this.convoSurveyResponse);
+
+                    })
+                  })
+
+
+
+                });
+
+
+
+
+
+
+
+
+
+
+
+
+              }
+
+
+
+
+
+
+
+
+
+
+
+
+
               MainController.prototype.sendOutSurvey = function ($event) {
                 console.log("here");
                 var _this = this;
@@ -323,6 +383,8 @@ var app;
                   var date = new Date();
                   var today = date.getDay();
                   for(var i = 0; i < _this.selectSurveyUser.length; i++){
+                    console.log('users');
+                    console.log(_this.selectSurveyUser[i]);
                     surveyInfo.days.forEach(function(daysOfTheWeek){
 
                       if(today < daysOfTheWeek){

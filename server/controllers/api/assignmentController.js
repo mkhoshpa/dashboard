@@ -61,6 +61,26 @@ exports.selectedByReminder = function (req, res) {
 
 }
 
+exports.selectedByUser = function (req, res) {
+  console.log(req.params.id);
+
+  Assignment.find({userId: req.params.id, type: 'survey'})
+    .populate('surveyTemplateId')
+    .exec(function (err, assignments) {
+      if(err){
+        console.log('err');
+        console.log(err);
+      }
+      else{
+        console.log('assignments');
+        console.log(assignments);
+        res.json(assignments);
+      }
+
+    })
+
+
+}
 
 
 

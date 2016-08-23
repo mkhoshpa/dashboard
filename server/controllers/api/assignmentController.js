@@ -270,6 +270,9 @@ exports.convosNow = function(req, res) {
           for (var i = 0; i < assignments.length; i++) {
 
             //only gets sent if bot is on
+
+
+            //TODO change ip
             request({url: 'http://localhost:12557/api/assignment/sent/update/'+  assignments[i]._id, method:"PUT"}, function(err, response){
               console.log("sweet 2");
               if(err){
@@ -301,6 +304,7 @@ exports.convosNow = function(req, res) {
                 console.log(reminderUserAssign);
 
                 console.log("Im heading out");
+                //TODO change ip
                 request({url: 'http://localhost:12557/api/assignment/create', method: "POST", headers: {"content-type": "application/json"}, json: reminderUserAssign}, function (err, response, body) {
                   console.log("sweet");
                   if(err){
@@ -315,6 +319,7 @@ exports.convosNow = function(req, res) {
             }
 
             //updating assignment to be completed
+            //TODO change ip
             request({url: 'http://localhost:12557/api/assignment/completed/update/'+  assignments[i]._id, method:"PUT"}, function(err, response){
               console.log("sweet 2");
               if(err){

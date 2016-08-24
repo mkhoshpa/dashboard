@@ -228,8 +228,8 @@ exports.convosNow = function(req, res) {
   var dateNow = now.getDate();
   var hoursNow = now.getHours();
   var minutesNow = now.getMinutes();
-
-
+  console.log(monthNOw);
+//TODO fix time on the month
   var yearNext = nextWeek.getFullYear();
   var monthNext = nextWeek.getMonth();
   var dateNext= nextWeek.getDate();
@@ -399,3 +399,43 @@ exports.selectedlist  = function (req, res) {
     }
   });
 };
+
+exports.pathSelectedByUserId = function (req, res) {
+  var addDays = function(date, days){
+    var result = new Date(date);
+    result.setDate(result.getDate() + days);
+    console.log("date");
+    console.log(result);
+    return result;
+  }
+  console.log("path");
+  console.log(today);
+  var today = new Date();
+  var day = today.getDay();
+  var diff = 7 - day;
+  console.log(diff);
+  var sunday = addDays(today, diff);
+  console.log(sunday);
+
+
+
+
+
+
+
+  Assignment.find({userId: req.params.id, completed: false,
+    specificDate: {"$gte": today, "$lte": sunday}})
+    .populate('reminderId')
+    .populate('surveyTemplateId')
+    .exec(function(err, obj){
+      if(err){
+        console.log(err);
+      }
+      else{
+        console.log(obj);
+        res.send(obj);
+      }
+
+    })
+
+}

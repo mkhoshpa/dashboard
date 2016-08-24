@@ -15,7 +15,7 @@ module.exports = function(app) {
   app.get('/api/assignment/selectedReminder/:id', assignment.selectedByReminder);
   app.get('/api/assignment/survey/user/:id', assignment.selectedByUser);
 
-  
-  //app.get('/api/assignment/reminder/selectedUser/list/:id', assignment.reminderSelectedByUserId);
+
+  app.get('/api/assignment/path/selectedUser/list/:id', assignment.pathSelectedByUserId);
   //app.get('/api/assignment/reminder/selectedUser/:id', assignment.reminderSelectedByUserId);
 };

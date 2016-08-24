@@ -46,7 +46,7 @@ exports.render = function(req, res, next) {
         }
         else {
           winston.error('ERROR LOADING DASHBOARD FOR SOME ODD REASON');
-          res.render('index', {
+          res.render('landing', {
       			// Set the page title variable
       			title: 'Fitpath',
       			// Set the flash message variable
@@ -68,7 +68,7 @@ exports.render = function(req, res, next) {
       User.populate(req.user,
         populateClient, function(err, user) {
           if(user) {
-            res.render(path.resolve('app/index'), {
+            res.render(path.resolve('app/landing'), {
               user: JSON.stringify(user)
             });
           }

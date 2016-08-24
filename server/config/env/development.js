@@ -12,7 +12,8 @@ module.exports = {
   // If I push this code to dev and the db is still localhost I owe Josh + Thom $5 each - Shane
 	//db: 'mongodb://thom:letmein1@ds011251.mlab.com:11251/fitpath',
 	//db: 'mongodb://josh:letmein1@ds011765.mlab.com:11765/awesomebox',
-  db: 'mongodb://josh:letmein1@ds011765.mlab.com:11765/awesomebox',
+    db: 'mongodb://thomprod:rZrwcJkzar92@ds157955-a0.mlab.com:57955,ds157955-a1.mlab.com:57955/prod?replicaSet=rs-ds157955',
+  //db: 'mongodb://shane:letmein1@localhost:27017/development',
   server: server,
   messageSocketPort: 45874,
   sessionSecret: 'developmentSessionSecret',

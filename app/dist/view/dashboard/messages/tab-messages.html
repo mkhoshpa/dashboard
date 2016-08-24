@@ -14,7 +14,7 @@
 <form name="messageForm">
   <md-input-container class="md-block" flex-gt-sm>
     <label>Message</label>
-    <input ng-model="message.content" name="content" />
+    <input ng-model="message.content" name="content" reverse="true" />
   </md-input-container>
   <md-button type="submit" class="md-primary md-raised" ng-disabled="!message.content" ng-click="vm.sendMessage(message.content); message.content=''">
     Send (SMS)

@@ -53,7 +53,7 @@
 				"header": [
 					{
 						"key": "Origin",
-						"value": "http://localhost:7000",
+						"value": "http://localhost:12557",
 						"description": ""
 					},
 					{
@@ -83,7 +83,7 @@
 					},
 					{
 						"key": "Referer",
-						"value": "http://localhost:7000/signup",
+						"value": "http://localhost:12557/signup",
 						"description": ""
 					},
 					{
@@ -153,7 +153,7 @@
 					},
 					{
 						"key": "Origin",
-						"value": "http://localhost:7000",
+						"value": "http://localhost:12557",
 						"description": ""
 					},
 					{
@@ -173,7 +173,7 @@
 					},
 					{
 						"key": "Referer",
-						"value": "http://localhost:7000/dashboard",
+						"value": "http://localhost:12557/dashboard",
 						"description": ""
 					},
 					{
@@ -222,7 +222,7 @@
 					},
 					{
 						"key": "Origin",
-						"value": "http://localhost:7000",
+						"value": "http://localhost:12557",
 						"description": ""
 					},
 					{
@@ -242,7 +242,7 @@
 					},
 					{
 						"key": "Referer",
-						"value": "http://localhost:7000/dashboard",
+						"value": "http://localhost:12557/dashboard",
 						"description": ""
 					},
 					{
@@ -291,7 +291,7 @@
 					},
 					{
 						"key": "Origin",
-						"value": "http://localhost:7000",
+						"value": "http://localhost:12557",
 						"description": ""
 					},
 					{
@@ -311,7 +311,7 @@
 					},
 					{
 						"key": "Referer",
-						"value": "http://localhost:7000/dashboard",
+						"value": "http://localhost:12557/dashboard",
 						"description": ""
 					},
 					{
@@ -360,7 +360,7 @@
 					},
 					{
 						"key": "Origin",
-						"value": "http://localhost:7000",
+						"value": "http://localhost:12557",
 						"description": ""
 					},
 					{
@@ -380,7 +380,7 @@
 					},
 					{
 						"key": "Referer",
-						"value": "http://localhost:7000/dashboard",
+						"value": "http://localhost:12557/dashboard",
 						"description": ""
 					},
 					{
@@ -429,7 +429,7 @@
 					},
 					{
 						"key": "Origin",
-						"value": "http://localhost:7000",
+						"value": "http://localhost:12557",
 						"description": ""
 					},
 					{
@@ -449,7 +449,7 @@
 					},
 					{
 						"key": "Referer",
-						"value": "http://localhost:7000/dashboard",
+						"value": "http://localhost:12557/dashboard",
 						"description": ""
 					},
 					{
@@ -498,7 +498,7 @@
 					},
 					{
 						"key": "Origin",
-						"value": "http://localhost:7000",
+						"value": "http://localhost:12557",
 						"description": ""
 					},
 					{
@@ -518,7 +518,7 @@
 					},
 					{
 						"key": "Referer",
-						"value": "http://localhost:7000/dashboard",
+						"value": "http://localhost:12557/dashboard",
 						"description": ""
 					},
 					{
@@ -926,7 +926,7 @@
 				}
 			],
 			"request": {
-				"url": "http://localhost:7000/api/surveyTemplate/create",
+				"url": "http://localhost:12557/api/surveyTemplate/create",
 				"method": "POST",
 				"header": [
 					{
@@ -936,7 +936,7 @@
 					},
 					{
 						"key": "Origin",
-						"value": "http://localhost:7000",
+						"value": "http://localhost:12557",
 						"description": ""
 					},
 					{
@@ -956,7 +956,7 @@
 					},
 					{
 						"key": "Referer",
-						"value": "http://localhost:7000/dashboard",
+						"value": "http://localhost:12557/dashboard",
 						"description": ""
 					},
 					{
@@ -995,7 +995,7 @@
 				}
 			],
 			"request": {
-				"url": "http://localhost:7000/api/user/surveyTemplate/add/{{user_id}}",
+				"url": "http://localhost:12557/api/user/surveyTemplate/add/{{user_id}}",
 				"method": "POST",
 				"header": [
 					{
@@ -1005,7 +1005,7 @@
 					},
 					{
 						"key": "Origin",
-						"value": "http://localhost:7000",
+						"value": "http://localhost:12557",
 						"description": ""
 					},
 					{
@@ -1025,7 +1025,7 @@
 					},
 					{
 						"key": "Referer",
-						"value": "http://localhost:7000/dashboard",
+						"value": "http://localhost:12557/dashboard",
 						"description": ""
 					},
 					{

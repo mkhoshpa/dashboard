@@ -1,0 +1,40 @@
+
+<nav class="white" role="navigation">
+
+<div class="nav-wrapper container">
+
+  <a id="logo-container" href="#" class="brand-logo">FitPath</a>
+  <ul class="right hide-on-med-and-down">
+    <% if ( userName || email) { %>
+
+          <li><a href="/dashboard#/">Dashboard</a></li>
+          <li><a href="/signout">Sign Out</a></li>
+          <!--
+          <li><a href="/profile">Profile</a></li>
+          <li><a href="/contact">Contact Us</a></li>
+        -->
+
+
+    	<% } else { %>
+        <li><a href="/r2r"> R2R </a><li>
+        <li><a href="/signin">Sign In </a><li>
+    <% } %>
+
+
+
+  </ul>
+
+
+  <ul id="nav-mobile" class="side-nav">
+    <% if ( userFullName || email ) { %>
+        <li><a href="/dashboard">Dashboard</a></li>
+        <li><a href="/contact">Contact Us</a></li>
+        <li><a href="/signout">Sign Out</a></li>
+    	<% } else { %>
+
+        <li><a href="/signout">Sign Out</a></li>
+    <% } %>
+  </ul>
+  <a href="#" data-activates="nav-mobile" class="button-collapse black-text"><i class="material-icons">menu</i></a>
+</div>
+</nav>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" serverName="Production">
+    <serverData>
+      <paths name="Development">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/data/development/current" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+          <excludedPaths>
+            <excludedPath path="/data/development/current/app/dist/view/partials/footer.ejs" />
+            <excludedPath path="/data/development/current/app/dist/view/partials/header.ejs" />
+            <excludedPath path="/data/development/current/server/config" />
+          </excludedPaths>
+        </serverdata>
+      </paths>
+    </serverData>
+  </component>
+</project>

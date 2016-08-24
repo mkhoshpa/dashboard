@@ -7,7 +7,7 @@ var app;
         var userCoach;
         var scope;
         var MainController = (function () {
-            function MainController($scope, userService, $mdSidenav, $mdBottomSheet, $mdToast, $mdDialog, $mdMedia, $http) {
+            function MainController($scope, $location, $timeout, $anchorScroll, userService, $mdSidenav, $mdBottomSheet, $mdToast, $mdDialog, $mdMedia, $http) {
                 this.userService = userService;
                 this.$mdSidenav = $mdSidenav;
                 this.$mdBottomSheet = $mdBottomSheet;
@@ -16,12 +16,14 @@ var app;
                 this.$mdMedia = $mdMedia;
                 this.$http = $http;
                 this.searchText = '';
+                this.messages = [];
                 this.reminders = [];
                 this.responses = [];
                 this.tabIndex = 0;
                 this.selected = null;
                 this.newNote = new dashboard.Note('', null);
                 this.newReminder = new dashboard.Reminder('', null);
+                this.lastMessageIndex = 0;
 
                 //Survey stuff
                 this.questions1 = [
@@ -60,8 +62,15 @@ var app;
                 self.userService.selectedUser = self.selected;
                 userSelected = self.userService.selectedUser;
                 scope = $scope;
+                this.scope = $scope;
+                this.anchorScroll = $anchorScroll;
+                this.timeout = $timeout;
+                this.location = $location;
                 this._ = window['_'];
 
+                $scope.showMessage = function (message) {
+                  return (message.sentTo === self.selected._id || message.sentBy === self.selected._id);
+                }
 
                 this.newSurvey = {
 
@@ -752,6 +761,31 @@ var app;
               return false;
             };
 
+            MainController.prototype.hasMessages = function (user) {
+              // Go through all of the messages
+              for (var i = 0; i < this.messages.length; i++) {
+                // If the user's id matches any of the messages' sentTo or sentFrom
+                if (this.messages[i].sentTo === user._id || this.messages[i].sentFrom === user._id) {
+                  // The user has a message, so return true
+                  return true;
+                }
+              }
+              // If the user's id doesn't match any of the messages' sentTo or sentFrom, return false
+              return false;
+            };
+
+            MainController.prototype.getMessages = function () {
+              var _this = this;
+              console.log('Getting messages');
+              _this.$http.get('/api/message/list').then(function (response) {
+                _this.messages = response.data;
+                console.log(response.data);
+                console.log(_this.messages);
+                //_this.lastMessageIndex = _this.messages.length - 1;
+                _this.lastMessageIndex = 3;
+              });
+            };
+
             MainController.prototype.getReminders = function () {
               var _this = this;
               console.log('Getting reminders');
@@ -1004,10 +1038,7 @@ var app;
               console.log('this.selected: ' + JSON.stringify(this.selected));
               this.$http.post('/api/message/sendsms/', {'body': message, 'sentBy': this.selected.coaches[0], 'sentTo': this.selected.id}).then(function (response) {
                 console.log('response.data is ' + JSON.stringify(response.data));
-                //console.log('_this.selected.messages is: ' + JSON.stringify(_this.selected.messages));
-                console.log(_this.selected.messages); // Why is this undefined?
-                _this.selected.messages.push(response.data);
-                console.log('self.selected is:' + JSON.stringify(_this.selected.messages));
+                _this.messages.push(response.data);
               });
             };
 
@@ -1029,16 +1060,10 @@ var app;
             });
 
             MainController.prototype.receiveMessage = function (message) {
-              console.log('userSelected is: ' + JSON.stringify(userSelected));
               console.log('Message received from server');
               console.log(message);
-              //if (this.selected) {
-                if (userSelected._id === message.sentBy) {
-                  console.log('Message pushed.');
-                  userSelected.messages.push(message);
-                  scope.$apply();
-                }
-              //}
+              scope.vm.messages.push(message);
+              scope.$apply();
             };
 
             MainController.prototype.editNote = function($event, note){
@@ -1346,7 +1371,7 @@ HI Shane!                    console.log(survey);
                     clickedItem && console.log(clickedItem.name + ' clicked!');
                 });
             };
-            MainController.$inject = ['$scope', 'userService', '$mdSidenav', '$mdBottomSheet',
+            MainController.$inject = ['$scope', '$location', '$timeout', '$anchorScroll', 'userService', '$mdSidenav', '$mdBottomSheet',
                 '$mdToast', '$mdDialog', '$mdMedia', '$http'];
             return MainController;
         }());

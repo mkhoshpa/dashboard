@@ -313,15 +313,20 @@ var app;
                     _this.$http.get('/api/response/selectedAssignment/' + assignment._id).then(function (response1) {
                       console.log(response1);
                       if(response1.data.length > 0){
+                        var time = new Date(assignment.specificDate);
+
                         var info = {
                           ass: assignment,
+                          date:time,
                           res: response1.data[0]
                         }
                         _this.convoSurveyResponse.push(info)
                       }
                       else{
+                        var time = new Date(assignment.specificDate);
                         var info = {
                           ass: assignment,
+                          date: time,
                           res: []
                         }
                         _this.convoSurveyResponse.push(info)
@@ -795,59 +800,72 @@ var app;
 
             MainController.prototype.getRemindersResponses = function () {
               var _this = this;
-              var content = [];
-              var fullcontent = {};
+
+
+
               _this.convoReminderResponse = [];
               console.log("Get Reminder");
+
               _this.$http.get('/api/reminder/selectedUser/' + this.selected._id).then(function(response){
                 console.log(response.data);
 
-
                 response.data.forEach(function (reminder) {
-                  content = [];
-                  fullcontent = {};
+                  var content = [];
+                  var fullcontent = {};
+
+
                   _this.$http.get('/api/assignment/selectedReminder/' + reminder._id).then(function(response1){
                     console.log("sadasdasd");
                     console.log(response1);
-                    if(response1.data.length !== 0){
 
-                      response1.data.forEach(function (assignment) {
-                        console.log(assignment);
 
-                        _this.$http.get('/api/response/selectedAssignment/' + assignment._id).then(function (response2) {
-                          console.log(response2);
+                    var content = [];
+                    response1.data.forEach(function (assignment) {
+                      console.log(assignment);
+
+                      _this.$http.get('/api/response/selectedAssignment/' + assignment._id).then(function (response2) {
+                        console.log(response2);
 
                           if(response2.data.length === 0){
                             console.log("nope res");
+                            var date = new Date(assignment.specificDate);
+                            console.log(date);
                             var rA = {
-                              ass: assignment
+                              ass: assignment,
+                              time: date.toString()
                             }
                             content.push(rA);
                           }
                           else {
                             console.log("yes");
+                            var date = new Date(assignment.specificDate);
+                            console.log(date);
+
                             var rA = {
                               ass: assignment,
+                              time: date.toString(),
                               res: response2.data[0]
                             }
                             content.push(rA);
                           }
 
-                        })
                       })
-                    }
+                    })
+                      fullcontent = {
+                        reminder: reminder,
+                        contentArray: content
+                      }
+                      console.log('fullcontent');
+                      console.log(fullcontent);
+
+                      _this.convoReminderResponse.push(fullcontent);
+                      console.log('convoReminderResponse');
+                      console.log(_this.convoReminderResponse);
+
+
+
+
                   })
-
-                  fullcontent = {
-                    reminder: reminder,
-                    contentArray: content
-                  }
-                  console.log('fullcontent');
-                  console.log(fullcontent);
-
-                  _this.convoReminderResponse.push(fullcontent);
-                  console.log('convoReminderResponse');
-                  console.log(_this.convoReminderResponse);
 
                 })
 

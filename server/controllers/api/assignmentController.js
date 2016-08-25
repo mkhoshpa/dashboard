@@ -228,7 +228,7 @@ exports.convosNow = function(req, res) {
   var dateNow = now.getDate();
   var hoursNow = now.getHours();
   var minutesNow = now.getMinutes();
-  console.log(monthNOw);
+  console.log(monthNow);
 //TODO fix time on the month
   var yearNext = nextWeek.getFullYear();
   var monthNext = nextWeek.getMonth();
@@ -423,7 +423,7 @@ exports.pathSelectedByUserId = function (req, res) {
 
 
 
-  Assignment.find({userId: req.params.id, completed: false,
+  Assignment.find({userId: req.params.id, 
     specificDate: {"$gte": today, "$lte": sunday}})
     .populate('reminderId')
     .populate('surveyTemplateId')

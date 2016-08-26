@@ -832,7 +832,7 @@ var app;
                             console.log(date);
                             var rA = {
                               ass: assignment,
-                              time: date.toString()
+                              time: date.toLocaleString('en-CAN')
                             }
                             content.push(rA);
                           }
@@ -843,7 +843,7 @@ var app;
 
                             var rA = {
                               ass: assignment,
-                              time: date.toString(),
+                              time: date.toLocaleString('en-CAN'),
                               res: response2.data[0]
                             }
                             content.push(rA);

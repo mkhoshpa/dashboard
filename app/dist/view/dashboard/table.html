@@ -68,7 +68,7 @@
 
 
            <md-input-container flex = "15" ng-show = 'vm.switch'>
-             <md-select  ng-model = "vm.selectedDataSurvey" ng-blur = "vm.updateTable()"  style="margin: 5px;" aria-label = "UDOP" placeholder = "Select Survey" class="md-primary">
+             <md-select  ng-model = "vm.selectedDataSurvey" ng-change = "vm.updateTable()"  style="margin: 5px;" aria-label = "UDOP" placeholder = "Select Survey" class="md-primary">
                <md-option ng-repeat = "s in vm.surveyTemplates" ng-value = "s">
                  {{s.title}}
                </md-option>

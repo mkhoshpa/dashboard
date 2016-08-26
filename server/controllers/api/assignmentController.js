@@ -273,7 +273,7 @@ exports.convosNow = function(req, res) {
 
 
             //TODO change ip
-            request({url: 'http://localhost:12557/api/assignment/sent/update/'+  assignments[i]._id, method:"PUT"}, function(err, response){
+            request({url: 'http://localhost:12557/api/assignment/sent/update/' +  assignments[i]._id, method:"PUT"}, function(err, response){
               console.log("sweet 2");
               if(err){
                 console.log("error");
@@ -412,19 +412,21 @@ exports.pathSelectedByUserId = function (req, res) {
   console.log(today);
   var today = new Date();
   var day = today.getDay();
+
   var diff = 7 - day;
   console.log(diff);
-  var sunday = addDays(today, diff);
-  console.log(sunday);
+  var sundayNext = addDays(today, diff);
+  var lastSunday = addDays(today, -day);
+  console.log(sundayNext);
+  console.log(lastSunday);
 
 
 
 
 
 
-
-  Assignment.find({userId: req.params.id, 
-    specificDate: {"$gte": today, "$lte": sunday}})
+  Assignment.find({userId: req.params.id, type:'reminder',
+    specificDate: {"$gte": lastSunday, "$lte": sundayNext}})
     .populate('reminderId')
     .populate('surveyTemplateId')
     .exec(function(err, obj){

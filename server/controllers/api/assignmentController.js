@@ -399,3 +399,44 @@ exports.selectedlist  = function (req, res) {
     }
   });
 };
+exports.pathSelectedByUserId = function (req, res) {
+  var addDays = function(date, days){
+    var result = new Date(date);
+    result.setDate(result.getDate() + days);
+    console.log("date");
+    console.log(result);
+    return result;
+  }
+  console.log("path");
+  console.log(today);
+  var today = new Date();
+  var day = today.getDay();
+
+  var diff = 7 - day;
+  console.log(diff);
+  var sundayNext = addDays(today, diff);
+  var lastSunday = addDays(today, -day);
+  console.log(sundayNext);
+  console.log(lastSunday);
+
+
+
+
+
+
+  Assignment.find({userId: req.params.id, type:'reminder',
+    specificDate: {"$gte": lastSunday, "$lte": sundayNext}})
+      .populate('reminderId')
+      .populate('surveyTemplateId')
+      .exec(function(err, obj){
+        if(err){
+          console.log(err);
+        }
+        else{
+          console.log(obj);
+          res.send(obj);
+        }
+
+      })
+
+}

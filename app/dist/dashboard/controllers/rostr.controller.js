@@ -5,9 +5,9 @@
     .module('dashboard')
     .controller('ClientOverviewController', ClientOverviewController);
 
-    ClientOverviewController.$inject = ['user', '$scope', '$mdToast', '$http'];
+    ClientOverviewController.$inject = ['user', '$scope', '$mdToast', '$http', '$mdEditDialog'];
 
-    function ClientOverviewController(user, $scope, $mdToast, $http) {
+    function ClientOverviewController(user, $scope, $mdToast, $http, $mdEditDialog) {
       var vm = this;
       vm.bookmark;
       vm.user = user.current;
@@ -33,7 +33,7 @@
       },
       {
         username : "Jaime Lannister",
-        pipelineStage : "Trail",
+        pipelineStage : "trial",
         testResponses :["Lord Command of the King's Guard", 'Oathkeeper', 'Casterly Rock'],
         reminderStatus : "/../../../assets/imgs/GoT/green.png",
         reminderQuestion: "Did you take back riverrun?",
@@ -203,7 +203,7 @@
       }
 
       //Used for the pipeline
-      vm.pipelineOptions = [{type: "lead"}, {type: "trail"}, {type: "active-client"}, {type: "previous-client"},{type: "archived"},{type: "NA"} ];
+      vm.pipelineOptions = [{type: "lead"}, {type: "trial"}, {type: "active-client"}, {type: "previous-client"},{type: "archived"},{type: "NA"} ];
 
       //Updating the pipeline
       vm.addPipelineStage = function (client) {
@@ -241,9 +241,20 @@
 
 
       vm.surveyViewClients = [];
-
+      vm.surveyTemplates = [];
 
       vm.coach = 'coach';
+
+        vm.getSurveys = function(){
+            console.log("surveys");
+            console.log(vm.surveyTemplates);
+            vm.surveyTemplates = [];
+            vm.$http.get('/api/surveyTemplate/selectedUser/'+ vm.user._id).then(function successCallback(response) {
+                console.log(response);
+                vm.surveyTemplates = response.data;
+                console.log(vm.surveyTemplates);
+            })
+        }
 
       vm.data = [];
       vm.data2 = [];
@@ -428,6 +439,16 @@
 
 
 
+      vm.getSurveys = function(){
+        console.log("surveys");
+        console.log(vm.surveyTemplates);
+        vm.surveyTemplates = [];
+        vm.$http.get('/api/surveyTemplate/selectedUser/'+ vm.user._id).then(function successCallback(response) {
+          console.log(response);
+          vm.surveyTemplates = response.data;
+          console.log(vm.surveyTemplates);
+        })
+      }
 
 
 
@@ -463,7 +484,7 @@
                  vm.$http.get('/api/user/selectedAssignment/'+ assignment.userId).then(function successCallback(response2){
                    console.log(response2);
                    //each user responses
-                   vm.$http.get('/api/responses/selectedAssignment/' + assignment._id).then(function successCallback(response3){
+                   vm.$http.get('/api/response/selectedAssignment/' + assignment._id).then(function successCallback(response3){
                      console.log(response3);
                      if(response3.data[0]){
                        console.log('good');

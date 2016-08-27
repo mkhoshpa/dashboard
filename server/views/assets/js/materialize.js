@@ -2420,7 +2420,7 @@ $(document).ready(function(){
 	 * during a given window of time. Normally, the throttled function will run
 	 * as much as it can, without ever going more than once per `wait` duration;
 	 * but if you'd like to disable the execution on the leading edge, pass
-	 * `{leading: false}`. To disable execution on the trailing edge, ditto.
+	 * `{leading: false}`. To disable execution on the trialing edge, ditto.
 	 * @license https://raw.github.com/jashkenas/underscore/master/LICENSE
 	 * @param {function} func
 	 * @param {number} wait
@@ -2450,7 +2450,7 @@ $(document).ready(function(){
 				previous = now;
 				result = func.apply(context, args);
 				context = args = null;
-			} else if (!timeout && options.trailing !== false) {
+			} else if (!timeout && options.trialing !== false) {
 				timeout = setTimeout(later, remaining);
 			}
 			return result;

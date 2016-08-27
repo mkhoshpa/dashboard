@@ -1,33 +1,48 @@
-<md-content>
-  <p ng-if="vm.selected.assignments.length == 0">
+<md-content sty>
+  <p ng-if="vm.convoSurveyResponse.length == 0">
     No surveys for {{vm.selected.firstName + " " + vm.selected.lastName}}, yet.
   </p>
-   <md-card ng-repeat="survey in vm.selected.surveyTemplates | orderBy: '-date':true">
-    <md-card-header>
+   <md-card layout = "columns"ng-repeat="survey in vm.convoSurveyResponse | orderBy: '-date':true">
+    <md-card-header flex = "20">
       <md-card-header-text>
         <div layout="row">
 
           <div flex=90>
-            <span class="md-title">{{survey.title}}</span>
+            <span class="md-title">{{survey.ass.surveyTemplateId.title}}</span>
+            <h4> {{survey.ass.year + '/' + survey.ass.month + '/' + survey.ass.date}} </h4>
           </div>
 
 
         </div>
       </md-card-header-text>
     </md-card-header>
-    <md-card-content>
-      <div ng-repeat="question in survey.questions">
-          <p>
-            {{$index + 1}}. {{question.question}}
-            <ul ng-repeat="response in question.responses">
-              <div ng-if="response.from == vm.selected._id">
-                <li>{{response.response}}</li>
-              </div>
-            </ul>
-          </p>
+    <md-card-content flex = "30">
+      <div>
+        <p>{{survey.ass.hours + ':' + survey.ass.minutes}} </p>
+        <p>{{'Sent: ' + survey.ass.sent}} </p>
       </div>
     </md-card-content>
-     <md-card-content flex=grow>
-      <p>{{survey.status}}</p>
+    <md-card-content flex = "50" style = ' height:200px'>
+      <div ng-if = 'survey.res.length === 0' ng-repeat="question in survey.ass.surveyTemplateId.questions">
+          <p>
+            {{$index + 1}}. {{question.question}}
+          </p>
+      </div>
+      <div  ng-repeat = "question in survey.res.questions">
+        <div>
+          <p>
+              {{$index + 1}}. {{question.question}}
+          </p>
+          <p>
+            {{question.answer}}
+          <p>
+        </div>
+
+
+      </div>
     </md-card-content>
+     <!-- <md-card-content flex=grow>
+      <p>{{survey.status}}</p>
+    </md-card-content> -->
   </md-card>
+</md-content>

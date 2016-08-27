@@ -25,6 +25,20 @@
             <md-datepicker ng-model="start" style="margin: 0px;" md-placeholder="Start date"></md-datepicker>
             <md-datepicker ng-model="end" style="margin: 0px;" md-placeholder="End date"></md-datepicker>
           </div> -->
+
+          <div layout-wrap="" >
+            <md-switch ng-model = "ctrl.repeat">
+              <p ng-if = "!ctrl.repeat">
+                One Time Reminder
+              </p>
+              <p ng-if = "ctrl.repeat">
+                Weekly Reminder
+              </p>
+            </md-switch>
+          </div>
+
+
+
           <div layout="row" layout-wrap="">
             <md-input-container flex="grow" layout-fill style="margin: 0 14px 0 14px;">
               <label>Enter in a time</label>

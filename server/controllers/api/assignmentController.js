@@ -1,28 +1,26 @@
 'use strict'
 
-var User = require('../../models/user.js');
-var Assignment = require('../../models/assignment.js');
-var winston = require('winston');
-var Reminder = require('../../models/reminder.js');
+var User = require('../../models/user.js'),
+Assignment = require('../../models/assignment.js'),
+winston = require('winston');
+
+var request = require('request');
 exports.create = function(req, res) {
   var assignment = new Assignment(req.body);
+  console.log("ass");
+  console.log(assignment);
+
+  console.log("time");
+  console.log(assignment.specificDate);
+
   console.log("assignment controller");
   assignment.save(function(err, assignment){
     if(err){
       console.log(err);
     }
-    else{
-
-      Assignment.populate(assignment,{path:'reminderId', model: 'Reminder' }, function(err, info){
-        if(err){
-          console.log(err);
-        }
-        else{
-          console.log(info);
-          res.send(info);
-        }
-      })
-
+    else {
+      console.log(assignment);
+      res.send(assignment)
     }
   })
 
@@ -45,127 +43,217 @@ exports.delete = function(req, res) {
   });
 };
 
-exports.removeByReminderId = function (req, res) {
-  // Find all of the assignments with the reminder id that was passed in
-    console.log(req.params.id);
+exports.selectedByReminder = function (req, res) {
+  console.log(req.params.id);
+
+  Assignment.find({reminderId: req.params.id}, function(err, assignments){
+    if(err){
+      console.log(err);
+    }
+    else{
+      console.log('assignment');
+      console.log(assignments);
+      res.json(assignments)
+    }
 
 
+  })
 
-    Assignment.findOneAndRemove({reminderId: req.params.id},  function(err, assignment){
+}
+
+exports.selectedByUser = function (req, res) {
+  console.log(req.params.id);
+
+  Assignment.find({userId: req.params.id, type: 'survey'})
+    .populate('surveyTemplateId')
+    .exec(function (err, assignments) {
       if(err){
+        console.log('err');
         console.log(err);
       }
       else{
-
-        res.send(assignment);
+        console.log('assignments');
+        console.log(assignments);
+        res.json(assignments);
       }
 
     })
+
+
+}
+
+
+
+
+
+// exports.reminderSelectedByUserId = function(req, res){
+//   console.log(req.params.id);
+//   Assignment.find({userId: req.params.id, type: 'reminder'})
+//   .populate('reminderId')
+//   .exec(function (err, assignments) {
+//     if(err){
+//       console.log(err);
+//     }
+//     else{
+//       console.log(assignments);
+//       res.json(assignments);
+//     }
+//   })
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+// exports.reminderSelectedByUserId = function(req, res){
+//   console.log(req.params.id);
+//   var dateNow = new Date();
+//
+//
+//   Assignment.find({userId: req.params.id, type: 'reminder'})
+//   .populate('reminderId')
+//   .exec(function (err, assignments) {
+//     if(err){
+//       console.log(err);
+//     }
+//     else{
+//       console.log("here");
+//       console.log(assignments);
+//       assignments.forEach(function(assignment){
+//         //wrong
+//         if(assignment.date > dateNow && assignment.repeat){
+//           console.log("mark 1");
+//         }
+//
+//
+//       })
+//       res.json(assignments);
+//     }
+//   })
+// }
+
+exports.completed = function (req, res) {
+  console.log("here completed");
+  console.log(req.params.id);
+  Assignment.update({_id: req.params.id}, {$set: {completed: true}}, function(err, obj){
+    if(err){
+      console.log("err");
+      console.log(err);
+      res.sendStatus(500);
+    }
+    else{
+      console.log(obj);
+      res.sendStatus(204);
+    }
+
+
+  })
+}
+
+exports.sent = function (req, res) {
+  console.log("here completed");
+  console.log(req.params.id);
+  Assignment.update({_id: req.params.id}, {$set: {sent: true}}, function(err, obj){
+    if(err){
+      console.log("err");
+      console.log(err);
+      res.sendStatus(500);
+    }
+    else{
+      console.log(obj);
+      res.sendStatus(204);
+    }
+
+
+  })
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+exports.removeByReminderId = function (req, res) {
+  // Find all of the assignments with the reminder id that was passed in
+  Assignment.find({reminderId: res.body}, function (err, assignments) {
+    // Go through all of the assignments
+    for (var i = 0; i < assignments.length; i++) {
+      var assignment = assignments[i];
+      // Remove the assignment
+      Assignment.findByIdAndRemove(assignment._id, function (err, assignment) {
+        // Do nothing in the callback
+      });
+    }
+  });
+  res.sendStatus(200);
 };
 
-
-exports.updateByReminderId = function (req, res) {
-  console.log(req.params.id);
-  console.log(req.body);
-
-  Assignment.findOneAndUpdate({reminderId: req.params.id}, {
-    repeat: req.body.repeat,
-    type: req.body.type,
-    days: req.body.days,
-    hour: req.body.hour,
-    minute: req.body.minute,
-    userId: req.body.userId,
-    reminderId: req.body.reminderId
-
-  }, {new: true},function(err, assignment){
-    if(err){
-      console.log(err);
-    }
-    else{
-      console.log("after" + assignment);
-      Assignment.populate(assignment,{path:'reminderId', model: 'Reminder' }, function(err, info){
-        if(err){
-          console.log(err);
-        }
-        else{
-          console.log("pop");
-          console.log(info);
-          res.send(info);
-        }
-      })
-    }
-  })
-}
-
-
-
-
-
-
-
-
-
-exports.selectedByUserId = function (req, res) {
-  console.log(req.params.id);
-  Assignment.find({userId: req.params.id, type: 'survey'})
-  .populate('surveyTemplateId')
-  .populate('userId')
-  .exec(function(err, assignments) {
-
-
-    if(err){
-      console.log(err);
-    }
-    else{
-      console.log(assignments);
-      res.json(assignments);
-    }
-
-  });
-
-
-}
-
-
-exports.reminderSelectedByUserId = function(req, res){
-  console.log(req.params.id);
-  Assignment.find({userId: req.params.id, type: 'reminder'})
-  .populate('reminderId')
-  .exec(function (err, assignments) {
-    if(err){
-      console.log(err);
-    }
-    else{
-      console.log(assignments);
-      res.json(assignments);
-    }
-  })
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 exports.convosNow = function(req, res) {
+
+  var addDays = function(date, days){
+    var result = new Date(date);
+    result.setDate(result.getDate() + days);
+    console.log("date");
+    console.log(result);
+    return result;
+  }
+
   var now = new Date();
+  now.setMilliseconds('00');
+  console.log('now');
+  console.log(now);
+  var nextWeek = addDays(now,7)
+
+  var yearNow  = now.getFullYear();
+  var monthNow = now.getMonth();
+  var dateNow = now.getDate();
   var hoursNow = now.getHours();
   var minutesNow = now.getMinutes();
-  var dayNow = now.getDay();
+  console.log(monthNow);
+//TODO fix time on the month
+  var yearNext = nextWeek.getFullYear();
+  var monthNext = nextWeek.getMonth();
+  var dateNext= nextWeek.getDate();
+  var hoursNext = nextWeek.getHours();
+  var minutesNext = nextWeek.getMinutes();
 
-  Assignment.find({days: dayNow})
-       .where('hour').equals(hoursNow)
-       .where('minute').equals(minutesNow)
+  // console.log(yearNow);
+  // console.log(monthNow);
+  // console.log(dateNow);
+  // console.log(hoursNow);
+  // console.log(minutesNow);
+  //
+  // console.log(nextWeek);
+  // console.log(yearNext);
+  // console.log(monthNext);
+  // console.log(dateNext);
+  // console.log(hoursNext);
+  // console.log(minutesNext);
+
+
+  Assignment.find({year: yearNow, month: monthNow, date: dateNow})
+       .where('hours').equals(hoursNow)
+       .where('minutes').equals(minutesNow)
+       .where('completed').equals(false)
        .populate('userId')
        .populate('surveyTemplateId')
        .populate('reminderId')
@@ -174,26 +262,77 @@ exports.convosNow = function(req, res) {
          console.log('exec assignments/now');
          if(!err){
 
-          //  for(var i = 0; i <assignments.length; i++){
-          //    var questionsId = assignments[i].surveyTemplateId.questions;
-          //    for (var j = 0; j < questionsId.length; j++){
-          //      SurveyQuestion.findById(questionsId._id)
-          //    }
-          //
-          //  SurveyQuestion.findById
-
-
-           //ok now we need to get the questions
-
-           //res.send(assignments);
-
            //ok so first I need to iterate thru the assignments array
 
            //create a variable to store the trimmed data in
-           var convos = [];
+          var convos = [];
 
           for (var i = 0; i < assignments.length; i++) {
-            console.log(assignments[i]);
+
+            //only gets sent if bot is on
+
+
+            //TODO change ip
+            request({url: 'http://localhost:12557/api/assignment/sent/update/' +  assignments[i]._id, method:"PUT"}, function(err, response){
+              console.log("sweet 2");
+              if(err){
+                console.log("error");
+                console.log(err);
+              }
+              else{
+                console.log('response');
+                console.log(response.statusCode);
+              }
+            })
+
+            //Creating a new assignment if repeat === true
+            if(assignments[i].repeat && assignments[i].type === "reminder"){
+              console.log('in create');
+
+                var reminderUserAssign = {
+                  repeat: assignments[i].repeat,
+                  specificDate: nextWeek,
+                  year: yearNext,
+                  month: monthNext,
+                  date: dateNext,
+                  hours: hoursNext,
+                  minutes: minutesNext,
+                  userId: assignments[i].userId._id,
+                  reminderId: assignments[i].reminderId._id,
+                  type: 'reminder'
+                }
+                console.log(reminderUserAssign);
+
+                console.log("Im heading out");
+                //TODO change ip
+                request({url: 'http://localhost:12557/api/assignment/create', method: "POST", headers: {"content-type": "application/json"}, json: reminderUserAssign}, function (err, response, body) {
+                  console.log("sweet");
+                  if(err){
+                    console.log("ERROR");
+                    console.log(err);
+                  }
+                  else {
+                    console.log('response');
+                    console.log(response.statusCode);
+                  }
+                });
+            }
+
+            //updating assignment to be completed
+            //TODO change ip
+            request({url: 'http://localhost:12557/api/assignment/completed/update/'+  assignments[i]._id, method:"PUT"}, function(err, response){
+              console.log("sweet 2");
+              if(err){
+                console.log("error");
+                console.log(err);
+              }
+              else{
+                console.log('response');
+                console.log(response.statusCode);
+              }
+            })
+
+            //console.log(assignments[i]);
             var convo = new Object;
             convo.assignmentId = assignments[i]._id;
 

@@ -11,6 +11,7 @@ var app;
                 this.response = "";
                 this.days = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'];
                 this.selectedDays = [];
+                this.repeat = false;
                 this.author = this.userService.get();
                 if (this.author.role == "coach") {
                     this.author = this.author.id;
@@ -65,10 +66,12 @@ var app;
             ReminderController.prototype.close = function () {
                 this.$mdDialog.cancel();
             };
+
+
             ReminderController.prototype.save = function () {
                 //console.log("r" + this.selected);
                 //console.log("hello select: " +this.selected.responses);
-                console.log(this.time);
+                //console.log(this.time);
                 var dates = {
                     monday: false,
                     tuesday: false,
@@ -82,6 +85,21 @@ var app;
                 var days = [];
                 var hour = this.time.getHours();
                 var minute = this.time.getMinutes();
+                var day = this.time.getDay();
+                console.log(this.time);
+                console.log(day);
+
+                var dateToday = new Date();
+                dateToday.setHours(hour);
+                dateToday.setMinutes(minute);
+                dateToday.setSeconds('00');
+                //dateToday.set
+                console.log("today date")
+
+                console.log(dateToday);
+
+
+
 
 
                 if (this.selectedDays.indexOf('Sun') != -1) {
@@ -112,14 +130,14 @@ var app;
                     dates.saturday = true;
                     days.splice(this.days.length,0,6);
                 }
-                var reminder = {
+                var object = {
                     _id: this._id,
                     title: this.reminder,
                     days: days,
-
+                    repeat: this.repeat,
                     // Will this be set to server time or user's local time?
                     //toLocaleTimeString(),
-                    timeOfDay: this.time,
+                    timeOfDay: dateToday,
                     hour: hour,
                     minute: minute,
                     selectedDates: this.selectedDays,
@@ -129,13 +147,14 @@ var app;
                     responses: this.responses
 
                 };
-
+                console.log(this.time);
                 console.log('check time');
-                console.log(reminder.timeOfDay);
+                console.log(object.timeOfDay);
                 console.log('check assingee');
-                console.log(reminder);
+                console.log(object);
+
                 //console.log(reminder);
-                this.$mdDialog.hide(reminder);
+                this.$mdDialog.hide(object);
             };
             ReminderController.$inject = ['$mdDialog', 'userService', 'selected'];
             return ReminderController;

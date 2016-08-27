@@ -22,11 +22,11 @@
        <md-toolbar class="md-table-toolbar">
 
          <div class = "md-toolbar-tools">
-           <md-switch ng-model="vm.switch" flex = "10" aria-label="Rostr/Survey View" class="md-primary">
+           <md-switch ng-model="vm.switch" flex = "10" aria-label="Rostr/Survey View" class="md-primary" ng-change = "vm.getSurveys()">
              <p ng-if = "!vm.switch">
                Roster
              </p>
-             <p ng-if = "vm.switch">
+             <p ng-if = "vm.switch" >
                Survey
              </p>
            </md-switch>
@@ -97,8 +97,8 @@
 
 
            <md-input-container flex = "15" ng-show = 'vm.switch'>
-             <md-select  ng-model = "vm.selectedDataSurvey" ng-blur = "vm.updateTable()"  style="margin: 5px;" aria-label = "UDOP" placeholder = "Select Survey" class="md-primary">
-               <md-option ng-repeat = "s in vm.user.surveyTemplates" ng-value = "s">
+             <md-select  ng-model = "vm.selectedDataSurvey" ng-change = "vm.updateTable()"  style="margin: 5px;" aria-label = "UDOP" placeholder = "Select Survey" class="md-primary">
+               <md-option ng-repeat = "s in vm.surveyTemplates" ng-value = "s">
                  {{s.title}}
                </md-option>
                <md-option ng-value ="vm.coach">

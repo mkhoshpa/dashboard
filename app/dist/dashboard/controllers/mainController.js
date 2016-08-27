@@ -29,7 +29,7 @@ var app;
                 this.convoSurveyResponse = [];
                 this.convoReminderResponse = [];
 
-
+                this.surveyTemplates = [];
                 //Survey stuff
                 this.questions1 = [
                  {
@@ -51,7 +51,7 @@ var app;
                 this.selectSurveyUser = [];
 
                 //pipelineStage array
-                this.pipelineOptions = [{type: "lead"}, {type: "trail"}, {type: "active-client"}, {type: "previous-client"},{type: "archived"},{type: "NA"} ];
+                this.pipelineOptions = [{type: "lead"}, {type: "trial"}, {type: "active-client"}, {type: "previous-client"},{type: "archived"},{type: "NA"} ];
 
                 var self = this;
                 this.user = this.userService.get();
@@ -67,6 +67,9 @@ var app;
                 self.userService.selectedUser = self.selected;
                 userSelected = self.userService.selectedUser;
                 scope = $scope;
+
+                //TODO - confirm that this is stuff for autoscroll
+
                 this.scope = $scope;
                 this.anchorScroll = $anchorScroll;
                 this.timeout = $timeout;
@@ -102,8 +105,10 @@ var app;
 
             //create a different controller
 
-            //TODO confirm this actually does something
 
+            MainController.prototype.testing = function () {
+              console.log(this.changeSurvey);
+            }
 
             MainController.prototype.setFormScope = function (scope) {
                 this.formScope = scope;
@@ -120,13 +125,26 @@ var app;
                 questions:null,
                 type:null
               };
-              //does both anthor for newSurvey and changeSurvey
+              //does both for newSurvey and changeSurvey
               survey.questions.push(question);
 
               console.log(survey.questions);
               self.openToast("Added Question");
             }
 
+            MainController.prototype.removeQuestion = function (index, survey) {
+                var _this = this;
+                var self = this;
+                console.log("here");
+                console.log(survey);
+                //does both remove for newSurvey and changeSurvey
+                if(index > -1){
+                    survey.questions.splice(index, 1);
+                }
+
+                console.log(survey.questions);
+                self.openToast("Removed Question");
+            }
 
 
 
@@ -193,9 +211,26 @@ var app;
                 self.openToast("Removed Question");
               }
 
+            MainController.prototype.cancelChangeSurvey = function(){
+              var _this = this;
+              var self = this;
+              //need to refresh the page
+              this.changeSurvey = "new";
+              self.openToast("Editing Cancel");
+            }
 
-
-
+            MainController.prototype.getSurveys = function(){
+              var _this = this;
+              var self = this;
+              console.log("surveys");
+              console.log(_this.surveyTemplates);
+              _this.surveyTemplates = [];
+              _this.$http.get('/api/surveyTemplate/selectedUser/'+ this.user._id).then(function successCallback(response) {
+                console.log(response);
+                _this.surveyTemplates = response.data;
+                console.log(_this.surveyTemplates);
+              })
+            }
 
               MainController.prototype.saveSurvey = function($event){
                 var _this = this;
@@ -205,10 +240,8 @@ var app;
 
                 _this.$http.post('/api/surveyTemplate/create', this.newSurvey).then(function successCallback(response) {
                   console.log(response);
-                  _this.$http.post('/api/user/surveyTemplate/add/'+ this.user._id, response.data).then(function(response2){
-                    console.log(response2.data);
-                    this.user.surveyTemplates.push(response.data);
-                  })
+                  _this.surveyTemplates.push(response.data);
+
                 });
 
                 this.newSurvey = {
@@ -277,6 +310,70 @@ var app;
               };
               ;
 
+              MainController.prototype.getSurveyResponses = function () {
+                console.log("get survey");
+                var _this = this;
+                var self = this;
+                console.log("Here");
+
+                _this.$http.get('/api/assignment/survey/user/' + this.selected._id).then( function (response) {
+                  console.log(response);
+                  response.data.forEach(function (assignment) {
+                    _this.$http.get('/api/response/selectedAssignment/' + assignment._id).then(function (response1) {
+                      console.log(response1);
+                      if(response1.data.length > 0){
+                        var time = new Date(assignment.specificDate);
+
+                        var info = {
+                          ass: assignment,
+                          date:time,
+                          res: response1.data[0]
+                        }
+                        _this.convoSurveyResponse.push(info)
+                      }
+                      else{
+                        var time = new Date(assignment.specificDate);
+                        var info = {
+                          ass: assignment,
+                          date: time,
+                          res: []
+                        }
+                        _this.convoSurveyResponse.push(info)
+                      }
+                      console.log(_this.convoSurveyResponse);
+
+                    })
+                  })
+
+
+
+                });
+
+
+
+
+
+
+
+
+
+
+
+
+              }
+
+
+
+
+
+
+
+
+
+
+
+
+
               MainController.prototype.sendOutSurvey = function ($event) {
                 console.log("here");
                 var _this = this;
@@ -295,103 +392,115 @@ var app;
                       selected: null
                     }
                 }).then(function (surveyInfo) {
-                  console.log("this is where the survey would be sent to a single person for the time being");
-                  console.log();
-                  console.log('The times to receive this survey is: ');
+
                   console.log(surveyInfo);
-                  console.log('this.selectedSurvey is: ');
-                  console.log(_this.selectedSurvey);
-                  _this.selectedSurvey.daysOfTheWeek = {};
-                  _this.selectedSurvey.selectedDays = surveyInfo.selectedDays;
-                  _this.selectedSurvey.days = [];
-                  if (_this._.contains(_this.selectedSurvey.selectedDays, 'Sun')) {
-                    _this.selectedSurvey.daysOfTheWeek.sunday = true;
-                    _this.selectedSurvey.days.push(0);
+                  var date = new Date();
+                  var today = date.getDay();
+                  for(var i = 0; i < _this.selectSurveyUser.length; i++){
+                    console.log('users');
+                    console.log(_this.selectSurveyUser[i]);
+                    surveyInfo.days.forEach(function(daysOfTheWeek){
+
+                      if(today < daysOfTheWeek){
+                        console.log("<");
+                        var day = daysOfTheWeek - today;
+                        var specificDate = _this.addDays(surveyInfo.timeOfDay, day);
+                        console.log(specificDate);
+                      }
+                      else if(today > daysOfTheWeek){
+                        console.log(">");
+                        var day =  7 - (today - daysOfTheWeek) ;
+                        var specificDate = _this.addDays(surveyInfo.timeOfDay, day);
+                        console.log(specificDate);
+                      }
+                      else if (today === daysOfTheWeek){
+                        console.log("=");
+                        console.log("date");
+                        console.log(date.getHours());
+                        console.log("spec");
+                        console.log(surveyInfo.timeOfDay.getHours());
+                        if(date.getHours() > surveyInfo.timeOfDay.getHours()){
+                          console.log("date > timeOfDay");
+                          var specificDate = _this.addDays(surveyInfo.timeOfDay, 7);
+                          console.log(specificDate);
+                        }
+                        else{
+                          // same hour goes off next week
+                          console.log("date < timeOfDay");
+                          var specificDate = surveyInfo.timeOfDay;
+                          console.log(specificDate);
+                        }
+
+                      }
+                        var surveyUserAssign = {
+                         repeat: surveyInfo.repeat,
+                         specificDate: specificDate,
+                         year: specificDate.getFullYear(),
+                         month: specificDate.getMonth(),
+                         date: specificDate.getDate(),
+                         hours: specificDate.getHours(),
+                         minutes: specificDate.getMinutes(),
+                         userId:  _this.selectSurveyUser[i]._id,
+                         surveyTemplateId: _this.selectedSurvey._id,
+                         type: 'survey'
+                       };
+                       console.log(surveyUserAssign);
+                       _this.$http.post('/api/assignment/create' , surveyUserAssign).then(function (response){
+                           console.log("this sungun worked" + JSON.stringify(response.data));
+                      });
+                    })
+
+
                   }
-                  if (_this._.contains(_this.selectedSurvey.selectedDays, 'Mon')) {
-                    _this.selectedSurvey.daysOfTheWeek.monday = true;
-                    _this.selectedSurvey.days.push(1);
-                  }
-                  if (_this._.contains(_this.selectedSurvey.selectedDays, 'Tues')) {
-                    _this.selectedSurvey.daysOfTheWeek.tuesday = true;
-                    _this.selectedSurvey.days.push(2);
-                  }
-                  if (_this._.contains(_this.selectedSurvey.selectedDays, 'Wed')) {
-                    _this.selectedSurvey.daysOfTheWeek.wednesday = true;
-                    _this.selectedSurvey.days.push(3);
-                  }
-                  if (_this._.contains(_this.selectedSurvey.selectedDays, 'Thurs')) {
-                    _this.selectedSurvey.daysOfTheWeek.thursday = true;
-                    _this.selectedSurvey.days.push(4);
-                  }
-                  if (_this._.contains(_this.selectedSurvey.selectedDays, 'Fri')) {
-                    _this.selectedSurvey.daysOfTheWeek.friday = true;
-                    _this.selectedSurvey.days.push(5);
-                  }
-                  if (_this._.contains(_this.selectedSurvey.selectedDays, 'Sat')) {
-                    _this.selectedSurvey.daysOfTheWeek.saturday = true;
-                    _this.selectedSurvey.days.push(6);
-                  }
-                  _this.selectedSurvey.timeOfDay = surveyInfo.time;
-                  _this.selectedSurvey.hour = _this.selectedSurvey.timeOfDay.getHours();
-                  _this.selectedSurvey.minute = _this.selectedSurvey.timeOfDay.getMinutes();
-                  _this.selectedSurvey.repeat = surveyInfo.repeat;
-                  _this.selectedSurvey.selectedUsers = [];
-                  for (var i = 0; i < _this.selectSurveyUser.length; i++) {
-                    _this.selectedSurvey.selectedUsers.push(_this.selectSurveyUser[i]._id);
-                  }
-                  console.log();
-                  console.log(_this.selectedSurvey.selectedUsers);
-                  console.log();
 
-                  var clientTime = moment.tz({hour: self.selectedSurvey.timeOfDay.getHours(),
-                                           minute: self.selectedSurvey.timeOfDay.getMinutes()}, self.selected.timezone);
-                  // Get the server's timezone
-                  var req = new XMLHttpRequest();
-                  req.open('HEAD', document.location, false);
-                  req.send(null);
-                  var serverTimezone = req.getResponseHeader('x-server-timezone');
 
-                 // Do the timezone conversion
-                 var serverTime = clientTime.clone().tz(serverTimezone);
+                });
 
-                  var updatedSurvey = {
 
-                    repeat: self.selectedSurvey.repeat,
-                    days: self.selectedSurvey.days,
 
-                      //maybe this works better
-                      // hour: serverTime.hour(),
-                      // minute: serverTime.minute()
-                    hour: self.selectedSurvey.timeOfDay.getHours(),
-                    minute: self.selectedSurvey.timeOfDay.getMinutes()
-                  };
 
-                  // For all of the users that were assigned a survey
 
-                  //this is making me nervous
-                  for (var i = 0; i < _this.selectedSurvey.selectedUsers.length; i++) {
 
-                    var surveyUserAssign = {
-                      repeat: updatedSurvey.repeat,
-                      days: updatedSurvey.days,
-                      hour: updatedSurvey.hour,
-                      minute: updatedSurvey.minute,
-                      userId: _this.selectedSurvey.selectedUsers[i],
-                      surveyTemplateId: _this.selectedSurvey._id,
-                      type: "survey"
-                    }
-                    // POST the selectedSurvey to the user
 
-                    console.log("survey if " + surveyUserAssign.surveyTemplateId);
-                    console.log("user id" + surveyUserAssign.userId);
-
-                    //first make a object that can be turned into a object on the back end
-
-                    self.$http.post('/api/assignment/create' , surveyUserAssign).then(function (response){
-                      console.log("this sungun worked" + JSON.stringify(response.data));
-                    });
-                  }});
+                  // for (var i = 0; i < _this.selectSurveyUser.length; i++) {
+                  //   _this.selectedSurvey.selectedUsers.push(_this.selectSurveyUser[i]._id);
+                  // }
+                  // console.log();
+                  // console.log(_this.selectedSurvey.selectedUsers);
+                  // console.log();
+                  // var updatedSurvey = {
+                  //
+                  //   repeat: self.selectedSurvey.repeat,
+                  //   days: self.selectedSurvey.days,
+                  //   hour: self.selectedSurvey.timeOfDay.getHours(),
+                  //   minute: self.selectedSurvey.timeOfDay.getMinutes()
+                  // };
+                  //
+                  // // For all of the users that were assigned a survey
+                  //
+                  // //this is making me nervous
+                  // for (var i = 0; i < _this.selectedSurvey.selectedUsers.length; i++) {
+                  //
+                  //   var surveyUserAssign = {
+                  //     repeat: updatedSurvey.repeat,
+                  //     days: updatedSurvey.days,
+                  //     hour: updatedSurvey.hour,
+                  //     minute: updatedSurvey.minute,
+                  //     userId: _this.selectedSurvey.selectedUsers[i],
+                  //     surveyTemplateId: _this.selectedSurvey._id,
+                  //     type: "survey"
+                  //   }
+                  //   // POST the selectedSurvey to the user
+                  //
+                  //   console.log("survey if " + surveyUserAssign.surveyTemplateId);
+                  //   console.log("user id" + surveyUserAssign.userId);
+                  //
+                  //   //first make a object that can be turned into a object on the back end
+                  //
+                  //   self.$http.post('/api/assignment/create' , surveyUserAssign).then(function (response){
+                  //     console.log("this sungun worked" + JSON.stringify(response.data));
+                  //   });
+                  //}});
 
 
 
@@ -714,6 +823,90 @@ var app;
             };
 
 
+
+            MainController.prototype.addDays = function(date, days){
+              var result = new Date(date);
+              result.setDate(result.getDate() + days);
+              return result;
+            }
+
+            MainController.prototype.getRemindersResponses = function () {
+              var _this = this;
+
+
+
+              _this.convoReminderResponse = [];
+              console.log("Get Reminder");
+
+              _this.$http.get('/api/reminder/selectedUser/' + this.selected._id).then(function(response){
+                console.log(response.data);
+
+                response.data.forEach(function (reminder) {
+                  var content = [];
+                  var fullcontent = {};
+
+
+                  _this.$http.get('/api/assignment/selectedReminder/' + reminder._id).then(function(response1){
+                    console.log("sadasdasd");
+                    console.log(response1);
+
+
+                    var content = [];
+                    response1.data.forEach(function (assignment) {
+                      console.log(assignment);
+
+                      _this.$http.get('/api/response/selectedAssignment/' + assignment._id).then(function (response2) {
+                        console.log(response2);
+
+                          if(response2.data.length === 0){
+                            console.log("nope res");
+                            var date = new Date(assignment.specificDate);
+                            console.log(date);
+                            var rA = {
+                              ass: assignment,
+                              time: date.toLocaleString('en-CAN')
+                            }
+                            content.push(rA);
+                          }
+                          else {
+                            console.log("yes");
+                            var date = new Date(assignment.specificDate);
+                            console.log(date);
+
+                            var rA = {
+                              ass: assignment,
+                              time: date.toLocaleString('en-CAN'),
+                              res: response2.data[0]
+                            }
+                            content.push(rA);
+                          }
+
+                      })
+                    })
+                      fullcontent = {
+                        reminder: reminder,
+                        contentArray: content
+                      }
+                      console.log('fullcontent');
+                      console.log(fullcontent);
+
+                      _this.convoReminderResponse.push(fullcontent);
+                      console.log('convoReminderResponse');
+                      console.log(_this.convoReminderResponse);
+
+
+
+
+                  })
+
+                })
+
+              })
+
+
+            }
+
+
             MainController.prototype.addReminder = function ($event) {
                 var _this = this;
                 var self = this;
@@ -730,39 +923,83 @@ var app;
                     locals: {
                         selected: null
                     }
-                }).then(function (reminder) {
-                    console.log(reminder);
+                }).then(function (object) {
+                    console.log(object);
                     // First step, create the reminder and save it on the db
+                    var reminder = {
+                      _id: object._id,
+                      title: object.title,
+                      days: object.days,
+                      hour: object.hour,
+                      minute: object.minute,
+                      creationDate: new Date(),
+                      selectedDates: object.selectedDays,
+                      daysOfTheWeek: object.dates,
+                      author: object.author,
+                      assignee: object.assignee
+                    }
+                    console.log(reminder);
+
+                    var date = new Date();
+                    var today = date.getDay();
+                    console.log("timeOfDay");
+                    console.log(object.timeOfDay);
+                    console.log("date");
+                    console.log(date);
+
                     _this.$http.post('/api/reminder/create', reminder).then(function successCallback(response) {
-                        // Add the reminder to the reminders array
-                        console.log("creating assignment");
-                        _this.reminders.push(response.data);
-                        console.log(response.data);
+                        console.log("im a reminder");
 
-                        // Convert the time for the reminder from the client's timezone into UTC
-                        var clientTime = moment.tz({hour: response.data.hour, minute: response.data.minute}, self.selected.timezone);
+                        response.data.days.forEach(function(daysOfTheWeek){
+                          console.log(daysOfTheWeek);
 
-                        // Get the server's timezone
-                        var req = new XMLHttpRequest();
-                        req.open('HEAD', document.location, false);
-                        req.send(null);
-                        var serverTimezone = req.getResponseHeader('x-server-timezone');
+                          if(today < daysOfTheWeek){
+                            console.log("<");
+                            var day = daysOfTheWeek - today;
+                            var specificDate = _this.addDays(object.timeOfDay, day);
+                            console.log(specificDate);
+                          }
+                          else if(today > daysOfTheWeek){
+                            console.log(">");
+                            var day =  7 - (today - daysOfTheWeek) ;
+                            var specificDate = _this.addDays(object.timeOfDay, day);
+                            console.log(specificDate);
+                          }
+                          else if (today === daysOfTheWeek){
+                            console.log("=");
+                            console.log("date");
+                            console.log(date.getHours());
+                            console.log("spec");
+                            console.log(object.timeOfDay.getHours());
+                            if(date.getHours() > object.timeOfDay.getHours()){
+                              console.log("date > timeOfDay");
+                              var specificDate = _this.addDays(object.timeOfDay, 7);
+                              console.log(specificDate);
+                            }
+                            else{
+                              // same hour goes off next week
+                              console.log("date < timeOfDay");
+                              var specificDate = object.timeOfDay;
+                              console.log(specificDate);
+                            }
 
-                        // Do the timezone conversion
-                        var serverTime = clientTime.clone().tz(serverTimezone);
+                          }
+                             var reminderUserAssign = {
+                              repeat: object.repeat,
+                              specificDate: specificDate,
+                              year: specificDate.getFullYear(),
+                              month: specificDate.getMonth(),
+                              date: specificDate.getDate(),
+                              hours: specificDate.getHours(),
+                              minutes: specificDate.getMinutes(),
+                              userId: response.data.assignee,
+                              reminderId: response.data._id,
+                              type: 'reminder'
+                            };
 
-                        // Create the assignment object
-                        var reminderUserAssign = {
-                          repeat: true,
-                          days: reminder.days,
-                          hour: serverTime.hour(),
-                          minute: serverTime.minute(),
-                          userId: response.data.assignee,
-                          reminderId: response.data._id,
-                          type: 'reminder' // Default is reminder but there's no harm in specifying it here
-                        };
-                        // Call sendOutReminder
-                        _this.sendOutReminder(reminderUserAssign);
+                            _this.sendOutReminder(reminderUserAssign);
+
+                        });
 
                     });
 
@@ -779,14 +1016,14 @@ var app;
               console.log(reminderUserAssign);
               this.$http.post('/api/assignment/create', reminderUserAssign).then(function (response) {
                 console.log('Frontend works' + JSON.stringify(response.data));
+                // var rA = {
+                //   info: response.data,
+                //   res: []
+                // }
+                // console.log(_this.convoReminderResponse);
+                // _this.convoReminderResponse.push(rA);
+                // console.log(_this.convoReminderResponse);
 
-                var rA = {
-                  info: response.data,
-                  res: []
-                }
-                console.log(_this.convoReminderResponse);
-                _this.convoReminderResponse.push(rA);
-                console.log(_this.convoReminderResponse);
 
 
               });
@@ -801,196 +1038,58 @@ var app;
                   return true;
                 }
               }
-              // If the user's id doesn't match any of the messages' sentTo or sentFrom, return false
+              // If the user's id doesn't match any of the reminder's assignee, return false
               return false;
             };
 
             MainController.prototype.getMessages = function () {
+                var _this = this;
+                console.log('Getting messages');
+                _this.$http.get('/api/message/list').then(function (response) {
+                    _this.messages = response.data;
+                    console.log(response.data);
+                    console.log(_this.messages);
+                    //_this.lastMessageIndex = _this.messages.length - 1;
+                    _this.lastMessageIndex = 3;
+                });
+            };
+
+            MainController.prototype.hasReminders = function (user) {
+                // Go through all of the reminders
+                for (var i = 0; i < this.reminders.length; i++) {
+                    // If the user's id matches any of the reminder's assignee
+                    if (this.reminders[i].assignee === user._id) {
+                        // The user has a reminder, so return true
+                        return true;
+                    }
+                }
+                // If the user's id doesn't match any of the reminder's assignee, return false
+                return false;
+            };
+
+            MainController.prototype.getReminders = function () {
               var _this = this;
-              console.log('Getting messages');
-              _this.$http.get('/api/message/list').then(function (response) {
-                _this.messages = response.data;
+              console.log('Getting reminders');
+              _this.$http.get('/api/reminder/list').then(function (response) {
+                _this.reminders = response.data;
                 console.log(response.data);
-                console.log(_this.messages);
-                //_this.lastMessageIndex = _this.messages.length - 1;
-                _this.lastMessageIndex = 3;
               });
             };
 
-            MainController.prototype.getReminderResponses = function () {
+            MainController.prototype.getResponses = function () {
               var _this = this;
-
-              _this.convoReminderResponse = [];
-              console.log("Get Reminder");
-              _this.$http.get('/api/assignment/reminder/selectedUser/' + this.selected._id).then(function(response){
-                _this.reminders = response.data;
-
-                response.data.forEach(function (assignment) {
-                    _this.$http.get('/api/responses/selectedAssignment/' + assignment._id).then(function(response1){
-                      console.log("sadasdasd");
-                      console.log(response1);
-                      if(response1.data.length === 0){
-                        console.log("nope res");
-
-                        var rA = {
-                          info: assignment,
-                          res: []
-                        }
-                        _this.convoReminderResponse.push(rA)
-                          console.log(_this.convoReminderResponse);
-                      }
-                      else{
-                        response1.data.forEach(function(re){
-                          var s = re.timeStamp.substring(11, 16);
-                          console.log(s);
-                          re.timeStamp = s;
-                        })
-                        console.log('yeah');
-                        var rA = {
-                          info: assignment,
-                          res: response1.data
-                        }
-                        _this.convoReminderResponse.push(rA)
-                          console.log(_this.convoReminderResponse);
-                      }
-                    })
-                })
-
-              })
-
-
-            }
-
-
-
-
-
-
-
-
-
-
-
-            MainController.prototype.removeReminder = function ($event, reminder, index) {
-                var _this = this;
-                console.log(index);
-                console.log(reminder);
-                var confirm = this.$mdDialog.confirm()
-                    .textContent('Are you sure you want to remove this reminder?')
-                    .ariaLabel('Remove')
-                    .targetEvent($event)
-                    .ok('Yes')
-                    .cancel('No');
-                var self = this;
-                this.$mdDialog.show(confirm).then(function (result) {
-                    console.log(reminder);
-                    if (result) {
-                        console.log('removing reminder id: ' + reminder._id);
-                        _this.$http.post('/api/reminder/remove/' + reminder._id, reminder)
-                            .then(function successCallback(success) {
-                            if (success) {
-                                console.log(reminder._id);
-                                _this.$http.post('/api/assignment/reminderId/remove/'+ reminder._id).then(function (success) {
-                                  console.log(success);
-                                });
-                                console.log(success);
-                                self.deleteReminder(index);
-                            }
-                            else {
-                            }
-                        });
-                    }
-                    else {
-                    }
-                    self.openToast("Reminder Removed.");
-                });
-            };
-
-            MainController.prototype.editReminder = function ($event, reminder) {
-                var _this = this;
-                console.log('main controller edit reminder');
-                console.log(reminder);
-                var self = this;
-                var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
-                this.$mdDialog.show({
-                    templateUrl: './dist/view/dashboard/reminders/modal.html',
-                    parent: angular.element(document.body),
-                    targetEvent: $event,
-                    controller: dashboard.ReminderController,
-                    controllerAs: "ctrl",
-                    clickOutsideToClose: true,
-                    fullscreen: useFullScreen,
-                    locals: {
-                        selected: reminder
-
-                    }
-                }).then(function (reminder) {
-                    console.log(reminder);
-
-
-
-                    // Post request, and push onto users local list of reminders
-                    // this.$http.post('uri').then((response) => response.data)
-                    // after promise is succesful add to
-                    // // reminder.assigne.reminders.push()
-                    _this.$http.post('/api/reminder/update/' + reminder._id, reminder).then(function successCallback(reminder) {
-                        console.log('returned junk: ' + JSON.stringify(reminder.data));
-                        //  self.selected.reminders.push(response.data);
-
-                        // Convert the time for the reminder from the client's timezone into UTC
-                        var clientTime = moment.tz({hour: reminder.data.hour, minute: reminder.data.minute}, self.selected.timezone);
-
-                        // Get the server's timezone
-                        var req = new XMLHttpRequest();
-                        req.open('HEAD', document.location, false);
-                        req.send(null);
-                        var serverTimezone = req.getResponseHeader('x-server-timezone');
-
-                        // Do the timezone conversion
-                        var serverTime = clientTime.clone().tz(serverTimezone);
-
-                        var reminderUserAssign = {
-                          repeat: true,
-                          days: reminder.data.days,
-                          hour: serverTime.hour(),
-                          minute: serverTime.minute(),
-                          userId: reminder.data.assignee,
-                          reminderId: reminder.data._id,
-                          type: 'reminder'
-                        };
-                        console.log(reminderUserAssign);
-
-
-
-                        _this.$http.post('/api/assignment/reminder/update/' + reminder.data._id, reminderUserAssign).then(function (response) {
-                          console.log("sadasd");
-                          console.log(response.data);
-                          console.log(_this.convoReminderResponse);
-                          console.log(index);
-                          console.log(_this.convoReminderResponse[index]);
-
-
-                          var rA = {
-                            info: response.data,
-                            res: _this.convoReminderResponse[index].res
-                          }
-                          _this.convoReminderResponse.splice(index, 1, rA)
-                           self.openToast("Reminder Edited");
-
-
-                        })
-
-                    });
-                }, function () {
-                    console.log('You cancelled the dialog.');
-                });
+              console.log('Getting responses');
+              this.$http.get('/api/response/list').then(function (response) {
+                _this.responses = response.data;
+                console.log(response.data);
+              });
             };
 
             MainController.prototype.addNote = function ($event) {
 
               var _this = this;
               var self = this;
-              console.log(this.convoSurveyResponse);
+              console.log(this);
               var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
               this.$mdDialog.show({
                   templateUrl: './dist/view/dashboard/notes/noteModal.html',
@@ -1019,7 +1118,123 @@ var app;
               });
             };
 
+            MainController.prototype.editReminder = function ($event, reminder) {
+                var _this = this;
+                console.log('main controller edit reminder');
+                console.log(reminder);
+                var self = this;
+                var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
+                this.$mdDialog.show({
+                    templateUrl: './dist/view/dashboard/reminders/modal.html',
+                    parent: angular.element(document.body),
+                    targetEvent: $event,
+                    controller: dashboard.ReminderController,
+                    controllerAs: "ctrl",
+                    clickOutsideToClose: true,
+                    fullscreen: useFullScreen,
+                    locals: {
+                        selected: reminder
+                    }
+                }).then(function (reminder) {
+                    console.log(reminder.responses);
+                    console.log(userSelected);
 
+                    // Post request, and push onto users local list of reminders
+                    // this.$http.post('uri').then((response) => response.data)
+                    // after promise is succesful add to
+                    // reminder.assigne.reminders.push()
+                    _this.$http.post('/api/reminder/update/' + reminder._id, reminder).then(function successCallback(reminder) {
+                        console.log('returned junk: ' + JSON.stringify(reminder.data));
+                        //  self.selected.reminders.push(response.data);
+                        if (self.updateReminder(reminder.data)) {
+                          // Create the assignment object
+                          var reminderUserAssign = {
+                            repeat: true,
+                            days: reminder.data.days,
+                            hour: reminder.data.hour,
+                            minute: reminder.data.minute,
+                            userId: reminder.data.assignee,
+                            reminderId: reminder.data._id,
+                            type: 'reminder'
+                          };
+                          // Call sendOutReminder
+                          _this.sendOutReminder(reminderUserAssign);
+                            /*if (reminder.data.parent.id) {
+                                var id = reminder.data.parent.id.slice(1, 25);
+                                self.updateReminderInSurvey(id, reminder.data);
+                            }*/
+                            self.openToast("Reminder Edited");
+                        }
+                        else {
+                            self.openToast("Reminder Not Found!");
+                        }
+                    });
+                }, function () {
+                    console.log('You cancelled the dialog.');
+                });
+            };
+            MainController.prototype.removeReminder = function ($event, reminder) {
+                var _this = this;
+                var confirm = this.$mdDialog.confirm()
+                    .textContent('Are you sure you want to remove this reminder?')
+                    .ariaLabel('Remove')
+                    .targetEvent($event)
+                    .ok('Yes')
+                    .cancel('No');
+                var self = this;
+                this.$mdDialog.show(confirm).then(function (result) {
+                    console.log(reminder);
+                    if (result) {
+                        console.log('removing reminder id: ' + reminder._id);
+                        _this.$http.post('/api/reminder/remove/' + reminder._id, reminder)
+                            .then(function successCallback(success) {
+                            if (success) {
+                                _this.$http.post('/api/assignment/removeByReminderId', reminder.id).then(function (success) {
+                                  console.log(success);
+                                });
+                                console.log(success);
+                                self.deleteReminder(reminder);
+                            }
+                            else {
+                            }
+                        });
+                    }
+                    else {
+                    }
+                    self.openToast("Reminder Removed.");
+                });
+            };
+
+            MainController.prototype.updateSurveyResponses = function (survey) {
+              console.log('Inside updateSurveyResponses');
+              console.log(userCoach);
+              for (var i = 0; i < userCoach.surveyTemplates.length; i++) {
+                if (survey._id == userCoach.surveyTemplates[i]._id) {
+                  userCoach.surveyTemplates[i] = survey;
+                }
+              }
+              scope.$apply();
+              console.log(survey);
+            };
+
+            MainController.prototype.updateReminder = function (reminder) {
+                console.log('Inside updateReminder');
+                console.log(reminder);
+                for (var i = 0; i < this.reminders.length; i++) {
+                    if (reminder._id == this.reminders[i]._id) {
+                        this.reminders[i] = reminder;
+                        console.log(this.reminders);
+                        console.log('Look ma, an update!');
+                        return true;
+                    }
+                }
+                return false;
+            };
+            MainController.prototype.deleteReminder = function (reminder) {
+                this.reminders = _.without(this.reminders, reminder);
+                /*var foundIndex = this.selected.reminders.indexOf(reminder);
+                this.selected.reminders.splice(foundIndex, 1);*/
+            };
             MainController.prototype.slackList = function () {
                 // var test = this.userService.slack().then((members: any) => {
                 //   console.log('here');
@@ -1040,20 +1255,20 @@ var app;
             //   this.selected.reminders.splice(foundIndex, 1);
             //   this.openToast("Reminder removed");
             // }
-            // MainController.prototype.clearReminders = function ($event) {
-            //     var confirm = this.$mdDialog.confirm()
-            //         .title('Are you sure you want to delete all reminders?')
-            //         .textContent('All reminders will be deleted, you can\'t undo this action.')
-            //         .ariaLabel('Delete all reminders')
-            //         .targetEvent($event)
-            //         .ok('Yes')
-            //         .cancel('No');
-            //     var self = this;
-            //     this.$mdDialog.show(confirm).then(function () {
-            //         self.selected.reminders = [];
-            //         self.openToast("Cleared reminders");
-            //     });
-            // };
+            MainController.prototype.clearReminders = function ($event) {
+                var confirm = this.$mdDialog.confirm()
+                    .title('Are you sure you want to delete all reminders?')
+                    .textContent('All reminders will be deleted, you can\'t undo this action.')
+                    .ariaLabel('Delete all reminders')
+                    .targetEvent($event)
+                    .ok('Yes')
+                    .cancel('No');
+                var self = this;
+                this.$mdDialog.show(confirm).then(function () {
+                    self.selected.reminders = [];
+                    self.openToast("Cleared reminders");
+                });
+            };
 
 
 
@@ -1104,7 +1319,10 @@ var app;
               console.log('this.selected: ' + JSON.stringify(this.selected));
               this.$http.post('/api/message/sendsms/', {'body': message, 'sentBy': this.selected.coaches[0], 'sentTo': this.selected.id}).then(function (response) {
                 console.log('response.data is ' + JSON.stringify(response.data));
-                _this.messages.push(response.data);
+                //console.log('_this.selected.messages is: ' + JSON.stringify(_this.selected.messages));
+                console.log(_this.selected.messages); // Why is this undefined?
+                _this.selected.messages.push(response.data);
+                console.log('self.selected is:' + JSON.stringify(_this.selected.messages));
               });
             };
 
@@ -1126,10 +1344,16 @@ var app;
             });
 
             MainController.prototype.receiveMessage = function (message) {
+              console.log('userSelected is: ' + JSON.stringify(userSelected));
               console.log('Message received from server');
               console.log(message);
-              scope.vm.messages.push(message);
-              scope.$apply();
+              //if (this.selected) {
+                if (userSelected._id === message.sentBy) {
+                  console.log('Message pushed.');
+                  userSelected.messages.push(message);
+                  scope.$apply();
+                }
+              //}
             };
 
             MainController.prototype.editNote = function($event, note){
@@ -1437,7 +1661,7 @@ HI Shane!                    console.log(survey);
                     clickedItem && console.log(clickedItem.name + ' clicked!');
                 });
             };
-            MainController.$inject = ['$scope', '$location', '$timeout', '$anchorScroll', 'userService', '$mdSidenav', '$mdBottomSheet',
+            MainController.$inject = ['$scope', 'userService', '$mdSidenav', '$mdBottomSheet',
                 '$mdToast', '$mdDialog', '$mdMedia', '$http'];
             return MainController;
         }());

@@ -2,7 +2,7 @@
   <md-toolbar md-whiteframe= "3">
     <div class = "md-toolbar-tools">
       <md-select ng-model = "vm.changeSurvey" placeholder = "Options" ng-blur = "vm.testing()">
-        <md-option ng-repeat = "s in vm.user.surveyTemplates" ng-value = "s">
+        <md-option ng-repeat = "s in vm.surveyTemplates" ng-value = "s">
           {{s.title}}
         </md-option>
         <md-option ng-value = "new">

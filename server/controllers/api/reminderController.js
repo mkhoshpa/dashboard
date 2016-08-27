@@ -113,3 +113,18 @@ exports.list = function(req, res) {
             }
           })
 }
+
+exports.selectedByUser = function (req, res) {
+  console.log(req.params.id);
+
+  Reminder.find({assignee: req.params.id}, function(err, reminders){
+    if(err){
+      console.log(err);
+    }
+    else{
+      console.log(reminders);
+      res.json(reminders)
+    }
+  })
+
+}

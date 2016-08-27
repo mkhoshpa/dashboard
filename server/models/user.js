@@ -39,7 +39,9 @@ var UserSchema = new Schema({
     team: {type: String},
     timezone: {type: String}
   },
-
+  reminders: [
+    {type: mongoose.Schema.Types.Object, ref: 'Reminder'}
+  ],
 
   surveyTemplates:[
     {type: mongoose.Schema.Types.Object, ref: 'SurveyTemplate'}

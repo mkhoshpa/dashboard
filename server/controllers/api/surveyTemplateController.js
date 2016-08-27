@@ -35,47 +35,86 @@ exports.update = function(req, res){
 
 }
 
+exports.selectedByUser = function (req, res) {
+  console.log('survey');
+  console.log(req.params.id);
 
+  SurveyTemplate.find({author: req.params.id}, function(err, obj){
 
-
-
-
-
-
-
-exports.create = function(req, res) {
-  console.log();
-  console.log('CREATING SURVEY');
-  //console.log(req.body);
-  console.log();
-
-  var surveyTemplate = new SurveyTemplate(req.body);
-  surveyTemplate.save(function(err, surveyTemplate) {
-    if(!err) {
-      console.log("this worked");
-      User.findByIdAndUpdate(
-        surveyTemplate.author,
-        // $addToSet works like $push but prevents duplicates
-        {$addToSet: {"surveyTemplates": surveyTemplate}},
-        {safe: true, new: true},
-        function(err, user) {
-          if(err) {
-            winston.error(err);
-          }
-          else {
-            console.log(surveyTemplate);
-            console.log('Printing user...');
-            console.log(user);
-          }
-        }
-      );
-    } else {
-      winston.error(err);
+    if(err){
+      console.log(err);
     }
-  });
+    else{
+      console.log(obj);
+      res.json(obj);
+    }
 
+  })
+
+}
+
+
+
+
+
+
+
+
+
+exports.create = function (req, res) {
   console.log();
-  console.log('SURVEY CREATED aJJJJJJJJJJJJJ');
-  console.log();
-  res.send(surveyTemplate);
-};
+  console.log("creating survey");
+  var surveyTemplate = new SurveyTemplate(req.body);
+  surveyTemplate.save(function (err, surveyTemplate) {
+    if(err){
+      console.log("err");
+      console.log(err);
+    }
+    else{
+      console.log(surveyTemplate);
+      res.send(surveyTemplate);
+    }
+
+
+  })
+}
+
+
+
+//
+// exports.create = function(req, res) {
+//   console.log();
+//   console.log('CREATING SURVEY');
+//   //console.log(req.body);
+//   console.log();
+//
+//   var surveyTemplate = new SurveyTemplate(req.body);
+//   surveyTemplate.save(function(err, surveyTemplate) {
+//     if(!err) {
+//       console.log("this worked");
+//       User.findByIdAndUpdate(
+//         surveyTemplate.author,
+//         // $addToSet works like $push but prevents duplicates
+//         {$addToSet: {"surveyTemplates": surveyTemplate}},
+//         {safe: true, new: true},
+//         function(err, user) {
+//           if(err) {
+//             winston.error(err);
+//           }
+//           else {
+//             console.log(surveyTemplate);
+//             console.log('Printing user...');
+//             console.log(user);
+//           }
+//         }
+//       );
+//     } else {
+//       winston.error(err);
+//     }
+//   });
+//
+//   console.log();
+//   console.log('SURVEY CREATED aJJJJJJJJJJJJJ');
+//   console.log();
+//   res.send(surveyTemplate);
+// };

@@ -30,7 +30,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"url\": \"http://107.170.21.178\"}"
+					"raw": "{\"url\": \"http:localhost\"}"
 				},
 				"description": ""
 			},
@@ -926,7 +926,7 @@
 				}
 			],
 			"request": {
-				"url": "http://localhost:7000/api/surveyTemplate/create",
+				"url": "http://localhost:12557/api/surveyTemplate/create",
 				"method": "POST",
 				"header": [
 					{
@@ -936,7 +936,7 @@
 					},
 					{
 						"key": "Origin",
-						"value": "http://localhost:7000",
+						"value": "http://localhost:12557",
 						"description": ""
 					},
 					{
@@ -956,7 +956,7 @@
 					},
 					{
 						"key": "Referer",
-						"value": "http://localhost:7000/dashboard",
+						"value": "http://localhost:12557/dashboard",
 						"description": ""
 					},
 					{
@@ -995,7 +995,7 @@
 				}
 			],
 			"request": {
-				"url": "http://localhost:7000/api/user/surveyTemplate/add/{{user_id}}",
+				"url": "http://localhost:12557/api/user/surveyTemplate/add/{{user_id}}",
 				"method": "POST",
 				"header": [
 					{
@@ -1005,7 +1005,7 @@
 					},
 					{
 						"key": "Origin",
-						"value": "http://localhost:7000",
+						"value": "http://localhost:12557",
 						"description": ""
 					},
 					{
@@ -1025,7 +1025,7 @@
 					},
 					{
 						"key": "Referer",
-						"value": "http://localhost:7000/dashboard",
+						"value": "http://localhost:12557/dashboard",
 						"description": ""
 					},
 					{
@@ -1087,7 +1087,7 @@
 				}
 			],
 			"request": {
-				"url": "localhost:3000/survey",
+				"url": "localhost:12557/survey",
 				"method": "POST",
 				"header": [
 					{
@@ -1116,7 +1116,7 @@
 				}
 			],
 			"request": {
-				"url": "localhost:3000/survey",
+				"url": "localhost:12557/survey",
 				"method": "POST",
 				"header": [
 					{

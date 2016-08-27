@@ -103,26 +103,7 @@ var app;
             //create a different controller
 
             //TODO confirm this actually does something
-            MainController.prototype.openSettings = function($event){
-              console.log("settings");
-              var useFullScreen = (this.$mdMedia('lg') || this.$mdMedia('xs'));
-              this.$mdDialog.show({
-                  templateUrl: './dist/view/dashboard/settings/settingsModal.html',
-                  parent: angular.element(document.body),
-                  targetEvent: $event,
-                  controller: dashboard.SettingsController,
-                  controllerAs: "ctrl",
-                  clickOutsideToClose: true,
-                  fullscreen: useFullScreen,
-                  locals: {
-                    selected: null
-                  }
-              }).then(function (surveyInfo) {
 
-                console.log("hey");
-              });
-
-             }
 
             MainController.prototype.setFormScope = function (scope) {
                 this.formScope = scope;

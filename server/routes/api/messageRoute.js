@@ -7,4 +7,5 @@ module.exports = function (app) {
   app.post('/api/message/sendsms/', message.sendSMS);
   app.get('/api/message/list', message.list);
 
+
 };

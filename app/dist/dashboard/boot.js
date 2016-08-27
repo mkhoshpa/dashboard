@@ -5,9 +5,23 @@ var app;
     (function (dashboard) {
         angular
             .module('dashboard', ['ngMaterial', 'ngMdIcons', 'ngMessages', 'ngRoute',
-            'users',  'md.data.table'])
-            .controller('MainController', ['$scope', 'userService',  '$mdSidenav', '$mdBottomSheet', '$mdToast', '$mdDialog', '$mdMedia', '$http', dashboard.MainController])
-
+            'users', 'md.data.table'])
+            .service('responseService', dashboard.ResponseService)
+            .filter('showMessage', function () {
+              return function (input, user) {
+                console.log(user);
+                var filtered = [];
+                for (var i = 0; i < items.length; i++) {
+                  var item = input[i];
+                  console.log(item);
+                  if (item.sentTo == user._id || item.sentBy == user._id) {
+                    filtered.push(item);
+                  }
+                }
+                return filtered;
+              }
+            })
+            .controller('MainController', ['$scope', '$location', '$timeout', '$anchorScroll', 'userService', '$mdSidenav', '$mdBottomSheet', '$mdToast', '$mdDialog', '$mdMedia', '$http', dashboard.MainController])
             .config(function ($mdThemingProvider, $mdIconProvider, $routeProvider, $locationProvider) {
             $mdIconProvider
                 .defaultIconSet("./assets/svg/avatars.svg", 128)
@@ -52,7 +66,7 @@ var app;
                 templateUrl: "/dist/view/dashboard/survey.html",
                 controller: "MainController as vm"
             });
-            $locationProvider.hashPrefix('!');
+            //$locationProvider.hashPrefix('!');
         });
     })(dashboard = app.dashboard || (app.dashboard = {}));
 })(app || (app = {}));

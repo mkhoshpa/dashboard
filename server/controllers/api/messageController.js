@@ -34,38 +34,21 @@ exports.sendSMS = function (req, res) {
     if (!err) {
       console.log("Message saved.");
       console.log('Message is: ' + JSON.stringify(message));
-      User.findByIdAndUpdate(
-        message.sentTo,
-        {$push: {"messages": message}},
-        {safe: true},
-        function(err, user) {
-          if (err) {
-            console.log("ERROR!!!!!!");
-            console.log(err);
-          } else {
-            console.log('Message pushed to user');
-            console.log('User is ' + JSON.stringify(user));
-            var sentToPhoneNumber = '';
-            User.findById(message.sentTo, function (err, userSentTo) {
-              if (!err) {
-                twilio.sendMessage({
-                  to: userSentTo.phoneNumber,
-                  from: config.phoneNumbers.messages,
-                  body: message.body
-                }, function (err, responseData) {
-                  if (!err) {
-                    console.log(JSON.stringify(responseData));
-                  }
-                });
-              }
-            });
+      User.findById(message.sentTo, function (err, userSentTo) {
+        twilio.sendMessage({
+          to: userSentTo.phoneNumber,
+          from: config.phoneNumbers.messages,
+          body: message.body
+        }, function (err, responseData) {
+          if (!err) {
+            console.log(JSON.stringify(responseData));
           }
-        }
-      )
+        });
+      });
       res.send(message);
     }
   });
-}
+};
 
 exports.receiveSMS = function (req, res) {
   console.log('Begin receiveSMS');
@@ -75,29 +58,30 @@ exports.receiveSMS = function (req, res) {
     'Content-Type': 'text/xml'
   });
   console.log("The client wrote: " + req.body.Body);
-  console.log('req.body.From is: ' + req.body.From);
-  // Find user by phone num and actually create valid message object
-  User.findOne({phoneNumber: req.body.From}, function (err, user) {
-    console.log('User is: ' + JSON.stringify(user));
-    console.log('We should be adding a message');
+
+  // Search for the user's id based on their phone number
+  User.findByPhoneNumber(req.body.From, function (err, user) {
     var message = new Message({
       body: req.body.Body,
       sentBy: user._id,
-      sentTo: '5741ef7c5254295828d8c3b0'
+      sentTo: user.coaches[0]
     });
-    User.findOneAndUpdate(
-      {phoneNumber: req.body.From},
-      {$push: {messages: message}},
-      {safe: true},
-      function (err, user) {
-        if (!err) {
-          console.log('The user with that phone number is: ' + user.slack.name);
-          io.emit('message', message);
-          console.log('Message saved and pushed to user');
-        }
-      });
+    message.save(function (err, message) {
+      console.log('Saved message: ' + JSON.stringify(message));
     });
-    res.end(resp.toString());
+    io.emit('message', message);
+  })
+  res.end(resp.toString());
+};
+
+exports.list = function (req, res) {
+  Message.find(function (err, messages) {
+    if (!err) {
+      res.send(messages);
+    } else {
+      res.sendStatus(500);
+    }
+  });
 };
 
 exports.list = function(req, res){

@@ -1,17 +1,17 @@
-<md-virtual-repeat-container id="vertical-container" scroll-glue>
-    <p ng-if="!vm.selected.messages.length">
-      No messages for {{vm.selected.firstName +" "+ vm.selected.lastName}}, yet.
-    </p>
-    <p md-virtual-repeat="message in vm.selected.messages" class="repeated-item" flex>
-      <span ng-if="message.sentTo === vm.selected._id">
-        Sent: {{message.body}}
-      </span>
-      <span ng-if="message.sentTo != vm.selected._id">
-        Received: {{message.body}}
-      </span>
-    </p>
+<md-virtual-repeat-container ng-if="vm.selected.role !== 'coach'" id="vertical-container" md-top-index="vm.lastMessageIndex">
+  <p ng-if="!vm.hasMessages(vm.selected)">
+    No messages for {{vm.selected.firstName +" "+ vm.selected.lastName}}, yet.
+  </p>
+  <p ng-attr-id="{{message._id}}" md-virtual-repeat="message in vm.messages | filter: showMessage" class="repeated-item" flex>
+    <span ng-if="message.sentTo === vm.selected._id">
+      Sent: {{message.body}}
+    </span>
+    <span ng-if="message.sentTo != vm.selected._id">
+      Received: {{message.body}}
+    </span>
+  </p>
 </md-virtual-repeat-container>
-<form name="messageForm">
+<form name="messageForm" ng-if="vm.selected.role !== 'coach'">
   <md-input-container class="md-block" flex-gt-sm>
     <label>Message</label>
     <input ng-model="message.content" name="content" reverse="true" />

@@ -7,7 +7,7 @@ var app;
         var userCoach;
         var scope;
         var MainController = (function () {
-            function MainController($scope, userService, $mdSidenav, $mdBottomSheet, $mdToast, $mdDialog, $mdMedia, $http) {
+            function MainController($scope, $location, $timeout, $anchorScroll, userService, $mdSidenav, $mdBottomSheet, $mdToast, $mdDialog, $mdMedia, $http) {
                 this.userService = userService;
                 this.$mdSidenav = $mdSidenav;
                 this.$mdBottomSheet = $mdBottomSheet;
@@ -16,12 +16,14 @@ var app;
                 this.$mdMedia = $mdMedia;
                 this.$http = $http;
                 this.searchText = '';
+                this.messages = [];
                 this.reminders = [];
                 this.responses = [];
                 this.tabIndex = 0;
                 this.selected = null;
                 this.newNote = new dashboard.Note('', null);
                 this.newReminder = new dashboard.Reminder('', null);
+                this.lastMessageIndex = 0;
 
                 this.index = null;
                 this.convoSurveyResponse = [];
@@ -65,8 +67,15 @@ var app;
                 self.userService.selectedUser = self.selected;
                 userSelected = self.userService.selectedUser;
                 scope = $scope;
+                this.scope = $scope;
+                this.anchorScroll = $anchorScroll;
+                this.timeout = $timeout;
+                this.location = $location;
                 this._ = window['_'];
 
+                $scope.showMessage = function (message) {
+                  return (message.sentTo === self.selected._id || message.sentBy === self.selected._id);
+                }
 
                 this.newSurvey = {
 
@@ -93,6 +102,7 @@ var app;
 
             //create a different controller
 
+            //TODO confirm this actually does something
             MainController.prototype.openSettings = function($event){
               console.log("settings");
               var useFullScreen = (this.$mdMedia('lg') || this.$mdMedia('xs'));
@@ -368,8 +378,12 @@ var app;
 
                     repeat: self.selectedSurvey.repeat,
                     days: self.selectedSurvey.days,
-                    hour: serverTime.hour(),
-                    minute: serverTime.minute()
+
+                      //maybe this works better
+                      // hour: serverTime.hour(),
+                      // minute: serverTime.minute()
+                    hour: self.selectedSurvey.timeOfDay.getHours(),
+                    minute: self.selectedSurvey.timeOfDay.getMinutes()
                   };
 
                   // For all of the users that were assigned a survey
@@ -578,28 +592,23 @@ var app;
                     //  console.log('The user\'s _id is: ' + response.data._id);
                       //this.user.clients.push(response.data.id);
 
-                      console.log(response);
-
-
-                      console.log("done");
-                      _this.$http.post('/api/coach/newuser/' + this.user._id, response.data).then(function successCallback(client){
+                      if (response.data.id) {
+                        console.log("done");
+                        _this.$http.post('/api/coach/newuser/' + this.user.id + '?' + response.data.id,  user).then(function successCallback(client){
                           console.log("done2");
                           self.user.clients.push(response.data);
                           console.log("User created:")
                           console.log(response.data);
-
+                          self.openToast("User added And Email Sent!");
                           _this.$http.post('api/facebook/email/', user).then(function successCallback(response) {
                             console.log("email done!");
                             //console.log(response);
-                            self.openToast("User added And Email Sent!");
                           });
                         });
+                      } else {
+                        self.openToast('User not added. ' + response.data.errors.password.message);
+                      }
 
-                    },function errorCallback(response){
-                        console.log(response);
-                        if(!response.data.success){
-                          self.openToast(response.data.message);
-                        }
                     });
                 }, function () {
                     console.log('You cancelled the dialog.');
@@ -802,9 +811,32 @@ var app;
               });
             };
 
+            MainController.prototype.hasMessages = function (user) {
+              // Go through all of the messages
+              for (var i = 0; i < this.messages.length; i++) {
+                // If the user's id matches any of the messages' sentTo or sentFrom
+                if (this.messages[i].sentTo === user._id || this.messages[i].sentFrom === user._id) {
+                  // The user has a message, so return true
+                  return true;
+                }
+              }
+              // If the user's id doesn't match any of the messages' sentTo or sentFrom, return false
+              return false;
+            };
 
+            MainController.prototype.getMessages = function () {
+              var _this = this;
+              console.log('Getting messages');
+              _this.$http.get('/api/message/list').then(function (response) {
+                _this.messages = response.data;
+                console.log(response.data);
+                console.log(_this.messages);
+                //_this.lastMessageIndex = _this.messages.length - 1;
+                _this.lastMessageIndex = 3;
+              });
+            };
 
-            MainController.prototype.getRemindersResponses = function () {
+            MainController.prototype.getReminderResponses = function () {
               var _this = this;
 
               _this.convoReminderResponse = [];
@@ -893,22 +925,11 @@ var app;
                 });
             };
 
-            MainController.prototype.deleteReminder = function (index) {
+            MainController.prototype.editReminder = function ($event, reminder) {
                 var _this = this;
-                console.log("del" + index);
-                _this.convoReminderResponse.splice(index, 1);
-
-            };
-
-            MainController.prototype.editReminder = function ($event, reminder, index) {
-                var _this = this;
-                var self = this;
-
                 console.log('main controller edit reminder');
                 console.log(reminder);
-                console.log(index);
-
-
+                var self = this;
                 var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
                 this.$mdDialog.show({
                     templateUrl: './dist/view/dashboard/reminders/modal.html',
@@ -1102,10 +1123,7 @@ var app;
               console.log('this.selected: ' + JSON.stringify(this.selected));
               this.$http.post('/api/message/sendsms/', {'body': message, 'sentBy': this.selected.coaches[0], 'sentTo': this.selected.id}).then(function (response) {
                 console.log('response.data is ' + JSON.stringify(response.data));
-                //console.log('_this.selected.messages is: ' + JSON.stringify(_this.selected.messages));
-                console.log(_this.selected.messages); // Why is this undefined?
-                _this.selected.messages.push(response.data);
-                console.log('self.selected is:' + JSON.stringify(_this.selected.messages));
+                _this.messages.push(response.data);
               });
             };
 
@@ -1127,16 +1145,10 @@ var app;
             });
 
             MainController.prototype.receiveMessage = function (message) {
-              console.log('userSelected is: ' + JSON.stringify(userSelected));
               console.log('Message received from server');
               console.log(message);
-              //if (this.selected) {
-                if (userSelected._id === message.sentBy) {
-                  console.log('Message pushed.');
-                  userSelected.messages.push(message);
-                  scope.$apply();
-                }
-              //}
+              scope.vm.messages.push(message);
+              scope.$apply();
             };
 
             MainController.prototype.editNote = function($event, note){
@@ -1444,7 +1456,7 @@ HI Shane!                    console.log(survey);
                     clickedItem && console.log(clickedItem.name + ' clicked!');
                 });
             };
-            MainController.$inject = ['$scope', 'userService', '$mdSidenav', '$mdBottomSheet',
+            MainController.$inject = ['$scope', '$location', '$timeout', '$anchorScroll', 'userService', '$mdSidenav', '$mdBottomSheet',
                 '$mdToast', '$mdDialog', '$mdMedia', '$http'];
             return MainController;
         }());

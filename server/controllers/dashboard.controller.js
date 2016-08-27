@@ -30,6 +30,10 @@ exports.render = function(req, res, next) {
           path: 'surveyTemplates',
           model: 'SurveyTemplate'
 
+        },
+        {
+          path: 'messages',
+          model: 'Message'
         }
       ]
 
@@ -63,6 +67,10 @@ exports.render = function(req, res, next) {
           path: 'reminders',
           model: 'Reminder',
         },
+        {
+          path: 'messages',
+          model: 'Message'
+        }
       ]
       console.log("where am I?");
       User.populate(req.user,

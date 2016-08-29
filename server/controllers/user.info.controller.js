@@ -30,7 +30,7 @@ exports.createBio = function(req, res){
   res.send(req.body.body);
 }
 
-exports.bySalckId = function (req, res) {
+exports.bySlackId = function (req, res) {
   console.log(req.params.id);
   console.log("slack ID");
   User.findOne({slack_id: req.params.id}, function(err, obj){
@@ -314,10 +314,15 @@ exports.update = function(req,res) {
 };
 
 exports.delete = function(req, res){
-  console.log("hey");
-  //console.log(req.body);
-
-  res.send("403");
+  User.findOneAndRemove({_id: req.params.id}, function (err, obj) {
+    if (!err) {
+      console.log(obj);
+      res.json(obj);
+    } else {
+      console.log('Failed to delete user: ' + JSON.stringify(obj));
+      res.send(500);
+    }
+  });
 };
 
 exports.getUser = function(req,res){

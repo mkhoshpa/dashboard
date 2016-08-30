@@ -16,6 +16,7 @@
       <md-card-content  flex="40"  >
         <div layout="row">
           <md-card-content layout-padding layout = "column">
+            <!--<p>{{r}}</p>-->
             <h3> {{r.reminder.title}} </h3>
             <p> {{r.reminder.hour + ':' + r.reminder.minute }}<p>
           </md-card-content>
@@ -44,10 +45,10 @@
 
       <div layout="column" flex= "10" layout-padding>
         <md-card-actions flex="20" layout-align="end right">
-          <md-button ng-click="vm.removeReminder($event, reminder)">Remove</md-button>
+          <md-button ng-click="vm.removeReminder($event, r.reminder)">Remove</md-button>
         </md-card-actions>
         <md-card-actions flex="20" layout-align="end right">
-          <md-button ng-click="vm.editReminder($event,reminder)">Edit</md-button>
+          <md-button ng-click="vm.editReminder($event,r.reminder)">Edit</md-button>
         </md-card-actions>
       </div>
 

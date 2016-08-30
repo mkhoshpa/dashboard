@@ -33,7 +33,7 @@ exports.delete = function(req, res) {
 };
 
 exports.list = function(req, res) {
-  Response.find({assigment: req.params.id, type: 'reminder'}, function(err, obj) {
+  Response.find({assignment: req.params.id, type: 'reminder'}, function(err, obj) {
     res.json(obj);
 
   })

@@ -336,23 +336,10 @@ var app;
                     })
                   })
 
-
-
                 });
 
 
               }
-
-
-
-
-
-
-
-
-
-
-
 
 
               MainController.prototype.sendOutSurvey = function ($event) {
@@ -1107,6 +1094,7 @@ var app;
             };
             MainController.prototype.removeReminder = function ($event, reminder) {
                 var _this = this;
+                console.log("this worked");
                 var confirm = this.$mdDialog.confirm()
                     .textContent('Are you sure you want to remove this reminder?')
                     .ariaLabel('Remove')

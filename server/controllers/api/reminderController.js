@@ -1,6 +1,7 @@
 'use strict';
 
-var Reminder = require('../../models/reminder.js');
+var Reminder = require('../../models/reminder.js'),
+    Assignment = require("../../models/assignment.js");
 var User = require('../../models/user.js');
 
 exports.create = function(req, res) {
@@ -60,19 +61,14 @@ exports.delete = function(req, res) {
     req.params.id,
     function(err, reminder) {
       if(reminder) {
-        //console.log(reminder);
-        User.findByIdAndUpdate(reminder.assignee,
-          {$pull : {reminders: {_id: reminder._id}}},
-          {new: true},
-          function(err, model) {
-            console.log();
-            console.log('Should output a user with the specified reminder removed.');
-            //console.log(model);
-            res.sendStatus(200);
-          if(err) {
-            // Do some flash message
-          }
-        });
+          console.log(reminder);
+
+          //now find all the associated assignments and remove them as well
+          Assignment.remove({reminderId : req.params.id }, function (err){
+              if(!err){
+                  console.log("assignments should be goine now");
+              }
+          });
       }
       else{
         console.log();

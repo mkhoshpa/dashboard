@@ -59,7 +59,7 @@ gulp.task('nodemon' ,['sass'], function (cb) {
 	});
 });
 
-gulp.task('browser-sync', ['nodemon'], function() {
+ gulp.task('browser-sync', ['nodemon'], function() {
 	browserSync.init(null, {
     injectChanges: true,
 		proxy: "http://localhost:12557",

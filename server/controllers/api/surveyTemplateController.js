@@ -54,13 +54,6 @@ exports.selectedByUser = function (req, res) {
 }
 
 
-
-
-
-
-
-
-
 exports.create = function (req, res) {
   console.log();
   console.log("creating survey");

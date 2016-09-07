@@ -1136,6 +1136,7 @@ var app;
               scope.$apply();
               console.log(survey);
             };
+//this method can live
 
             MainController.prototype.updateReminder = function (reminder) {
                 console.log('Inside updateReminder');

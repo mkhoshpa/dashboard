@@ -153,7 +153,10 @@ exports.getRealDates = function(daysArrayInput, hourInput, minuteInput) {
         
       }
     }
-    datesArrayOutput.push(new Date().addDays(d)); 
+    var finalDate = new Date().addDays(d);
+      finalDate.setHours(hourInput);
+      finalDate.setMinutes(minuteInput);
+    datesArrayOutput.push(finalDate);
     console.log('added a day' +  d);     
              
   }

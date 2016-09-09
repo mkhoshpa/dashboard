@@ -14,6 +14,7 @@ exports.connectUser = function (req, res) {
     'Location': 'https://www.facebook.com/dialog/oauth?client_id=' + config.facebook.clientID + '&redirect_uri=http://' + config.server.ip + ':' + config.server.port + '/api/facebook/getclientprofile'
   });
   res.end();
+
 }
 
 exports.getClientProfile = function (req, res) {

@@ -2,13 +2,19 @@
 
 var User = require('../../models/user.js'),
 Assignment = require('../../models/assignment.js'),
-winston = require('winston'),
+AssignmentController = require('./AssignmentController.js'),    
 config = require ('../../config/env/env.js');
 
-
-
-
 var request = require('request');
+
+//tackoverflow.com/questions/563406/add-days-to-javascript-date
+Date.prototype.addDays = function(days)
+{
+    var dat = new Date(this.valueOf());
+    dat.setDate(dat.getDate() + days);
+    return dat;
+}
+
 exports.create = function(req, res) {
   var assignment = new Assignment(req.body);
   console.log("ass");
@@ -27,8 +33,112 @@ exports.create = function(req, res) {
       res.send(assignment)
     }
   })
-
 };
+
+exports.createFromReminder = function(reminder) {
+    //need to read data from reminder to make the right assignements
+    //aka get the specific date from the reminder
+    
+    var hour = reminder.hour;
+    var minute = reminder.minute;
+    var assignments = [];
+    //for each day in reminder make a new assignemtn
+    
+    //TODO need to change this so reminders have access to repeat or not
+    var assignmentTemplate = {
+        "repeat": true,
+        "type": "reminder",
+        "sent": false,
+        "reminderId": reminder.id,
+        "userId": reminder.assignee, 
+        "hour" : reminder.hour,
+        "minute" : reminder.minute
+    };
+
+    //call a new method to get an array of actual dates from the days of the week
+    var daysInReminder=[];
+    if(reminder.daysOfTheWeek.monday){
+      daysInReminder.push(0);
+    }
+    if(reminder.daysOfTheWeek.tuesday){
+      daysInReminder.push(1);
+    }
+    if(reminder.daysOfTheWeek.wendsday){
+      daysInReminder.push(2);
+    }
+    if(reminder.daysOfTheWeek.thursday){
+      daysInReminder.push(3);
+    }
+    if(reminder.daysOfTheWeek.friday){
+      daysInReminder.push(4);
+    }
+    if(reminder.daysOfTheWeek.saturday){
+      daysInReminder.push(5);
+    }
+    if(reminder.daysOfTheWeek.sunday){
+      daysInReminder.push(6);
+    }
+    var dateArray = AssignmentController.getRealDates(daysInReminder, hour, minute);
+    for (date of dateArray) {
+      //make a new date
+      assignmentTemplate.specificDate = date;
+      assignmentTemplate.date = date.toString();
+      var assignment = new Assignment(assignmentTemplate);
+      Assignment.save( function (err, assignment) {
+        if(!err) {
+          console.log("we made an assignment !!!!");
+          assignments.push(assigment);
+        }
+        else {
+          console.log("assignment save failed");
+        }
+      })
+    }
+    return assignments;
+}
+//
+//not just an array of days going in - its an object with keys for each day and bools if that day is includied
+exports.getRealDates = function(daysArrayInput, hourInput, minuteInput) {
+    var newDate = new Date;
+    var todayDate = newDate.getDay();
+    var datesArrayOutput = [];
+    var d = [];
+
+
+    for (day of daysArrayInput) { 
+      today = todayDate;
+      if(today < day){
+        console.log("<");
+        d = day - today;
+            //console.log();
+      }
+      else if(today > day){
+        console.log(">");
+        d =  7 - (today - day) ;
+      
+      }
+      else if (today === day){
+        console.log("=");
+        console.log("date");
+        console.log(minuteInput);
+        console.log("spec");
+        console.log(hourInput);
+        if(date.getHours() > hourInput){
+          console.log("date > timeOfDay");
+          d = 7;
+        }
+       else{
+         // same hour goes off next week
+         console.log("date < timeOfDay");
+         d = 0;
+          console.log(specificDate);
+       }
+       datesArray.push(today.addDays(d)); 
+       console.log('added a day' +  d);     
+       return datesArray;          
+    }
+  }
+}
 
 exports.read = function(req, res) {
 
@@ -87,62 +197,6 @@ exports.selectedByUser = function (req, res) {
 }
 
 
-
-
-
-// exports.reminderSelectedByUserId = function(req, res){
-//   console.log(req.params.id);
-//   Assignment.find({userId: req.params.id, type: 'reminder'})
-//   .populate('reminderId')
-//   .exec(function (err, assignments) {
-//     if(err){
-//       console.log(err);
-//     }
-//     else{
-//       console.log(assignments);
-//       res.json(assignments);
-//     }
-//   })
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-// exports.reminderSelectedByUserId = function(req, res){
-//   console.log(req.params.id);
-//   var dateNow = new Date();
-//
-//
-//   Assignment.find({userId: req.params.id, type: 'reminder'})
-//   .populate('reminderId')
-//   .exec(function (err, assignments) {
-//     if(err){
-//       console.log(err);
-//     }
-//     else{
-//       console.log("here");
-//       console.log(assignments);
-//       assignments.forEach(function(assignment){
-//         //wrong
-//         if(assignment.date > dateNow && assignment.repeat){
-//           console.log("mark 1");
-//         }
-//
-//
-//       })
-//       res.json(assignments);
-//     }
-//   })
-// }
-
 exports.completed = function (req, res) {
   console.log("here completed");
   console.log(req.params.id);
@@ -180,21 +234,6 @@ exports.sent = function (req, res) {
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 exports.removeByReminderId = function (req, res) {
   // Find all of the assignments with the reminder id that was passed in

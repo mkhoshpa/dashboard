@@ -847,10 +847,7 @@ var app;
                 })
 
               })
-
-
             }
-
 
             MainController.prototype.addReminder = function ($event) {
                 var _this = this;
@@ -882,6 +879,7 @@ var app;
                       author: object.author,
                       assignee: object.assignee
                     }
+                    JSON.stringify(reminder);
                     console.log(reminder);
 
                     var date = new Date();
@@ -891,87 +889,17 @@ var app;
                     console.log("date");
                     console.log(date);
 
-                    _this.$http.post('/api/reminder/create', reminder).then(function successCallback(response) {
-                        console.log("im a reminder");
-
-                        response.data.days.forEach(function(daysOfTheWeek){
-                          console.log(daysOfTheWeek);
-
-                          if(today < daysOfTheWeek){
-                            console.log("<");
-                            var day = daysOfTheWeek - today;
-                            var specificDate = _this.addDays(object.timeOfDay, day);
-                            console.log(specificDate);
-                          }
-                          else if(today > daysOfTheWeek){
-                            console.log(">");
-                            var day =  7 - (today - daysOfTheWeek) ;
-                            var specificDate = _this.addDays(object.timeOfDay, day);
-                            console.log(specificDate);
-                          }
-                          else if (today === daysOfTheWeek){
-                            console.log("=");
-                            console.log("date");
-                            console.log(date.getHours());
-                            console.log("spec");
-                            console.log(object.timeOfDay.getHours());
-                            if(date.getHours() > object.timeOfDay.getHours()){
-                              console.log("date > timeOfDay");
-                              var specificDate = _this.addDays(object.timeOfDay, 7);
-                              console.log(specificDate);
-                            }
-                            else{
-                              // same hour goes off next week
-                              console.log("date < timeOfDay");
-                              var specificDate = object.timeOfDay;
-                              console.log(specificDate);
-                            }
-
-                          }
-                             var reminderUserAssign = {
-                              repeat: object.repeat,
-                              specificDate: specificDate,
-                              year: specificDate.getFullYear(),
-                              month: specificDate.getMonth(),
-                              date: specificDate.getDate(),
-                              hours: specificDate.getHours(),
-                              minutes: specificDate.getMinutes(),
-                              userId: response.data.assignee,
-                              reminderId: response.data._id,
-                              type: 'reminder'
-                            };
-
-                            _this.sendOutReminder(reminderUserAssign);
-
-                        });
-
+                    _this.$http.post('/api/reminder/createReminderAndAssignments', reminder).then(function successCallback(response) {
+                        console.log("im a reminder" + response);
+                        self.openToast("Reminder added");
                     });
 
-                    self.openToast("Reminder added");
+                                       
                 }, function () {
                     console.log('You cancelled the dialog.');
                 });
             };
 
-            MainController.prototype.sendOutReminder = function (reminderUserAssign) {
-              var _this = this;
-              var self = this;
-              console.log('Inside sendOutReminder');
-              console.log(reminderUserAssign);
-              this.$http.post('/api/assignment/create', reminderUserAssign).then(function (response) {
-                console.log('Frontend works' + JSON.stringify(response.data));
-                // var rA = {
-                //   info: response.data,
-                //   res: []
-                // }
-                // console.log(_this.convoReminderResponse);
-                // _this.convoReminderResponse.push(rA);
-                // console.log(_this.convoReminderResponse);
-
-
-
-              });
-            };
 
             MainController.prototype.hasReminders = function (user) {
               // Go through all of the reminders

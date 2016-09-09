@@ -11,5 +11,6 @@ module.exports = function(app) {
   app.post('/api/reminder/createMessenger', reminder.createMessenger);
   app.post('/api/reminder/update/:id', reminder.update);
   app.post('/api/reminder/remove/:id', reminder.delete);
+  app.post('/api/reminder/createReminderAndAssignments', reminder.createReminderAndAssignments);
 
 };

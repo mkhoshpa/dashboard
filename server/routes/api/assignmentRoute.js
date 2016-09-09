@@ -5,6 +5,8 @@ var assignment = require('../../controllers/api/assignmentController.js');
 module.exports = function(app) {
 
   app.post('/api/assignment/create', assignment.create);
+  
+
   app.get('/api/assignment/list', assignment.list);
   app.put('/api/assignment/completed/update/:id', assignment.completed);
   app.put('/api/assignment/sent/update/:id', assignment.sent);
@@ -14,6 +16,7 @@ module.exports = function(app) {
   app.get('/api/assignment/convosNow', assignment.convosNow);
   app.get('/api/assignment/selectedReminder/:id', assignment.selectedByReminder);
   app.get('/api/assignment/survey/user/:id', assignment.selectedByUser);
+
 
 
   app.get('/api/assignment/path/selectedUser/list/:id', assignment.pathSelectedByUserId);

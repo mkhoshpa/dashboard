@@ -1,22 +1,59 @@
 'use strict';
 
 var Reminder = require('../../models/reminder.js'),
-    Assignment = require("../../models/assignment.js");
+    Assignment = require("../../models/assignment.js"),
+    AssignmentController = require("./AssignmentController.js");
+
 var User = require('../../models/user.js');
 
 exports.create = function(req, res) {
+
   var reminder = new Reminder(req.body);
   console.log("reminder controller hit");
   //console.log(reminder);
   reminder.save(function(err, reminder) {
     if(!err) {
       res.send(reminder);
+
     } else {
       res.status(500);
       res.send(err);
     }
   });
+
+
 };
+exports.returnMultiply = function(a, b) {
+  return a* b;
+}
+exports.createReminderAndAssignments = function(req, res) {
+    var reminderAndAssignments = {
+        reminder: [],
+        assignmentArray: []
+    };
+    console.log("create reminder and assingments hit");
+    var reminder = new Reminder(req.body);
+
+    //this is going to be an array of assignemtns
+
+    var assignments = AssignmentController.createFromReminder(reminder);
+
+    //TODO switch to promises
+    reminder.save(function(err, reminder) {
+        if(!err) {
+            res.send(reminder);
+
+        } else {
+            res.status(500);
+            res.send(err);
+        }
+    });
+    reminderAndAssignments.reminder = reminder;
+
+    reminderAndAssignments.assignmentArray = Assignment.createAssignmentsFromReminder(reminder);
+    res.send(reminderAndAssignments);
+
+}
 
 exports.createMessenger = function(req, res) {
   MessengerReminder.create(req.body);

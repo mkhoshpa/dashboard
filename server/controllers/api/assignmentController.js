@@ -42,6 +42,7 @@ exports.createFromReminder = function(reminder) {
     var hour = reminder.hour;
     var minute = reminder.minute;
     var assignments = [];
+    var daysFromFrontEnd = reminder.days;
     //for each day in reminder make a new assignemtn
     
     //TODO need to change this so reminders have access to repeat or not
@@ -57,37 +58,39 @@ exports.createFromReminder = function(reminder) {
 
     //call a new method to get an array of actual dates from the days of the week
     var daysInReminder=[];
-    if(reminder.daysOfTheWeek.monday){
+    if(reminder.daysOfTheWeek.sunday){
       daysInReminder.push(0);
     }
-    if(reminder.daysOfTheWeek.tuesday){
+    if(reminder.daysOfTheWeek.monday){
       daysInReminder.push(1);
     }
-    if(reminder.daysOfTheWeek.wendsday){
+    if(reminder.daysOfTheWeek.tuesday){
       daysInReminder.push(2);
     }
-    if(reminder.daysOfTheWeek.thursday){
+    if(reminder.daysOfTheWeek.wednesday){
       daysInReminder.push(3);
     }
-    if(reminder.daysOfTheWeek.friday){
+    if(reminder.daysOfTheWeek.thursday){
       daysInReminder.push(4);
     }
-    if(reminder.daysOfTheWeek.saturday){
+    if(reminder.daysOfTheWeek.friday){
       daysInReminder.push(5);
     }
-    if(reminder.daysOfTheWeek.sunday){
+    if(reminder.daysOfTheWeek.saturday){
       daysInReminder.push(6);
     }
-    var dateArray = AssignmentController.getRealDates(daysInReminder, hour, minute);
-    for (date of dateArray) {
+    console.log("days in reminder" + daysInReminder);
+
+    var dateArray = AssignmentController.getRealDates(daysFromFrontEnd, hour, minute);
+    for (var date of dateArray) {
       //make a new date
       assignmentTemplate.specificDate = date;
       assignmentTemplate.date = date.toString();
       var assignment = new Assignment(assignmentTemplate);
-      Assignment.save( function (err, assignment) {
+      assignment.save( function (err, assignment) {
         if(!err) {
           console.log("we made an assignment !!!!");
-          assignments.push(assigment);
+          assignments.push(assignment);
         }
         else {
           console.log("assignment save failed");
@@ -99,46 +102,64 @@ exports.createFromReminder = function(reminder) {
 //
 //not just an array of days going in - its an object with keys for each day and bools if that day is includied
 exports.getRealDates = function(daysArrayInput, hourInput, minuteInput) {
-    var newDate = new Date;
-    var todayDate = newDate.getDay();
-    var datesArrayOutput = [];
-    var d = [];
+  var newDate = new Date;
+  var todayDate = newDate.getDay();
+  var datesArrayOutput = [];
+  var d = [];
 
+  for (var day of daysArrayInput) { 
+    var today = todayDate;
+    console.log("today is " + today);
+    console.log("day in array is " + day);
 
-    for (day of daysArrayInput) { 
-      today = todayDate;
-      if(today < day){
-        console.log("<");
-        d = day - today;
-            //console.log();
-      }
-      else if(today > day){
-        console.log(">");
-        d =  7 - (today - day) ;
+    if(today < day){
+      console.log( today + " is before " + day);
+      d = day - today;
+    }
+    else if(today > day){
+      console.log( today + " is after " + day);
+      //console.log("greater then");
+      d =  7 - (today - day) ;
+      
+    }
+    else if (today === day){
+      console.log( today + " equal to " + day);
+      console.log(hourInput);
+      if(newDate.getHours() > hourInput){
+        console.log("date > timeOfDay");
+        d = 7;
+      } 
+      else if (newDate.getHours() === hourInput){
+        if(newDate.getMinutes() < minuteInput){
+          console.log(  newDate.getMinutes() + " is before " + minuteInput);
+          d = 0;
+        }
+
+        else{
+          console.log(  newDate.getMinutes() + " is after or same" + minuteInput);
+          d=7;
+        }
       
       }
-      else if (today === day){
-        console.log("=");
-        console.log("date");
-        console.log(minuteInput);
-        console.log("spec");
-        console.log(hourInput);
-        if(date.getHours() > hourInput){
-          console.log("date > timeOfDay");
-          d = 7;
-        }
-       else{
-         // same hour goes off next week
-         console.log("date < timeOfDay");
-         d = 0;
-          console.log(specificDate);
-       }
-       datesArray.push(today.addDays(d)); 
-       console.log('added a day' +  d);     
-       return datesArray;          
+      else if(newDate.getHours() < hourInput){
+        d=0;
+         console.log(  newDate.getHours() + " is before " + hourInput);
+      }
+      
+      else{
+
+        // same hour goes off next week
+        console.log("somthings broken");
+        
+      }
     }
+    datesArrayOutput.push(new Date().addDays(d)); 
+    console.log('added a day' +  d);     
+             
   }
+  return datesArrayOutput; 
 }
+
 
 exports.read = function(req, res) {
 

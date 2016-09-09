@@ -41,16 +41,17 @@ exports.createReminderAndAssignments = function(req, res) {
     //TODO switch to promises
     reminder.save(function(err, reminder) {
         if(!err) {
-            res.send(reminder);
+            console.log("reminder created");
 
         } else {
+            console.log(err);
             res.status(500);
             res.send(err);
         }
     });
     reminderAndAssignments.reminder = reminder;
-
-    reminderAndAssignments.assignmentArray = Assignment.createAssignmentsFromReminder(reminder);
+    
+    reminderAndAssignments.assignmentArray = assignments;
     res.send(reminderAndAssignments);
 
 }

@@ -777,9 +777,6 @@ var app;
 
             MainController.prototype.getRemindersResponses = function () {
               var _this = this;
-
-
-
               _this.convoReminderResponse = [];
               console.log("Get Reminder");
 
@@ -825,7 +822,6 @@ var app;
                             }
                             content.push(rA);
                           }
-
                       })
                     })
                       fullcontent = {
@@ -838,9 +834,6 @@ var app;
                       _this.convoReminderResponse.push(fullcontent);
                       console.log('convoReminderResponse');
                       console.log(_this.convoReminderResponse);
-
-
-
 
                   })
 

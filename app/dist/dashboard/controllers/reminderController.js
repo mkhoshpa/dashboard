@@ -27,20 +27,35 @@ var app;
                         this.selectedDays = selected.selectedDates,
                         this.reminder = selected.title,
                         this.responses = selected.responses,
-                        this.time = new Date(selected.timeOfDay);
+                        this.time = new Date();
+                        this.time.setMinutes(selected.minute);
+                        this.time.setHours(selected.hour);
                 }
             }
             // selectedDays reminder
             ReminderController.prototype.toggle = function (item, list) {
-                var idx = list.indexOf(item);
-                if (idx > -1)
-                    list.splice(idx, 1);
-                else
-                    list.push(item);
-            };
-            ;
+                var idx =  this.days.indexOf(item);
+                var index = list.indexOf(idx);
+                if(index === -1){
+                    this.selectedDays.push(idx);
+
+                }
+                else{
+                    this.selectedDays.splice(index,1);
+                }
+            }
+
+
             ReminderController.prototype.exists = function (item, list) {
-                return list.indexOf(item) > -1;
+
+                var index =  this.days.indexOf(item);
+                var answer = false;
+                for (var i = 0; i < list.length; i++) {
+                    if(index == list[i]){
+                        answer = true;
+                    }
+                }
+                return answer;
             };
             ;
             ReminderController.prototype.toggleAll = function () {
@@ -140,6 +155,7 @@ var app;
                     timeOfDay: dateToday,
                     hour: hour,
                     minute: minute,
+                    // array of numbers from 0 to 6 that shows days that we should creat  assignments
                     selectedDates: this.selectedDays,
                     daysOfTheWeek: dates,
                     author: this.author,

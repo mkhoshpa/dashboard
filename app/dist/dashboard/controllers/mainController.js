@@ -958,8 +958,11 @@ var app;
               });
             };
 
-            MainController.prototype.editReminder = function ($event, reminder) {
+            MainController.prototype.editReminder = function ($event, r) {
                 var _this = this;
+                var reminder = r.reminder;
+                console.log("convoReminderResponse "+ JSON.stringify(r));
+                console.log("reminder " + JSON.stringify(reminder));
                 console.log('main controller edit reminder');
                 console.log(reminder);
                 var self = this;

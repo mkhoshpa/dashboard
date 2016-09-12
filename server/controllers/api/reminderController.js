@@ -33,7 +33,7 @@ exports.createReminderAndAssignments = function(req, res) {
     };
     console.log("create reminder and assingments hit");
     var reminder = new Reminder(req.body);
-
+    console.log(reminder);
     //this is going to be an array of assignemtns
 
     var assignments = AssignmentController.createFromReminder(reminder);
@@ -65,6 +65,7 @@ exports.read = function(req, res) {
 };
 
 //from http://stackoverflow.com/questions/15621970/pushing-object-into-array-schema-in-mongoose
+// req is convoReminderResponse object
 exports.update = function(req, res) {
   console.log('Updating reminder');
   console.log();

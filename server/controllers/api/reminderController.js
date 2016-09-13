@@ -94,20 +94,71 @@ exports.update = function(req, res) {
     //TODO check with thom ab out reminder IDs of new and previous ones problem!! assignments does not have uniqe ids!!
     var reminder = req.body.reminder;
     var contentArray = req.body.contentArray;
-    console.log("contentArray is"+JSON.stringify(contentArray));
+    console.log("updating reminder hit");
     console.log("reminder is"+JSON.stringify(reminder));
-    Promise.all([AssignmentController.createFromReminder(reminder),filterAssignments(contentArray)])
-        .then(function(results) {
-            var finallArray = results[0].concat(results[1]);
-            console.log("finallArray is "+ JSON.stringify(assignments));
-            var convo={reminder: reminder, contentArray: finallArray};
-            //passing it as json
-            console.log("convo is "+ JSON.stringify(convo));
-            res.send(convo);
-        })
-        .catch(function(err) {console.log("404 updating did not work")});
+    // first delete previous one
+     deleteForUpdate(reminder).then(function(response) {
+        var reminderAndAssignments = createForUpdate(reminder);
+        res.send(reminderAndAssignments);
+    });
+}
+var deleteForUpdate = function(reminder){
+    return new Promise(function(resolve,reject) {
+
+        if(Reminder.findByIdAndRemove(
+            reminder._id,
+            function(err, rem) {
+                if(rem) {
+                    console.log(rem);
+
+                    //now find all the associated assignments and remove them as well
+                    Assignment.remove({reminderId : reminder._id }, function (err){
+                        if(!err){
+                            console.log("assignments should be goine now");
+                        }
+                    });
+                }
+                else{
+                    console.log();
+                    console.log(err);
+
+                }
+            }
+        )) {
+            resolve('success');
+            //reject('error');
+        }
+    });
+
+};
+
+var createForUpdate = function(reminder){
+    var reminderAndAssignments = {
+        reminder: [],
+        assignmentArray: []
+    };
+    console.log("create reminder and assingments hittttttttttttttttttttttttttttttttt");
+    var newreminder = new Reminder(reminder);
+    //console.log(newreminder);
+    //this is goindg to be an array of assignemtns
+
+    var assignments = AssignmentController.createFromReminder(newreminder);
 
 
+    newreminder.save(function(err, remind) {
+        if(!err) {
+            console.log("reminder created");
+
+        } else {
+            console.log(err);
+            res.status(500);
+            res.send(err);
+        }
+    });
+    reminderAndAssignments.reminder = newreminder;
+
+    reminderAndAssignments.assignmentArray = assignments;
+    return reminderAndAssignments ;
 }
 var filterAssignments = function(contentArray){
     var newArray=[];

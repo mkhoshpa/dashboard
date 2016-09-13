@@ -67,29 +67,52 @@ exports.read = function(req, res) {
 //from http://stackoverflow.com/questions/15621970/pushing-object-into-array-schema-in-mongoose
 // req is convoReminderResponse object
 exports.update = function(req, res) {
-  console.log('Updating reminder');
-  console.log();
-  ////console.log(req.body);
-  Reminder.findOneAndUpdate({'_id': req.body._id},
-  {
-    title: req.body.title,
-    timeOfDay: req.body.timeOfDay,
-    days: req.body.days,
-    hour: req.body.hour,
-    minute: req.body.minute,
-    seletedDates: req.body.selectedDates,
-    daysOfTheWeek: req.body.daysOfTheWeek,
-    author: req.body.author,
-    assignee: req.body.assignee
-  }, {new: true}, function (err, reminder) {
-    if (!err) {
-      console.log('Reminder updated: ' + reminder);
-      res.send(reminder);
-    } else {
-      res.status(500);
-      res.send(err);
+  //console.log('Updating reminder');
+  //console.log();
+  //////console.log(req.body);
+  //Reminder.findOneAndUpdate({'_id': req.body._id},
+  //{
+    //title: req.body.title,
+    //timeOfDay: req.body.timeOfDay,
+    //days: req.body.days,
+    //hour: req.body.hour,
+    //minute: req.body.minute,
+    //seletedDates: req.body.selectedDates,
+    //daysOfTheWeek: req.body.daysOfTheWeek,
+    //author: req.body.author,
+    //assignee: req.body.assignee
+  //}, {new: true}, function (err, reminder) {
+    //if (!err) {
+      //console.log('Reminder updated: ' + reminder);
+      //res.send(reminder);
+    //} else {
+      //res.status(500);
+      //res.send(err);
+    //}
+  //});
+    //TODO check with thom about reminder IDs of new and previous ones problem!! assignments does not have uniqe ids!!
+    var reminder = req.body.reminder;
+    var contentArray = req.body.contentArray;
+    var newArray=[];
+    var assignments = AssignmentController.createFromReminder(reminder);
+    var now = Date();
+
+    for (var assign in contentArray){
+        if(assign.specificDate < now){
+            newArray.push(assign);
+        }
+        else{
+            //TODO delet the assign from db
+            Assignment
+        }
     }
-  });
+    var finallArray = newArray.concat(assignments);
+    //creating convoReminderResponse object
+    console.log("finallArray is "+ JSON.stringify(assignments));
+    var convo={reminder: reminder, contentArray: finallArray};
+    //passing it as json
+    console.log("finallArray is "+ JSON.stringify(convo));
+    res.send(convo);
 }
 
 exports.delete = function(req, res) {

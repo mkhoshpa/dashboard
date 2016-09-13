@@ -30,6 +30,8 @@ var app;
                         this.time = new Date();
                         this.time.setMinutes(selected.minute);
                         this.time.setHours(selected.hour);
+                        this.time.setSeconds(0);
+                        this.time.setMilliseconds(0);
                 }
             }
             // selectedDays reminder

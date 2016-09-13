@@ -38,66 +38,50 @@ exports.create = function(req, res) {
 exports.createFromReminder = function(reminder) {
     //need to read data from reminder to make the right assignements
     //aka get the specific date from the reminder
-    
+
     var hour = reminder.hour;
     var minute = reminder.minute;
     var assignments = [];
-    var daysFromFrontEnd = reminder.days;
+    var daysFromFrontEnd = reminder.selectedDates;
     //for each day in reminder make a new assignemtn
-    
+
     //TODO need to change this so reminders have access to repeat or not
     var assignmentTemplate = {
         "repeat": true,
         "type": "reminder",
         "sent": false,
         "reminderId": reminder.id,
-        "userId": reminder.assignee, 
-        "hour" : reminder.hour,
-        "minute" : reminder.minute
+        "userId": reminder.assignee,
+        "hour": reminder.hour,
+        "minute": reminder.minute
     };
 
     //call a new method to get an array of actual dates from the days of the week
-    var daysInReminder=[];
-    if(reminder.daysOfTheWeek.sunday){
-      daysInReminder.push(0);
-    }
-    if(reminder.daysOfTheWeek.monday){
-      daysInReminder.push(1);
-    }
-    if(reminder.daysOfTheWeek.tuesday){
-      daysInReminder.push(2);
-    }
-    if(reminder.daysOfTheWeek.wednesday){
-      daysInReminder.push(3);
-    }
-    if(reminder.daysOfTheWeek.thursday){
-      daysInReminder.push(4);
-    }
-    if(reminder.daysOfTheWeek.friday){
-      daysInReminder.push(5);
-    }
-    if(reminder.daysOfTheWeek.saturday){
-      daysInReminder.push(6);
-    }
-    console.log("days in reminder" + daysInReminder);
+
+    console.log("days in reminder" + daysFromFrontEnd);
 
     var dateArray = AssignmentController.getRealDates(daysFromFrontEnd, hour, minute);
+    var i = 0;
     for (var date of dateArray) {
-      //make a new date
-      assignmentTemplate.specificDate = date;
-      assignmentTemplate.date = date.toString();
-      var assignment = new Assignment(assignmentTemplate);
-      assignment.save( function (err, assignment) {
-        if(!err) {
-          console.log("we made an assignment !!!!");
-          assignments.push(assignment);
-        }
-        else {
-          console.log("assignment save failed");
-        }
-      })
+        //make a new date
+        assignmentTemplate.specificDate = date;
+        assignmentTemplate.date = date.toString();
+        var assignment = new Assignment(assignmentTemplate);
+        assignment.save(function (err, assignment) {
+            if (!err) {
+                console.log("we made an assignment !!!!");
+                i++;
+                assignments.push(assignment);
+            }
+            else {
+                console.log("assignment save failed");
+            }
+        })
     }
+
+    console.log("assignments are" + JSON.stringify(assignments));
     return assignments;
+
 }
 //
 //not just an array of days going in - its an object with keys for each day and bools if that day is includied

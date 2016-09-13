@@ -3,6 +3,7 @@
 var Reminder = require('../../models/reminder.js'),
     Assignment = require("../../models/assignment.js"),
     AssignmentController = require("./AssignmentController.js");
+var Promise = require("../../../node_modules/promise");
 
 var User = require('../../models/user.js');
 
@@ -90,31 +91,41 @@ exports.update = function(req, res) {
       //res.send(err);
     //}
   //});
-    //TODO check with thom about reminder IDs of new and previous ones problem!! assignments does not have uniqe ids!!
+    //TODO check with thom ab out reminder IDs of new and previous ones problem!! assignments does not have uniqe ids!!
     var reminder = req.body.reminder;
     var contentArray = req.body.contentArray;
+    console.log("contentArray is"+JSON.stringify(contentArray));
+    console.log("reminder is"+JSON.stringify(reminder));
+    Promise.all([AssignmentController.createFromReminder(reminder),filterAssignments(contentArray)])
+        .then(function(results) {
+            var finallArray = results[0].concat(results[1]);
+            console.log("finallArray is "+ JSON.stringify(assignments));
+            var convo={reminder: reminder, contentArray: finallArray};
+            //passing it as json
+            console.log("convo is "+ JSON.stringify(convo));
+            res.send(convo);
+        })
+        .catch(function(err) {console.log("404 updating did not work")});
+
+
+}
+var filterAssignments = function(contentArray){
     var newArray=[];
-    var assignments = AssignmentController.createFromReminder(reminder);
     var now = Date();
 
-    for (var assign in contentArray){
-        if(assign.specificDate < now){
-            newArray.push(assign);
+    for (var i=0;i<contentArray.length;i++){
+        if(contentArray[i].ass.specificDate < now){
+            newArray.push(contentArray[i].ass);
         }
         else{
-            //TODO delet the assign from db
-            Assignment
-        }
-    }
-    var finallArray = newArray.concat(assignments);
-    //creating convoReminderResponse object
-    console.log("finallArray is "+ JSON.stringify(assignments));
-    var convo={reminder: reminder, contentArray: finallArray};
-    //passing it as json
-    console.log("finallArray is "+ JSON.stringify(convo));
-    res.send(convo);
-}
+           //TODO delet the assign from db
 
+        }
+
+    }
+    console.log(JSON.stringify("new array is    "+JSON.stringify(newArray)));
+    return newArray;
+}
 exports.delete = function(req, res) {
   console.log();
   console.log('Inside reminder.delete');

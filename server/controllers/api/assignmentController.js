@@ -78,10 +78,10 @@ exports.createFromReminder = function(reminder) {
             }
         })
     }
-
-    console.log("assignments are" + JSON.stringify(assignments));
-    return assignments;
-
+    if(i>0) {
+        console.log("assignments are" + JSON.stringify(assignments));
+        return assignments;
+    }
 }
 //
 //not just an array of days going in - its an object with keys for each day and bools if that day is includied

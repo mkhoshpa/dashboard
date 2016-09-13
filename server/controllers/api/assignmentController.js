@@ -6,7 +6,7 @@ AssignmentController = require('./AssignmentController.js'),
 config = require ('../../config/env/env.js');
 
 var request = require('request');
-
+var Promise = require("../../../node_modules/promise");
 //tackoverflow.com/questions/563406/add-days-to-javascript-date
 Date.prototype.addDays = function(days)
 {
@@ -61,7 +61,7 @@ exports.createFromReminder = function(reminder) {
     console.log("days in reminder" + daysFromFrontEnd);
 
     var dateArray = AssignmentController.getRealDates(daysFromFrontEnd, hour, minute);
-    var i = 0;
+
     for (var date of dateArray) {
         //make a new date
         assignmentTemplate.specificDate = date;
@@ -70,7 +70,7 @@ exports.createFromReminder = function(reminder) {
         assignment.save(function (err, assignment) {
             if (!err) {
                 console.log("we made an assignment !!!!");
-                i++;
+
                 assignments.push(assignment);
             }
             else {
@@ -81,7 +81,22 @@ exports.createFromReminder = function(reminder) {
 
         console.log("assignments are" + JSON.stringify(assignments));
         return assignments;
-    
+
+}
+var creatFromDate = function (date){
+    assignmentTemplate.specificDate = date;
+    assignmentTemplate.date = date.toString();
+    var assignment = new Assignment(assignmentTemplate);
+    assignment.save(function (err, assignment) {
+        if (!err) {
+            console.log("we made an assignment !!!!");
+
+            return assignment;
+        }
+        else {
+            console.log("assignment save failed");
+        }
+    })
 }
 //
 //not just an array of days going in - its an object with keys for each day and bools if that day is includied

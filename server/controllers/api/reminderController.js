@@ -6,7 +6,7 @@ var Reminder = require('../../models/reminder.js'),
 var Promise = require("../../../node_modules/promise");
 
 var User = require('../../models/user.js');
-
+var mongoose = require('mongoose');
 exports.create = function(req, res) {
 
   var reminder = new Reminder(req.body);
@@ -68,53 +68,31 @@ exports.read = function(req, res) {
 //from http://stackoverflow.com/questions/15621970/pushing-object-into-array-schema-in-mongoose
 // req is convoReminderResponse object
 exports.update = function(req, res) {
-  //console.log('Updating reminder');
-  //console.log();
-  //////console.log(req.body);
-  //Reminder.findOneAndUpdate({'_id': req.body._id},
-  //{
-    //title: req.body.title,
-    //timeOfDay: req.body.timeOfDay,
-    //days: req.body.days,
-    //hour: req.body.hour,
-    //minute: req.body.minute,
-    //seletedDates: req.body.selectedDates,
-    //daysOfTheWeek: req.body.daysOfTheWeek,
-    //author: req.body.author,
-    //assignee: req.body.assignee
-  //}, {new: true}, function (err, reminder) {
-    //if (!err) {
-      //console.log('Reminder updated: ' + reminder);
-      //res.send(reminder);
-    //} else {
-      //res.status(500);
-      //res.send(err);
-    //}
-  //});
+
     //TODO check with thom ab out reminder IDs of new and previous ones problem!! assignments does not have uniqe ids!!
     var reminder = req.body.reminder;
     var contentArray = req.body.contentArray;
     console.log("updating reminder hit");
     console.log("reminder is"+JSON.stringify(reminder));
     // first delete previous one
-     deleteForUpdate(reminder).then(function(response) {
-        var reminderAndAssignments = createForUpdate(reminder);
-        res.send(reminderAndAssignments);
-    });
+     res.send(deleteForUpdate(reminder));
+
+
 }
 var deleteForUpdate = function(reminder){
-    return new Promise(function(resolve,reject) {
 
-        if(Reminder.findByIdAndRemove(
+
+        Reminder.findByIdAndRemove(
             reminder._id,
-            function(err, rem) {
-                if(rem) {
-                    console.log(rem);
+            function(err, reminder) {
+                if(reminder) {
+                    console.log("realY????"+JSON.stringify(reminder));
 
                     //now find all the associated assignments and remove them as well
                     Assignment.remove({reminderId : reminder._id }, function (err){
                         if(!err){
                             console.log("assignments should be goine now");
+                            return  createForUpdate(reminder);
                         }
                     });
                 }
@@ -124,11 +102,10 @@ var deleteForUpdate = function(reminder){
 
                 }
             }
-        )) {
-            resolve('success');
-            //reject('error');
-        }
-    });
+        )
+
+
+
 
 };
 
@@ -139,22 +116,27 @@ var createForUpdate = function(reminder){
     };
     console.log("create reminder and assingments hittttttttttttttttttttttttttttttttt");
     var newreminder = new Reminder(reminder);
+    console.log("check the id");
+    console.log(newreminder);
+    newreminder._id= mongoose.Types.ObjectId();
+    console.log("check the id");
+    console.log(newreminder);
     //console.log(newreminder);
     //this is goindg to be an array of assignemtns
-
-    var assignments = AssignmentController.createFromReminder(newreminder);
-
-
     newreminder.save(function(err, remind) {
         if(!err) {
             console.log("reminder created");
 
         } else {
             console.log(err);
-            res.status(500);
-            res.send(err);
+
         }
     });
+
+    var assignments = AssignmentController.createFromReminder(newreminder);
+
+
+
     reminderAndAssignments.reminder = newreminder;
 
     reminderAndAssignments.assignmentArray = assignments;

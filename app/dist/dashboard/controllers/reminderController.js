@@ -36,14 +36,25 @@ var app;
             }
             // selectedDays reminder
             ReminderController.prototype.toggle = function (item, list) {
+
                 var idx =  this.days.indexOf(item);
+                idx=idx+"";
                 var index = list.indexOf(idx);
                 if(index === -1){
-                    this.selectedDays.push(idx);
+                    list.push(idx);
+                    console.log(this.selectedDays);
 
                 }
                 else{
-                    this.selectedDays.splice(index,1);
+                    this.selectedDays = [];
+                    for (var i = 0; i < list.length; i++) {
+                       if(i !== index){
+                            this.selectedDays.push(list[i]);
+                        }
+                    }
+                    console.log(this.selectedDays);
+                   //list.splice(index,1);
+
                 }
             }
 
@@ -51,6 +62,7 @@ var app;
             ReminderController.prototype.exists = function (item, list) {
 
                 var index =  this.days.indexOf(item);
+
                 var answer = false;
                 for (var i = 0; i < list.length; i++) {
                     if(index == list[i]){
@@ -65,7 +77,7 @@ var app;
                     this.selectedDays = [];
                 }
                 else if (this.selectedDays.length === 0 || this.selectedDays.length > 0) {
-                    this.selectedDays = this.days.slice(0);
+                    this.selectedDays = [0,1,2,3,4,5,6];
                 }
             };
             ;
@@ -111,7 +123,7 @@ var app;
                 dateToday.setMinutes(minute);
                 dateToday.setSeconds('00');
                 //dateToday.set
-                console.log("today date")
+
 
                 console.log(dateToday);
 

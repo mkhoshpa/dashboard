@@ -867,7 +867,7 @@ var app;
                       hour: object.hour,
                       minute: object.minute,
                       creationDate: new Date(),
-                      selectedDates: object.selectedDays,
+                      selectedDates: object.selectedDates,
                       daysOfTheWeek: object.dates,
                       author: object.author,
                       assignee: object.assignee

@@ -70,39 +70,50 @@ exports.read = function(req, res) {
 exports.update = function(req, res) {
 
     //TODO check with thom ab out reminder IDs of new and previous ones problem!! assignments does not have uniqe ids!!
-    var reminder = req.body.reminder;
-    var contentArray = req.body.contentArray;
+    var reminder = req.body;
+
     console.log("updating reminder hit");
-    console.log("reminder is"+JSON.stringify(reminder));
+    console.log("req body"+JSON.stringify( req.body));
     // first delete previous one
-     res.send(deleteForUpdate(reminder));
+    deleteForUpdate(reminder,createForUpdate(reminder));
+     res.send();
 
 
 }
 var deleteForUpdate = function(reminder){
+    var newcreate =  { __v: 0,
+        assignee: reminder.assignee,
+        author: reminder.author,
+        minute:reminder.minute,
+        hour:reminder.hour,
+        title: reminder.title,
 
+        days: [],
+        selectedDates: reminder.selectedDates,
+        creationDate: new Date() } ;
 
-        Reminder.findByIdAndRemove(
-            reminder._id,
-            function(err, reminder) {
-                if(reminder) {
-                    console.log("realY????"+JSON.stringify(reminder));
+    Reminder.findByIdAndRemove(
+        reminder._id,
+        function(err, reminder) {
+            if(reminder) {
+                console.log("realY????"+JSON.stringify(reminder));
 
-                    //now find all the associated assignments and remove them as well
-                    Assignment.remove({reminderId : reminder._id }, function (err){
-                        if(!err){
-                            console.log("assignments should be goine now");
-                            return  createForUpdate(reminder);
-                        }
-                    });
-                }
-                else{
-                    console.log();
-                    console.log(err);
+                //now find all the associated assignments and remove them as well
+                Assignment.remove({reminderId : reminder._id }, function (err){
+                    if(!err){
+                        console.log("assignments should be goine now");
 
-                }
+                    }
+                });
             }
-        )
+            else{
+                console.log("did not find");
+                console.log(err);
+
+            }
+        }
+    )
+    return newcreate;
 
 
 
@@ -115,7 +126,18 @@ var createForUpdate = function(reminder){
         assignmentArray: []
     };
     console.log("create reminder and assingments hittttttttttttttttttttttttttttttttt");
-    var newreminder = new Reminder(reminder);
+    var newcreate =  { __v: 0,
+        assignee: reminder.assignee,
+        author: reminder.author,
+        minute:reminder.minute,
+        hour:reminder.hour,
+        title: reminder.title,
+
+        days: [],
+        selectedDates: reminder.selectedDates,
+        creationDate: new Date() } ;
+
+    var newreminder = new Reminder(newcreate);
     console.log("check the id");
     console.log(newreminder);
     newreminder._id= mongoose.Types.ObjectId();

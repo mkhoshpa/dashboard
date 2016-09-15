@@ -47,7 +47,7 @@
 
            </md-input-container>
 
-           <md-input-container flex = "15" ng-show = '!vm.switch'>
+           <md-input-container flex = "15" ng-show = 'vm.switch'>
 
              <md-select  ng-model = "vm.selectedColumns"  aria-label = "cols" placeholder = "Select Columns" class="md-primary">
 
@@ -67,14 +67,15 @@
            </md-input-container>
 
 
-           <md-input-container flex = "15" ng-show = 'vm.switch'>
+           <md-input-container flex = "15" ng-show = '!vm.switch'>
              <md-select  ng-model = "vm.selectedDataSurvey" ng-change = "vm.updateTable()"  style="margin: 5px;" aria-label = "UDOP" placeholder = "Select Survey" class="md-primary">
+               <md-option ng-value ="vm.coach">
+                 Coach View
+               </md-option>
                <md-option ng-repeat = "s in vm.surveyTemplates" ng-value = "s">
                  {{s.title}}
                </md-option>
-               <md-option ng-value ="vm.coach">
-                 Coach View
-              </md-option>
+
              </md-select>
            </md-input-container>
 
@@ -88,21 +89,21 @@
                <table md-table class="md-primary md-data-table" ng-model="vm.selected" id="client-table" >
                   <thead md-head md-order="vm.query.order">
 
-                        <tr md-row ng-show = "!vm.switch">
+                        <tr md-row ng-show = "vm.switch">
 
                             <th md-column  md-order-by="username">Clients</th>
                             <th md-column ng-repeat = "c in vm.selectedColumns" md-order-by="{{c.order}}">{{c.name}}</th>
 
                         </tr>
 
-                        <tr md-row ng-show = "vm.switch && vm.selectedDataSurvey != 'coach' ">
+                        <tr md-row ng-show = "!vm.switch && vm.selectedDataSurvey != 'coach' ">
 
                           <th md-column  md-order-by="username">Clients</th>
                           <th md-column ng-repeat = "question in vm.selectedDataSurvey.questions" ><span>{{question.header}}<span></th>
 
                         </tr>
 
-                        <tr md-row ng-show = "vm.switch && !vm.selectedDataSurvey">
+                        <tr md-row ng-show = "!vm.switch && !vm.selectedDataSurvey">
 
                           <th md-column  md-order-by="username">Clients</th>
                           <th md-column> PipelineStage</th>
@@ -113,7 +114,7 @@
                           <th md-column> Home </th>
 
                         </tr>
-                        <tr md-row ng-show = "vm.switch && vm.selectedDataSurvey == 'coach'">
+                        <tr md-row ng-show = "!vm.switch && vm.selectedDataSurvey == 'coach'">
                           <th md-column  md-order-by="username">Coaches</th>
                           <th md-column> Response Time (M)</th>
                           <th md-column> Success Rate (%) </th>
@@ -124,7 +125,7 @@
                         </tr>
 
                   </thead>
-                    <tbody md-body ng-show = "vm.switch && vm.selectedDataSurvey">
+                    <tbody md-body ng-show = "!vm.switch && vm.selectedDataSurvey">
                       <tr  md-row md-auto-select="false" md-select="client" ng-repeat="client in vm.surveyViewClients| orderBy: vm.query.order | filter:vm.query.filter  | limitTo: vm.query.limit: (vm.query.page - 1) * vm.query.limit">
 
                         <td md-cell class = "md-cell">
@@ -139,7 +140,7 @@
                       </tr>
 
                     </tbody>
-                    <tbody md-body ng-show = "vm.switch && !vm.selectedDataSurvey">
+                    <tbody md-body ng-show = "!vm.switch && !vm.selectedDataSurvey">
                       <tr  md-row md-auto-select="false" md-select="client" ng-repeat="client in vm.persons| orderBy: vm.query.order | filter:vm.query.filter  | limitTo: vm.query.limit: (vm.query.page - 1) * vm.query.limit">
 
                         <td md-cell class = "md-cell">
@@ -164,7 +165,7 @@
                       </tr>
 
                     </tbody>
-                    <tbody md-body ng-show = "vm.switch && vm.selectedDataSurvey == 'coach' ">
+                    <tbody md-body ng-show = "!vm.switch && vm.selectedDataSurvey == 'coach' ">
                       <tr  md-row md-auto-select="false" md-select="client" ng-repeat="client in vm.persons2| orderBy: vm.query.order | filter:vm.query.filter  | limitTo: vm.query.limit: (vm.query.page - 1) * vm.query.limit">
 
                         <td md-cell class = "md-cell">
@@ -193,7 +194,7 @@
                       </tr>
 
                     </tbody>
-                    <tbody md-body ng-show = "!vm.switch">
+                    <tbody md-body ng-show = "vm.switch">
                       <tr  md-row md-auto-select="false" md-select="client" ng-repeat="client in vm.user.clients| orderBy: vm.query.order | filter:vm.query.filter  | limitTo: vm.query.limit: (vm.query.page - 1) * vm.query.limit">
 
 
@@ -224,9 +225,9 @@
 
                </table>
         </md-table-container>
-        <md-table-pagination ng-show = "!vm.switch"md-limit="vm.query.limit" md-limit-options="[5, 10, 15]" md-page="vm.query.page" md-total="{{vm.user.clients.length}}" md-page-select></md-table-pagination>
+        <md-table-pagination ng-show = "vm.switch"md-limit="vm.query.limit" md-limit-options="[5, 10, 15]" md-page="vm.query.page" md-total="{{vm.user.clients.length}}" md-page-select></md-table-pagination>
         <!--Change md-total to survey cleints  -->
-        <md-table-pagination ng-show = "vm.switch" md-limit="vm.query.limit" md-limit-options="[5, 10, 15]" md-page="vm.query.page" md-total="{{vm.persons.length}}" md-page-select></md-table-pagination>
+        <md-table-pagination ng-show = "!vm.switch" md-limit="vm.query.limit" md-limit-options="[5, 10, 15]" md-page="vm.query.page" md-total="{{vm.persons.length}}" md-page-select></md-table-pagination>
       </md-card-content>
     </md-card>
   </div>

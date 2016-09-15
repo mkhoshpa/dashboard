@@ -1,3 +1,4 @@
+
 /// <reference path="_all.ts" />
 var app;
 (function (app) {

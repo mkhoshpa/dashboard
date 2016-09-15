@@ -241,7 +241,7 @@
 
 
       vm.surveyViewClients = [];
-      vm.surveyTemplates = [];
+      vm.surveyTemplates =  [];
 
       vm.coach = 'coach';
 
@@ -250,16 +250,16 @@
         console.log(vm.surveyTemplates);
         vm.surveyTemplates = [];
         vm.$http.get('/api/surveyTemplate/selectedUser/'+ vm.user._id).then(function successCallback(response) {
-          console.log(response);
-          vm.surveyTemplates = response.data;
-          console.log(vm.surveyTemplates);
+          console.log(JSON.stringify(response.data));
+            vm.surveyTemplates=  response.data;
+            //vm.selectedDataSurvey = vm.surveyTemplates.[0];
+
         })
       }
 
-
-
-
-
+      vm.getSurveys();
+       //vm.selectedDataSurvey = vm.surveyTemplates.[0];
+        console.log(vm.surveyTemplates.data);
       vm.updateTable = function(){
 
         console.log('hey');

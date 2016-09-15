@@ -72,8 +72,9 @@
                <md-option ng-value ="vm.coach">
                  Coach View
                </md-option>
-               <md-option ng-repeat = "s in vm.surveyTemplates" ng-value = "s">
-                 {{s.title}}
+               <md-option ng-repeat = "s in vm.surveyTemplates | orderBy:'-timeOfDay' "  ng-value = "s">
+
+               {{s.title}}
                </md-option>
 
              </md-select>

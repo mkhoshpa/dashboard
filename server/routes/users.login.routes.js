@@ -106,9 +106,9 @@ module.exports = function(app) {
 							});
 						}
 						else {
-							return res.redirect('/');
+							return res.redirect('/dashboard');
 						}
-			      return res.redirect('/');
+			      return res.redirect('/dashboard');
 			    });
 				})(req,res,next);
 		});

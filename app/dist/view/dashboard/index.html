@@ -5,16 +5,14 @@
 
   <div flex id="wrapper" layout="row">
     <md-content flex id="content">
-      <div ng-include="'/dist/view/dashboard/main-content.html'"></div>
+      <div ng-include="'/dist/view/dashboard/main-content.html'" flex></div>
 
       <md-tabs md-dynamic-height="" md-border-bottom="" md-stretch-tabs="always" md-selected="vm.tabIndex">
         <md-tab label="Messages">
           <div ng-include="'/dist/view/dashboard/messages/tab-messages.html'"></div>
         </md-tab>
 
-        <md-tab label="Notes">
-          <div ng-include="'/dist/view/dashboard/notes/tab-notes.html'"></div>
-        </md-tab>
+
 
         <md-tab label= "Daily CheckIn" md-on-select="vm.getRemindersResponses()">
           <div ng-include="'/dist/view/dashboard/reminders/tab-reminders.html'"></div>

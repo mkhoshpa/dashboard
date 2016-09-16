@@ -127,7 +127,7 @@
 
       vm.getSurveys();
        //vm.selectedDataSurvey = vm.surveyTemplates.[0];
-       
+
       vm.updateTable = function(){
 
         console.log('hey');

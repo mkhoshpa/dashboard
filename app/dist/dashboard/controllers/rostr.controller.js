@@ -22,144 +22,7 @@
       ///vm.clients2[0].testReminder = ['Yes'];
       //vm.clients2[0].imgUrl = "/../../../assets/imgs/snow.png";
 
-      vm.persons = [{
-        username : "Jon Snow",
-        pipelineStage : "Active-Client",
-        testResponses :["Lord Commander of the Night's Watch", 'Longclaw', 'Winterfell'],
-        reminderStatus : "/../../../assets/imgs/GoT/green.png",
-        reminderQuestion: "Time for the battle of Winterfell!",
-        testReminder : 'YES',
-        imgUrl :"/../../../assets/imgs/GoT/snow.png"
-      },
-      {
-        username : "Jaime Lannister",
-        pipelineStage : "trial",
-        testResponses :["Lord Command of the King's Guard", 'Oathkeeper', 'Casterly Rock'],
-        reminderStatus : "/../../../assets/imgs/GoT/green.png",
-        reminderQuestion: "Did you take back riverrun?",
-        testReminder : 'Yes, easy',
-        imgUrl :"/../../../assets/imgs/GoT/jamie.png"
-      },
-      {
-        username : "Tyrion Lannister",
-        pipelineStage : "Active-Client",
-        testResponses :["Dwarf", 'Axe', 'Casterly Rock'],
-        reminderStatus : "/../../../assets/imgs/GoT/green.png",
-        reminderQuestion: "Drinking time",
-        testReminder : 'Of course',
-        imgUrl :"/../../../assets/imgs/GoT/dwarf.png"
-      },
-      {
-        username : "The Hound",
-        pipelineStage : "Previous-Client",
-        testResponses :[],
-        reminderStatus : "/../../../assets/imgs/GoT/red.jpg",
-        reminderQuestion : "Did you kill the boy?",
-        testReminder : '',
-        imgUrl :"/../../../assets/imgs/GoT/theHound.png"
-      },
-      {
-        username : "Hodor",
-        pipelineStage : "Active-Client",
-        testResponses :['Hodor!', 'Hodor', 'Hodor...'],
-        reminderStatus : "/../../../assets/imgs/GoT/orange.png",
-        reminderQuestion: "Did you clean the horse?",
-        testReminder : 'Hoder!',
-        imgUrl :"/../../../assets/imgs/GoT/hodor.png"
-      },
-      {
-        username : "Daenerys Targaryen",
-        pipelineStage : "Lead",
-        testResponses :["Mother of Dragons", "Dragons", "King's Landing"],
-        reminderStatus : "/../../../assets/imgs/GoT/green.png",
-        reminderQuestion: "It's time to feed the dragons",
-        testReminder : 'Yes!',
-        imgUrl :"/../../../assets/imgs/GoT/danny.jpg"
-      }
 
-    ];
-
-
-
-
-
-
-    vm.persons2 = [{
-      username : "Coach Snow",
-      rs: '1:30',
-      suc: '50%',
-      hpw: '30',
-      nps: '40',
-      reminderStatus : "/../../../assets/imgs/GoT/green.png",
-      al: '20',
-      dl: '5',
-      imgUrl :"/../../../assets/imgs/GoT/snow.png"
-    },
-    {
-      username : "Coach J. Lannister",
-      rs: '0:50',
-      suc: '70%',
-      hpw: '50',
-      nps: '60',
-      al: '20',
-      dl: '15',
-      reminderStatus : "/../../../assets/imgs/GoT/green.png",
-
-      imgUrl :"/../../../assets/imgs/GoT/jamie.png"
-    },
-    {
-      username : "Coach T. Lannister",
-      rs: '3:00',
-      suc: '85%',
-      hpw: '10',
-      nps: '-40',
-      al: '10',
-      dl: '2',
-      reminderStatus : "/../../../assets/imgs/GoT/green.png",
-
-      imgUrl :"/../../../assets/imgs/GoT/dwarf.png"
-    },
-    {
-      username : "Coach Hound",
-      rs: '5:00',
-      suc: '30%',
-      hpw: '15',
-      nps: '90',
-      al: '2',
-      dl: '12',
-
-      reminderStatus : "/../../../assets/imgs/GoT/red.jpg",
-
-      imgUrl :"/../../../assets/imgs/GoT/theHound.png"
-    },
-    {
-      username : "Coach Hodor",
-      rs: '0:47',
-      suc: '99%',
-      hpw: '20',
-      nps: '99',
-      al: '30',
-      dl: '0',
-
-      reminderStatus : "/../../../assets/imgs/GoT/orange.png",
-
-      imgUrl :"/../../../assets/imgs/GoT/hodor.png"
-    },
-    {
-      username : "Coach Targaryen",
-      rs: '2:00',
-      suc: '44%',
-      hpw: '12',
-      nps: '-70',
-      al: '14',
-      dl: '22',
-
-      reminderStatus : "/../../../assets/imgs/GoT/green.png",
-
-      imgUrl :"/../../../assets/imgs/GoT/danny.jpg"
-    }
-
-  ];
 
       vm.possibleColumns = [];
       //vm.contents = contents(vm.clients);
@@ -245,6 +108,9 @@
 
       vm.coach = 'coach';
         vm.a;
+     // get the list of all the surveys and put them in  vm.surveyTemplates
+        // put the newest survey in vm.selectedDataSurvey
+
       vm.getSurveys = function(){
         console.log("surveys");
         console.log(vm.surveyTemplates);

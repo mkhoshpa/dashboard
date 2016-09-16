@@ -88,14 +88,14 @@
                <table md-table class="md-primary md-data-table" ng-model="vm.selected" id="client-table" >
                   <thead md-head md-order="vm.query.order">
 
+                  <tr md-row ng-show = "!vm.switch">
+
+                      <th md-column  md-order-by="username">Clients</th>
+                      <th md-column ng-repeat = "question in vm.selectedDataSurvey.questions" ><span>{{question.header}}<span></th>
+
+                  </tr>
+
                         <tr md-row ng-show = "vm.switch">
-
-                            <th md-column  md-order-by="username">Clients</th>
-                            <th md-column ng-repeat = "c in vm.selectedColumns" md-order-by="{{c.order}}">{{c.name}}</th>
-
-                        </tr>
-
-                        <tr md-row ng-show = "!vm.switch">
 
                           <th md-column  md-order-by="username">Clients</th>
                           <th md-column ng-repeat = "question in vm.selectedDataSurvey.questions" ><span>{{question.header}}<span></th>

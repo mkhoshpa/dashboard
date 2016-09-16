@@ -244,7 +244,7 @@
       vm.surveyTemplates =  [];
 
       vm.coach = 'coach';
-
+        vm.a;
       vm.getSurveys = function(){
         console.log("surveys");
         console.log(vm.surveyTemplates);
@@ -253,8 +253,10 @@
           console.log(JSON.stringify(response.data));
             vm.surveyTemplates=  response.data;
             //vm.selectedDataSurvey = vm.surveyTemplates.[0];
-
-        })
+            vm.a = response.data.length;
+            vm.selectedDataSurvey = vm.surveyTemplates[vm.a-1];
+            console.log("length is "+JSON.stringify(vm.selectedDataSurvey ));
+            })
       }
 
       vm.getSurveys();

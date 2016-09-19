@@ -19,9 +19,9 @@ module.exports = {
   messageSocketPort: 45874,
   sessionSecret: 'developmentSessionSecret',
   phoneNumbers: {
-    messages: '+12898062194',
+    messages: '+12045002320',
 		//real 12044005478
-    reminders: '+15065000639'
+    reminders: '+12045002562'
   },
   mandrillApiKey: 'g0tWnJ18NBP7EFHirXvGUQ',
 	facebook: {

@@ -43,6 +43,7 @@ exports.createFromReminder = function(reminder) {
     var minute = reminder.minute;
     var assignments = [];
     var daysFromFrontEnd = reminder.selectedDates;
+
     //for each day in reminder make a new assignemtn
 
     //TODO need to change this so reminders have access to repeat or not
@@ -52,8 +53,9 @@ exports.createFromReminder = function(reminder) {
         "sent": false,
         "reminderId": reminder.id,
         "userId": reminder.assignee,
-        "hour": reminder.hour,
-        "minute": reminder.minute
+        "hours": reminder.hour,
+        "minutes": reminder.minute
+
     };
 
     //call a new method to get an array of actual dates from the days of the week
@@ -301,7 +303,8 @@ exports.convosNow = function(req, res) {
   // console.log(minutesNext);
 
 
-  Assignment.find({year: yearNow, month: monthNow, date: dateNow})
+  //Assignment.find({year: yearNow, month: monthNow, date: dateNow})
+  Assignment.find({})
        .where('hours').equals(hoursNow)
        .where('minutes').equals(minutesNow)
        .where('completed').equals(false)

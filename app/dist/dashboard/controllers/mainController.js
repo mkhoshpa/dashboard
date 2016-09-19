@@ -1484,16 +1484,6 @@ HI Shane!                    console.log(survey);
               console.log("IT WORKED!")
             }
 
-
-
-
-
-
-
-
-
-
-
             MainController.prototype.showContactOptions = function ($event) {
                 this.$mdBottomSheet.show({
                     parent: angular.element(document.getElementById('wrapper')),

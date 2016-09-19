@@ -2,7 +2,7 @@
 
 var Reminder = require('../../models/reminder.js'),
     Assignment = require("../../models/assignment.js"),
-    AssignmentController = require("./AssignmentController.js");
+    AssignmentController = require("./assignmentController.js");
 var Promise = require("../../../node_modules/promise");
 
 var User = require('../../models/user.js');

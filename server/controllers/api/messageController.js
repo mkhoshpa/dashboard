@@ -91,10 +91,14 @@ exports.receiveSMS = function (req, res) {
       {safe: true},
       function (err, user) {
         if (!err) {
-          console.log('The user with that phone number is: ' + user.slack.name);
+          console.log('The user with that phone number is: ' + user.fullName);
           io.emit('message', message);
           console.log('Message saved and pushed to user');
+        } else if (err) {
+          console.log("there is no user with that name");
+
         }
+
       });
     });
     res.end(resp.toString());

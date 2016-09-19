@@ -581,6 +581,7 @@ var app;
               _this.$http.post('/api/phonenumber/create/' + this.selected.id, phoneNumber).then(function (response) {
 
               });
+
               self.openToast('Phone Number Updated');
             };
             MainController.prototype.addPipelineStage = function ($event) {
@@ -608,7 +609,61 @@ var app;
               self.openToast("Pipeline Stage Updated");
 
             };
+            MainController.prototype.editUser = function ($event) {
+                var _this = this;
+                var self = this;
+                console.log(userSelected);
 
+                var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
+                this.$mdDialog.show({
+                    templateUrl: './dist/view/dashboard/user/editUserDialog.html',
+                    parent: angular.element(document.body),
+                    targetEvent: $event,
+                    controller: dashboard.AddUserDialogController,
+                    controllerAs: "ctrl",
+                    clickOutsideToClose: true,
+                    fullscreen: useFullScreen,
+                    locals: {
+                        selected: userSelected
+                    }
+                }).then(function (user) {
+                    // Call user service
+                    //console.log('this is user' + JSON.stringify(user));
+
+
+                    if(user.newUser) {
+                        _this.$http.post('/api/user/create', user).then(function successCallback(response) {
+                            //console.log('The user\'s id is: ' + response.data.id);
+                            //  console.log('The user\'s _id is: ' + response.data._id);
+                            //this.user.clients.push(response.data.id);
+
+                            if (response.data.id) {
+                                console.log("done");
+                                _this.$http.post('/api/coach/newuser/' + this.user.id + '?' + response.data.id, user).then(function successCallback(client) {
+                                    console.log("done2");
+                                    self.user.clients.push(response.data);
+                                    console.log("User created:")
+                                    console.log(response.data);
+                                    self.openToast("User added And Email Sent!");
+                                    _this.$http.post('api/facebook/email/', user).then(function successCallback(response) {
+                                        console.log("email done!");
+                                        //console.log(response);
+                                    });
+                                });
+                            } else {
+                                self.openToast('User not added. ' + response.data.errors.password.message);
+                            }
+
+                        });
+                    }
+                    else{
+                        //TODO: editUser
+
+                    }
+                }, function () {
+                    console.log('You cancelled the dialog.');
+                });
+            };
 
             MainController.prototype.addUser = function ($event) {
                 var _this = this;
@@ -622,6 +677,9 @@ var app;
                     controller: dashboard.AddUserDialogController,
                     controllerAs: "ctrl",
                     clickOutsideToClose: true,
+                    locals: {
+                        selected : null
+                    },
                     fullscreen: useFullScreen
                 }).then(function (user) {
                     // Call user service
@@ -685,6 +743,11 @@ var app;
                 console.log('You cancelled the dialog.');
               });
             };
+
+
+
+
+
 
             MainController.prototype.addUserThroughFacebook = function ($event) {
               var _this = this;

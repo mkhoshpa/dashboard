@@ -581,7 +581,7 @@ var app;
               _this.$http.post('/api/phonenumber/create/' + this.selected.id, phoneNumber).then(function (response) {
 
               });
-                
+
               self.openToast('Phone Number Updated');
             };
             MainController.prototype.addPipelineStage = function ($event) {
@@ -615,7 +615,7 @@ var app;
 
                 var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
                 this.$mdDialog.show({
-                    templateUrl: './dist/view/dashboard/user/editUser.html',
+                    templateUrl: './dist/view/dashboard/user/editUserDialog.html',
                     parent: angular.element(document.body),
                     targetEvent: $event,
                     controller: dashboard.AddUserDialogController,

@@ -56,8 +56,12 @@ var app;
                 }
                 else if (this.user.role == "coach") {
                     this.clients = this.user.clients;
-                    this.selected = this.user;
-                    //self.selected = this.clients[0];
+                    if(this.clients) {
+                        //this.selected = this.user;
+                        self.selected = this.clients[0];
+                    }else{this.selected = this.user;
+                        console.log("empty");
+                    }
                 }
                 self.userService.selectedUser = self.selected;
                 userSelected = self.userService.selectedUser;
@@ -658,6 +662,38 @@ var app;
                     }
                     else{
                         //TODO: editUser
+                        _this.$http.post('/profile/update', user).then(function successCallback(response) {
+                            //console.log('The user\'s id is: ' + response.data.id);
+                            //  console.log('The user\'s _id is: ' + response.data._id);
+                            //this.user.clients.push(response.data.id);
+
+                            console.log(response.data);
+                            if (response.data._id) {
+                                console.log("done");
+                                _this.$http.post('/api/coach/newuser/' + this.user._id + '?' + response.data._id, user).then(function successCallback(client) {
+                                    console.log("done2");
+                                    for(var i = 0; i < self.user.clients.length; i++) {
+                                        var obj = self.user.clients[i];
+                                        if(obj._id == response.data._id ){
+                                            var index =  self.user.clients.indexOf(obj);
+                                            self.user.clients.splice(index, 1);
+                                        }
+
+                                    }
+
+
+                                    self.user.clients.push(response.data);
+                                    self.selectUser(response.data);
+                                    console.log("User created:")
+                                    console.log(response.data);
+                                    self.openToast("User edited");
+
+                                });
+                            } else {
+                                self.openToast('User not added. ' + response.data.errors.password.message);
+                            }
+
+                        });
 
                     }
                 }, function () {

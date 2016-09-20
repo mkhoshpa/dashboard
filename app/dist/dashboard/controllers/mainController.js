@@ -56,8 +56,12 @@ var app;
                 }
                 else if (this.user.role == "coach") {
                     this.clients = this.user.clients;
-                    this.selected = this.user;
-                    //self.selected = this.clients[0];
+                    if(this.clients) {
+                        //this.selected = this.user;
+                        self.selected = this.clients[0];
+                    }else{this.selected = this.user;
+                        console.log("empty");
+                    }
                 }
                 self.userService.selectedUser = self.selected;
                 userSelected = self.userService.selectedUser;

@@ -62,6 +62,7 @@ var app;
                         username: this.username,
                         password: this.password,
                         email: this.email,
+                        fullName:  this.firstName + this.lastName,
                         /*
                          slack_id: this.slack_id,
                          slack: {

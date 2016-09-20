@@ -682,11 +682,8 @@ var app;
                                     self.selectUser(response.data);
                                     console.log("User created:")
                                     console.log(response.data);
-                                    self.openToast("User added And Email Sent!");
-                                    _this.$http.post('api/facebook/email/', user).then(function successCallback(response) {
-                                        console.log("email done!");
-                                        //console.log(response);
-                                    });
+                                    self.openToast("User edited");
+
                                 });
                             } else {
                                 self.openToast('User not added. ' + response.data.errors.password.message);

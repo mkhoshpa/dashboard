@@ -19,7 +19,7 @@ var app;
                 ];
                 if (selected) {
                     this.edit=true,
-                    
+
                         this.username= selected.username,
                         this.firstName= selected.firstName,
                         this.lastName = selected.lastName,
@@ -125,7 +125,7 @@ var app;
                     }
                     console.log(user);
 
-                    this.$mdDialog.hide(user);
+                     this.$mdDialog.hide(user);
                 }
             };
             AddUserDialogController.$inject = ['$mdDialog', 'userService','selected'];

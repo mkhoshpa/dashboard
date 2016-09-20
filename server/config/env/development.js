@@ -14,14 +14,15 @@ module.exports = {
 	//db: 'mongodb://josh:letmein1@ds011765.mlab.com:11765/awesomebox',
   // db: 'mongodb://shane:letmein1@localhost:27017/development',
 
-	db: 'mongodb://someguy:letmein1@ds011735.mlab.com:11735/thomlocal',
+	//db: 'mongodb://someguy:letmein1@ds011735.mlab.com:11735/thomlocal',
+	db: 'mongodb://thomprod:rZrwcJkzar92@ds157955-a0.mlab.com:57955,ds157955-a1.mlab.com:57955/prod?replicaSet=rs-ds157955',
   server: server,
   messageSocketPort: 45874,
   sessionSecret: 'developmentSessionSecret',
   phoneNumbers: {
-    messages: '+12898062194',
+    messages: '+12045002320',
 		//real 12044005478
-    reminders: '+15065000639'
+    reminders: '+12045002562'
   },
   mandrillApiKey: 'g0tWnJ18NBP7EFHirXvGUQ',
 	facebook: {

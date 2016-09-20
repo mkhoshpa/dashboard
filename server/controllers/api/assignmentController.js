@@ -66,6 +66,10 @@ exports.createFromReminder = function(reminder) {
     var i = 0;
     for (var date of dateArray) {
         //make a new date
+        //set the seconds to zero and console log to confirm
+        date.setSeconds(0);
+        date.setMilliseconds('00');
+        console.log(date + "date after seconds and ms ");
         assignmentTemplate.specificDate = date;
         assignmentTemplate.date = date.toString();
         var assignment = new Assignment(assignmentTemplate);
@@ -101,6 +105,7 @@ exports.getRealDates = function(daysArrayInput, hourInput, minuteInput) {
     if(today < day){
       console.log( today + " is before " + day);
       d = day - today;
+
     }
     else if(today > day){
       console.log( today + " is after " + day);
@@ -108,7 +113,7 @@ exports.getRealDates = function(daysArrayInput, hourInput, minuteInput) {
       d =  7 - (today - day) ;
       
     }
-    else if (today === day){
+    else {
       console.log( today + " equal to " + day);
       console.log(hourInput);
       if(newDate.getHours() > hourInput){
@@ -139,10 +144,13 @@ exports.getRealDates = function(daysArrayInput, hourInput, minuteInput) {
         
       }
     }
+
+    //TODO
     var finalDate = new Date().addDays(d);
       finalDate.setHours(hourInput);
       finalDate.setMinutes(minuteInput);
     datesArrayOutput.push(finalDate);
+      console.log("datesArrayOutput" + datesArrayOutput);
     console.log('added a day' +  d);     
              
   }
@@ -279,6 +287,7 @@ exports.convosNow = function(req, res) {
   var yearNow  = now.getFullYear();
   var monthNow = now.getMonth();
   var dateNow = now.getDate();
+
   var hoursNow = now.getHours();
   var minutesNow = now.getMinutes();
   console.log(monthNow);
@@ -288,7 +297,7 @@ exports.convosNow = function(req, res) {
   var dateNext= nextWeek.getDate();
   var hoursNext = nextWeek.getHours();
   var minutesNext = nextWeek.getMinutes();
-
+    now.setSeconds(0);
   // console.log(yearNow);
   // console.log(monthNow);
   // console.log(dateNow);
@@ -303,10 +312,13 @@ exports.convosNow = function(req, res) {
   // console.log(minutesNext);
 
 
-  //Assignment.find({year: yearNow, month: monthNow, date: dateNow})
-  Assignment.find({})
-       .where('hours').equals(hoursNow)
-       .where('minutes').equals(minutesNow)
+    //Assignment.find({year: yearNow, month: monthNow, date: dateNow})
+
+    Assignment.find({specificDate: now})
+
+    //Assignment.find({})
+      // .where('hours').equals(hoursNow)
+      // .where('minutes').equals(minutesNow)
        .where('completed').equals(false)
        .populate('userId')
        .populate('surveyTemplateId')

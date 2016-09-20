@@ -48,6 +48,8 @@ exports.sendSMS = function (req, res) {
             var sentToPhoneNumber = '';
             User.findById(message.sentTo, function (err, userSentTo) {
               if (!err) {
+                console.log("MESSAGE SENT ");
+
                 twilio.sendMessage({
                   to: userSentTo.phoneNumber,
                   from: config.phoneNumbers.messages,

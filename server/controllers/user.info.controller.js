@@ -47,13 +47,6 @@ exports.bySlackId = function (req, res) {
 
 
 
-
-
-
-
-
-
-
 exports.updateMedium = function(req, res){
   console.log(req.body.text);
 

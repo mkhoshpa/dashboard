@@ -298,19 +298,31 @@ exports.change = function(req, res) {
 }
 
 exports.update = function(req,res) {
-  //console.log(req.body);
-  if(!req.user) {
+  console.log("hit  "+ JSON.stringify(req.body));
+  //if(!req.user) {
     // Use the 'response' object to render the signup page
-    res.render('pages/signin', {
+    //res.render('pages/signin', {
       // Set the page title variable
-      title: 'Sign-up Form',
+     // title: 'Sign-up Form',
       // Set the flash message variable
-      messages: req.flash('You must be logged In!')
-    });
-  } else {
+     // messages: req.flash('You must be logged In!')
+   // });
+ // } else {
 
-    res.redirect('/');
-  }
+   // res.redirect('/');
+  //}
+  User.findByIdAndUpdate(req.body._id,
+      {$set:req.body},
+      {safe: true},
+      function (err, user) {
+        if (err) {
+          winston.error(err);
+        }
+        else{
+          console.log(user);
+        }
+      });
+  res.send(req.body);
 };
 
 exports.delete = function(req, res){

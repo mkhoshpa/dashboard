@@ -3,7 +3,7 @@
 
 // Server ip and port are in this object so they can be referred to in the configuration object
 var server = {
-  ip: 'localhost',
+  ip: 'cxjcbvzj.cname.us.ngrok.io',
   port: '12557'
 };
 

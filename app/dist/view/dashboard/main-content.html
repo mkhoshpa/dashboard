@@ -127,7 +127,7 @@
             <a class="secondary-content"><i class="material-icons" style="color:#FFFFFF; margin-top: 15px; font-size: 60px;">face</i></a>
             <md-content class = "profileName" style="background-color; #FFFFFF; margin: 5px;">
               <h1>{{vm.selected.username}}</h1>
-                <md-button md-no-ink class="md-primary"  ng-click="vm.editUser($event)" >Edit User</md-button>
+                <md-button md-no-ink class="md-primary"  style = "right: -8px; " ng-click="vm.editUser($event)" >Edit User</md-button>
 
             </md-content>
           </div>
@@ -139,14 +139,15 @@
               <h1 class = "profileName">
                 {{vm.selected.firstName +" "+ vm.selected.lastName}}
               </h1>
-                <md-button md-no-ink class="md-primary"  ng-click="vm.editUser($event)" >Edit User</md-button>
+                <md-button md-no-ink class="md-primary"  ng-click="vm.editUser($event)" style = "right: -55px; " >Edit User</md-button>
             </md-content>
+
           </div>
 
 
         </div>
 
-        <div ng-include="'/dist/view/dashboard/notes/tab-notes.html' "  style="max-height: 310px ; overflow : scroll">NOTES</div>
+        <div  ng-if="!vm.isCoach(vm.selected)" ng-include="'/dist/view/dashboard/notes/tab-notes.html' "  style="max-height: 310px ; overflow : scroll; width: 400px ">NOTES</div>
 
 
 

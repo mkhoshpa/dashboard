@@ -2,7 +2,7 @@
               md-component-id="left"
               md-is-open = "true"
               md-is-locked-open="$mdMedia('gt-xs')" style="width: 90%">
-    
+
 
   <div layout-padding>
     <md-autocomplete
@@ -23,7 +23,7 @@
   </div>
   <md-content class="scrollable-nav-content" style="margin-top: -65px;">
     <md-list>
-      <md-list-item>
+      <!-- <md-list-item>
         <md-button ng-click="vm.selectUser(vm.user)">
           <i class="material-icons avatar" style="color: #444;">face</i>
               <span>
@@ -33,7 +33,7 @@
 
         </md-button>
          <md-divider></md-divider>
-      </md-list-item>
+      </md-list-item> -->
       <md-list-item ng-repeat="it in vm.clients | filter:vm.searchText | orderBy:'name'">
           <md-button ng-click="vm.selectUser(it)" ng-class="{'selected' : it === vm.selected }" >
             <img ng-src="{{it.imgUrl}}" class="avatar">

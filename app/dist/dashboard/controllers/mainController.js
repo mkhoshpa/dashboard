@@ -970,7 +970,8 @@ var app;
                       selectedDates: object.selectedDates,
                       daysOfTheWeek: object.dates,
                       author: object.author,
-                      assignee: object.assignee
+                      assignee: object.assignee,
+                        repeat: object.repeat
                     }
                     JSON.stringify(reminder);
                     console.log(reminder);
@@ -1088,6 +1089,7 @@ var app;
                     // reminder.assigne.reminders.push()
                     _this.$http.post('/api/reminder/update/' + reminder._id, reminder).then(function successCallback(reminder) {
                         console.log('returned junk: ' + JSON.stringify(reminder.data));
+                        self.openToast("Reminder Edited");
                         //  self.selected.reminders.push(response.data);
                         if (self.updateReminder(reminder.data)) {
                           // Create the assignment object
@@ -1098,7 +1100,8 @@ var app;
                             minute: reminder.data.minute,
                             userId: reminder.data.assignee,
                             reminderId: reminder.data._id,
-                            type: 'reminder'
+                            type: 'reminder',
+                              repeat: object.repeat
                           };
                           // Call sendOutReminder
                           _this.sendOutReminder(reminderUserAssign);
@@ -1109,7 +1112,7 @@ var app;
                             self.openToast("Reminder Edited");
                         }
                         else {
-                            self.openToast("Reminder Not Found!");
+                            //self.openToast("Reminder Not Found!");
                         }
                     });
                 }, function () {

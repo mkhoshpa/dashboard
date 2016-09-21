@@ -32,7 +32,7 @@ exports.createReminderAndAssignments = function(req, res) {
         reminder: [],
         assignmentArray: []
     };
-    console.log("create reminder and assingments hit");
+    console.log("create reminder and assingments hit!2113");
     var reminder = new Reminder(req.body);
     console.log(reminder);
     //this is going to be an array of assignemtns
@@ -73,7 +73,7 @@ exports.update = function(req, res) {
     var reminder = req.body;
 
     console.log("updating reminder hit");
-    console.log("req body"+JSON.stringify( req.body));
+    console.log("req body"+JSON.stringify( reminder));
     // first delete previous one
     deleteForUpdate(reminder,createForUpdate(reminder));
      res.send();
@@ -87,16 +87,16 @@ var deleteForUpdate = function(reminder){
         minute:reminder.minute,
         hour:reminder.hour,
         title: reminder.title,
-
+        repeat: reminder.repeat,
         days: [],
         selectedDates: reminder.selectedDates,
         creationDate: new Date() } ;
-
+    console.log("hellloooo"+JSON.stringify(newcreate));
     Reminder.findByIdAndRemove(
         reminder._id,
         function(err, reminder) {
             if(reminder) {
-                console.log("realY????"+JSON.stringify(reminder));
+                //console.log("realY????"+JSON.stringify(reminder));
 
                 //now find all the associated assignments and remove them as well
                 Assignment.remove({reminderId : reminder._id }, function (err){
@@ -132,7 +132,7 @@ var createForUpdate = function(reminder){
         minute:reminder.minute,
         hour:reminder.hour,
         title: reminder.title,
-
+        repeat: reminder.repeat,
         days: [],
         selectedDates: reminder.selectedDates,
         creationDate: new Date() } ;

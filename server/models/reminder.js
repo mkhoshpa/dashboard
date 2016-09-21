@@ -26,7 +26,7 @@ var reminderSchema = new Schema({
   days: [{type: Number, min: 0, max: 6}],
   hour: {type: Number, min: 0, max: 23},
   minute: {type: Number, min:0, max:59},
-
+  repeat: {type: Boolean},
   assignee: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
   author: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}
 

@@ -33,6 +33,7 @@ var app;
                         this.time.setHours(selected.hour);
                         this.time.setMilliseconds(0);
                         this.time.setSeconds(0);
+                    this.repeat = selected.repeat;
                 }
             }
             // selectedDays reminder

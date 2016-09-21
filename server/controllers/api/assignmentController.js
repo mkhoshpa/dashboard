@@ -48,7 +48,7 @@ exports.createFromReminder = function(reminder) {
 
     //TODO need to change this so reminders have access to repeat or not
     var assignmentTemplate = {
-        "repeat": true,
+        "repeat": reminder.repeat,
         "type": "reminder",
         "sent": false,
         "reminderId": reminder.id,

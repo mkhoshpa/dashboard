@@ -67,7 +67,7 @@ var app;
                     this.selectedDays = [];
                 }
                 else if (this.selectedDays.length === 0 || this.selectedDays.length > 0) {
-                    this.selectedDays = this.days.slice(0);
+                    this.selectedDays = [0,1,2,3,4,5,6];
                 }
             };
             ;

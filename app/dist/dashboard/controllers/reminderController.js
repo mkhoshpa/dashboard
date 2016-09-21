@@ -64,10 +64,11 @@ var app;
             };
             ;
             ReminderController.prototype.toggleAll = function () {
-                if (this.selectedDays.length === this.days.length) {
+                if (this.selectedDays.length == 7) {
+                    
                     this.selectedDays = [];
                 }
-                else if (this.selectedDays.length === 0 || this.selectedDays.length > 0) {
+                else  {
                     this.selectedDays = [0,1,2,3,4,5,6];
                 }
             };

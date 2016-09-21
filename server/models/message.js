@@ -9,9 +9,16 @@ var messageSchema = new Schema({
   body: {type: String, required: true},
   sentBy: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
   sentTo: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+  created: {
+    type: Date,
+    // Create a default 'created' value
+    default: Date.now
+  },
+
   //TODO: fix so this isn't necessarry
   sentToPhoneNumber: {type: String}
 });
+
 
 var Message = mongoose.model('Message', messageSchema);
 module.exports = Message;

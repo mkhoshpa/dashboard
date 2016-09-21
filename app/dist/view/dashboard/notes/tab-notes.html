@@ -7,7 +7,7 @@
   </md-button>
   <p ng-if="!vm.selected.notes.length">No notes for  {{vm.selected.firstName +" "+ vm.selected.lastName}}, yet.</p>
 
-  <md-card ng-repeat="note in vm.selected.notes">
+  <md-card ng-repeat="note in vm.selected.notes | orderBy:'-' ">
     <div layout="row">
       <md-card-content flex="80">
         <div layout="column">

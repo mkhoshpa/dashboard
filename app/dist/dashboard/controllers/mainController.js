@@ -929,7 +929,7 @@ var app;
                         contentArray: content
                       }
                       console.log('fullcontent');
-                      console.log(fullcontent);
+                      console.log(JSON.stringify(fullcontent));
 
                       _this.convoReminderResponse.push(fullcontent);
                       console.log('convoReminderResponse');
@@ -984,7 +984,9 @@ var app;
                     console.log(date);
 
                     _this.$http.post('/api/reminder/createReminderAndAssignments', reminder).then(function successCallback(response) {
-                        console.log("im a reminder" + response);
+                        console.log("im a reminder" + JSON.stringify(response.data.reminder));
+                        _this.getRemindersResponses();
+                        console.log( JSON.stringify( _this.convoReminderResponse));
                         self.openToast("Reminder added");
                     });
 

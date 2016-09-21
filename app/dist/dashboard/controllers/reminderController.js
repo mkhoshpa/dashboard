@@ -65,7 +65,7 @@ var app;
             ;
             ReminderController.prototype.toggleAll = function () {
                 if (this.selectedDays.length == 7) {
-                    
+
                     this.selectedDays = [];
                 }
                 else  {

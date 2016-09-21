@@ -15,7 +15,7 @@
         Sent: {{message.body}} <span class="time">{{message.created |  date: 'medium'}}</span>
       </span>
       <span ng-if="message.sentTo != vm.selected._id">
-        Received:  <span class="time">{{message.created |  date: 'medium'}}</span>
+        Received: {{message.body}}  <span class="time">{{message.created |  date: 'medium'}}</span>
       </span>
     </p>
 </md-virtual-repeat-container>

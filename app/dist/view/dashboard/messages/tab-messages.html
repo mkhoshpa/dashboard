@@ -2,12 +2,20 @@
     <p ng-if="!vm.selected.messages.length">
       No messages for {{vm.selected.firstName +" "+ vm.selected.lastName}}, yet.
     </p>
+    <style>
+        .time{
+            position: absolute;
+            right : 20px;
+        }
+
+
+    </style>
     <p md-virtual-repeat="message in vm.selected.messages" class="repeated-item" flex>
       <span ng-if="message.sentTo === vm.selected._id">
-        Sent: {{message.body}}
+        Sent: {{message.body}} <span class="time">{{message.created |  date: 'medium'}}</span>
       </span>
       <span ng-if="message.sentTo != vm.selected._id">
-        Received: {{message.body}}
+        Received:  <span class="time">{{message.created |  date: 'medium'}}</span>
       </span>
     </p>
 </md-virtual-repeat-container>

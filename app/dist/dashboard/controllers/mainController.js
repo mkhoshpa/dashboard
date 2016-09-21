@@ -25,6 +25,7 @@ var app;
                 this.convoReminderResponse = [];
                 this.convoSurveyResponse = [];
                 this.surveyTemplates = [];
+                this.timeZoneFromGMT=-3;
                 //Survey stuff
                 this.questions1 = [
                  {

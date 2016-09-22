@@ -122,28 +122,30 @@
 
     <div  layout = "row" layout-padding style="background-color: white; margin: 5px;" >
 
-         <div md-whiteframe = "3"  flex = "20" layout = "column" style="background-color: #FFFFFF; margin: 5px; min-width: 200px;"  >
-          <div ng-if="vm.isCoach(vm.selected)">
-            HELLO
+       <!--  <div md-whiteframe = "3"  flex = "20" layout = "column" style="background-color: #FFFFFF; margin: 5px; min-width: 700px;  max-height: 100px;">
+            -->
+
+
+          <div ng-if="!vm.isCoach(vm.selected)" style="padding-right: 100px;" >
+           <!-- <img width="80" height="80"  ng-src="{{vm.selected.imgUrl}}"></imgstyle>
+              {{vm.selected.firstName +" "+ vm.selected.lastName}}
+              <md-button md-no-ink class="md-primary"  ng-click="vm.editUser($event)" >Edit User</md-button>
+              <md-button class="md-raised md-warn" >delet user</md-button>
+            -->
+              <img style="padding-right: 100px;  "  width="50" height="50"  ng-src="{{vm.selected.imgUrl}}"></imgstyle>
+             <span class="user">{{vm.selected.firstName +" "+ vm.selected.lastName}}</span>
+
+
+              <md-button md-no-ink class="md-primary"  ng-click="vm.editUser($event)"style="top: -10px;  right:-130px;" >Edit User</md-button>
+              <md-button class="md-raised md-warn" style="right:-130px; top: -10px;" ng-click="vm.removeUser($event)">delet user</md-button>
+
           </div>
 
 
-          <div ng-if="!vm.isCoach(vm.selected)">
-            <img ng-src="{{vm.selected.imgUrl}}" class="profileImg"></img>
-            <md-content style="background-color:#FFFFFF; margin: 5px;">
-              <h1 class = "profileName">
-                {{vm.selected.firstName +" "+ vm.selected.lastName}}
-              </h1>
-                <md-button md-no-ink class="md-primary"  ng-click="vm.editUser($event)" style = "right: -55px; " >Edit User</md-button>
-            </md-content>
+       <!-- </div>-->
 
-          </div>
-
-
-        </div>
-
-        <div  ng-if="!vm.isCoach(vm.selected)" ng-include="'/dist/view/dashboard/notes/tab-notes.html' "  style="max-height: 310px ; overflow : scroll; width: 400px ">NOTES</div>
-
+      <!-- <div  ng-if="!vm.isCoach(vm.selected)" ng-include="'/dist/view/dashboard/notes/tab-notes.html' "  style="max-height: 310px ; overflow : scroll; width: 400px ">NOTES</div>
+-->
 
 
     </div>

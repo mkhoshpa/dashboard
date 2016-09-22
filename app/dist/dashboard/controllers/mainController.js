@@ -614,6 +614,21 @@ var app;
               self.openToast("Pipeline Stage Updated");
 
             };
+
+            MainController.prototype.removeUser = function ($event) {
+                var _this = this;
+                console.log("this worked");
+                var confirm = this.$mdDialog.confirm()
+                    .textContent('Are you sure you want to delete this user?')
+                    .ariaLabel('Remove')
+                    .targetEvent($event)
+                    .ok('Yes')
+                    .cancel('No');
+                var self = this;
+                this.$mdDialog.show(confirm).then(function (result) {
+                    console.log(result);
+                });
+            };
             MainController.prototype.editUser = function ($event) {
                 var _this = this;
                 var self = this;

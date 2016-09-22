@@ -9,7 +9,20 @@ html, body {
   padding: 0px;
 }
 
+md-autocomplete input::-webkit-input-placeholder {
+  color:black;
+}
+md-autocomplete input:-moz-placeholder { /* Firefox 18- */
+  color:black;
+}
 
+md-autocomplete input::-moz-placeholder {  /* Firefox 19+ */
+  color:black;
+}
+
+md-autocomplete input:-ms-input-placeholder {
+  color:black;
+}
 md-dialog.SurveyBuilder{
   height: 350px;
   width: 450px;
@@ -123,6 +136,9 @@ p.bio {
   width: 36px;
 }
 
+.user{
+  font-family:'Roboto'; color:#1aa3ff; font-size: 15px; padding-top: 50px;
+}
 md-toolbar h1 {
   font-size: 1.250em;
   font-weight: 400;

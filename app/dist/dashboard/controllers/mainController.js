@@ -1092,6 +1092,8 @@ var app;
                     _this.$http.post('/api/reminder/update/' + reminder._id, reminder).then(function successCallback(reminder) {
                         console.log('returned junk: ' + JSON.stringify(reminder.data));
                         self.openToast("Reminder Edited");
+                        _this.getRemindersResponses();
+
                         //  self.selected.reminders.push(response.data);
                         if (self.updateReminder(reminder.data)) {
                           // Create the assignment object
@@ -1132,25 +1134,27 @@ var app;
                     .cancel('No');
                 var self = this;
                 this.$mdDialog.show(confirm).then(function (result) {
-                    console.log(reminder);
+                    console.log(result);
                     if (result) {
                         console.log('removing reminder id: ' + reminder._id);
                         _this.$http.post('/api/reminder/remove/' + reminder._id, reminder)
                             .then(function successCallback(success) {
+
                             if (success) {
-                                _this.$http.post('/api/assignment/removeByReminderId', reminder.id).then(function (success) {
-                                  console.log(success);
-                                });
-                                console.log(success);
-                                self.deleteReminder(reminder);
+                                console.log("removing works");
+
+                                self.openToast("Reminder Removed.");
+                                _this.getRemindersResponses();
+
                             }
                             else {
+                                console.log("removing AS did not work");
                             }
                         });
                     }
                     else {
                     }
-                    self.openToast("Reminder Removed.");
+
                 });
             };
 

@@ -91,28 +91,34 @@ var deleteForUpdate = function(reminder){
         days: [],
         selectedDates: reminder.selectedDates,
         creationDate: new Date() } ;
+    console.log('Inside reminder.deleteforupdate');
     console.log("hellloooo"+JSON.stringify(newcreate));
+    console.log();
+
+    console.log('id: ' + reminder._id);
     Reminder.findByIdAndRemove(
         reminder._id,
-        function(err, reminder) {
-            if(reminder) {
-                //console.log("realY????"+JSON.stringify(reminder));
+        function(err, rem) {
+            if(rem) {
+                console.log(rem);
 
                 //now find all the associated assignments and remove them as well
                 Assignment.remove({reminderId : reminder._id }, function (err){
                     if(!err){
                         console.log("assignments should be goine now");
 
+                    }else {
+                        console.log("error in deleting previous assignments");
                     }
                 });
             }
             else{
-                console.log("did not find");
+                console.log();
                 console.log(err);
 
             }
         }
-    )
+    );
     return newcreate;
 
 
@@ -195,6 +201,9 @@ exports.delete = function(req, res) {
           Assignment.remove({reminderId : req.params.id }, function (err){
               if(!err){
                   console.log("assignments should be goine now");
+                  res.send(reminder);
+              }else {
+                  res.sendStatus(500);
               }
           });
       }

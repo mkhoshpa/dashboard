@@ -614,7 +614,6 @@ var app;
               self.openToast("Pipeline Stage Updated");
 
             };
-
             MainController.prototype.removeUser = function ($event) {
                 var _this = this;
                 console.log("this worked");
@@ -627,8 +626,28 @@ var app;
                 var self = this;
                 this.$mdDialog.show(confirm).then(function (result) {
                     console.log(result);
+                    if(result) {
+                        userToBeDeleted = _this.selected;
+                        _this.$http.post('/api/user/delete/'+ userToBeDeleted._id).then(function successCallback(response) {
+
+
+                            if (response) {
+                                console.log("done");
+                                self.openToast('User deleted. ');
+                                self.selected = self.clients[0];
+                                self.clients.splice(self.clients.indexOf(userToBeDeleted),1);
+
+                            } else {
+                                self.openToast('User not deleted. ');
+                            }
+
+                        });
+
+                    }
                 });
             };
+
+
             MainController.prototype.editUser = function ($event) {
                 var _this = this;
                 var self = this;

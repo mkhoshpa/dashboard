@@ -296,6 +296,7 @@ var app;
                   }
               };
               ;
+
               MainController.prototype.isChecked = function () {
                   return this.selectSurveyUser.length === this.user.clients.length;
               };
@@ -305,6 +306,22 @@ var app;
                       this.selectSurveyUser.length  !== this.user.clients.length);
               };
               ;
+            this.image_source="aybaba";
+            MainController.prototype.setFile = function(element) {
+                var _this=this;
+                _this.currentFile = element.files[0];
+                var reader = new FileReader();
+
+                reader.onload = function(event) {
+                    _this.image_source = event.target.result;
+                    _this.$apply();
+
+                };
+                // when the file is read it triggers the onload event above.
+                reader.readAsDataURL(element.files[0]);
+            };
+
+
 
               MainController.prototype.getSurveyResponses = function () {
                 console.log("get survey");
@@ -1590,6 +1607,10 @@ HI Shane!                    console.log(survey);
                 this.selected = user;
                 this.userService.selectedUser = this.selected;
                 userSelected = user;
+                var remem = _this.tabIndex;
+                _this.getRemindersResponses();
+                _this.getSurveyResponses();
+                _this.tabIndex=remem;
 
 
 

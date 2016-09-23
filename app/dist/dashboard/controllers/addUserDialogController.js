@@ -8,6 +8,8 @@ var app;
                 this.$mdDialog = $mdDialog;
                 this.userService = userService;
                 this.selected = selected;
+                this.cc=0;
+                this.d="";
 
                                this.user = this.userService.get();
                 //console.log(this.user);
@@ -17,6 +19,7 @@ var app;
                 this.avatars = [
                   "matt.png", "thom.png", "tiffany.png", "victoria.png"
                 ];
+                this.image_source="aybaba";
                 if (selected) {
                     this.edit=true,
 
@@ -32,6 +35,16 @@ var app;
             }
             AddUserDialogController.prototype.cancel = function () {
                 this.$mdDialog.cancel();
+            };
+
+            AddUserDialogController.prototype.setFile = function() {
+                var _this=this;
+
+                _this.image_source = event.target.result;
+                _this.cc=10;
+
+
+
             };
             AddUserDialogController.prototype.save = function () {
                 //adding user

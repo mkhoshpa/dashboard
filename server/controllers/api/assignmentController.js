@@ -2,7 +2,7 @@
 
 var User = require('../../models/user.js'),
 Assignment = require('../../models/assignment.js'),
-AssignmentController = require('./AssignmentController.js'),    
+AssignmentController = require('./assignmentController.js'),    
 config = require ('../../config/env/env.js');
 
 var request = require('request');

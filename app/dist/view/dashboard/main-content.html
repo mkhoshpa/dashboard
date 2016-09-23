@@ -126,25 +126,25 @@
             -->
 
 
-          <div ng-if="!vm.isCoach(vm.selected)" style="padding-right: 100px;" >
+          <div ng-if="!vm.isCoach(vm.selected)" style="padding-right: 100px; max-height: 160px ;  width: 40%;"  >
            <!-- <img width="80" height="80"  ng-src="{{vm.selected.imgUrl}}"></imgstyle>
               {{vm.selected.firstName +" "+ vm.selected.lastName}}
               <md-button md-no-ink class="md-primary"  ng-click="vm.editUser($event)" >Edit User</md-button>
               <md-button class="md-raised md-warn" >delet user</md-button>
             -->
-              <img style="padding-right: 100px;  "  width="50" height="50"  ng-src="{{vm.selected.imgUrl}}"></imgstyle>
-             <span class="user">{{vm.selected.firstName +" "+ vm.selected.lastName}}</span>
+              <img style="padding-right: 60px; top: 100px; "  width="60" height="60"  ng-src="{{vm.selected.imgUrl}}"></imgstyle>
+             <span class="user" style="position: absolute;top:-10px;">{{vm.selected.firstName +" "+ vm.selected.lastName}}</span>
 
 
-              <md-button md-no-ink class="md-primary"  ng-click="vm.editUser($event)"style="top: -10px;  right:-130px;" >Edit User</md-button>
-              <md-button class="md-raised md-warn" style="right:-130px; top: -10px;" ng-click="vm.removeUser($event)">delet user</md-button>
+              <md-button md-no-ink class="md-primary"  ng-click="vm.editUser($event)"style=";  position:absolute; right:70%;" >Edit User</md-button>
+              <md-button class="md-raised md-warn" style=" position:absolute; right:60%; " ng-click="vm.removeUser($event)">delet user</md-button>
 
           </div>
 
 
        <!-- </div>-->
 
-      <div  ng-if="!vm.isCoach(vm.selected)" ng-include="'/dist/view/dashboard/notes/tab-notes.html' "  style="max-height: 150px ; overflow : scroll; width: 600px; right:50px;>NOTES</div>
+      <div  ng-if="!vm.isCoach(vm.selected)" ng-include="'/dist/view/dashboard/notes/tab-notes.html' "  style="max-height: 160px ; overflow : scroll; width: 60%; right:50px;>NOTES</div>
 
 
 

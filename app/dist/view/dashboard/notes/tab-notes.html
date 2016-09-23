@@ -1,13 +1,11 @@
 
 
 <md-content>
-  ADD NOTES
-  <md-button class="md-fab" aria-label="Add" ng-click="vm.addNote($event)" style = "right: -20px; ">
-    <ng-md-icon  icon="add"></ng-md-icon>
-  </md-button>
-  <p ng-if="!vm.selected.notes.length">No notes for  {{vm.selected.firstName +" "+ vm.selected.lastName}}, yet.</p>
 
-  <md-card ng-repeat="note in vm.selected.notes | orderBy:'-' ">
+
+  <p ng-if="!vm.selected.notes.length">No notes for  {{vm.selected.firstName +" "+ vm.selected.lastName}}, yet.  <md-button ng-click="vm.addNote($event)" flex="20" layout-align="end left" style="right:-200px;">ADD</md-button></p>
+
+  <md-card ng-repeat="note in vm.selected.notes | orderBy:'-' "style = "top:-100px;">
     <div layout="row">
       <md-card-content flex="80">
         <div layout="column">
@@ -23,7 +21,15 @@
           <md-card-actions flex="20" layout-align="end right">
             <md-button ng-click="vm.editNote($event, note)">Edit</md-button>
           </md-card-actions>
+          <md-card-actions flex="20" layout-align="end right">
+            <md-button ng-click="vm.addNote($event)">ADD</md-button>
+          </md-card-actions>
+
         </div>
+
     </div>
+
   </md-card>
+
 </md-content>
+

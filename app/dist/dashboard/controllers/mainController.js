@@ -309,6 +309,7 @@ var app;
               MainController.prototype.getSurveyResponses = function () {
                 console.log("get survey");
                 var _this = this;
+                  _this.tabIndex=2;
                 var self = this;
                 console.log("Here");
 
@@ -911,6 +912,7 @@ var app;
 
             MainController.prototype.getRemindersResponses = function () {
               var _this = this;
+                _this.tabIndex=1;
               _this.convoReminderResponse = [];
               console.log("Get Reminder");
 
@@ -1606,7 +1608,7 @@ HI Shane!                    console.log(survey);
                 if (sidebar.isOpen()) {
                     sidebar.close();
                 }
-                this.tabIndex = 0;
+
             };
 
             MainController.prototype.isCoach = function (user) {

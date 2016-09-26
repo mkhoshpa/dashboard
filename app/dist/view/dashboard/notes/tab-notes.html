@@ -3,9 +3,9 @@
 <md-content>
 
 
-  <p ng-if="!vm.selected.notes.length">No notes for  {{vm.selected.firstName +" "+ vm.selected.lastName}}, yet.  <md-button ng-click="vm.addNote($event)" flex="20" layout-align="end left" style="right:-200px;">ADD</md-button></p>
+  <p ng-if="!vm.selected.notes.length">No notes for  {{vm.selected.firstName +" "+ vm.selected.lastName}}, yet.  <md-button ng-click="vm.addNote($event)" flex="20" layout-align="end left" style="">ADD</md-button></p>
 
-  <md-card ng-repeat="note in vm.selected.notes | orderBy:'-' "style = "top:-100px;">
+  <md-card ng-repeat="note in vm.selected.notes | orderBy:'-' " style = " ">
     <div layout="row">
       <md-card-content flex="80">
         <div layout="column">

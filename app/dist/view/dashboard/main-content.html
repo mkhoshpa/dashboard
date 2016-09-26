@@ -120,31 +120,31 @@
 <section>
 
 
-    <div  layout = "row" layout-padding style="background-color: white; margin: 5px;" >
+    <div  layout = "row" layout-padding style="background-color: white; margin: 5px; display: flex;flex-direction: row; " >
 
        <!--  <div md-whiteframe = "3"  flex = "20" layout = "column" style="background-color: #FFFFFF; margin: 5px; min-width: 700px;  max-height: 100px;">
             -->
 
 
-          <div ng-if="!vm.isCoach(vm.selected)" style="padding-right: 100px; max-height: 160px ;  width: 40%;"  >
+          <div ng-if="!vm.isCoach(vm.selected)" style="flex-grow:0;  display: flex;flex-direction: row; order:1; height:50px;"  >
            <!-- <img width="80" height="80"  ng-src="{{vm.selected.imgUrl}}"></imgstyle>
               {{vm.selected.firstName +" "+ vm.selected.lastName}}
               <md-button md-no-ink class="md-primary"  ng-click="vm.editUser($event)" >Edit User</md-button>
               <md-button class="md-raised md-warn" >delet user</md-button>
             -->
-              <img style="padding-right: 60px; top: 100px; "  width="60" height="60"  ng-src="{{vm.selected.imgUrl}}"></imgstyle>
-             <span class="user" style="position: absolute;top:-10px;">{{vm.selected.firstName +" "+ vm.selected.lastName}}</span>
+              <img style="margin-left: 10px; order:1;"  width="60" height="60"  ng-src="{{vm.selected.imgUrl}}"></imgstyle>
+             <span class="user" style="margin-left: 10px;order:2; ">{{vm.selected.firstName +" "+ vm.selected.lastName}}</span>
 
 
-              <md-button md-no-ink class="md-primary"  ng-click="vm.editUser($event)"style=";  position:absolute; right:70%;" >Edit User</md-button>
-              <md-button class="md-raised md-warn" style=" position:absolute; right:60%; " ng-click="vm.removeUser($event)">delet user</md-button>
+              <md-button md-no-ink class="md-primary"  ng-click="vm.editUser($event)" style="order:3;margin-left: 10px; top:30px;" >Edit User</md-button>
+              <md-button class="md-raised md-warn" style=" top:30px; order:4;margin-left: 10px;" ng-click="vm.removeUser($event)">delete user</md-button>
 
           </div>
 
 
        <!-- </div>-->
 
-      <div  ng-if="!vm.isCoach(vm.selected)" ng-include="'/dist/view/dashboard/notes/tab-notes.html' "  style="max-height: 160px ; overflow : scroll; width: 60%; right:50px;>NOTES</div>
+      <div  ng-if="!vm.isCoach(vm.selected)" ng-include="'/dist/view/dashboard/notes/tab-notes.html' "  style="flex-grow:1;order:2; max-height: 160px; overflow: scroll;" >NOTES</div>
 
 
 

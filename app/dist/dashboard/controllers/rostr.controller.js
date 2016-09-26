@@ -121,13 +121,14 @@
             //vm.selectedDataSurvey = vm.surveyTemplates.[0];
             vm.a = response.data.length;
             vm.selectedDataSurvey = vm.surveyTemplates[vm.a-1];
+            vm.updateTable();
             console.log("length of survey list is "+JSON.stringify(vm.a));
             })
       }
 
       vm.getSurveys();
        //vm.selectedDataSurvey = vm.surveyTemplates.[0];
-
+       
       vm.updateTable = function(){
 
         console.log('hey');

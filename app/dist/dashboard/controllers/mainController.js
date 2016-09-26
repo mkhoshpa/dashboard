@@ -306,7 +306,7 @@ var app;
                       this.selectSurveyUser.length  !== this.user.clients.length);
               };
               ;
-            this.image_source="aybaba";
+            this.image_source="";
             MainController.prototype.setFile = function(element) {
                 var _this=this;
                 _this.currentFile = element.files[0];
@@ -387,67 +387,26 @@ var app;
                 }).then(function (surveyInfo) {
 
                   console.log(surveyInfo);
-                  var date = new Date();
-                  var today = date.getDay();
-                  for(var i = 0; i < _this.selectSurveyUser.length; i++){
-                    console.log('users');
-                    console.log(_this.selectSurveyUser[i]);
-                    surveyInfo.days.forEach(function(daysOfTheWeek){
 
-                      if(today < daysOfTheWeek){
-                        console.log("<");
-                        var day = daysOfTheWeek - today;
-                        var specificDate = _this.addDays(surveyInfo.timeOfDay, day);
-                        console.log(specificDate);
-                      }
-                      else if(today > daysOfTheWeek){
-                        console.log(">");
-                        var day =  7 - (today - daysOfTheWeek) ;
-                        var specificDate = _this.addDays(surveyInfo.timeOfDay, day);
-                        console.log(specificDate);
-                      }
-                      else if (today === daysOfTheWeek){
-                        console.log("=");
-                        console.log("date");
-                        console.log(date.getHours());
-                        console.log("spec");
-                        console.log(surveyInfo.timeOfDay.getHours());
-                        if(date.getHours() > surveyInfo.timeOfDay.getHours()){
-                          console.log("date > timeOfDay");
-                          var specificDate = _this.addDays(surveyInfo.timeOfDay, 7);
-                          console.log(specificDate);
-                        }
-                        else{
-                          // same hour goes off next week
-                          console.log("date < timeOfDay");
-                          var specificDate = surveyInfo.timeOfDay;
-                          console.log(specificDate);
-                        }
 
-                      }
-                        var surveyUserAssign = {
-                         repeat: surveyInfo.repeat,
-                         specificDate: specificDate,
-                         year: specificDate.getFullYear(),
-                         month: specificDate.getMonth(),
-                         date: specificDate.getDate(),
-                         hours: specificDate.getHours(),
-                         minutes: specificDate.getMinutes(),
-                         userId:  _this.selectSurveyUser[i]._id,
-                         surveyTemplateId: _this.selectedSurvey._id,
-                         type: 'survey'
+
+                        var surveyAndUsers = {
+                         surveyInfo: surveyInfo,
+                            selectedSurvey:  _this.selectedSurvey,
+                         users:  _this.selectSurveyUser
+
+
                        };
-                       console.log(surveyUserAssign);
-                       _this.$http.post('/api/assignment/create' , surveyUserAssign).then(function (response){
+
+                       _this.$http.post('/api/assignment/createFromSurvey' , surveyAndUsers).then(function (response){
                            console.log("this sungun worked" + JSON.stringify(response.data));
                       });
                     })
 
 
-                  }
 
 
-                });
+
 
 
 

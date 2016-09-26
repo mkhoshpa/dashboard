@@ -35,6 +35,56 @@ exports.create = function(req, res) {
   })
 };
 
+exports.createFromSurvey = function(req, res) {
+    console.log(req.body);
+    var users = req.body.users;
+    var surveyInfo = req.body.surveyInfo;
+    var selectedSurvey = req.body.selectedSurvey;
+    var hour =  req.body.surveyInfo.hour;
+    var minute =  req.body.surveyInfo.minute;
+    var assignments = [];
+    var daysFromFrontEnd =req.body.surveyInfo.selectedDates;
+    var i =0;
+   for(i=0;i<users.length;i++) {
+       var assignmentTemplate = {
+           "repeat": surveyInfo.repeat,
+           "type": "survey",
+           "sent": false,
+           "surveyTemplateId": selectedSurvey._id,
+           "userId":users[i]._id,
+           "hours": surveyInfo.hour,
+           "minutes": surveyInfo.minute
+
+       };
+       var dateArray = AssignmentController.getRealDates(daysFromFrontEnd, hour, minute);
+
+       for (var date of dateArray) {
+           //make a new date
+           //set the seconds to zero and console log to confirm
+           date.setSeconds(0);
+           date.setMilliseconds('00');
+           console.log(date + "date after seconds and ms ");
+           assignmentTemplate.specificDate = date;
+           assignmentTemplate.date = date.toString();
+           var assignment = new Assignment(assignmentTemplate);
+           assignment.save(function (err, assignment) {
+               if (!err) {
+                   console.log("we made an assignment !!!!"+JSON.stringify(assignment));
+                   i++;
+                   assignments.push(assignment);
+               }
+               else {
+                   console.log("assignment save failed");
+                   res.status(500);
+                   res.send(err);
+               }
+           })
+       }
+   }
+    res.send(assignments);
+}
+
+
 exports.createFromReminder = function(reminder) {
     //need to read data from reminder to make the right assignements
     //aka get the specific date from the reminder

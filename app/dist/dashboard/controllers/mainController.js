@@ -325,6 +325,7 @@ var app;
 
               MainController.prototype.getSurveyResponses = function () {
                 console.log("get survey");
+                  _this.convoSurveyResponse=[];
                 var _this = this;
                   _this.tabIndex=2;
                 var self = this;

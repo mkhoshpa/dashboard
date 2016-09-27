@@ -54,7 +54,7 @@
             order: ""
           }
        ];
-
+        vm.attrOrder = false;
       //Selected the columns in the md-select
       vm.selectedColumns = [];
 

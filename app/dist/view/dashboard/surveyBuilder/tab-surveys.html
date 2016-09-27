@@ -17,12 +17,14 @@
       </md-card-header-text>
     </md-card-header>
     <md-card-content flex = "30">
+
       <div>
         <p>{{survey.ass.hours + ':' + survey.ass.minutes}} </p>
         <p>{{'Sent: ' + survey.ass.sent}} </p>
       </div>
     </md-card-content>
-    <md-card-content flex = "50" style = ' height:200px'>
+    <md-card-content flex = "50" style = ' height:200px; max-height: 200px; overflow: scroll;'>
+
       <div ng-if = 'survey.res.length === 0' ng-repeat="question in survey.ass.surveyTemplateId.questions">
           <p>
             {{$index + 1}}. {{question.question}}
@@ -35,12 +37,21 @@
           </p>
           <p>
             {{question.answer}}
+
           <p>
         </div>
 
 
       </div>
+
     </md-card-content>
+       <div layout="column" flex= "10" layout-padding>
+           <md-card-actions flex="20" layout-align="end left">
+               <md-button ng-click="vm.removeSurvey($event, survey)">Remove</md-button>
+           </md-card-actions>
+
+       </div>
+
      <!-- <md-card-content flex=grow>
       <p>{{survey.status}}</p>
     </md-card-content> -->

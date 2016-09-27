@@ -7,6 +7,7 @@ module.exports = function(app) {
   app.post('/api/assignment/create', assignment.create);
   
   app.post('/api/assignment/createFromSurvey', assignment.createFromSurvey);
+  app.post('/api/assignment/delete', assignment.delete);
   app.get('/api/assignment/list', assignment.list);
   app.put('/api/assignment/completed/update/:id', assignment.completed);
   app.put('/api/assignment/sent/update/:id', assignment.sent);

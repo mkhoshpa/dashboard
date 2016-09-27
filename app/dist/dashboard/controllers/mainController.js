@@ -1472,23 +1472,23 @@ HI Shane!                    console.log(survey);
                 var _this = this;
                 var self = this;
                 var confirm = this.$mdDialog.confirm()
-                    .textContent('Are you sure you want to remove this reminder?')
+                    .textContent('Are you sure you want to remove this survey assignment?')
                     .ariaLabel('Remove')
                     .targetEvent($event)
                     .ok('Yes')
                     .cancel('No');
                 this.$mdDialog.show(confirm).then(function (result) {
-                    console.log(survey);
+                    console.log(survey.ass);
                     if (result) {
                         console.log(result);
-                        _this.$http.post('/api/survey/remove/' + survey._id, survey)
+                        _this.$http.post('/api/assignment/delete/', survey.ass)
                             .then(function successCallback(success) {
                             if (success) {
                                 console.log('success');
                                 console.log(success);
-                                console.log('survey');
-                                console.log(survey);
-                                self.deleteSurvey(survey);
+                                console.log('survey.ass');
+                                console.log(survey.ass);
+                                self.deleteSurveyAss(survey.ass);
                             }
                             else {
                             }
@@ -1496,7 +1496,7 @@ HI Shane!                    console.log(survey);
                     }
                     else {
                     }
-                    self.openToast("Reminder Removed.");
+                    self.openToast("Survey Assignment Removed.");
                 });
             };
             MainController.prototype.updateSurvey = function (survey) {
@@ -1535,6 +1535,17 @@ HI Shane!                    console.log(survey);
                 index = this.selected.surveys.indexOf(survey);
                 console.log(index);
                 this.selected.surveys.splice(index, 1);
+            };
+            MainController.prototype.deleteSurveyAss = function (ass) {
+                _this = this;
+                var index;
+                console.log(ass);
+                for (var i = 0; i < _this.convoSurveyResponse.length; i++) {
+                    if(_this.convoSurveyResponse[i].ass._id == ass._id){
+                        _this.convoSurveyResponse.splice(i,1);
+                    }
+                }
+
             };
             MainController.prototype.openToast = function (message) {
                 this.$mdToast.show(this.$mdToast.simple()

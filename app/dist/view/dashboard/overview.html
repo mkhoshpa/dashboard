@@ -1,7 +1,7 @@
 <md-content id="client-overview-container" class="dashboard-container overlay-5 padded-content-page" layout="row"  flex>
 
-    <div layout="column" layout-sm="column" layout-margin flex >
-        <md-card >
+    <div layout="column" layout-sm="column" layout-margin flex style="max-height: 100px;" >
+        <md-card style="max-height: 100px;" >
 
             <!-- filter section -->
             <md-toolbar class="md-table-toolbar">
@@ -52,7 +52,7 @@
 
             </md-toolbar>
 
-            <md-card-content style="padding-top: 0px; background-color: white">
+            <md-card-content style="max-height: 100px;padding-top: 0px; background-color: white">
                 <md-table-container  >
                     <table md-table class="md-primary md-data-table" ng-model="vm.selected" id="client-table" >
                         <thead md-head md-order="vm.query.order">
@@ -78,35 +78,35 @@
 
 
                             <td md-cell  class = "md-cell">
-                                <md-card md-whiteframe = "3"  >
+                                <md-card md-whiteframe = "0"  >
 
                                     <div layout="row" >
 
                                         <md-card-content  flex="40"  >
-                                            <div layout="row">
-                                                <md-card-content layout-padding layout = "column">
-                                                    <img ng-src="{{r.client.activityLevel}}" style="border-radius: 50%; width: 15px; margin: 10px;" >
-                                                    <img ng-src="{{r.client.imgUrl}}" style="border-radius: 50%; width: 50px; margin: 10px;" >
+                                            <div >
 
-                                                    {{r.client.firstName + " " + r.client.lastName}}
+                                                   <!-- <img ng-src="{{r.client.activityLevel}}" style="border-radius: 50%; width: 15px; margin: 10px;" >-->
+                                                    <img ng-src="{{r.client.imgUrl}}" style="border-radius: 50%; width: 50px; margin: 10px;left: 10px;"  >
+
+
+                                                {{r.client.firstName + " " + r.client.lastName}}
+
                                                     <!--<p>{{r}}</p>-->
                                                     <h3> {{r.reminder.title}} </h3>
-                                                    <p> {{r.reminder.hour + ':' + r.reminder.minute }}<p>
-                                                </md-card-content>
+
+
 
                                             </div>
                                         </md-card-content>
-                                        <div layout = "column" style = "overflow: auto; height:200px" layout-padding flex = "50" layout-fix>
+                                        <div layout = "column" style = "overflow: auto; height:140px;"  flex = "50" layout-fix>
                                             <md-list>
-                                                <md-subheader>
-                                                    Responses
-                                                </md-subheader>
+                                                
                                                 <md-list-item ng-repeat = "res in r.contentArray" >
-                                                    <md-card-content layout-padding layout = "column">
+                                                    <md-card-content  layout = "column">
                                                         <h4>{{res.time}} </h4>
 
                                                     </md-card-content>
-                                                    <md-card-content layout-padding layout = "column">
+                                                    <md-card-content  layout = "column">
                                                         <h4>{{res.ass.hours + ':' + res.ass.minutes  + '   '  + res.res.questions[0].answer}} </h4>
                                                     </md-card-content>
                                                 </md-list-item>
@@ -116,7 +116,7 @@
                                         </div>
 
 
-                                        <div layout="column" flex= "10" layout-padding>
+                                        <div layout="column" flex= "10" >
                                             <md-card-actions flex="20" layout-align="end right">
                                                 <md-button ng-click="vm.removeReminder($event, r.reminder)">Remove</md-button>
                                             </md-card-actions>
@@ -131,9 +131,7 @@
 
 
 
-                          <!--  <td md-cell  class = "md-cell">
-                                <most-recent selected="client"></most-recent>
-                            </td>-->
+
 
                         </tr>
 

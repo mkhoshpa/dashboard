@@ -49,6 +49,9 @@ var app;
             }).when("/surveys",{
                 templateUrl: "/dist/view/dashboard/survey.html",
                 controller: "MainController as vm"
+            }).when("/overview",{
+                templateUrl: "/dist/view/dashboard/overview.html",
+                controller: "ClientOverviewController as vm"
             }).when("/surveysBuilder",{
                 templateUrl: "/dist/view/dashboard/surveys/builder.html",
                 controller: "MainController as vm"
@@ -56,6 +59,7 @@ var app;
                 templateUrl: "/dist/view/dashboard/survey.html",
                 controller: "MainController as vm"
             });
+
             $locationProvider.hashPrefix('!');
         });
     })(dashboard = app.dashboard || (app.dashboard = {}));

@@ -1,0 +1,150 @@
+<md-content id="client-overview-container" class="dashboard-container overlay-5 padded-content-page" layout="row"  flex>
+
+    <div layout="column" layout-sm="column" layout-margin flex >
+        <md-card >
+
+            <!-- filter section -->
+            <md-toolbar class="md-table-toolbar">
+
+                <div class = "md-toolbar-tools">
+
+
+                    <md-input-container class = "md-toolbar-tools"  flex = "20">
+
+                        <md-icon class="material-icons" style="padding-top:17px; ">search</md-icon>
+                        <form  name="filter.form" style="padding-top:25px;">
+
+                            <input style="padding-top:0px; background-color: #2196F3; " type="text" ng-model="vm.query.filter" class="ng-valid ng-touched ng-valid-parse ng-pristine " aria-label = "search">
+
+                        </form>
+
+                        <md-button class="md-icon-button md-button md-ink-ripple" ng-show = "vm.query.filter.length > 0" ng-transclude="" ng-click="vm.removeFilter()" aria-label="close" style="padding-top: 3px;">
+                            <md-icon class="material-icons">close</md-icon>
+                            <div class="md-ripple-container"></div>
+                        </md-button>
+
+                    </md-input-container>
+
+
+
+                        <md-select  ng-model = "vm.selectedColumns"  aria-label = "cols" placeholder = "Select Columns" class="md-primary">
+
+                            <md-checkbox aria-label="Select All"
+                                         ng-checked="vm.isChecked()"
+                                         md-indeterminate="vm.isIndeterminate()"
+                                         ng-click="vm.toggleAll()">
+                                <span ng-if="vm.isChecked()">Un-</span>Select All
+                            </md-checkbox>
+                            <md-list class="demo-select-all-checkboxes"  ng-value = "c" >
+                                <md-checkbox layout = "row" ng-repeat = "c in vm.columns" ng-checked = "vm.exists(c, vm.selectedColumns) " ng-click = "vm.toggle(c, vm.selectedColumns)">
+                                    {{c.name}}
+                                </md-checkbox>
+
+                            </md-list>
+                        </md-select>
+
+
+
+
+
+
+                </div>
+
+            </md-toolbar>
+
+            <md-card-content style="padding-top: 0px; background-color: white">
+                <md-table-container  >
+                    <table md-table class="md-primary md-data-table" ng-model="vm.selected" id="client-table" >
+                        <thead md-head md-order="vm.query.order">
+
+
+
+
+
+                            <th md-column  md-order-by="client.username">Client</th>
+
+
+
+
+
+
+
+                        </thead>
+
+
+
+
+                        <tr  md-row md-auto-select="false" md-select="client" ng-repeat="r in vm.allReminders| orderBy: vm.query.order | filter:vm.query.filter  | limitTo: vm.query.limit: (vm.query.page - 1) * vm.query.limit">
+
+
+                            <td md-cell  class = "md-cell">
+                                <md-card md-whiteframe = "3"  >
+
+                                    <div layout="row" >
+
+                                        <md-card-content  flex="40"  >
+                                            <div layout="row">
+                                                <md-card-content layout-padding layout = "column">
+                                                    <img ng-src="{{r.client.activityLevel}}" style="border-radius: 50%; width: 15px; margin: 10px;" >
+                                                    <img ng-src="{{r.client.imgUrl}}" style="border-radius: 50%; width: 50px; margin: 10px;" >
+
+                                                    {{r.client.firstName + " " + r.client.lastName}}
+                                                    <!--<p>{{r}}</p>-->
+                                                    <h3> {{r.reminder.title}} </h3>
+                                                    <p> {{r.reminder.hour + ':' + r.reminder.minute }}<p>
+                                                </md-card-content>
+
+                                            </div>
+                                        </md-card-content>
+                                        <div layout = "column" style = "overflow: auto; height:200px" layout-padding flex = "50" layout-fix>
+                                            <md-list>
+                                                <md-subheader>
+                                                    Responses
+                                                </md-subheader>
+                                                <md-list-item ng-repeat = "res in r.contentArray" >
+                                                    <md-card-content layout-padding layout = "column">
+                                                        <h4>{{res.time}} </h4>
+
+                                                    </md-card-content>
+                                                    <md-card-content layout-padding layout = "column">
+                                                        <h4>{{res.ass.hours + ':' + res.ass.minutes  + '   '  + res.res.questions[0].answer}} </h4>
+                                                    </md-card-content>
+                                                </md-list-item>
+
+
+                                            </md-list>
+                                        </div>
+
+
+                                        <div layout="column" flex= "10" layout-padding>
+                                            <md-card-actions flex="20" layout-align="end right">
+                                                <md-button ng-click="vm.removeReminder($event, r.reminder)">Remove</md-button>
+                                            </md-card-actions>
+                                            <md-card-actions flex="20" layout-align="end right">
+                                                <md-button ng-click="vm.editReminder($event,r)">Edit</md-button>
+                                            </md-card-actions>
+                                        </div>
+
+                                    </div>
+                                </md-card>
+                            </td>
+
+
+
+                          <!--  <td md-cell  class = "md-cell">
+                                <most-recent selected="client"></most-recent>
+                            </td>-->
+
+                        </tr>
+
+
+
+                    </table>
+                </md-table-container>
+                <md-table-pagination md-limit="vm.query.limit" md-limit-options="[5, 10, 15]" md-page="vm.query.page" md-total="{{vm.allReminders.length}}" md-page-select></md-table-pagination>
+                <!--Change md-total to survey cleints  -->
+
+            </md-card-content>
+        </md-card>
+    </div>
+</md-content>>

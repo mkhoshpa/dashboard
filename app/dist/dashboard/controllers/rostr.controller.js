@@ -60,7 +60,7 @@
 
       vm.query = {
         filter: '',
-        order: 'username',
+        order: 'client',
         limit: 15,
         page: 1
       }
@@ -232,8 +232,81 @@
           return (this.selectedColumns.length  !== 0 &&
               this.selectedColumns.length  !== vm.columns.length);
       };
+        vm.getAllRemindersResponses = function () {
+            var _this = this;
+            _this.tabIndex = 1;
+            _this.allReminders=[];
+            var convoReminderResponse = [];
+            console.log("Get Reminder");
+             vm.user.clients.forEach(function(clien) {
 
 
+                _this.$http.get('/api/reminder/selectedUser/' +  clien._id).then(function (response) {
+                    console.log(response.data);
+
+
+                    response.data.forEach(function (reminder) {
+                        var content = [];
+                        var fullcontent = {};
+
+
+                        _this.$http.get('/api/assignment/selectedReminder/' + reminder._id).then(function (response1) {
+
+                            console.log("sadasdasd");
+                            console.log(response1);
+
+
+                            var content = [];
+                            response1.data.forEach(function (assignment) {
+                                console.log(assignment);
+
+                                _this.$http.get('/api/response/selectedAssignment/' + assignment._id).then(function (response2) {
+                                    console.log(response2);
+
+                                    if (response2.data.length === 0) {
+                                        console.log("nope res");
+                                        var date = new Date(assignment.specificDate);
+                                        console.log(date);
+                                        var rA = {
+                                            ass: assignment,
+                                            time: date.toLocaleString('en-CAN')
+                                        }
+                                        content.push(rA);
+                                    }
+                                    else {
+                                        console.log("yes");
+                                        var date = new Date(assignment.specificDate);
+                                        console.log(date);
+
+                                        var rA = {
+                                            ass: assignment,
+                                            time: date.toLocaleString('en-CAN'),
+                                            res: response2.data[0]
+                                        }
+                                        content.push(rA);
+                                    }
+                                })
+                            })
+                           fullcontent = {
+                               client: clien,
+                                reminder: reminder,
+                               contentArray: content
+                           }
+                            console.log('fullcontent');
+                            console.log(JSON.stringify(fullcontent));
+
+                           _this.allReminders.push(fullcontent);
+                            console.log(JSON.stringify(clien));
+
+
+                        })
+
+                    })
+
+                })
+            })
+        };
+        vm.getAllRemindersResponses();
 
       // $scope.$watch('vm.query.filter', function (newValue, oldValue) {
       //   if(!oldValue) {

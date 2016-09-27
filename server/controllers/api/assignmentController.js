@@ -402,7 +402,7 @@ exports.convosNow = function(req, res) {
             })
 
             //Creating a new assignment if repeat === true
-            if(assignments[i].repeat && assignments[i].type === "reminder"){
+            if(assignments[i].repeat && assignments[i].type === "reminder" && assignments[i].userId){
               console.log('in create');
 
                 var reminderUserAssign = {

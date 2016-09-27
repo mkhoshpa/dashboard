@@ -18,7 +18,7 @@ var app;
                 this.searchText = '';
                 this.reminders = [];
                 this.responses = [];
-                this.tabIndex = 0;
+                this.tabIndex = 1;
                 this.selected = null;
                 this.newNote = new dashboard.Note('', null);
                 this.newReminder = new dashboard.Reminder('', null);

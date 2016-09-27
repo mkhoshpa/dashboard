@@ -49,6 +49,9 @@ var app;
             }).when("/surveys",{
                 templateUrl: "/dist/view/dashboard/survey.html",
                 controller: "MainController as vm"
+            }).when("/surveysBuilder",{
+                templateUrl: "/dist/view/dashboard/surveys/builder.html",
+                controller: "MainController as vm"
             }).when("/surveys",{
                 templateUrl: "/dist/view/dashboard/survey.html",
                 controller: "MainController as vm"

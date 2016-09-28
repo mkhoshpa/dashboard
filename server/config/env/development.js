@@ -28,8 +28,8 @@ module.exports = {
   },
   mandrillApiKey: 'g0tWnJ18NBP7EFHirXvGUQ',
 	facebook: {
-		clientID: '237058900007908',
-		clientSecret: '756eb97b58fb72f845277f0e2f51fda2',
+		clientID: '263454760701655',
+		clientSecret: '66bee4e67a7732e0a36ef69bfddbeeec',
 		callbackURL: 'http://' + server.ip + ':' + server.port + '/oauth/facebook/callback'
 	},
 	twitter: {

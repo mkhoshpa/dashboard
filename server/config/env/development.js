@@ -3,7 +3,7 @@
 
 // Server ip and port are in this object so they can be referred to in the configuration object
 var server = {
-  ip: 'localhost',
+  ip: 'fitpath.tech',
   port: '12557'
 };
 
@@ -30,7 +30,8 @@ module.exports = {
 	facebook: {
 		clientID: '263454760701655',
 		clientSecret: '66bee4e67a7732e0a36ef69bfddbeeec',
-		callbackURL: 'http://' + server.ip + ':' + server.port + '/oauth/facebook/callback'
+		//callbackURL: 'http://' + server.ip + ':' + server.port + '/oauth/facebook/callback',
+		callbackURL: 'http://' + server.ip + '/oauth/facebook/callback'
 	},
 	twitter: {
 		clientID: 'Twitter Application ID',

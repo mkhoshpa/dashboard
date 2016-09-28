@@ -105,7 +105,7 @@ exports.createFromReminder = function(reminder) {
         "type": "reminder",
         "sent": false,
         "reminderId": reminder.id,
-        "userId": reminder.assignee,
+        "userId": ""+reminder.assignee,
         "hours": reminder.hour,
         "minutes": reminder.minute
 
@@ -268,7 +268,7 @@ exports.selectedByUser = function (req, res) {
 };
 exports.getInfo = function (client, callback) {
     console.log("inside getInfo");
-    Assignment.find({userId: client.id }, function (err, assignments) {
+    Assignment.find({userId : client.id, type: 'reminder' }, function (err, assignments) {
         if (err) {
             callback(err);
 
@@ -346,13 +346,18 @@ exports.selectByAssignee = function(req, res) {
                                 finalResponses = finalResponses.concat(responses);
                             });
                             var obj = {assignments: finalAssignments, reminders: finalReminders, responses: finalResponses};
-                            res.send(obj);
+                            //res.send(obj);
                            var returnArray=[];
                             finalReminders.forEach(function (reminder){
 
                                 finalAssignments.forEach(function (assignment) {
                                     if(assignment.reminderId == reminder._id) {
                                         var returnObj = {reminder: reminder, assignment: assignment};
+                                        clients.forEach(function (client) {
+                                            if(client._id == assignment.userId){
+                                                returnObj.client = client;
+                                            }
+                                        })
                                         finalResponses.forEach(function (response) {
                                             if(response.assignment._id == assignment._id){
                                                 returnObj.response = response;
@@ -363,7 +368,7 @@ exports.selectByAssignee = function(req, res) {
                                 })
 
                             })
-                           // res.send(returnArray);
+                           res.send(returnArray);
 
                         }
                     });

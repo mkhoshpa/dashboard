@@ -74,7 +74,7 @@
 
 
 
-                        <tr  md-row md-auto-select="false" md-select="client" ng-repeat="r in vm.allReminders| orderBy: vm.query.order | filter:vm.query.filter  | limitTo: vm.query.limit: (vm.query.page - 1) * vm.query.limit">
+                        <tr  md-row md-auto-select="false" md-select="client" ng-repeat="r in vm.allAssignments| orderBy: vm.query.order | filter:vm.query.filter  | limitTo: vm.query.limit: (vm.query.page - 1) * vm.query.limit">
 
 
                             <td md-cell  class = "md-cell">
@@ -101,13 +101,13 @@
                                         <div layout = "column" style = "overflow: auto; height:140px;"  flex = "50" layout-fix>
                                             <md-list>
 
-                                                <md-list-item ng-repeat = "res in r.contentArray" >
+                                                <md-list-item  >
                                                     <md-card-content  layout = "column">
-                                                        <h4>{{res.time}} </h4>
+                                                        <h4>{{r.assignment.date}} </h4>
 
                                                     </md-card-content>
                                                     <md-card-content  layout = "column">
-                                                        <h4>{{res.ass.hours + ':' + res.ass.minutes  + '   '  + res.res.questions[0].answer}} </h4>
+                                                        <h4>{{r.assignment.hours + ':' + r.assignment.minutes  + '   '  + r.response.questions[0].answer}} </h4>
                                                     </md-card-content>
                                                 </md-list-item>
 
@@ -139,7 +139,7 @@
 
                     </table>
                 </md-table-container>
-                <md-table-pagination md-limit="vm.query.limit" md-limit-options="[5, 10, 15, 50]" md-page="vm.query.page" md-total="{{vm.allReminders.length}}" md-page-select></md-table-pagination>
+                <md-table-pagination md-limit="vm.query.limit" md-limit-options="[5, 10, 15, 50]" md-page="vm.query.page" md-total="{{vm.allAssignments.length}}" md-page-select></md-table-pagination>
                 <!--Change md-total to survey cleints  -->
 
             </md-card-content>

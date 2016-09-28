@@ -241,6 +241,7 @@ var dashboard;
         vm.getAllAssignmentResponses();
         vm.editReminder = function ($event, r) {
             var _this = this;
+            
             var reminder = r.reminder;
             console.log("convoReminderResponse " + JSON.stringify(r));
             console.log("reminder " + JSON.stringify(reminder));

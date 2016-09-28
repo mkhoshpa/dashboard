@@ -5,6 +5,7 @@ var assignment = require('../../controllers/api/assignmentController.js');
 module.exports = function(app) {
 
   app.post('/api/assignment/create', assignment.create);
+  app.post('/api/assignment/findByCoach', assignment.selectByAssignee);
   
   app.post('/api/assignment/createFromSurvey', assignment.createFromSurvey);
   app.post('/api/assignment/delete', assignment.delete);

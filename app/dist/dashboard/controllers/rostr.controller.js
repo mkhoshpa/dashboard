@@ -232,6 +232,16 @@
           return (this.selectedColumns.length  !== 0 &&
               this.selectedColumns.length  !== vm.columns.length);
       };
+
+      vm.getAllAssignmentResponses = function(){
+          var _this = this;
+          _this.allAssignments=[];
+          //console.log("coach= "+ JSON.stringify(vm.user));
+          _this.$http.post('/api/assignment/findByCoach' ,  vm.user).then(function (response) {
+              console.log(JSON.stringify(response.data));
+          });
+      };
+      vm.getAllAssignmentResponses();
         vm.getAllRemindersResponses = function () {
             var _this = this;
             _this.tabIndex = 1;
@@ -306,7 +316,7 @@
                 })
             })
         };
-        vm.getAllRemindersResponses();
+        //vm.getAllRemindersResponses();
 
       // $scope.$watch('vm.query.filter', function (newValue, oldValue) {
       //   if(!oldValue) {

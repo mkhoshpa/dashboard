@@ -818,7 +818,7 @@ var app;
                     var user = response.data;
                     user.coaches = _this.user._id;
                     // TODO: change this
-                    user.phoneNumber = '+15064261732';
+                    user.phoneNumber = '+1then just numbers';
                     _this.$http.post('/api/user/create', user).then(function (__response) {
                         _this.$http.post('/api/coach/newuser/' + this.user.id + '?' + __response.data.id, user).then(function (client) {
                           console.log("Here fb");

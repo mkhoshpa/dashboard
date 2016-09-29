@@ -30,6 +30,8 @@ function ReminderController($mdDialog, userService, selected) {
         this.time.setMilliseconds(0);
         this.time.setSeconds(0);
         this.repeat = selected.repeat;
+        this.assignee= selected.assignee;
+        
     }
 
     this.toggle = function (item, list) {
@@ -409,24 +411,24 @@ var dashboard;
             if(index==1) {
                 //console.log("coach= "+ JSON.stringify(vm.user));
                 _this.$http.post('/api/assignment/findRemindersByCoach', vm.user).then(function (response) {
-                    console.log(JSON.stringify(response.data));
+                   // console.log(JSON.stringify(response.data));
                     _this.allAssignments = response.data;
                 });
             }
             else if(index==2){
                 //console.log("coach= "+ JSON.stringify(vm.user));
                 _this.$http.post('/api/assignment/findSurveysByCoach', vm.user).then(function (response) {
-                    console.log(JSON.stringify(response.data));
+                  //  console.log(JSON.stringify(response.data));
                     _this.allAssignments = response.data;
                 });
 
             }
             else if (index==0){
                 _this.$http.post('/api/assignment/findRemindersByCoach', vm.user).then(function (response) {
-                    console.log(JSON.stringify(response.data));
+                   // console.log(JSON.stringify(response.data));
                     _this.allAssignments = response.data;
                     _this.$http.post('/api/assignment/findSurveysByCoach', vm.user).then(function (response) {
-                        console.log(JSON.stringify(response.data));
+                       // console.log(JSON.stringify(response.data));
                         _this.allAssignments = _this.allAssignments . concat(response.data)
                     });
                 });
@@ -457,7 +459,7 @@ var dashboard;
                 }
             }).then(function (reminder) {
                 console.log(reminder.responses);
-                console.log(userSelected);
+                //console.log(userSelected);
 
                 // Post request, and push onto users local list of reminders
                 // this.$http.post('uri').then((response) => response.data)
@@ -466,10 +468,10 @@ var dashboard;
                 _this.$http.post('/api/reminder/update/' + reminder._id, reminder).then(function successCallback(reminder) {
                     console.log('returned junk: ' + JSON.stringify(reminder.data));
                     vm.openToast("Reminder Edited");
-                    _this.getRemindersResponses();
+                    _this.getAllAssignmentResponses(vm.selected);
 
                     //  self.selected.reminders.push(response.data);
-                    if (self.updateReminder(reminder.data)) {
+                    /* if (self.updateReminder(reminder.data)) {
                         // Create the assignment object
                         var reminderUserAssign = {
                             repeat: true,
@@ -486,12 +488,12 @@ var dashboard;
                         /*if (reminder.data.parent.id) {
                          var id = reminder.data.parent.id.slice(1, 25);
                          self.updateReminderInSurvey(id, reminder.data);
-                         }*/
+                         }
                         vm.openToast("Reminder Edited");
                     }
                     else {
                         //self.openToast("Reminder Not Found!");
-                    }
+                    } */
                 });
             }, function () {
                 console.log('You cancelled the dialog.');

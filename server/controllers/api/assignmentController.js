@@ -106,6 +106,7 @@ exports.createFromReminder = function(reminder) {
         "sent": false,
         "reminderId": reminder.id,
         "userId": ""+reminder.assignee,
+
         "hours": reminder.hour,
         "minutes": reminder.minute
 

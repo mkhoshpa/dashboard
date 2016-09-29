@@ -1,7 +1,7 @@
 <md-content id="client-overview-container" class="dashboard-container overlay-5 padded-content-page" layout="row"  flex>
 
-    <div layout="column" layout-sm="column" layout-margin flex style="max-height: 100px;" >
-        <md-card style="max-height: 100px;" >
+    <div layout="column" layout-sm="column" layout-margin flex style="max-height: 30px;" >
+        <md-card style="max-height: 30px;" >
 
             <!-- filter section -->
             <md-toolbar class="md-table-toolbar">
@@ -52,7 +52,7 @@
 
             </md-toolbar>
 
-            <md-card-content style="max-height: 100px;padding-top: 0px; background-color: white">
+            <md-card-content style="max-height: 30px;padding-top: 0px; background-color: white">
                 <md-table-container  >
                     <table md-table class="md-primary md-data-table" ng-model="vm.selected" id="client-table" >
                         <thead md-head md-order="vm.query.order">
@@ -82,39 +82,59 @@
 
                                     <div layout="row" >
 
-                                        <md-card-content  flex="40"  >
+                                        <md-card-content  flex="3" >
                                             <div >
 
                                                    <!-- <img ng-src="{{r.client.activityLevel}}" style="border-radius: 50%; width: 15px; margin: 10px;" >-->
-                                                    <img ng-src="{{r.client.imgUrl}}" style="border-radius: 50%; width: 50px; margin: 10px;left: 10px;"  >
+                                                    <img ng-src="{{r.client.imgUrl}}" style="border-radius: 50%; width: 50px; margin: 0px;left: 10px;"  >
 
 
-                                                {{r.client.firstName + " " + r.client.lastName}}
+
 
                                                     <!--<p>{{r}}</p>-->
-                                                    <h3> {{r.reminder.title}} </h3>
+
 
 
 
                                             </div>
                                         </md-card-content>
-                                        <div layout = "column" style = "overflow: auto; height:140px;"  flex = "50" layout-fix>
+                                        <div  flex = "90">
+
                                             <md-list>
 
-                                                <md-list-item  >
+                                                <md-list-item style = " height:70px;"  >
                                                     <md-card-content  layout = "column">
-                                                        <h4>{{r.assignment.date}} </h4>
+                                                        {{r.client.firstName + " " + r.client.lastName}}
+                                                    </md-card-content>
+
+                                                    <div layout = "column" style = "overflow: auto; height:100px;" flex="50"  layout-fix>
+                                                    <md-card-content  layout = "column" flex="" >
+                                                        <!--<h5>{{r.assignment.specificDate  |  date: 'medium'}} </h5>-->
+                                                        <h4> {{r.reminder.title}} </h4>
+
 
                                                     </md-card-content>
-                                                    <md-card-content  layout = "column">
-                                                        <h4>{{r.assignment.hours + ':' + r.assignment.minutes  + '   '  + r.response.questions[0].answer}} </h4>
-                                                    </md-card-content>
+                                                    </div>
+                                                    <md-card-content  layout = "column" flex="" >
+
+                                                    <h5>  response </h5> {{" "+r.response.questions[0].answer}}
+
+                                                 </md-card-content>
+
+
                                                 </md-list-item>
 
 
                                             </md-list>
                                         </div>
 
+
+                                        <div layout="column" flex = "10">
+
+                                        <md-card-content  layout = "column" flex="" layout-align="end right" >
+                                            {{r.assignment.specificDate  |  date: 'medium'}}
+                                        </md-card-content>
+                                        </div>
 
                                         <div layout="column" flex= "10" >
                                             <md-card-actions flex="20" layout-align="end right">

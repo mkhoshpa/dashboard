@@ -31,7 +31,7 @@ function ReminderController($mdDialog, userService, selected) {
         this.time.setSeconds(0);
         this.repeat = selected.repeat;
         this.assignee= selected.assignee;
-        
+
     }
 
     this.toggle = function (item, list) {
@@ -521,7 +521,7 @@ var dashboard;
 
                                 vm.openToast("Reminder Removed.");
                                 //_this.getRemindersResponses();
-                                vm.getAllAssignmentResponses();
+                                vm.getAllAssignmentResponses(vm.selected);
                             }
                             else {
                                 console.log("removing AS did not work");

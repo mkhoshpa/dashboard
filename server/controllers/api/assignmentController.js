@@ -3,6 +3,7 @@
 var User = require('../../models/user.js'),
 Assignment = require('../../models/assignment.js'),
 Reminder = require('../../models/reminder.js'),
+    SurveyTemplate = require('../../models/surveyTemplate.js'),
 AssignmentController = require('./assignmentController.js'),
     async =require('async'),
     Response = require('../../models/response.js'),
@@ -266,7 +267,7 @@ exports.selectedByUser = function (req, res) {
 
 
 };
-exports.getInfo = function (client, callback) {
+exports.getTypeReminder = function (client, callback) {
     console.log("inside getInfo");
     Assignment.find({userId : client.id, type: 'reminder' }, function (err, assignments) {
         if (err) {
@@ -281,7 +282,270 @@ exports.getInfo = function (client, callback) {
         }
     })
 }
-exports.selectByAssignee = function(req, res) {
+exports.getTypeSurvey = function (client, callback) {
+    console.log("inside getInfo");
+    Assignment.find({userId : client.id, type: 'survey' }, function (err, assignments) {
+        if (err) {
+            callback(err);
+
+        }
+        else {
+            //console.log('assignment');
+            //console.log(assignments);
+            callback(null , assignments);
+
+        }
+    })
+}
+
+exports.selectRemindersByAssignee = function(req, res) {
+    console.log("selectByassignee");
+    //console.log(req.body);
+    var coach = req.body;
+    var resAssignments = [];
+
+    var clients = coach.clients;
+    /*clients.forEach(function(client) {
+     Assignment.find({userId: client._id}, function (err, assignments) {
+     if (err) {
+     res.sendStatus(500);
+
+     }
+     else {
+     // console.log('assignment');
+     //console.log(assignments);
+     resAssignments = resAssignments.concat(assignments);
+
+     }
+
+     });*/
+    var finalAssignments=[];
+    var finalReminders=[];
+    var finalResponses=[];
+    async.map(clients, AssignmentController.getTypeReminder , function(err, results) {
+        if(err) {
+            res.send(err);
+
+        }
+        else{
+            console.log('assignmenttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt');
+
+
+
+            results.forEach(function (ass) {
+                finalAssignments = finalAssignments.concat(ass);
+            });
+
+            async.map(clients, AssignmentController.getReminders , function(err, results) {
+                if(err) {
+                    res.send(err);
+
+                }
+                else{
+                    console.log('Reminderssssssssssssssss');
+
+
+
+                    results.forEach(function (reminders) {
+                        finalReminders = finalReminders.concat(reminders);
+                    });
+                    async.map(clients, AssignmentController.getResponses , function(err, results) {
+                        if(err) {
+                            res.send(err);
+
+                        }
+                        else{
+                            console.log('Responsessssssssssssssss');
+
+
+
+                            results.forEach(function (responses) {
+                                finalResponses = finalResponses.concat(responses);
+                            });
+                            var obj = {assignments: finalAssignments, reminders: finalReminders, responses: finalResponses};
+                            //res.send(obj);
+                            var returnArray=[];
+                            finalReminders.forEach(function (reminder){
+
+                                finalAssignments.forEach(function (assignment) {
+                                    if(assignment.reminderId == reminder._id) {
+                                        var returnObj = {reminder: reminder, assignment: assignment};
+                                        clients.forEach(function (client) {
+                                            if(client._id == assignment.userId){
+                                                returnObj.client = client;
+                                            }
+                                        })
+                                        finalResponses.forEach(function (response) {
+                                            if(response.assignment._id == assignment._id){
+                                                returnObj.response = response;
+                                            }
+                                        })
+                                        returnArray.push(returnObj);
+                                    }
+                                })
+
+                            })
+                            res.send(returnArray);
+
+                        }
+                    });
+
+                }
+            }); /*
+             final.forEach(function(ass){
+             var obj = {assignment : ass};
+             ret.push(obj);
+             })
+             async.map(final , AssignmentController.getReminders , function(err, results) {
+             for(var i = 0 ; i< ret; i++){
+             ret[i].reminder = i;
+             }
+             async.map(final , AssignmentController.getResponses , function(err, results) {
+             for(var i = 0 ; i< ret; i++){
+             ret[i].response= results[i];
+             }
+             });
+             //console.log(ret);
+             res.send(ret);
+
+             });
+             */
+
+
+
+
+        }
+    });
+
+
+
+
+}
+exports.selectSurveyByAssignee = function(req, res) {
+    console.log("selectByassignee");
+    //console.log(req.body);
+    var coach = req.body;
+    var resAssignments = [];
+    var coaches = [coach];
+
+    var clients = coach.clients;
+    /*clients.forEach(function(client) {
+     Assignment.find({userId: client._id}, function (err, assignments) {
+     if (err) {
+     res.sendStatus(500);
+
+     }
+     else {
+     // console.log('assignment');
+     //console.log(assignments);
+     resAssignments = resAssignments.concat(assignments);
+
+     }
+
+     });*/
+    var finalAssignments=[];
+    var finalReminders=[];
+    var finalResponses=[];
+    async.map(clients, AssignmentController.getTypeSurvey , function(err, results) {
+        if(err) {
+            res.send(err);
+
+        }
+        else{
+            console.log('assignmenttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt');
+
+
+
+            results.forEach(function (ass) {
+                finalAssignments = finalAssignments.concat(ass);
+            });
+
+            async.map(coaches, AssignmentController.getSurveys , function(err, results) {
+                if(err) {
+                    res.send(err);
+
+                }
+                else{
+                    console.log('Surveysssssssssssssssss');
+
+
+
+                    results.forEach(function (surveys) {
+                        finalReminders = finalReminders.concat(surveys);
+                    });
+                    async.map(clients, AssignmentController.getResponses , function(err, results) {
+                        if(err) {
+                            res.send(err);
+
+                        }
+                        else{
+                            console.log('Responsessssssssssssssss');
+
+
+
+                            results.forEach(function (responses) {
+                                finalResponses = finalResponses.concat(responses);
+                            });
+                            var obj = {assignments: finalAssignments, reminders: finalReminders, responses: finalResponses};
+                            //res.send(obj);
+                            var returnArray=[];
+                            finalReminders.forEach(function (reminder){
+
+                                finalAssignments.forEach(function (assignment) {
+                                    if(assignment.surveyTemplateId == reminder._id) {
+                                        var returnObj = {reminder: reminder, assignment: assignment};
+                                        clients.forEach(function (client) {
+                                            if(client._id == assignment.userId){
+                                                returnObj.client = client;
+                                            }
+                                        })
+                                        finalResponses.forEach(function (response) {
+                                            if(response.assignment._id == assignment._id){
+                                                returnObj.response = response;
+                                            }
+                                        })
+                                        returnArray.push(returnObj);
+                                    }
+                                })
+
+                            })
+                            res.send(returnArray);
+
+                        }
+                    });
+
+                }
+            }); /*
+             final.forEach(function(ass){
+             var obj = {assignment : ass};
+             ret.push(obj);
+             })
+             async.map(final , AssignmentController.getReminders , function(err, results) {
+             for(var i = 0 ; i< ret; i++){
+             ret[i].reminder = i;
+             }
+             async.map(final , AssignmentController.getResponses , function(err, results) {
+             for(var i = 0 ; i< ret; i++){
+             ret[i].response= results[i];
+             }
+             });
+             //console.log(ret);
+             res.send(ret);
+
+             });
+             */
+
+
+
+
+        }
+    });
+
+
+
+
+}
+exports.selectAllByAssignee = function(req, res) {
     console.log("selectByassignee");
  //console.log(req.body);
     var coach = req.body;
@@ -305,7 +569,7 @@ exports.selectByAssignee = function(req, res) {
     var finalAssignments=[];
     var finalReminders=[];
     var finalResponses=[];
-    async.map(clients, AssignmentController.getInfo , function(err, results) {
+    async.map(clients, AssignmentController.getTypeReminder , function(err, results) {
         if(err) {
             res.send(err);
 
@@ -435,7 +699,18 @@ exports.getReminders = function (client , callback) {
         }
     })
 }
-
+exports.getSurveys = function (client , callback) {
+    console.log("inside getSurveys");
+    SurveyTemplate.find({author: client._id }, function(err, surveys){
+        if(err){
+            callback(err);
+        }
+        else{
+            console.log(surveys);
+            callback(null, surveys)
+        }
+    })
+}
 exports.completed = function (req, res) {
   console.log("here completed");
   console.log(req.params.id);

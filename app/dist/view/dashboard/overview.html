@@ -24,24 +24,14 @@
                         </md-button>
 
                     </md-input-container>
+                    <md-select ng-model="vm.selected" ng-change=" vm.getAllAssignmentResponses(vm.selected)">
+
+                        <md-option ng-repeat="s in vm.columns" ng-value="s.index">
+                            {{s.name}}
+                        </md-option>
+                    </md-select>
 
 
-
-                        <md-select  ng-model = "vm.selectedColumns"  aria-label = "cols" placeholder = "Select Columns" class="md-primary">
-
-                            <md-checkbox aria-label="Select All"
-                                         ng-checked="vm.isChecked()"
-                                         md-indeterminate="vm.isIndeterminate()"
-                                         ng-click="vm.toggleAll()">
-                                <span ng-if="vm.isChecked()">Un-</span>Select All
-                            </md-checkbox>
-                            <md-list class="demo-select-all-checkboxes"  ng-value = "c" >
-                                <md-checkbox layout = "row" ng-repeat = "c in vm.columns" ng-checked = "vm.exists(c, vm.selectedColumns) " ng-click = "vm.toggle(c, vm.selectedColumns)">
-                                    {{c.name}}
-                                </md-checkbox>
-
-                            </md-list>
-                        </md-select>
 
 
 
@@ -49,6 +39,8 @@
 
 
                 </div>
+
+
 
             </md-toolbar>
 

@@ -222,25 +222,21 @@ var dashboard;
 
             {
                 index: "0",
-                name: "Pipeline",
+                name: "Show All Assignments",
                 order: "pipelineStage"
             },
             {
                 index: "1",
-                name: "Most Recent Activity",
+                name: "Jus Show Reminders",
                 order: ""
             },
             {
                 index: "2",
-                name: "Latest Reminder",
-                order: ""
-            },
-            {
-                index: "3",
-                name: "Latest Response",
+                name: "Just Show Surveys",
                 order: ""
             }
         ];
+        vm.selected = 1;
         vm.attrOrder = false;
         //Selected the columns in the md-select
         vm.selectedColumns = [];
@@ -414,16 +410,37 @@ var dashboard;
             this.selectedColumns.length !== vm.columns.length);
         };
 
-        vm.getAllAssignmentResponses = function () {
+        vm.getAllAssignmentResponses = function (index) {
             var _this = this;
             _this.allAssignments = [];
-            //console.log("coach= "+ JSON.stringify(vm.user));
-            _this.$http.post('/api/assignment/findByCoach', vm.user).then(function (response) {
-                console.log(JSON.stringify(response.data));
-                _this.allAssignments = response.data;
-            });
+            if(index==1) {
+                //console.log("coach= "+ JSON.stringify(vm.user));
+                _this.$http.post('/api/assignment/findRemindersByCoach', vm.user).then(function (response) {
+                    console.log(JSON.stringify(response.data));
+                    _this.allAssignments = response.data;
+                });
+            }
+            else if(index==2){
+                //console.log("coach= "+ JSON.stringify(vm.user));
+                _this.$http.post('/api/assignment/findSurveysByCoach', vm.user).then(function (response) {
+                    console.log(JSON.stringify(response.data));
+                    _this.allAssignments = response.data;
+                });
+
+            }
+            else if (index==0){
+                _this.$http.post('/api/assignment/findRemindersByCoach', vm.user).then(function (response) {
+                    console.log(JSON.stringify(response.data));
+                    _this.allAssignments = response.data;
+                    _this.$http.post('/api/assignment/findSurveysByCoach', vm.user).then(function (response) {
+                        console.log(JSON.stringify(response.data));
+                        _this.allAssignments = _this.allAssignments . concat(response.data)
+                    });
+                });
+
+            }
         };
-        vm.getAllAssignmentResponses();
+        vm.getAllAssignmentResponses(1);
         vm.editReminder = function ($event, r) {
             var _this = this;
 

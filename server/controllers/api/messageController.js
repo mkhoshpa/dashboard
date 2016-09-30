@@ -35,7 +35,7 @@ exports.sendSMS = function (req, res) {
       console.log("Message saved.");
       console.log('Message is: ' + JSON.stringify(message));
       User.findByIdAndUpdate(
-        message.sentTo,
+        ""+message.sentTo,
         {$push: {"messages": message}},
         {safe: true},
         function(err, user) {

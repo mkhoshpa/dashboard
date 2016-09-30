@@ -46,7 +46,7 @@ exports.sendSMS = function (req, res) {
             console.log('Message pushed to user');
             console.log('User is ' + JSON.stringify(user));
             var sentToPhoneNumber = '';
-            User.findById(message.sentTo, function (err, userSentTo) {
+            User.findById(""+message.sentTo, function (err, userSentTo) {
               if (!err) {
                 console.log("MESSAGE SENT ");
 

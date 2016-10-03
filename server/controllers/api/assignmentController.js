@@ -374,7 +374,7 @@ exports.selectRemindersByAssignee = function(req, res) {
                     results.forEach(function (ass) {
                         finalAssignments = finalAssignments.concat(ass);
                     });
-                    console.log( JSON.stringify(finalAssignments));
+                   // console.log( JSON.stringify(finalAssignments));
 
                     async.map(clients, AssignmentController.getReminders, function (err, results) {
                         if (err) {
@@ -527,7 +527,7 @@ exports.selectSurveyByAssignee = function(req, res) {
                             results.forEach(function (ass) {
                                 finalAssignments = finalAssignments.concat(ass);
                             });
-                            console.log(finalAssignments);
+                            //console.log(finalAssignments);
 
                             async.map(coaches, AssignmentController.getSurveys, function (err, results) {
                                 if (err) {

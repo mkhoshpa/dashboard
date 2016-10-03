@@ -1041,6 +1041,52 @@ var app;
                 console.log(response.data);
               });
             };
+            MainController.prototype.updateAssignment = function ($event,res) {
+                var ass = res.ass;
+                var _this = this;
+                var self = this;
+                console.log(this);
+                console.log(ass);
+                var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
+                this.$mdDialog.show({
+                    templateUrl: './dist/view/dashboard/notes/noteModal.html',
+                    parent: angular.element(document.body),
+                    targetEvent: $event,
+                    controller: dashboard.AssignmentController,
+                    controllerAs: "ctrl",
+                    clickOutsideToClose: true,
+                    fullscreen: useFullScreen,
+                    locals: {
+                        selected:res
+                    }
+                }).then(function (note) {
+                    console.log(note);
+                    if(res.res){
+                        _this.$http.get('/api/response/delete/'+res.res._id).then(function successCallback(response) {
+                            console.log(response);
+                            //self.selected.notes.push(response.data);
+                            _this.$http.post('/api/response/update', note).then(function successCallback(response1) {
+                                console.log(response1);
+                                //self.selected.notes.push(response.data);
+                                res.res = response1.data;
+                            });
+                        });
+                    }
+                    else {
+                        _this.$http.post('/api/response/update', note).then(function successCallback(response1) {
+                            console.log(response1);
+                            //self.selected.notes.push(response.data);
+                            res.res = response1.data;
+                        });
+                    }
+
+                    self.openToast("response added");
+
+                }, function () {
+                    console.log('You cancelled the dialog.');
+
+                });
+            };
 
             MainController.prototype.addNote = function ($event) {
 

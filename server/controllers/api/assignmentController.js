@@ -420,7 +420,7 @@ exports.selectRemindersByAssignee = function(req, res) {
                                                     }
                                                 })
                                                 finalResponses.forEach(function (response) {
-                                                    if (response.assignment._id == assignment._id) {
+                                                    if (response.assignment == assignment._id) {
                                                         returnObj.response = response;
                                                     }
                                                 })
@@ -577,7 +577,7 @@ exports.selectSurveyByAssignee = function(req, res) {
                                                         })
 
                                                         finalResponses.forEach(function (response) {
-                                                            if (response.assignment._id == assignment._id) {
+                                                            if (response.assignment == assignment._id) {
                                                                 returnObj.response = response;
                                                             }
                                                         })

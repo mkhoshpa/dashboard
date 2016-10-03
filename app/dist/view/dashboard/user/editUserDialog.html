@@ -33,15 +33,7 @@
 
 
             </div>
-            <div layout-padding>
-                <md-input-container class = "md-block" flex-gt-sm>
-                    <label>Email</label>
-                    <input ng-model="ctrl.email" name="email" required>
-                    <div ng-messages="userForm.email.$error">
-                        <div ng-message="required">This is required.</div>
-                    </div>
-                </md-input-container>
-            </div>
+
             <div layout = "row" layout-padding>
 
                 <md-input-container class="md-block" flex-gt-sm>
@@ -51,7 +43,11 @@
 
                 <md-input-container class="md-block" flex-gt-sm>
                     <label>Phone Number</label>
-                    <input ng-model="ctrl.phoneNumber" name="phoneNumber">
+                    <input ng-model="ctrl.phoneNumber" name="phoneNumber" type="number" ng-minlength="7" ng-maxlength="10" required>
+                    <div ng-messages="userForm.phoneNumber.$error">
+                        <div ng-message="required">This is required.</div>
+                        <span ng-show="userForm.phoneNumber.$touched && userForm.phoneNumber.$invalid">Please enter a 7 digit or 10 digit valid phone number.</span>
+                    </div>
                 </md-input-container>
 
             </div>

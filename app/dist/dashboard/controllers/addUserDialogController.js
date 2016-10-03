@@ -29,7 +29,8 @@ var app;
                         this.phoneNumber=selected.phoneNumber,
                         this.bio=selected.bio,
                         this.email = selected.email,
-                        this.id=selected._id;
+                        this.id=selected._id,
+                    this.messages = selected.messages;
 
                 }
             }
@@ -122,6 +123,7 @@ var app;
                         username: this.username,
                         password: this.password,
                         email: this.email,
+                        messages: this.messages,
                         /*
                          slack_id: this.slack_id,
                          slack: {

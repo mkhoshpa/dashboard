@@ -36,6 +36,9 @@
               <md-card-content layout-padding layout = "column">
                 <h4>{{res.ass.hours + ':' + res.ass.minutes  + '   '  + res.res.questions[0].answer}} </h4>
               </md-card-content>
+              <md-card-actions flex="20" layout-align="end right">
+                <md-button ng-click="vm.updateAssignment($event,res)">update</md-button>
+              </md-card-actions>
             </md-list-item>
 
 

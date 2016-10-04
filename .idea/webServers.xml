@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="9548d8da-3f53-4469-8aa0-48ae464595bc" name="digitalocean" url="http://l.facebook.com/l.php?u=http%3A%2F%2F159.203.40.207%2F&amp;h=_AQE35kxK">
+        <fileTransfer host="159.203.40.207" port="22" privateKey="C:\Users\Mehrgan\Desktop\prkey" accessType="SFTP" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

@@ -315,6 +315,7 @@ exports.getClient = function (client, callback) {
     })
 }
 exports.selectR = function(req, res) {
+    
     res.send(req.params.id);
 }
 

@@ -1,9 +1,14 @@
+
+
+
+
+
 var app;
 (function (app) {
     var dashboard;
     (function (dashboard) {
-        var AssignmentController = (function () {
-            function  AssignmentController($mdDialog, userService, selected) {
+        var SurveyAssignmentController = (function () {
+            function  SurveyAssignmentController($mdDialog, userService, selected) {
                 console.log(selected);
                 this.$mdDialog = $mdDialog;
                 this.userService = userService;
@@ -14,18 +19,18 @@ var app;
                     this.reminder = selected.ass.reminderId;
                     this.userId = selected.ass.userId;
                 }
-                if(selected.res){
+                if(selected.res.questions){
                     this.note = selected.res.questions[0].answer;
                 }
 
 
             }
 
-            AssignmentController.prototype.cancel = function () {
+            SurveyAssignmentController.prototype.cancel = function () {
                 this.$mdDialog.cancel();
             };
 
-            AssignmentController.prototype.save = function () {
+            SurveyAssignmentController.prototype.save = function () {
                 console.log("Getting somewhere");
                 var questions=[];
                 var question = {answer:this.note};
@@ -44,9 +49,9 @@ var app;
                 this.$mdDialog.hide(note);
             };
 
-            AssignmentController.$inject = ['$mdDialog', 'userService', 'selected'];
-            return AssignmentController;
+            SurveyAssignmentController.$inject = ['$mdDialog', 'userService', 'selected'];
+            return SurveyAssignmentController;
         }());
-        dashboard.AssignmentController = AssignmentController;
+        dashboard.SurveyAssignmentController = SurveyAssignmentController;
     })(dashboard = app.dashboard || (app.dashboard = {}));
 })(app || (app = {}));

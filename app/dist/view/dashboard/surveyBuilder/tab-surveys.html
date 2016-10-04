@@ -21,6 +21,9 @@
       <div>
         <p>{{survey.ass.hours + ':' + survey.ass.minutes}} </p>
         <p>{{'Sent: ' + survey.ass.sent}} </p>
+          <md-card-actions flex="20" layout-align="end right">
+              <md-button ng-click="vm.updateSurveyAssignment($event,survey)">update</md-button>
+          </md-card-actions>
       </div>
     </md-card-content>
     <md-card-content flex = "50" style = ' height:200px; max-height: 200px; overflow: scroll;'>
@@ -44,13 +47,16 @@
         </div>
 
 
+
       </div>
+
 
     </md-card-content>
        <div layout="column" flex= "10" layout-padding>
            <md-card-actions flex="20" layout-align="end left">
                <md-button ng-click="vm.removeSurvey($event, survey)">Remove</md-button>
            </md-card-actions>
+
 
        </div>
 

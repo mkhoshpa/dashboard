@@ -322,7 +322,20 @@ exports.delete = function(req, res){
   User.findOneAndRemove({_id: req.params.id}, function (err, obj) {
     if (!err) {
       console.log(obj);
-      res.json(obj);
+      User.findOne({_id:obj.coaches[0] }, function(err, obj1) {
+        if (err || obj1== null) {
+          console.log("Failed to find the coach");
+          res.sendStatus(500);
+        }
+        else {
+
+          obj1.clients.splice(obj1.clients.indexOf(req.params.id),1);
+          obj1.save();
+          res.json(obj);
+
+        }
+      });
+
     } else {
       console.log('Failed to delete user: ' + JSON.stringify(obj));
       res.send(500);

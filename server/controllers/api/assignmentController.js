@@ -303,7 +303,7 @@ exports.getTypeSurvey = function (client, callback) {
 }
 exports.getClient = function (client, callback) {
     console.log("inside getClient");
-    User.findOne({_id: ""+client}, function(err, obj) {
+    User.findOne({_id: client}, function(err, obj) {
         if (err) {
             callback(error);
         }
@@ -326,6 +326,7 @@ exports.selectRemindersByAssignee = function(req, res) {
     User.findOne({_id: req.params.id}, function(err, obj) {
         if (err) {
             console.log("crap");
+            res.send(err);
         }
         else {
             //console.log("checkkkkkkkkkkkkkkkkkkkkkkkkkk");
@@ -350,7 +351,10 @@ exports.selectRemindersByAssignee = function(req, res) {
             var finalAssignments = [];
             var finalReminders = [];
             var finalResponses = [];
-            var finalClients=[];
+            var finalClients = [];
+            // console.log(clients);
+            //res.send(clients);
+
             async.map(clients, AssignmentController.getClient, function (err, results) {
                 if (err) {
                     res.send(err);
@@ -358,115 +362,136 @@ exports.selectRemindersByAssignee = function(req, res) {
                 }
                 else {
 
-                    finalClients=results;
+                  // finalClients = results;
+                    for (var i = 0; i < results.length; i++) {
+                        if (results[i] != null) {
+                            finalClients.push(results[i]);
+                           // console.log(results[i]);
 
-                    //console.log("final clienttttttttttttttt");
+                        }
+
+                    }
+
+
+
+                    console.log("final clienttttttttttttttt");
                     //console.log(finalClients);
-            async.map(clients, AssignmentController.getTypeReminder, function (err, results) {
+                    //res.send(finalClients);
+                   async.map(clients, AssignmentController.getTypeReminder, function (err, results) {
 
-                if (err) {
-                    res.send(err);
-
-                }
-                else {
-                    console.log('assignmenttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt');
-
-
-                    results.forEach(function (ass) {
-                        finalAssignments = finalAssignments.concat(ass);
-                    });
-                   // console.log( JSON.stringify(finalAssignments));
-
-                    async.map(clients, AssignmentController.getReminders, function (err, results) {
                         if (err) {
                             res.send(err);
 
                         }
                         else {
-                            console.log('Reminderssssssssssssssss');
+                            console.log('assignmenttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt');
 
 
-                            results.forEach(function (reminders) {
-                                finalReminders = finalReminders.concat(reminders);
+                            results.forEach(function (ass) {
+                                finalAssignments = finalAssignments.concat(ass);
                             });
-                            async.map(clients, AssignmentController.getResponses, function (err, results) {
+                            // console.log( JSON.stringify(finalAssignments));
+
+                            async.map(clients, AssignmentController.getReminders, function (err, results) {
                                 if (err) {
                                     res.send(err);
 
                                 }
                                 else {
-                                    console.log('Responsessssssssssssssss');
+                                    console.log('Reminderssssssssssssssss');
 
 
-                                    results.forEach(function (responses) {
-                                        finalResponses = finalResponses.concat(responses);
+                                    results.forEach(function (reminders) {
+                                        finalReminders = finalReminders.concat(reminders);
                                     });
-                                    var obj = {
-                                        assignments: finalAssignments,
-                                        reminders: finalReminders,
-                                        responses: finalResponses
-                                    };
-                                    //res.send(obj);
-                                    var returnArray = [];
-                                    finalReminders.forEach(function (reminder) {
+                                    async.map(clients, AssignmentController.getResponses, function (err, results) {
+                                        if (err) {
+                                            res.send(err);
 
-                                        finalAssignments.forEach(function (assignment) {
-                                            if (assignment.reminderId == reminder._id) {
-                                                var returnObj = {reminder: reminder, assignment: assignment};
-                                                finalClients.forEach(function (client) {
-                                                    if (client._id == assignment.userId) {
-                                                        returnObj.client = client;
+                                        }
+                                        else {
+                                            console.log('Responsessssssssssssssss');
 
 
+                                            results.forEach(function (responses) {
+                                                finalResponses = finalResponses.concat(responses);
+                                            });
+                                            var obj = {
+                                                assignments: finalAssignments,
+                                                reminders: finalReminders,
+                                                responses: finalResponses
+                                            };
+                                            finalClients.forEach(function (client) {
+                                                console.log("checkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
+                                                console.log(client);
+                                            });
+                                            //console.log(JSON.stringify(finalClients));
+                                            //res.send(obj);
+                                            var returnArray = [];
+                                            finalReminders.forEach(function (reminder) {
+
+                                                finalAssignments.forEach(function (assignment) {
+                                                    if (assignment.reminderId == reminder._id) {
+                                                        var returnObj = {reminder: reminder, assignment: assignment};
+                                                        finalClients.forEach(function (client) {
+                                                            if (client._id == assignment.userId) {
+                                                                returnObj.client = client;
+
+
+                                                            }
+                                                        })
+                                                        finalResponses.forEach(function (response) {
+                                                            if (response.assignment == assignment._id) {
+                                                                returnObj.response = response;
+                                                            }
+                                                        })
+                                                        returnArray.push(returnObj);
                                                     }
                                                 })
-                                                finalResponses.forEach(function (response) {
-                                                    if (response.assignment == assignment._id) {
-                                                        returnObj.response = response;
-                                                    }
-                                                })
-                                                returnArray.push(returnObj);
-                                            }
-                                        })
 
-                                    })
-                                   // console.log("checkkkkkkkkkkkkkkkkkkkkkkkkkk");
-                                    //console.log(JSON.stringify(returnArray));
-                                    res.send(returnArray);
+                                            })
+                                            // console.log("checkkkkkkkkkkkkkkkkkkkkkkkkkk");
+                                            //console.log(JSON.stringify(returnArray));
+                                            res.send(returnArray);
+
+
+                                        }
+                                    });
 
                                 }
                             });
+                            /*
+                             final.forEach(function(ass){
+                             var obj = {assignment : ass};
+                             ret.push(obj);
+                             })
+                             async.map(final , AssignmentController.getReminders , function(err, results) {
+                             for(var i = 0 ; i< ret; i++){
+                             ret[i].reminder = i;
+                             }
+                             async.map(final , AssignmentController.getResponses , function(err, results) {
+                             for(var i = 0 ; i< ret; i++){
+                             ret[i].response= results[i];
+                             }
+                             });
+                             //console.log(ret);
+                             res.send(ret);
 
+                             });
+
+
+
+
+                             }
+                             });
+*/
                         }
                     });
-                    /*
-                     final.forEach(function(ass){
-                     var obj = {assignment : ass};
-                     ret.push(obj);
-                     })
-                     async.map(final , AssignmentController.getReminders , function(err, results) {
-                     for(var i = 0 ; i< ret; i++){
-                     ret[i].reminder = i;
-                     }
-                     async.map(final , AssignmentController.getResponses , function(err, results) {
-                     for(var i = 0 ; i< ret; i++){
-                     ret[i].response= results[i];
-                     }
-                     });
-                     //console.log(ret);
-                     res.send(ret);
-
-                     });
-                     */
-
 
                 }
             });
-                }});
-
         }
     });
-
 
 }
 exports.selectSurveyByAssignee = function(req, res) {
@@ -511,7 +536,15 @@ exports.selectSurveyByAssignee = function(req, res) {
                 }
                 else {
 
-                        finalClients=results;
+                    // finalClients = results;
+                    for (var i = 0; i < results.length; i++) {
+                        if (results[i] != null) {
+                            finalClients.push(results[i]);
+                            // console.log(results[i]);
+
+                        }
+
+                    }
 
                     console.log("final clienttttttttttttttt");
                     console.log(finalClients);
@@ -589,7 +622,9 @@ exports.selectSurveyByAssignee = function(req, res) {
                                             })
 
                                             res.send(returnArray);
+
                                         }
+
 
 
                                     });

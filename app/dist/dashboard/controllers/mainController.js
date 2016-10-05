@@ -1107,7 +1107,7 @@ var app;
                         selected:res
                     }
                 }).then(function (note) {
-                    console.log(note);
+                    console.log(res.res);
                     if(res.res.length>0){
                         _this.$http.get('/api/response/delete/'+res.res._id).then(function successCallback(response) {
                             console.log(response);

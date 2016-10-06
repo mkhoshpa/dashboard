@@ -1108,7 +1108,7 @@ var app;
                     }
                 }).then(function (note) {
                     console.log(res.res);
-                    if(res.res.length>0){
+                    if(res.res.questions){
                         _this.$http.get('/api/response/delete/'+res.res._id).then(function successCallback(response) {
                             console.log(response);
                             //self.selected.notes.push(response.data);

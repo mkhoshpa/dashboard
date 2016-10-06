@@ -8,7 +8,8 @@
         <div layout="row">
 
           <div flex=90>
-            <span class="md-title">{{survey.ass.surveyTemplateId.title}}</span>
+            <span class="md-title">{{survey.ass.surveyTemplateId.title}}
+</span>
             <h4> {{survey.ass.year + '/' + survey.ass.month + '/' + survey.ass.date}} </h4>
           </div>
 
@@ -21,9 +22,7 @@
       <div>
         <p>{{survey.ass.hours + ':' + survey.ass.minutes}} </p>
         <p>{{'Sent: ' + survey.ass.sent}} </p>
-          <md-card-actions flex="20" layout-align="end right">
-              <md-button ng-click="vm.updateSurveyAssignment($event,survey)">update</md-button>
-          </md-card-actions>
+
       </div>
     </md-card-content>
     <md-card-content flex = "50" style = ' height:200px; max-height: 200px; overflow: scroll;'>
@@ -31,24 +30,32 @@
       <div ng-if = 'survey.res.length === 0' ng-repeat="question in survey.ass.surveyTemplateId.questions">
           <p>
             {{$index + 1}}. {{question.question}}
+
+
           </p>
+
       </div>
       <div  ng-repeat = "question in survey.res.questions">
         <div>
           <p>
               {{$index + 1}}. {{question.question}}
           </p>
+
           <p>
               <b>
             {{question.answer}}
               </b>
 
+              <md-card-actions flex="20" layout-align="end right">
+                  <md-button ng-click="vm.updateSurveyAssignment($event,survey)">update</md-button>
+              </md-card-actions>
           </p>
         </div>
 
 
 
       </div>
+
 
 
     </md-card-content>

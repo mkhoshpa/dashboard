@@ -9,11 +9,12 @@ var app;
     (function (dashboard) {
         var SurveyAssignmentController = (function () {
             function  SurveyAssignmentController($mdDialog, userService, selected) {
-                console.log(selected);
+                console.log(JSON.stringify(selected));
                 this.$mdDialog = $mdDialog;
                 this.userService = userService;
 
                 if(selected){
+                    this.questions= selected.ass.surveyTemplateId.questions;
                     this.selected = selected.ass;
                     this.assignment= selected.ass._id;
                     this.reminder = selected.ass.reminderId;
@@ -32,14 +33,16 @@ var app;
 
             SurveyAssignmentController.prototype.save = function () {
                 console.log("Getting somewhere");
-                var questions=[];
-                var question = {answer:this.note};
-                questions.push(question);
+                for(var i=0;i<this.questions.length;i++){
+                    this.questions[i].answer =this.note ;
+                }
+
+
 
 
                 var note = {
 
-                    questions: questions,
+                    questions: this.questions,
                     assignment: this.assignment,
                     // assignee: this.assignee.id,
                     reminderId: this.reminder,

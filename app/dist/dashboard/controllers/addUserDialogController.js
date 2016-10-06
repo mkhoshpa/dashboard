@@ -26,7 +26,7 @@ var app;
                         this.username= selected.username,
                         this.firstName= selected.firstName,
                         this.lastName = selected.lastName,
-                        this.phoneNumber=selected.phoneNumber,
+                        this.phoneNumber= parseInt(selected.phoneNumber),
                         this.bio=selected.bio,
                         this.email = selected.email,
                         this.id=selected._id,

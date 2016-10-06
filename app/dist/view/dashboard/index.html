@@ -15,7 +15,7 @@
 
 
         <md-tab label= "Daily CheckIn" md-on-select="vm.getRemindersResponses()">
-          <div ng-include="'/dist/view/dashboard/reminders/tab-reminders.html'"></div>
+          <div ng-include="'/dist/view/dashboard/reminders/tab-reminders.html'" md-dynamic-height="" md-border-bottom="" md-stretch-tabs="always""></div>
         </md-tab>
 
         <md-tab label="Survey Responses"  md-on-select="vm.getSurveyResponses()">

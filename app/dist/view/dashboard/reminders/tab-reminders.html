@@ -14,16 +14,16 @@
     <div layout="row" >
 
 
-        <div layout="row" flex="10">
+        <div layout="row" flex="20">
 
             <!--<p>{{r}}</p>-->
-            <h3> {{r.reminder.title+"  "}} </h3>
+            <h3 flex="50" style="padding-right: 10px;"> {{r.reminder.title+"  "}} </h3>
             <p> {{r.reminder.hour + ':' + r.reminder.minute }}<p>
 
 
         </div>
 
-      <div layout = "column" style = "overflow: auto; height:120px" flex = "80">
+      <div layout = "column" style = "overflow: auto; height:120px; max-height: 120px;" flex = "80">
 
 
 

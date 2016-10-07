@@ -27,9 +27,9 @@
 
 
 
-            <div ng-repeat = "res in r.contentArray" layout="row" flex="70" style="position: relative; max-height: 50px;">
+            <div ng-repeat = "res in r.contentArray | orderBy :'ass.specificDate' " layout="row" flex="70" style="position: relative; max-height: 50px;">
               <div layout = "row" style="padding-right: -25px;" flex="20">
-                <h5>{{res.ass.specificDate | date:'shortDate'}} </h5>
+                <h5>{{res.ass.specificDate | date:'EEEE'}} </h5>
 
               </div>
               <div layout = "row" flex="80">

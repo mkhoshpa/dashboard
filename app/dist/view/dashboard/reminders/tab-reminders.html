@@ -17,25 +17,30 @@
         <div layout="row" flex="20">
 
             <!--<p>{{r}}</p>-->
-            <h3 flex="50" style="padding-right: 10px;"> {{r.reminder.title+"  "}} </h3>
-            <p> {{r.reminder.hour + ':' + r.reminder.minute }}<p>
+            <h3 flex="50" style="padding-right: 10px; overflow: auto;"> {{r.reminder.title+"  "}} </h3>
+            <p flex> {{r.reminder.hour + ':' + r.reminder.minute }}<p>
 
 
         </div>
 
-      <div layout = "column" style = "overflow: auto; height:120px; max-height: 120px;" flex = "80">
+      <div layout = "column" style = "overflow: auto; height:120px; max-height: 120px;" flex = "80" flex-grow  style="position: relative;">
 
 
 
-            <div ng-repeat = "res in r.contentArray" layout="row" flex="70 ">
+            <div ng-repeat = "res in r.contentArray" layout="row" flex="70" style="position: relative; max-height: 50px;">
               <div layout = "row" style="padding-right: -25px;" flex="20">
-                <h5>{{res.time}} </h5>
+                <h5>{{res.ass.specificDate | date:'shortDate'}} </h5>
 
               </div>
               <div layout = "row" flex="80">
-                <div flex="90">
+                <div flex="90" style="overflow:auto; " ng-show="res.res.questions[0].answer.length < 15">
                   {{res.res.questions[0].answer}}
                 </div>
+                <div flex="90" style="overflow:auto; " ng-show="res.res.questions[0].answer.length > 14">
+                  {{res.res.questions[0].answer.substring(0,10)+"..."}}
+                </div>
+                  <div ng-show="res.res.questions[0].answer.length > 14" ng-click="vm.showMore($event,res.res.questions[0].answer)" style="color:blue;"> (more)</div>
+
                 <div>
 
                   <md-button ng-click="vm.updateAssignment($event,res)">update</md-button>
@@ -59,6 +64,7 @@
       </div>
 
     </div>
+    <br>
   </div>
 
 </div>

@@ -1087,6 +1087,18 @@ var app;
 
                 });
             };
+            MainController.prototype.showMore = function (ev,mes) {
+                this.$mdDialog.show(
+                    this.$mdDialog.alert()
+                        .parent(angular.element(document.querySelector('#popupContainer')))
+                        .clickOutsideToClose(true)
+                        .title('Response')
+                        .textContent(mes)
+                        .ariaLabel('Alert Dialog Demo')
+                        .ok('Got it!')
+                        .targetEvent(ev)
+                );
+            }
 
             MainController.prototype.updateSurveyAssignment = function ($event,res) {
                 var ass = res.ass;

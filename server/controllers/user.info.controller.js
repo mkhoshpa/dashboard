@@ -328,10 +328,17 @@ exports.delete = function(req, res){
           res.sendStatus(500);
         }
         else {
+var clients = obj1.clients;
 
-          obj1.clients.splice(obj1.clients.indexOf(req.params.id),1);
-          obj1.save();
-          res.json(obj);
+          clients.splice(clients.indexOf(req.params.id),1);
+          User.findOneAndUpdate({_id: req.params.id},{clients: clients} , function (err, obj) {
+            if(!err){
+              res.json(obj);
+            }else{
+              res.send(err);
+            }
+          })
+
 
         }
       });

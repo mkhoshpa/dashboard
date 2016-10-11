@@ -10,6 +10,9 @@ var dashboard = require('./dashboard.controller');
 var parse = require('csv-parse');
 var _ = require('underscore');
 var winston = require('winston');
+var Reminder = require('../models/reminder.js');
+var Response = require('../models/response.js');
+var Assignment = require('../models/assignment.js');
 
 /**
   Node Mailer Config
@@ -322,13 +325,47 @@ exports.delete = function(req, res){
   User.findOneAndRemove({_id: req.params.id}, function (err, obj) {
     if (!err) {
       console.log(obj);
+      Reminder.findOneAndRemove({assignee: req.params.id}, function(err, reminders){
+        if(err){
+          console.log(err);
+        }
+        else{
+          console.log(reminders);
+
+
+              }
+            });
+      
+      Assignment.findOneAndRemove({userId: req.params.id }, function(err, assignments){
+        if(err){
+          console.log(err);
+
+        }
+        else{
+          console.log(assignments);
+        }
+      });
+      Response.findOneAndRemove({userId: req.params.id }, function(err, responses){
+        if(err){
+          console.log(err);
+
+        }
+        else{
+          console.log(responses);
+        }
+      });
+
+
+
+
+
       User.findOne({_id:obj.coaches[0] }, function(err, obj1) {
         if (err || obj1== null) {
           console.log("Failed to find the coach");
           res.sendStatus(500);
         }
         else {
-var clients = obj1.clients;
+          var clients = obj1.clients;
 
           clients.splice(clients.indexOf(req.params.id),1);
           User.findOneAndUpdate({_id: req.params.id},{clients: clients} , function (err, obj) {

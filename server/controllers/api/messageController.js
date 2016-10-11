@@ -78,30 +78,72 @@ exports.receiveSMS = function (req, res) {
   });
   console.log("The client wrote: " + req.body.Body);
   console.log('req.body.From is: ' + req.body.From);
+
   // Find user by phone num and actually create valid message object
   User.findOne({phoneNumber: req.body.From}, function (err, user) {
-    console.log('User is: ' + JSON.stringify(user));
-    console.log('We should be adding a message');
-    var message = new Message({
-      body: req.body.Body,
-      sentBy: user._id,
-      sentTo: '5741ef7c5254295828d8c3b0'
-    });
-    User.findOneAndUpdate(
-      {phoneNumber: req.body.From},
-      {$push: {messages: message}},
-      {safe: true},
-      function (err, user) {
-        if (!err) {
-          console.log('The user with that phone number is: ' + user.fullName);
-          io.emit('message', message);
-          console.log('Message saved and pushed to user');
-        } else if (err) {
-          console.log("there is no user with that name");
+    console.log("inside finde");
+    if (user == null) {
+      var phone =req.body.From.substring(2);
+      console.log(phone);
+      console.log("inside else");
 
-        }
+      User.findOne({phoneNumber: phone}, function (err, user) {
+
+        console.log('User else is: ' + JSON.stringify(user));
+        console.log('We should be adding a message');
+        var message = new Message({
+          body: req.body.Body,
+          sentBy: user._id,
+          sentTo: '5741ef7c5254295828d8c3b0'
+        });
+        User.findOneAndUpdate(
+            {phoneNumber: phone},
+            {$push: {messages: message}},
+            {safe: true},
+            function (err, user) {
+              if (!err) {
+                console.log('The user with that phone number is: ' + user.fullName);
+                io.emit('message', message);
+                console.log('Message saved and pushed to user');
+              } else if (err) {
+                console.log("there is no user with that name");
+
+              }
+
+            });
+
 
       });
-    });
+
+
+    }
+    else {
+
+      console.log('User is: ' + JSON.stringify(user));
+      console.log('We should be adding a message');
+      var message = new Message({
+        body: req.body.Body,
+        sentBy: user._id,
+        sentTo: '5741ef7c5254295828d8c3b0'
+      });
+      User.findOneAndUpdate(
+          {phoneNumber: req.body.From},
+          {$push: {messages: message}},
+          {safe: true},
+          function (err, user) {
+            if (!err) {
+              console.log('The user with that phone number is: ' + user.fullName);
+              io.emit('message', message);
+              console.log('Message saved and pushed to user');
+            } else if (err) {
+              console.log("there is no user with that name");
+
+            }
+
+          });
+
+    }
     res.end(resp.toString());
-};
+
+  });
+}

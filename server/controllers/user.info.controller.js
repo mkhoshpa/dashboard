@@ -335,7 +335,7 @@ exports.delete = function(req, res){
 
               }
             });
-      
+
       Assignment.findOneAndRemove({userId: req.params.id }, function(err, assignments){
         if(err){
           console.log(err);

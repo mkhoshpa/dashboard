@@ -242,6 +242,9 @@ var dashboard;
             limit: 15,
             page: 1
         }
+        vm.to = new Date();
+        vm.from =  new Date();
+        vm.to.setDate(vm.to.getDate()+7);
 
         //Used for the pipeline
         vm.pipelineOptions = [{type: "lead"}, {type: "trial"}, {type: "active-client"}, {type: "previous-client"}, {type: "archived"}, {type: "NA"}];
@@ -412,30 +415,36 @@ var dashboard;
             if(index==1) {
                 //console.log("coach= "+ JSON.stringify(vm.user));
                 _this.$http.get('/api/assignment/findRemindersByCoach/'+ vm.user._id).then(function (response) {
-                   // console.log(JSON.stringify(response.data));
+                    console.log(JSON.stringify(response.data));
                     _this.allAssignments = response.data;
                 });
             }
             else if(index==2){
                 //console.log("coach= "+ JSON.stringify(vm.user));
                 _this.$http.get('/api/assignment/findSurveysByCoach/'+ vm.user._id).then(function (response) {
-                   // console.log(JSON.stringify(response.data));
+                   console.log(JSON.stringify(response.data));
                     _this.allAssignments = response.data;
                 });
 
             }
             else if (index==0){
                 _this.$http.get('/api/assignment/findRemindersByCoach/'+ vm.user._id).then(function (response) {
-                   // console.log(JSON.stringify(response.data));
+                   console.log(JSON.stringify(response.data));
                     _this.allAssignments = response.data;
                     _this.$http.get('/api/assignment/findSurveysByCoach/'+ vm.user._id).then(function (response) {
 
                         _this.allAssignments = _this.allAssignments . concat(response.data)
-                       // console.log(JSON.stringify(_this.allAssignments));
+                       console.log(_this.allAssignments);
                     });
                 });
 
             }
+        };
+        vm.newDate = function(arg){
+            console.log(arg);
+            var v = new Date(arg);
+            console.log(v);
+            return v;
         };
         vm.getAllAssignmentResponses(1);
         vm.editReminder = function ($event, r) {

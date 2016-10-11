@@ -31,6 +31,9 @@
                             {{s.name}}
                         </md-option>
                     </md-select>
+                    From:<md-datepicker ng-model="vm.from" md-placeholder="Enter date" md-max-date="vm.to"></md-datepicker>
+                    To:<md-datepicker ng-model="vm.to" md-placeholder="Enter date" md-min-date="vm.from"></md-datepicker>
+
 
 
 
@@ -55,6 +58,8 @@
 
 
                             <th md-column  md-order-by="client.username">Client</th>
+                            <th md-column  md-order-by="assignment.specificDate  ">date</th>
+
 
 
 
@@ -68,10 +73,10 @@
 
 
                         <tr  md-row md-auto-select="false" md-select="client" ng-repeat="r in vm.allAssignments| orderBy: vm.query.order | filter:vm.query.filter  | limitTo: vm.query.limit: (vm.query.page - 1) * vm.query.limit">
+<div >
 
-
-                            <td md-cell  class = "md-cell">
-                                <md-card md-whiteframe = "0"  >
+                            <td md-cell  class = "md-cell" ng-init=" v = vm.newDate(r.assignment.date+'')" ng-show="v > vm.from && v < vm.to">
+                                <md-card  md-whiteframe = "0"  >
 
                                     <div layout="row" >
 
@@ -138,7 +143,9 @@
                                         <div layout="column" flex = "10">
 
                                         <md-card-content  layout = "column" flex="" layout-align="end right" >
-                                            {{r.assignment.specificDate  |  date: 'medium'}}
+                                            {{r.assignment.date |  date: 'shortDate'}}
+                                            {{v}}
+
                                         </md-card-content>
                                         </div>
 
@@ -156,7 +163,7 @@
                             </td>
 
 
-
+</div>
 
 
                         </tr>

@@ -211,7 +211,9 @@ var dashboard;
         vm.selected = [];
         vm.se=[1];
 
-        vm.testResponses = ['Good', 'nice']
+        vm.testResponses = ['Good', 'nice'];
+        vm.selectSurveyUser= [];
+
 
         //Selecting the columns in the md-select
         vm.columns = [
@@ -381,12 +383,32 @@ var dashboard;
 
         //For the md-select and checkboxes all 5 methods
         vm.toggle = function (item, list) {
+            console.log(list);
             var idx = list.indexOf(item);
             if (idx > -1)
                 list.splice(idx, 1);
             else
                 list.push(item);
         };
+        vm.toggle2 = function (item) {
+            console.log(vm.selectSurveyUser);
+            var idx = vm.selectSurveyUser.indexOf(item);
+            if (idx > -1){
+                vm.selectSurveyUser.splice(idx, 1);}
+            else{
+                vm.selectSurveyUser.push(item);}
+            console.log(vm.selectSurveyUser);
+
+        };
+        vm.showClient = function (client) {
+            for(var i=0;i<vm.selectSurveyUser.length;i++){
+                if(vm.selectSurveyUser[i]._id == client._id){
+                    return true;
+                }
+            }
+            return false;
+        }
+
         vm.exist1 = function (item, list) {
             var answer = false;
             for (var i = 0; i < list.length; i++) {
@@ -404,7 +426,6 @@ var dashboard;
         vm.exists = function (item, list) {
             return list.indexOf(item) > -1;
         };
-
         vm.toggleAll = function () {
             if (this.selectedColumns.length === vm.columns.length) {
                 this.selectedColumns = [];
@@ -413,11 +434,28 @@ var dashboard;
                 this.selectedColumns = vm.columns.slice(0);
             }
         };
+        vm.toggleAll1 = function () {
+            console.log(vm.selectSurveyUser);
+            console.log(vm.user.clients);
+            if (vm.selectSurveyUser.length >0) {
+                vm.selectSurveyUser = [];
+            }
+            else if (vm.selectSurveyUser.length == 0) {
+                vm.selectSurveyUser= vm.user.clients;
+            }
+        };
+        //vm.toggleAll1();
 
         vm.isChecked = function () {
             return this.selectedColumns.length === vm.columns.length;
         };
-        ;
+        vm.isChecked1 = function () {
+            //console.log(vm.selectSurveyUser);
+            //console.log(vm.user.clients);
+
+            return vm.selectSurveyUser.length == vm.user.clients.length;
+        };
+
         vm.isIndeterminate = function () {
             return (this.selectedColumns.length !== 0 &&
             this.selectedColumns.length !== vm.columns.length);
@@ -485,6 +523,7 @@ var dashboard;
             return v;
         };
         vm.getAllAssignmentResponses(1);
+        console.log(vm.user.clients);
         vm.editReminder = function ($event, r) {
             var _this = this;
 

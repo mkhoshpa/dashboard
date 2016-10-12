@@ -36,6 +36,21 @@
                     <md-checkbox style="padding-right: 20px;" ng-checked="vm.exist1(2, vm.se)" ng-click="vm.toggle1(2, vm.se)">Surveys</md-checkbox>
                     From:<md-datepicker ng-model="vm.from" md-placeholder="Enter date" md-max-date="vm.to"></md-datepicker>
                     To:<md-datepicker ng-model="vm.to" md-placeholder="Enter date" md-min-date="vm.from"></md-datepicker>
+                    <md-select  ng-model = "vm.userSurvey"  aria-label = "user" placeholder = "Select Users">
+
+                        <md-checkbox aria-label="Select All"
+                                     ng-checked="vm.isChecked1()"
+                                     md-indeterminate="vm.isIndeterminate()"
+                                     ng-click="vm.toggleAll1()">
+                            <span ng-if="vm.isChecked1()">Un-</span>Select All
+                        </md-checkbox>
+                        <md-list class="demo-select-all-checkboxes"  ng-value = "c" >
+                            <md-checkbox layout = "row"  ng-repeat = "c in vm.user.clients" ng-checked = "vm.exists(c, vm.selectSurveyUser) " ng-click = "vm.toggle2(c, vm.selectSurveyUser)">
+                                {{c.firstName  + " " + c.lastName}}
+                            </md-checkbox>
+
+                        </md-list>
+                    </md-select>
 
 
 
@@ -80,8 +95,8 @@
 
                         <tr  md-row md-auto-select="false" md-select="client" ng-repeat="r in vm.allAssignments| orderBy: vm.query.order | filter:vm.query.filter  | limitTo: vm.query.limit: (vm.query.page - 1) * vm.query.limit">
 <div >
-
-                            <td md-cell  class = "md-cell" ng-init=" v = vm.newDate(r.assignment.date+'')" ng-show="v > vm.from && v < vm.to">
+<div ng-show="vm.selectSurveyUser.indexOf(r.client)>-1">
+                            <td md-cell  class = "md-cell" ng-init=" v = vm.newDate(r.assignment.date+'')" ng-show="v > vm.from && v < vm.to && vm.showClient(r.client)">
                                 <md-card  md-whiteframe = "0"  >
 
                                     <div layout="row" >
@@ -170,6 +185,7 @@
 
 
 </div>
+    </div>
 
 
                         </tr>

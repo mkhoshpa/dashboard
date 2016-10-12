@@ -9,8 +9,10 @@ var twilio = require('twilio')('ACf83693e222a7ade08080159c4871c9e3', '20b36bd42a
 var twiml = require('twilio');
 var config = require('../../config/env/development.js');
 var winston = require('winston');
-
+var async =require('async');
 var io = require('socket.io')(28104);
+var MessageController = require('./messageController.js');
+
 
 console.log('listening for websocket connections on *:' + config.messageSocketPort);
 
@@ -25,6 +27,86 @@ io.on('connection', function (socket) {
     sockets = _.without(sockets, socket);
   });
 });
+exports.addClient = function (message, callback) {
+  console.log("inside addClient");
+  User.findOne({_id: message.sentTo}, function(err, obj) {
+    if (err) {
+      callback(error);
+    }
+    else {
+      // console.log('find a ckient////////////////////////////////////////////////////////////////////');
+      //console.log(assignments);
+      var reminder ={title: message.body};
+      var assignment={specificDate: message.created, date:message.created};
+      var object = {client: obj, reminder:reminder,assignment: assignment}
+      callback(null ,object);
+
+    }
+  })
+}
+exports.getClient = function (client, callback) {
+  console.log("inside getClient");
+  User.findOne({_id: client}, function(err, obj) {
+    if (err) {
+      callback(error);
+    }
+    else {
+      // console.log('find a ckient////////////////////////////////////////////////////////////////////');
+      //console.log(assignments);
+      callback(null ,obj);
+
+    }
+  })
+}
+exports.findByCoach = function (req, res) {
+  var finalMessages = [];
+
+
+  User.findOne({_id: req.params.id}, function (err, obj) {
+    if (err) {
+      console.log("crap");
+      res.send(err);
+    }
+    else {
+      //console.log("checkkkkkkkkkkkkkkkkkkkkkkkkkk");
+      //console.log(obj);
+      var coach = obj;
+
+      var clients = coach.clients;
+      var finalClients = [];
+      async.map(clients, MessageController.getClient, function (err, results) {
+        if (err) {
+          res.send(err);
+
+        }
+        else {
+
+          // finalClients = results;
+          for (var i = 0; i < results.length; i++) {
+            if (results[i] != null) {
+              finalClients.push(results[i]);
+              // console.log(results[i]);
+
+            }
+
+          }
+          finalClients.forEach(function (client) {
+            finalMessages = finalMessages.concat(client.messages);
+          })
+          console.log("messssssaaagesssssssssssssssssssssssssssssssss");
+          //console.log(finalMessages);
+          //res.send(finalMessages);
+          async.map(finalMessages, MessageController.addClient, function (err, results) {
+           console.log(results);
+           res.send(results);
+           })
+        }
+      });
+
+
+    }
+  })
+}
 
 exports.sendSMS = function (req, res) {
   var message = new Message(req.body);

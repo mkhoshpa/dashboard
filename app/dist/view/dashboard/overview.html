@@ -25,14 +25,20 @@
                         </md-button>
 
                     </md-input-container>
-                    <md-select ng-model="vm.selected" ng-change=" vm.getAllAssignmentResponses(vm.selected)">
+                    <!-- <md-select ng-model="vm.selected" ng-change=" vm.getAllAssignmentResponses(vm.selected)">
 
                         <md-option ng-repeat="s in vm.columns" ng-value="s.index">
                             {{s.name}}
                         </md-option>
-                    </md-select>
+                    </md-select> -->
+                    <md-checkbox  ng-checked="vm.exist1(0, vm.se)" ng-click="vm.toggle1(0, vm.se)"> Messages</md-checkbox>
+                    <md-checkbox  ng-checked="vm.exist1(1, vm.se)" ng-click="vm.toggle1(1, vm.se)">Reminders </md-checkbox>
+                    <md-checkbox style="padding-right: 20px;" ng-checked="vm.exist1(2, vm.se)" ng-click="vm.toggle1(2, vm.se)">Surveys</md-checkbox>
                     From:<md-datepicker ng-model="vm.from" md-placeholder="Enter date" md-max-date="vm.to"></md-datepicker>
                     To:<md-datepicker ng-model="vm.to" md-placeholder="Enter date" md-min-date="vm.from"></md-datepicker>
+
+
+
 
 
 

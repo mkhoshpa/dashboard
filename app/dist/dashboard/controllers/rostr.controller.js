@@ -209,6 +209,7 @@ var dashboard;
         vm.possibleColumns = [];
         //vm.contents = contents(vm.clients);
         vm.selected = [];
+        vm.se=[1];
 
         vm.testResponses = ['Good', 'nice']
 
@@ -245,6 +246,7 @@ var dashboard;
         vm.to = new Date();
         vm.from =  new Date();
         vm.to.setDate(vm.to.getDate()+7);
+        vm.from.setDate(vm.from.getDate()-1);
 
         //Used for the pipeline
         vm.pipelineOptions = [{type: "lead"}, {type: "trial"}, {type: "active-client"}, {type: "previous-client"}, {type: "archived"}, {type: "NA"}];
@@ -385,7 +387,20 @@ var dashboard;
             else
                 list.push(item);
         };
+        vm.exist1 = function (item, list) {
+            var answer = false;
+            for (var i = 0; i < list.length; i++) {
+                if(item == list[i]){
+                    answer = true;
+                }
+            }
+            return answer;
 
+
+
+
+
+        };
         vm.exists = function (item, list) {
             return list.indexOf(item) > -1;
         };
@@ -407,27 +422,43 @@ var dashboard;
             return (this.selectedColumns.length !== 0 &&
             this.selectedColumns.length !== vm.columns.length);
         };
+        vm.allAssignments = [];
+        vm.callServer = function(list){
+          var  _this = this;
+            _this.allAssignments = [];
+            for (var i = 0; i < list.length; i++) {
+                _this.getAllAssignmentResponses(list[i])
 
+            }
+            console.log(_this.allAssignments);
+
+        }
         vm.getAllAssignmentResponses = function (index) {
             var _this = this;
-            _this.allAssignments = [];
+
            // console.log("check      "+JSON.stringify(vm.user._id));
             if(index==1) {
                 //console.log("coach= "+ JSON.stringify(vm.user));
                 _this.$http.get('/api/assignment/findRemindersByCoach/'+ vm.user._id).then(function (response) {
                     //console.log(JSON.stringify(response.data));
-                    _this.allAssignments = response.data;
+
+                    _this.allAssignments = _this.allAssignments.concat(response.data);
+
+
                 });
+
+
             }
             else if(index==2){
                 //console.log("coach= "+ JSON.stringify(vm.user));
                 _this.$http.get('/api/assignment/findSurveysByCoach/'+ vm.user._id).then(function (response) {
-                  // console.log(JSON.stringify(response.data));
-                    _this.allAssignments = response.data;
+                 // console.log(JSON.stringify(response.data));
+                    _this.allAssignments = _this.allAssignments.concat(response.data);
                 });
 
             }
             else if (index==0){
+                /*
                 _this.$http.get('/api/assignment/findRemindersByCoach/'+ vm.user._id).then(function (response) {
                    //console.log(JSON.stringify(response.data));
                     _this.allAssignments = response.data;
@@ -436,10 +467,17 @@ var dashboard;
                         _this.allAssignments = _this.allAssignments . concat(response.data)
                       // console.log(_this.allAssignments);
                     });
+                });*/
+                _this.$http.get('/api/message/findByCoach/'+ vm.user._id).then(function (response) {
+                   // console.log(JSON.stringify(response.data));
+
+                    _this.allAssignments = _this.allAssignments.concat(response.data);
+
                 });
 
             }
         };
+
         vm.newDate = function(arg){
             console.log(arg);
             var v = new Date(arg);
@@ -667,6 +705,21 @@ var dashboard;
         //     }
         //   };
         // };
+        vm.toggle1 = function (item, list) {
+            console.log(item);
+            console.log(list);
+            var idx = list.indexOf(item);
+            console.log("index");
+            console.log(idx);
+            if (idx > -1) {
+                list.splice(idx, 1);
+            }
+            else {
+                list.push(item);
+            }
+            console.log(list);
+            vm.callServer(list);
+        };
 
         vm.addNote = function (event, client) {
             // in case autoselect is enabled

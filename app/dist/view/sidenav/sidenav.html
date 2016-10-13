@@ -3,7 +3,7 @@
               md-is-open = "true"
               md-is-locked-open="$mdMedia('gt-xs')" style="width: 90%">
 
-<span>    Clients</span>
+<!--<span> Header ?</span>-->
   <div layout-padding>
     <md-autocomplete
       md-icon = "search"
@@ -12,7 +12,7 @@
       md-item-text="item.name"
       md-min-length="3"
       style="width: 90%"
-      placeholder="Search Clients">
+      placeholder="Search">
       <md-item-template>
         <span md-highlight-text="vm.searchText" md-highlight-flags="^i">{{item.name}}</span>
       </md-item-template>

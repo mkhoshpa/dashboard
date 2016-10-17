@@ -20,6 +20,8 @@ function ReminderController($mdDialog, userService, selected) {
         this.assignee = this.author;
     }
     if (selected) {
+        this.assignee = selected.assignee;
+
         this._id = selected._id,
             this.selectedDays = selected.selectedDates,
             this.reminder = selected.title,

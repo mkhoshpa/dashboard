@@ -355,6 +355,7 @@ exports.delete = function(req, res){
         }
       });
 
+      
 
 
 
@@ -368,7 +369,7 @@ exports.delete = function(req, res){
           var clients = obj1.clients;
 
           clients.splice(clients.indexOf(req.params.id),1);
-          User.findOneAndUpdate({_id: req.params.id},{clients: clients} , function (err, obj) {
+          User.findOneAndUpdate({_id: obj1._id},{clients: clients} , function (err, obj) {
             if(!err){
               res.json(obj);
             }else{

@@ -2,6 +2,8 @@
 
 // Load the module dependencies
 var User 		 = require('mongoose').model('User');
+var stripe = require("stripe")("sk_test_jCXXYe0fyydEElNMFTXBw7ZL");
+
 
 // Create a new error handling controller method
 var getErrorMessage = function(err) {
@@ -69,40 +71,117 @@ exports.renderSignup = function(req, res, next) {
 //Create a new controller method that creates new 'regular' users
 exports.signup = function(req, res, next) {
 	// If user is not connected, create and login a new user, otherwise redirect the user back to the main application page
+	console.log("signup hitttt");
+	console.log(req.body);
+
 	if (!req.user) {
+		/*
 		// Create a new 'User' model instance
-    console.log(req.body);
-		if(req.body.betaCode == "123456"){
-			var user = new User(req.body);
-			var message = null;
-			// Set the user provider property
-			user.provider = 'local';
 
-			// Try saving the new user document
-			user.save(function(err) {
-				// If an error occurs, use flash messages to report the error
-				if (err) {
-					// Use the error handling method to get the error message
-					var message = getErrorMessage(err);
-					// Set the flash messages
-					req.flash('error', message);
+		// Get the credit card details submitted by the form
+		var token = req.body.stripeToken; // Using Express
 
-					// Redirect the user back to the signup page
-					res.redirect('/signup');
-				}
 
-				// If the user was created successfully use the Passport 'login' method to login
-				req.login(user, function(err) {
-					console.log('logged in');
-					// If a login error occurs move to the next middleware
-					console.log(err);
-					if (err) return next(err);
+		console.log(req.body);
+		stripe.customers.create({
+			source: token,
+			plan: "test",
+			email: "payinguser@example.com"
+		}, function (err, customer) {
+			if(!err){
+				//console.log(JSON.stringify(customer));
+				var user = new User(req.body);
+				var message = null;
+				// Set the user provider property
+				user.provider = 'local';
+				//user.id=customer.id;
+				// Try saving the new user document
+				user.save(function(err) {
+					// If an error occurs, use flash messages to report the error
+					if (err) {
+						// Use the error handling method to get the error message
+						var message = getErrorMessage(err);
+						// Set the flash messages
+						req.flash('error', message);
 
-					// Redirect the user back to the main application page
-					return res.redirect('/');
+						// Redirect the user back to the signup page
+						res.redirect('/signup');
+					}
+
+					// If the user was created successfully use the Passport 'login' method to login
+					req.login(user, function(err) {
+						console.log('logged in');
+						// If a login error occurs move to the next middleware
+						console.log(err);
+						if (err) return next(err);
+
+						// Redirect the user back to the main application page
+						return res.redirect('/');
+					});
 				});
+
+
+				}
+			else{
+				console.log("errrrrrrrrrrrrrrrrrrrrrrrr");
+				console.log(err);
+			}
+
+		})
+
+	}
+	else {
+	console.log("Already logged in");
+	return res.redirect('/');
+	}
+	*/
+		var token = req.body.stripeToken; // Using Express
+
+
+		console.log(req.body);
+		stripe.customers.create({
+			source: token,
+			plan: "test",
+			email: "payinguser@example.com"
+		}, function (err, customer) {
+			if(!err) {
+				console.log(customer);
+				var user = new User(req.body);
+				user.stripeId=customer.id;
+				var message = null;
+				// Set the user provider property
+				user.provider = 'local';
+
+				// Try saving the new user document
+				user.save(function (err) {
+					// If an error occurs, use flash messages to report the error
+					if (err) {
+						// Use the error handling method to get the error message
+						var message = getErrorMessage(err);
+						// Set the flash messages
+						req.flash('error', message);
+
+						// Redirect the user back to the signup page
+						res.redirect('/signup');
+					}
+
+					// If the user was created successfully use the Passport 'login' method to login
+					req.login(user, function (err) {
+						console.log('logged in');
+						// If a login error occurs move to the next middleware
+						console.log(err);
+						if (err) return next(err);
+
+						// Redirect the user back to the main application page
+						return res.redirect('/');
+					});
+				});
+			}
+			else{
+				res.send(err);
+			}
 			});
-			} else {console.log("something wrong with betacode");}
+
 	} else {
 		console.log("Already logged in");
 		return res.redirect('/');

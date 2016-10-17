@@ -124,6 +124,7 @@ var UserSchema = new Schema({
 	},
   phoneNumber: String,
   slack_id : String,
+    stripeId:String,
   facebookId: Number,
   email: String,
   pandoraSessionId: String,

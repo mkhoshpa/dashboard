@@ -43,7 +43,7 @@
 
                 <md-input-container class="md-block" flex-gt-sm>
                     <label>Phone Number</label>
-                    <input ng-model="ctrl.phoneNumber" name="phoneNumber" type="number" ng-minlength="7" ng-maxlength="11" required>
+                    <input ng-model="ctrl.phoneNumber" name="phoneNumber" type="number" ng-minlength="7" ng-maxlength="10" required>
                     <div ng-messages="userForm.phoneNumber.$error">
                         <div ng-message="required">This is required.</div>
                         <span ng-show="userForm.phoneNumber.$touched && userForm.phoneNumber.$invalid">Please enter a 7 digit or 10 digit valid phone number.</span>

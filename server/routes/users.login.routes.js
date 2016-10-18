@@ -31,9 +31,13 @@ module.exports = function(app) {
 									console.log("weird");
 	    						console.log(info);
 	    					}
+
 						req.flash('status', 'Information Entered Incorrect');
 						return res.redirect('/signin');
 					}
+				 var date =new Date();
+				 //date.setMonth(date.getMonth()+2);
+				 if(user.active_until> date){
 			    req.logIn(user, function(err) {
 						console.log("This has to be here");
 						console.log(user);
@@ -109,7 +113,12 @@ module.exports = function(app) {
 							return res.redirect('/dashboard');
 						}
 			      return res.redirect('/dashboard');
-			    });
+			    });}
+			    else{
+			    	// not active anymore
+					 req.flash('status', 'you are not active anymore');
+					 return res.redirect('/signin');
+				 }
 				})(req,res,next);
 		});
 

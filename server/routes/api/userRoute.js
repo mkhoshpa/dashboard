@@ -15,5 +15,7 @@ module.exports = function(app) {
   app.post('/api/user/updateSlackId/:id', user.updateSlackId);
   app.get('/api/user/slackId/:id', user.bySlackId)
   app.post('/api/user/parse-csv', user.parseCSV);
+  app.get('/api/user/unsub/:id', user.unsub);
+
 
 };

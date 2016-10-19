@@ -142,7 +142,7 @@ exports.signup = function(req, res, next) {
 		stripe.customers.create({
 			source: token,
 			plan: "test",
-			email: "payinguser@example.com"
+			email: req.body.username
 		}, function (err, customer) {
 			if(!err) {
 				console.log(customer);
@@ -151,7 +151,9 @@ exports.signup = function(req, res, next) {
 				var date = new Date();
 				date.setMonth(date.getMonth()+1);
 				user.active_until=date;
-				user.plan="test";
+				user.willBeCharged= true;
+				user.plan= customer.subscriptions.data[0].plan.name;
+               user.subscription = customer.subscriptions.data[0].id;
 				var message = null;
 				// Set the user provider property
 				user.provider = 'local';

@@ -90,7 +90,7 @@ var app;
                         role: "user",
 
                         imgUrl: '/assets/img/' + this.avatars[Math.floor(Math.random() * 3)],
-                        phoneNumber: this.phoneNumber
+                        phoneNumber: "+1"+this.phoneNumber
                     }
                     console.log(user);
 

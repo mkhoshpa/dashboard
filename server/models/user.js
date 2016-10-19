@@ -127,6 +127,8 @@ var UserSchema = new Schema({
     stripeId:String,
     active_until:{type: Date},
     plan:String,
+    subscription: String,
+    willBeCharged: {type: Boolean},
   facebookId: Number,
   email: String,
   pandoraSessionId: String,

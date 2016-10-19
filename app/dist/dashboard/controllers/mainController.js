@@ -26,6 +26,7 @@ var app;
                 this.convoSurveyResponse = [];
                 this.surveyTemplates = [];
                 this.timeZoneFromGMT=-3;
+                this.show="show";
                 //Survey stuff
                 this.questions1 = [
                  {
@@ -43,6 +44,7 @@ var app;
 
                 //this.questions1 = [{type: "Yes/No"},{type:"Scale from 1 to 5"},{type:"Written Answer"}];
                 this.counter = 0;
+                this.now =new Date();
 
                 this.selectSurveyUser = [];
 
@@ -618,6 +620,37 @@ var app;
 
                             } else {
                                 self.openToast('User not deleted. ');
+                            }
+
+                        });
+
+                    }
+                });
+            };
+            MainController.prototype.unsub = function ($event) {
+                var _this = this;
+                console.log("this worked");
+                var confirm = this.$mdDialog.confirm()
+                    .textContent('Are you sure you want to unsubscribe ?')
+                    .ariaLabel('Remove')
+                    .targetEvent($event)
+                    .ok('Yes')
+                    .cancel('No');
+                var self = this;
+                this.$mdDialog.show(confirm).then(function (result) {
+                    console.log(result);
+                    if(result) {
+                        userToBeDeleted = _this.selected;
+                        _this.$http.get('/api/user/unsub/'+ self.user._id).then(function successCallback(response) {
+
+
+                            if (response) {
+                                console.log("done");
+                                self.openToast('User unsubscribed. ');
+
+
+                            } else {
+                                self.openToast('User not unsubscibed. ');
                             }
 
                         });

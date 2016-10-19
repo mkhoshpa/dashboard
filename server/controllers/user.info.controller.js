@@ -13,6 +13,8 @@ var winston = require('winston');
 var Reminder = require('../models/reminder.js');
 var Response = require('../models/response.js');
 var Assignment = require('../models/assignment.js');
+var stripe = require("stripe")("sk_test_jCXXYe0fyydEElNMFTXBw7ZL");
+
 
 /**
   Node Mailer Config
@@ -408,4 +410,52 @@ exports.parseCSV = function (req, res) {
     console.log(JSON.stringify(output));
     res.send(output);
   });
-};
+}
+
+  exports.unsub= function (req, res) {
+    console.log("unsub");
+    console.log(req.params.id);
+    User.findOne({_id: req.params.id}, function(err, obj) {
+      if (err) {
+        console.log("crap");
+        res.send(500);
+
+      }
+      else {
+        console.log(obj);
+        var sub = obj.subscription;
+        stripe.subscriptions.del(
+            sub,
+            {at_period_end: true},
+            function (err, confirmation) {
+              // asynchronously called
+              if(!err) {
+                console.log("confirmation");
+                console.log(confirmation);
+                var willBeCharged = false;
+                User.findOneAndUpdate({_id: req.params.id}, {willBeCharged: willBeCharged}, function (err, obj1) {
+                  if (err) {
+                    console.log("crap1");
+                    res.send(500);
+                  }
+                  else {
+                    res.send(obj1)
+                  }
+
+
+                });
+              }
+              else{
+                console.log("stripe err");
+                res.send(500);
+
+              }
+
+            });
+
+      }
+    });
+
+
+
+  };

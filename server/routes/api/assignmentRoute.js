@@ -1,13 +1,16 @@
 'use strict';
 
 var assignment = require('../../controllers/api/assignmentController.js');
+var memberful = require('../../controllers/api/memberful.controller.js');
 
 module.exports = function(app) {
 
   app.post('/api/assignment/create', assignment.create);
   app.get('/api/assignment/findRemindersByCoach/:id', assignment.selectRemindersByAssignee);
   app.get('/api/assignment/findSurveysByCoach/:id', assignment.selectSurveyByAssignee);
-  
+
+ // app.get('/api/memberful/', memberful.print);
+
   app.post('/api/assignment/createFromSurvey', assignment.createFromSurvey);
   app.post('/api/assignment/delete', assignment.delete);
   app.get('/api/assignment/list', assignment.list);

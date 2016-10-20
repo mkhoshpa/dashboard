@@ -459,3 +459,54 @@ exports.parseCSV = function (req, res) {
 
 
   };
+
+
+exports.sub= function (req, res) {
+  console.log("unsub");
+  console.log(req.params.id);
+  User.findOne({_id: req.params.id}, function(err, obj) {
+    if (err) {
+      console.log("crap");
+      res.send(500);
+
+    }
+    else {
+      console.log(obj);
+      var cus = obj.stripeId;
+      stripe.subscriptions.create({
+            customer: cus,
+            plan: obj.plan
+          }, function(err, subscription) {
+            // asynchronously called
+
+        if(!err) {
+          console.log("confirmation");
+          console.log(subscription);
+          var willBeCharged = true;
+          User.findOneAndUpdate({_id: req.params.id}, {willBeCharged: willBeCharged}, function (err, obj1) {
+            if (err) {
+              console.log("crap1");
+              res.send(500);
+            }
+            else {
+              res.send(obj1)
+            }
+
+
+          });
+        }
+        else{
+          console.log("stripe err");
+          res.send(500);
+
+        }
+
+          }
+      );
+
+    }
+  });
+
+
+
+};

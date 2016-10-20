@@ -68,7 +68,7 @@
                                 </tr>
                                 <tr>
                                     <td>Email</td>
-                                    <td><a href="mailto:info@support.com">{{vm.user.username}}</a></td>
+                                    <td>{{vm.user.username}}</td>
                                 </tr>
                                 <td>Phone Number</td>
                                 <td>{{vm.user.phoneNumber}}<br><br>
@@ -79,8 +79,13 @@
                                 </tbody>
                             </table>
 
-                            <a href="#" class="btn btn-primary">My Sales Performance</a>
-                            <a href="#" class="btn btn-primary">Team Sales Performance</a>
+                            <a class="btn btn-primary">Edit</a>
+                            <span ng-show="vm.user.willBeCharged">
+                            <a ng-click="vm.unsub()" class="btn btn-primary">Unsubscribe</a>
+                                </span>
+                            <span ng-show="!vm.user.willBeCharged">
+                            <a ng-click="vm.sub()" class="btn btn-primary">Subscribe</a>
+                        </span>
                         </div>
                     </div>
                 </div>
@@ -88,7 +93,7 @@
                     <a href="/contactUs" data-original-title="Contact Us" data-toggle="tooltip" type="button" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-envelope"></i></a>
                     <span class="pull-right">
                             <a href="edit.html" data-original-title="Edit this user" data-toggle="tooltip" type="button" class="btn btn-sm btn-warning"><i class="glyphicon glyphicon-edit"></i></a>
-                            <a ng-click="vm.unsub()" data-original-title="Remove this user" data-toggle="tooltip" type="button" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove"></i></a>
+                            <a data-original-title="Remove this user" data-toggle="tooltip" type="button" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove"></i></a>
                         </span>
                 </div>
 

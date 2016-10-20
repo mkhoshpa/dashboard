@@ -36,89 +36,90 @@ module.exports = function(app) {
 						return res.redirect('/signin');
 					}
 				 var date =new Date();
-				 //date.setMonth(date.getMonth()+2);
-				 if(user.active_until> date){
-			    req.logIn(user, function(err) {
-						console.log("This has to be here");
-						console.log(user);
-			      if (err) {
-							console.log('err');
-							console.log(err);
-							return next(err);
-						}
+				// date.setMonth(date.getMonth()+2);
+				// if(user.active_until> date) {
+					 req.logIn(user, function (err) {
+						 console.log("This has to be here");
+						 console.log(user);
+						 if (err) {
+							 console.log('err');
+							 console.log(err);
+							 return next(err);
+						 }
 
-						else if(user.role == 'coach') {
-							console.log("coaches");
-							var slack = [];
+						 else if (user.role == 'coach') {
+							 console.log("coaches");
+							 var slack = [];
 
-							var headers = {
-							    'User-Agent':       'Super Agent/0.0.1',
-							    'Content-Type':     'application/x-www-form-urlencoded'
-							}
+							 var headers = {
+								 'User-Agent': 'Super Agent/0.0.1',
+								 'Content-Type': 'application/x-www-form-urlencoded'
+							 }
 
-							var options = {
-							    url: 'https://slack.com/api/users.list',
-							    method: 'GET',
-							    headers: headers,
-							    qs:	{
-										'token': 'xoxp-21143396339-21148553634-35579946983-f1498f5c94',
-									}
-							}
+							 var options = {
+								 url: 'https://slack.com/api/users.list',
+								 method: 'GET',
+								 headers: headers,
+								 qs: {
+									 'token': 'xoxp-21143396339-21148553634-35579946983-f1498f5c94',
+								 }
+							 }
 
-							request(options, function (error, response, body) {
-									console.log("Did i have it this far??");
-									if (!error && response.statusCode == 200) {
-							        	var members = JSON.parse(body).members;
-											_.forEach(members, function(member) {
-												if(member.profile.email && !member.deleted){
-				                  slack.push({
-				                    team: member.team_id,
-				                    id: member.id,
-				                    name: member.name,
-				                    real_name: member.real_name,
-				                    email: member.profile.email,
-				                    img: member.profile.image_72,
-				                    timezone: member.tz
-				                  });
-												}
-											});
-											// Combine each forEach statement O(n^2)
-											_.forEach(slack, function(member) {
-												request.post('http://localhost:12557/generate',{
-													form: {
-															user: req.user.id,
-															client: {
-																coaches: req.user.id,
-																username: member.email,
-																slack: member
-															}
-														}
-												}, function(err,httpResponse,body){
-													if(err) {
-														console.log(err);
-													}
-													else {
-														console.log(body);
-													}
-												})
-											})
+							 request(options, function (error, response, body) {
+								 console.log("Did i have it this far??");
+								 if (!error && response.statusCode == 200) {
+									 var members = JSON.parse(body).members;
+									 _.forEach(members, function (member) {
+										 if (member.profile.email && !member.deleted) {
+											 slack.push({
+												 team: member.team_id,
+												 id: member.id,
+												 name: member.name,
+												 real_name: member.real_name,
+												 email: member.profile.email,
+												 img: member.profile.image_72,
+												 timezone: member.tz
+											 });
+										 }
+									 });
+									 // Combine each forEach statement O(n^2)
+									 _.forEach(slack, function (member) {
+										 request.post('http://localhost:12557/generate', {
+											 form: {
+												 user: req.user.id,
+												 client: {
+													 coaches: req.user.id,
+													 username: member.email,
+													 slack: member
+												 }
+											 }
+										 }, function (err, httpResponse, body) {
+											 if (err) {
+												 console.log(err);
+											 }
+											 else {
+												 console.log(body);
+											 }
+										 })
+									 })
 
-							    }
-									else if(error) {
-										console.log(error);
-									}
-							});
-						}
-						else {
-							return res.redirect('/dashboard');
-						}
-			      return res.redirect('/dashboard');
-			    });}
-			    else{
+								 }
+								 else if (error) {
+									 console.log(error);
+								 }
+							 });
+						 }
+						 else {
+							 return res.redirect('/dashboard');
+						 }
+						 return res.redirect('/dashboard');
+					 });
+				// }
+			   // else{
 			    	// not active anymore
-					 req.flash('status', 'you are not active anymore');
-					 return res.redirect('/signin');
-				 }
+					// req.flash('status', 'you are not active anymore');
+					// return res.redirect('/signin');
+				// }
 				})(req,res,next);
 		});
 

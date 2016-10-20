@@ -2,7 +2,14 @@
 
 // Load the module dependencies
 var profile = require('../controllers/user.info.controller.js');
+var StripeWebhook = require('stripe-webhook-middleware'),
+    stripeEvents = require('../middleware/stripe-events');
+var bodyParser = require('body-parser');
 
+var stripeWebhook = new StripeWebhook({
+  stripeApiKey:  "sk_test_jCXXYe0fyydEElNMFTXBw7ZL" ,
+  respond: true
+});
 // Define the routes module' method
 module.exports = function(app) {
 
@@ -14,6 +21,12 @@ module.exports = function(app) {
 
   app.get('/reset/:token', profile.token);
   app.post('/reset/:token', profile.change);
+
+
+  app.post('/stripe/events',
+
+      stripeEvents.stripe
+  );
 
 
 

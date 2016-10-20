@@ -658,6 +658,37 @@ var app;
                     }
                 });
             };
+            MainController.prototype.sub = function ($event) {
+                var _this = this;
+                console.log("this worked");
+                var confirm = this.$mdDialog.confirm()
+                    .textContent('Are you sure you want to subscribe ?')
+                    .ariaLabel('Remove')
+                    .targetEvent($event)
+                    .ok('Yes')
+                    .cancel('No');
+                var self = this;
+                this.$mdDialog.show(confirm).then(function (result) {
+                    console.log(result);
+                    if(result) {
+                        userToSUb = _this.selected;
+                        _this.$http.get('/api/user/sub/'+ self.user._id).then(function successCallback(response) {
+
+
+                            if (response) {
+                                console.log("done");
+                                self.openToast('User subscribed. ');
+
+
+                            } else {
+                                self.openToast('User not subscibed. ');
+                            }
+
+                        });
+
+                    }
+                });
+            };
 
 
             MainController.prototype.editUser = function ($event) {

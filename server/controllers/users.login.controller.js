@@ -145,15 +145,19 @@ exports.signup = function(req, res, next) {
 			email: req.body.username
 		}, function (err, customer) {
 			if(!err) {
-				console.log(customer);
+				//console.log(customer);
 				var user = new User(req.body);
 				user.stripeId=customer.id;
 				var date = new Date();
-				date.setMonth(date.getMonth()+1);
-				user.active_until=date;
+				//date.setMonth(date.getMonth()-1);
+				//user.active_until=date;
 				user.willBeCharged= true;
 				user.plan= customer.subscriptions.data[0].plan.name;
                user.subscription = customer.subscriptions.data[0].id;
+				console.log(customer.subscriptions.data[0]);
+				date = new Date( customer.subscriptions.data[0].current_period_end * 1000);
+				console.log(date);
+				user.active_until = date;
 				var message = null;
 				// Set the user provider property
 				user.provider = 'local';

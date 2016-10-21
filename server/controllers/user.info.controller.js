@@ -483,7 +483,10 @@ exports.sub= function (req, res) {
           console.log("confirmation");
           console.log(subscription);
           var willBeCharged = true;
-          User.findOneAndUpdate({_id: req.params.id}, {willBeCharged: willBeCharged}, function (err, obj1) {
+          var active_until = new Date(subscription.current_period_end*1000);
+          console.log(subscription.current_period_end);
+          console.log(active_until)
+          User.findOneAndUpdate({_id: req.params.id}, {willBeCharged: willBeCharged , active_until: active_until}, function (err, obj1) {
             if (err) {
               console.log("crap1");
               res.send(500);

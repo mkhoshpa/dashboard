@@ -1,0 +1,181 @@
+
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.css">
+
+    <script>
+        angular
+                .module('myApp', ['ngMaterial'])
+                .controller('vm', vm);
+
+        function vm ($scope, $mdDialog,$mdToast,$http ,$window) {
+            this.$mdDialog = $mdDialog;
+            $scope.now= new Date();
+            $scope.id= '<%= user.id %>';
+            $scope.fisrtName= '<%= user.firstName %>';
+            $scope.lastName= '<%= user.lastName %>';
+            $scope.username= '<%= user.username %>';
+
+            $scope.stripeId= '<%= user.stripeId %>';
+            $scope.plan= '<%= user.plan %>';
+            $scope.active_until1= '<%= user.active_until %>';
+            $scope.create= '<%= user.created %>';
+            $scope.created=new Date($scope.create);
+            $scope.active_until = new Date($scope.active_until1);
+            $scope.openToast = function (message) {
+                $mdToast.show($mdToast.simple()
+                        .textContent(message)
+                        .position('top right')
+                        .hideDelay(5000));
+            };
+
+            $scope.sub = function ($event) {
+                    var _this = this;
+                    console.log("this worked");
+                    var confirm = $mdDialog.confirm()
+                            .textContent('Are you sure you want to subscribe ?')
+                            .ariaLabel('Remove')
+                            .targetEvent($event)
+                            .ok('Yes')
+                            .cancel('No');
+                    var self = this;
+                    $mdDialog.show(confirm).then(function (result) {
+                        console.log(result);
+                        if(result) {
+
+                            $http.get('/api/user/sub/'+ $scope.id).then(function successCallback(response) {
+
+
+                                if (response) {
+                                    console.log("done");
+                                    self.openToast('User subscribed. ');
+                                    $window.location.href = '/';
+
+
+
+                                } else {
+                                    self.openToast('User not subscibed. ');
+                                }
+
+                            });
+
+                        }
+                    });
+                };
+
+
+
+
+        }
+</script>
+
+<link rel="stylesheet" href="../../../assets/styles/css/profilecss.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body ng-app="myApp">
+
+<!-- <script src="/dist/dashboard/controllers/mainController.js"></script> -->
+
+
+
+
+<div class="container" ng-controller="vm" >
+
+    <div class="row">
+        <div class="col-md-5  toppad  pull-right col-md-offset-3 ">
+            <A href="edit.html" >Edit Profile</A>
+
+<script><%= user %></script>
+            <A href="/signout" >Sign Out</A>
+            <br>
+            <p class=" text-info">{{now | date:'medium'}}</p>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad" >
+
+
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title"> <%= user.firstName %></h3> You need to select a plan to be able to use FitPath
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-3 col-lg-3 " align="center"> <img alt="User Pic" ng-src="{{vm.selected.imgUrl}}" class="img-circle img-responsive"> </div>
+
+                        <!--<div class="col-xs-10 col-sm-10 hidden-md hidden-lg"> <br>
+                          <dl>
+                            <dt>DEPARTMENT:</dt>
+                            <dd>Administrator</dd>
+                            <dt>HIRE DATE</dt>
+                            <dd>11/12/2013</dd>
+                            <dt>DATE OF BIRTH</dt>
+                               <dd>11/12/2013</dd>
+                            <dt>GENDER</dt>
+                            <dd>Male</dd>
+                          </dl>
+                        </div>-->
+                        <div class=" col-md-9 col-lg-9 ">
+                            <table class="table table-user-information">
+                                <tbody>
+                                <tr>
+                                    <td>Role</td>
+                                    <td><%= user.role %></td>
+                                </tr>
+                                <tr>
+                                    <td>Sign Up Date</td>
+                                    <td>{{created| date:'medium'}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Active until</td>
+                                    <td>{{active_until| date:'medium'}}</td>
+                                </tr>
+
+                                <tr>
+                                <tr>
+                                    <td>Plan</td>
+                                    <td>{{plan}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Has A Plan</td>
+                                    <td><%=  user.willBeCharged %></td>
+                                </tr>
+                                <tr>
+                                    <td>Email</td>
+                                    <td>{{username}}</td>
+                                </tr>
+                                <td>Phone Number</td>
+                                <td>{{ user }}<br><br>
+                                </td>
+
+                                </tr>
+
+                                </tbody>
+                            </table>
+
+                            <a class="btn btn-primary">Edit</a>
+<a ng-click="sub()" class="btn btn-lg btn-success">Plan1</a>
+<a ng-click="sub()" class="btn btn-lg btn-success">Plan2</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <a href="/contactUs" data-original-title="Contact Us" data-toggle="tooltip" type="button" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-envelope"></i></a>
+                    <span class="pull-right">
+                            <a href="edit.html" data-original-title="Edit this user" data-toggle="tooltip" type="button" class="btn btn-sm btn-warning"><i class="glyphicon glyphicon-edit"></i></a>
+                            <a data-original-title="Remove this user" data-toggle="tooltip" type="button" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove"></i></a>
+                        </span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+
+
+</html>

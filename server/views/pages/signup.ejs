@@ -6,6 +6,8 @@
       Stripe.setPublishableKey('pk_test_sV31DWYyOiGu2MrBVTKkapPw');
   </script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <link href = "//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel = "stylesheet">
+
 
   <script type="text/javascript">
       $(function() {
@@ -52,13 +54,21 @@
 
   <body class="fitpath-blue valign-wrapper">
 
-      <div class="row">
+      <div class="row" style=" position: fixed;
+  top: 50%;
+  left: 50%;
+  /* bring your own prefixes */
+  transform: translate(-50%, -50%);">
         <div class="row s12 m7">
-          <div class="card" style="margin-right: 25px; margin-left: 25px;">
+          <div  style=" position: relative;
+  margin: 0.5rem 0 1rem 0;
+  background-color: #fff;
+  transition: box-shadow .25s;
+  border-radius: 2px;">
 
-            <div class="row center-align" style="margin-bottom: 0px;">
+            <div class="row center-align" style="margin-bottom: 0px;" id="login-input-container">
               <ul class="collection">
-               <li class="collection-item avatar">
+               <li class="collection-item avatar" class="left-align login-label">
                 <!-- <img src="../assets/img/willow.png" alt="" class="circle">-->
                  <!-- <span class="title">Title</span> -->
 
@@ -75,8 +85,67 @@
              </ul>
             </div>
 
-            <form action="/signup" method="post" id="payment-form">
-              <div class="row">
+
+
+
+
+            <form action="/signup" method="post" id="payment-form" >
+
+<div class="row">
+    <!--
+                <table style="width:100%">
+                <div class="btn-group" data-toggle="buttons">
+
+                    <tr>
+                        <td>
+                    <div class="col s12" id="login-input-container">
+                    <label class="btn btn-primary active" >
+                        <input type="radio" name="options" id="option1" value="plan1" autocomplete="off"> Plan 1
+                    </label>
+                    </div>
+                        </td>
+                        <td>
+                    <div class="col s12">
+
+                    <label class="btn btn-primary">
+                        <input type="radio" name="options" id="option2" value="plan2"  autocomplete="off"> Plan 2
+                    </label>
+                    </div>
+                        </td>
+                        <td>
+                        <div class="col s12">
+
+                        <label class="btn btn-primary" >
+                        <input type="radio" name="options" id="option3" value="plan3"  autocomplete="off"> Plan 3
+                    </label>
+                        </div>
+                        </td>
+                    </tr>
+
+                </div>
+                </table>
+                -->
+    <div class="row" style="position: relative; right: -150px;">
+        <div class="btn-group" data-toggle="buttons">
+            <label class="btn btn-primary active">
+                <input type="radio" name="options" id="option1"  value="test" autocomplete="off" checked> test
+            </label>
+            <label class="btn btn-primary">
+                <input type="radio" name="options" id="option2"  value="plan2" autocomplete="off"> Plan 2
+            </label>
+            <label class="btn btn-primary">
+                <input type="radio" name="options" id="option3"  value="plan3" autocomplete="off"> Plan 3
+            </label>
+        </div>
+
+</div>
+
+
+
+
+
+
+
                 <div id="first-name" class="col s6">
                   <label class="left-align login-label" for="first">FIRST NAME</label>
                   <input id="first" type="text" name="firstName" class="validate" >
@@ -103,8 +172,8 @@
                 <span class="payment-errors"></span>
 
                 <div class="row">
-                    <div class="col s6">
-                    <label>
+                    <div class="col s6" id="login-input-container" >
+                    <label class="left-align login-label">
                         <span>Card Number</span>
                     </label>
                         <input type="text" size="20" data-stripe="number">
@@ -112,7 +181,7 @@
                     </div>
                     <div class="col s2">
 
-                    <label>
+                    <label class="left-align login-label" id="login-input-container">
                         <span>Exp month </span>
                     </label>
                         <input type="text" size="2" data-stripe="exp_month">
@@ -120,7 +189,7 @@
                         </div>
                     <div class="col s2">
 
-                        <label>
+                        <label class="left-align login-label" id="login-input-container">
                             <span>Exp year</span>
                         </label>
                         <input type="text" size="2" data-stripe="exp_year">
@@ -132,18 +201,18 @@
 
                 <div class="row">
                     <div class="col s2">
-                    <label>
+                    <label class="left-align login-label" id="login-input-container">
                         <span>CVC</span>
-                        <input type="text" size="4" data-stripe="cvc">
+                        <input type="text" size="3" data-stripe="cvc">
                     </label>
                         </div>
-<div class="col s2">
-                    <label>
+<div class="col s3">
+                    <label class="left-align login-label" id="login-input-container">
                         <span>Billing Zip</span>
                         <input type="text" size="6" data-stripe="address_zip">
                     </label>
                 </div>
-                   <div class="col s8" style=" position:relative; top:20px;">
+                   <div class="col s7" style=" position:relative; top:20px;" id="login-input-container">
                     <button id="full-width" class="btn waves-effect waves-light fitpath-green" type="submit">Sign Up!
                     </button>
                 </div>

@@ -27,7 +27,11 @@ md-dialog.SurveyBuilder{
   height: 350px;
   width: 450px;
 }
-
+.large-Modal .modal-dialog{
+  width:400px;
+  height: 400px;
+  position: absolute;
+}
 .datatableback{
   height: 1000px;
 }

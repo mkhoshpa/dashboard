@@ -137,11 +137,11 @@ exports.signup = function(req, res, next) {
 	*/
 		var token = req.body.stripeToken; // Using Express
 
-
+console.log("req.bodyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
 		console.log(req.body);
 		stripe.customers.create({
 			source: token,
-			plan: "test",
+			plan: req.body.options,
 			email: req.body.username
 		}, function (err, customer) {
 			if(!err) {
@@ -157,6 +157,7 @@ exports.signup = function(req, res, next) {
 				console.log(customer.subscriptions.data[0]);
 				date = new Date( customer.subscriptions.data[0].current_period_end * 1000);
 				console.log(date);
+				//date.setMonth(date.getMonth()-2);
 				user.active_until = date;
 				var message = null;
 				// Set the user provider property

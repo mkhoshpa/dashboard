@@ -462,9 +462,10 @@ exports.parseCSV = function (req, res) {
 
 
 exports.sub= function (req, res) {
-  console.log("unsub");
-  console.log(req.params.id);
-  User.findOne({_id: req.params.id}, function(err, obj) {
+  console.log("sub");
+  //console.log(req.params.id);
+  console.log(req.body);
+  User.findOne({_id: req.body.userId}, function(err, obj) {
     if (err) {
       console.log("crap");
       res.send(500);
@@ -475,7 +476,7 @@ exports.sub= function (req, res) {
       var cus = obj.stripeId;
       stripe.subscriptions.create({
             customer: cus,
-            plan: obj.plan
+            plan: req.body.plan
           }, function(err, subscription) {
             // asynchronously called
 
@@ -484,9 +485,10 @@ exports.sub= function (req, res) {
           console.log(subscription);
           var willBeCharged = true;
           var active_until = new Date(subscription.current_period_end*1000);
+          var subs = subscription.id;
           console.log(subscription.current_period_end);
-          console.log(active_until)
-          User.findOneAndUpdate({_id: req.params.id}, {willBeCharged: willBeCharged , active_until: active_until}, function (err, obj1) {
+          console.log(active_until);
+          User.findOneAndUpdate({_id: req.body.userId}, {subscription: subs, willBeCharged: willBeCharged , active_until: active_until}, function (err, obj1) {
             if (err) {
               console.log("crap1");
               res.send(500);
@@ -503,6 +505,60 @@ exports.sub= function (req, res) {
           res.send(500);
 
         }
+
+          }
+      );
+
+    }
+  });
+
+
+
+};
+exports.resub= function (req, res) {
+  console.log("resub");
+  //console.log(req.params.id);
+  console.log(req.body);
+  User.findOne({_id: req.body.userId}, function(err, obj) {
+    if (err) {
+      console.log("crap");
+      res.send(500);
+
+    }
+    else {
+      console.log(obj);
+      var subss = obj.subscription;
+      stripe.subscriptions.update(
+           subss,
+          {plan: req.body.plan
+          }, function(err, subscription) {
+            // asynchronously called
+
+            if(!err) {
+              console.log("confirmation");
+              console.log(subscription);
+              var willBeCharged =!subscription.cancel_at_period_end;
+              var active_until = new Date(subscription.current_period_end*1000);
+              console.log(subscription.current_period_end);
+              console.log(active_until);
+              User.findOneAndUpdate({_id: req.body.userId}, {willBeCharged: willBeCharged , active_until: active_until}, function (err, obj1) {
+                if (err) {
+                  console.log("crap1");
+                  res.send(500);
+                }
+                else {
+                  res.send(obj1)
+                }
+
+
+              });
+            }
+            else{
+              console.log(err);
+              console.log("stripe err");
+              res.send(500);
+
+            }
 
           }
       );

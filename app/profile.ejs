@@ -1,5 +1,119 @@
 
 <html>
+<style>
+    body
+    {
+        margin-top: 20px;
+    }
+    .panel
+    {
+        text-align: center;
+    }
+    .panel:hover { box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4), 0 1px 5px rgba(130, 130, 130, 0.35); }
+    .panel-body
+    {
+        padding: 0px;
+        text-align: center;
+    }
+
+    .the-price
+    {
+        background-color: rgba(220,220,220,.17);
+        box-shadow: 0 1px 0 #dcdcdc, inset 0 1px 0 #fff;
+        padding: 20px;
+        margin: 0;
+    }
+
+    .the-price h1
+    {
+        line-height: 1em;
+        padding: 0;
+        margin: 0;
+    }
+
+    .subscript
+    {
+        font-size: 25px;
+    }
+
+    /* CSS-only ribbon styles    */
+    .cnrflash
+    {
+        /*Position correctly within container*/
+        position: absolute;
+        top: -9px;
+        right: 4px;
+        z-index: 1; /*Set overflow to hidden, to mask inner square*/
+        overflow: hidden; /*Set size and add subtle rounding  		to soften edges*/
+        width: 100px;
+        height: 100px;
+        border-radius: 3px 5px 3px 0;
+    }
+    .cnrflash-inner
+    {
+        /*Set position, make larger then 			container and rotate 45 degrees*/
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 145px;
+        height: 145px;
+        -ms-transform: rotate(45deg); /* IE 9 */
+        -o-transform: rotate(45deg); /* Opera */
+        -moz-transform: rotate(45deg); /* Firefox */
+        -webkit-transform: rotate(45deg); /* Safari and Chrome */
+        -webkit-transform-origin: 100% 100%; /*Purely decorative effects to add texture and stuff*/ /* Safari and Chrome */
+        -ms-transform-origin: 100% 100%;  /* IE 9 */
+        -o-transform-origin: 100% 100%; /* Opera */
+        -moz-transform-origin: 100% 100%; /* Firefox */
+        background-image: linear-gradient(90deg, transparent 50%, rgba(255,255,255,.1) 50%), linear-gradient(0deg, transparent 0%, rgba(1,1,1,.2) 50%);
+        background-size: 4px,auto, auto,auto;
+        background-color: #aa0101;
+        box-shadow: 0 3px 3px 0 rgba(1,1,1,.5), 0 1px 0 0 rgba(1,1,1,.5), inset 0 -1px 8px 0 rgba(255,255,255,.3), inset 0 -1px 0 0 rgba(255,255,255,.2);
+    }
+    .cnrflash-inner:before, .cnrflash-inner:after
+    {
+        /*Use the border triangle trick to make  				it look like the ribbon wraps round it's 				container*/
+        content: " ";
+        display: block;
+        position: absolute;
+        bottom: -16px;
+        width: 0;
+        height: 0;
+        border: 8px solid #800000;
+    }
+    .cnrflash-inner:before
+    {
+        left: 1px;
+        border-bottom-color: transparent;
+        border-right-color: transparent;
+    }
+    .cnrflash-inner:after
+    {
+        right: 0;
+        border-bottom-color: transparent;
+        border-left-color: transparent;
+    }
+    .cnrflash-label
+    {
+        /*Make the label look nice*/
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        display: block;
+        width: 100%;
+        padding-bottom: 5px;
+        color: #fff;
+        text-shadow: 0 1px 1px rgba(1,1,1,.8);
+        font-size: 0.95em;
+        font-weight: bold;
+        text-align: center;
+    }
+    .large-Modal .modal-dialog{
+        width:400px;
+        height: 400px;
+        position: absolute;
+    }
+</style>
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
@@ -20,7 +134,7 @@
             $scope.fisrtName= '<%= user.firstName %>';
             $scope.lastName= '<%= user.lastName %>';
             $scope.username= '<%= user.username %>';
-
+            $scope.willBeCharged =  '<%= user.willBeCharged %>';
             $scope.stripeId= '<%= user.stripeId %>';
             $scope.plan= '<%= user.plan %>';
             $scope.active_until1= '<%= user.active_until %>';
@@ -34,7 +148,7 @@
                         .hideDelay(5000));
             };
 
-            $scope.sub = function ($event) {
+            /*$scope.sub = function ($event) {
                     var _this = this;
                     console.log("this worked");
                     var confirm = $mdDialog.confirm()
@@ -66,7 +180,78 @@
 
                         }
                     });
-                };
+                };*/
+            $scope.sub = function (plan,$event) {
+                var _this = this;
+                console.log("this worked");
+                var confirm =$mdDialog.confirm()
+                        .textContent('Are you sure you want to subscribe ?')
+                        .ariaLabel('Remove')
+                        .targetEvent($event)
+                        .ok('Yes')
+                        .cancel('No');
+                var self = this;
+                $mdDialog.show(confirm).then(function (result) {
+                    console.log(result);
+                    if(result) {
+                        if (!$scope.wellBecharged) {
+
+                            var p = {plan: plan, userId: $scope.id};
+                            $http.post('/api/user/sub', p).then(function successCallback(response) {
+
+
+                                if (response) {
+                                    console.log("done");
+                                    self.openToast('User subscribed. ');
+
+
+                                } else {
+                                    self.openToast('User not subscibed. ');
+                                }
+
+                            });
+
+                        }else{
+                            $http.get('/api/user/unsub/'+ $scope.id).then(function successCallback(response) {});
+                            var p = {plan: plan, userId: $scope.id};
+                            $http.post('/api/user/sub', p).then(function successCallback(response) {
+
+
+                                if (response) {
+                                    console.log("done");
+                                    self.openToast('User subscribed. ');
+
+
+                                } else {
+                                    self.openToast('User not subscibed. ');
+                                }
+
+                            });
+                        }
+                    }
+                });
+
+            };
+
+            $scope.changePlan = function ($event) {
+                var _this = this;
+                var self = this;
+                console.log(self.user);
+                //var useFullScreen = ( this.$mdMedia('md'));
+               $mdDialog.show({
+                    templateUrl: './dist/view/dashboard/user/changePlanDialog.html',
+                    parent: angular.element(document.body),
+                    targetEvent: $event,
+                    controller: vm,
+                    controllerAs: "vm",
+                    clickOutsideToClose: true,
+                    windowClass: 'large-Modal'
+
+
+                }).then(function (plan) {
+
+                });
+            }
 
 
 
@@ -84,10 +269,10 @@
 
 
 
-<div class="container" ng-controller="vm" >
+<div class="container" ng-controller="vm" style="overflow: hidden">
 
-    <div class="row">
-        <div class="col-md-5  toppad  pull-right col-md-offset-3 ">
+    <div class="row" >
+        <div class="col-md-12  toppad  pull-right col-md-offset-6 ">
             <A href="edit.html" >Edit Profile</A>
 
 <script><%= user %></script>
@@ -95,7 +280,7 @@
             <br>
             <p class=" text-info">{{now | date:'medium'}}</p>
         </div>
-        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad" >
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-8 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad" >
 
 
             <div class="panel panel-info">
@@ -104,7 +289,7 @@
                 </div>
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-md-3 col-lg-3 " align="center"> <img alt="User Pic" ng-src="{{vm.selected.imgUrl}}" class="img-circle img-responsive"> </div>
+                        <div class="col-md-2 col-lg-2 " align="center"> <img alt="User Pic" ng-src="{{vm.selected.imgUrl}}" class="img-circle img-responsive"> </div>
 
                         <!--<div class="col-xs-10 col-sm-10 hidden-md hidden-lg"> <br>
                           <dl>
@@ -156,9 +341,163 @@
                                 </tbody>
                             </table>
 
-                            <a class="btn btn-primary">Edit</a>
-<a ng-click="sub()" class="btn btn-lg btn-success">Plan1</a>
-<a ng-click="sub()" class="btn btn-lg btn-success">Plan2</a>
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-xs-12 col-md-2">
+                                        <div class="panel panel-primary">
+                                            <div class="panel-heading">
+                                                <h3 class="panel-title">
+                                                    Bronze</h3>
+                                            </div>
+                                            <div class="panel-body">
+                                                <div class="the-price">
+                                                    <h1>
+                                                        $10<span class="subscript">/mo</span></h1>
+                                                </div>
+                                                <table class="table">
+                                                    <tr>
+                                                        <td>
+                                                            1 Account
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="active">
+                                                        <td>
+                                                            1 Project
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            100K API Access
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="active">
+                                                        <td>
+                                                            100MB Storage
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            Custom Cloud Services
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="active">
+                                                        <td>
+                                                            Weekly Reports
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                            <div class="panel-footer">
+                                                <a href="http://www.jquery2dotnet.com"  style="    pointer-events: none;"  class="btn btn-success" role="button">Select</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 col-md-2">
+                                        <div class="panel panel-success">
+                                            <div class="cnrflash">
+                                                <div class="cnrflash-inner">
+                        <span class="cnrflash-label">MOST
+                            <br>
+                            POPULR</span>
+                                                </div>
+                                            </div>
+                                            <div class="panel-heading">
+                                                <h3 class="panel-title">
+                                                    Silver</h3>
+                                            </div>
+                                            <div class="panel-body">
+                                                <div class="the-price">
+                                                    <h1>
+                                                        $20<span class="subscript">/mo</span></h1>
+                                                </div>
+                                                <table class="table">
+                                                    <tr>
+                                                        <td>
+                                                            2 Account
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="active">
+                                                        <td>
+                                                            5 Project
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            100K API Access
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="active">
+                                                        <td>
+                                                            200MB Storage
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            Custom Cloud Services
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="active">
+                                                        <td>
+                                                            Weekly Reports
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                            <div class="panel-footer">
+                                                <a href="http://www.jquery2dotnet.com" style="    pointer-events: none;"  class="btn btn-success" role="button">Select</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 col-md-2">
+                                        <div class="panel panel-info">
+                                            <div class="panel-heading">
+                                                <h3 class="panel-title">
+                                                    Test</h3>
+                                            </div>
+                                            <div class="panel-body">
+                                                <div class="the-price">
+                                                    <h1>
+                                                        $35<span class="subscript">/mo</span></h1>
+                                                </div>
+                                                <table class="table">
+                                                    <tr>
+                                                        <td>
+                                                            5 Account
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="active">
+                                                        <td>
+                                                            20 Project
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            300K API Access
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="active">
+                                                        <td>
+                                                            500MB Storage
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            Custom Cloud Services
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="active">
+                                                        <td>
+                                                            Weekly Reports
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                            <div class="panel-footer">
+                                                <a ng-click="sub('test',$event)" class="btn btn-success" role="button">Select</a> </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

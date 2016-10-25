@@ -152,19 +152,19 @@ var knownEvents = {
         if(req.body.data && req.body.data.object && req.body.data.object.customer){
             // find user where body.data.object.customer
             User.findOne({
-                'stripe.customerId': req.body.data.object.customer
+                'stripeId': req.body.data.object.customer
             }, function (err, user) {
                 if (err) return next(err);
                 if(!user){
                     // user does not exist, no need to process
                     return res.status(200).end();
                 } else {
-                    user.stripe.last4 = '';
-                    user.stripe.plan = 'free';
-                    user.stripe.subscriptionId = '';
+                    //user.stripe.last4 = '';
+                    user.plan = 'free';
+                    user.subscription = '';
                     user.save(function(err) {
                         if (err) return next(err);
-                        console.log('user: ' + user.email + ' subscription was successfully cancelled.');
+                        console.log('user: ' + user.username + ' subscription was successfully cancelled.');
                         return res.status(200).end();
                     });
                 }

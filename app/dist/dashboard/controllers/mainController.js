@@ -658,7 +658,7 @@ var app;
                     }
                 });
             };
-            MainController.prototype.sub = function ($event) {
+            MainController.prototype.sub = function (plan,$event) {
                 var _this = this;
                 console.log("this worked");
                 var confirm = this.$mdDialog.confirm()
@@ -671,24 +671,119 @@ var app;
                 this.$mdDialog.show(confirm).then(function (result) {
                     console.log(result);
                     if(result) {
-                        userToSUb = _this.selected;
-                        _this.$http.get('/api/user/sub/'+ self.user._id).then(function successCallback(response) {
+                        if (!self.user.wellBecharged) {
+                            userToSUb = _this.selected;
+                            var p = {plan: plan, userId: self.user._id};
+                            _this.$http.post('/api/user/sub', p).then(function successCallback(response) {
 
 
-                            if (response) {
-                                console.log("done");
-                                self.openToast('User subscribed. ');
+                                if (response) {
+                                    console.log("done");
+                                    self.openToast('User subscribed. ');
 
 
-                            } else {
-                                self.openToast('User not subscibed. ');
+                                } else {
+                                    self.openToast('User not subscibed. ');
+                                }
+
+                            });
+
+                        }else{
+                            _this.$http.get('/api/user/unsub/'+ self.user._id).then(function successCallback(response) {});
+                            var p = {plan: plan, userId: self.user._id};
+                            _this.$http.post('/api/user/sub', p).then(function successCallback(response) {
+
+
+                                if (response) {
+                                    console.log("done");
+                                    self.openToast('User subscribed. ');
+
+
+                                } else {
+                                    self.openToast('User not subscibed. ');
+                                }
+
+                            });
                             }
-
-                        });
-
                     }
                 });
+
             };
+
+            MainController.prototype.resub = function ($event) {
+                var _this = this;
+                console.log("this worked");
+                var confirm = this.$mdDialog.confirm()
+                    .textContent('Are you sure you want to subscribe ?')
+                    .ariaLabel('Remove')
+                    .targetEvent($event)
+                    .ok('Yes')
+                    .cancel('No');
+                var self = this;
+                this.$mdDialog.show(confirm).then(function (result) {
+                    console.log(result);
+                    if(result) {
+                        if (!self.user.wellBecharged) {
+                            var plan= _this.user.plan;
+                            var p = {plan: plan, userId: self.user._id};
+                            _this.$http.post('/api/user/resub', p).then(function successCallback(response) {
+
+
+                                if (response) {
+                                    console.log("done");
+                                    self.openToast('User subscribed. ');
+
+
+                                } else {
+                                    self.openToast('User not subscibed. ');
+                                }
+
+                            });
+
+                        }else{
+                            _this.$http.get('/api/user/unsub/'+ self.user._id).then(function successCallback(response) {});
+                            var p = {plan: plan, userId: self.user._id};
+                            _this.$http.post('/api/user/sub', p).then(function successCallback(response) {
+
+
+                                if (response) {
+                                    console.log("done");
+                                    self.openToast('User subscribed. ');
+
+
+                                } else {
+                                    self.openToast('User not subscibed. ');
+                                }
+
+                            });
+                        }
+                    }
+                });
+
+            };
+
+
+            MainController.prototype.changePlan = function ($event) {
+                var _this = this;
+                var self = this;
+                console.log(self.user);
+                var useFullScreen = ( this.$mdMedia('md'));
+                this.$mdDialog.show({
+                    templateUrl: './dist/view/dashboard/user/changePlanDialog.html',
+                    parent: angular.element(document.body),
+                    targetEvent: $event,
+                    controller: dashboard.MainController,
+                    controllerAs: "vm",
+                    clickOutsideToClose: true,
+                    windowClass: 'large-Modal',
+
+                    locals: {
+                        selected: self.user
+                    }
+                }).then(function (plan) {
+
+                });
+            }
 
 
             MainController.prototype.editUser = function ($event) {

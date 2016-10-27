@@ -8,9 +8,10 @@ exports.render = function(req, res) {
   }
   console.log(JSON.stringify(req.user));
   req.session.lastVisit = new Date();
-  res.render('pages/landing2', {
+  res.render('pages/new/index', {
     userName: req.user ? req.user.slack.real_name : '',
     userFullName: req.user ? req.user.fullName : '',
+      message:'',
     email: req.user ? req.user.username : ''
   });
 }

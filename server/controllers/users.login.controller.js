@@ -38,7 +38,7 @@ exports.renderSignin = function(req, res, next) {
 	// If user is not connected render the signin page, otherwise redirect the user back to the main application page
 	if (!req.user) {
 		// Use the 'response' object to render the signin page
-		res.render('pages/signin', {
+		res.render('pages/new/index', {
 			// Set the page title variable
 			title: 'Sign-in Form',
 			// Set the flash message variable

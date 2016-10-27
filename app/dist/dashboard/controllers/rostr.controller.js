@@ -214,7 +214,7 @@ var dashboard;
         vm.se=[1];
 
         vm.testResponses = ['Good', 'nice'];
-        vm.selectSurveyUser= [];
+        vm.selectSurveyUser= vm.user.clients;
 
 
         //Selecting the columns in the md-select

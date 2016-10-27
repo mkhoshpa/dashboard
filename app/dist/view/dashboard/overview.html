@@ -2,20 +2,20 @@
 
     <div layout="column" layout-sm="column" layout-margin flex style="max-height: 30px;" >
 
-        <md-card style="max-height: 30px;" >
+        <md-card style="max-height:30px;" >
 
             <!-- filter section -->
-            <md-toolbar class="md-table-toolbar">
+            <md-toolbar class="md-table-toolbar" style="flex-wrap: wrap;">
 
-                <div class = "md-toolbar-tools">
+                <div class = "md-toolbar-tools"  style="flex-wrap: wrap;">
 
 
-                    <md-input-container class = "md-toolbar-tools"  flex = "20">
+                    <md-input-container class = "md-toolbar-tools"  flex = "15">
 
                         <md-icon class="material-icons" style="padding-top:17px; ">search</md-icon>
                         <form  name="filter.form" style="padding-top:25px;">
 
-                            <input style="padding-top:0px; background-color: #2196F3; " type="text" ng-model="vm.query.filter" class="ng-valid ng-touched ng-valid-parse ng-pristine " aria-label = "search">
+                            <input style="padding-top:0px; background-color: #2196F3; " type="text" size="15" ng-model="vm.query.filter" class="ng-valid ng-touched ng-valid-parse ng-pristine " aria-label = "search">
 
                         </form>
 
@@ -34,6 +34,7 @@
                     <md-checkbox  ng-checked="vm.exist1(0, vm.se)" ng-click="vm.toggle1(0, vm.se)"> Messages</md-checkbox>
                     <md-checkbox  ng-checked="vm.exist1(1, vm.se)" ng-click="vm.toggle1(1, vm.se)">Reminders </md-checkbox>
                     <md-checkbox style="padding-right: 20px;" ng-checked="vm.exist1(2, vm.se)" ng-click="vm.toggle1(2, vm.se)">Surveys</md-checkbox>
+
                     From:<md-datepicker ng-model="vm.from" md-placeholder="Enter date" md-max-date="vm.to"></md-datepicker>
                     To:<md-datepicker ng-model="vm.to" md-placeholder="Enter date" md-min-date="vm.from"></md-datepicker>
                     <md-select  ng-model = "vm.userSurvey"  aria-label = "user" placeholder = "Select Users">
@@ -75,6 +76,7 @@
                         <thead md-head md-order="vm.query.order">
 
 
+                        <md-table-pagination md-limit="vm.query.limit" md-limit-options="[5, 10, 15, 50, 100]" md-page="vm.query.page" md-total="{{vm.allAssignments.length}}" md-page-select></md-table-pagination>
 
 
 
@@ -194,7 +196,7 @@
 
                     </table>
                 </md-table-container>
-                <md-table-pagination md-limit="vm.query.limit" md-limit-options="[5, 10, 15, 50]" md-page="vm.query.page" md-total="{{vm.allAssignments.length}}" md-page-select></md-table-pagination>
+                <md-table-pagination md-limit="vm.query.limit" md-limit-options="[5, 10, 15, 50, 100]" md-page="vm.query.page" md-total="{{vm.allAssignments.length}}" md-page-select></md-table-pagination>
                 <!--Change md-total to survey cleints  -->
 
             </md-card-content>

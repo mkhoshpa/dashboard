@@ -214,6 +214,7 @@ var dashboard;
         vm.se=[1];
 
         vm.testResponses = ['Good', 'nice'];
+        vm.selectSurveyUser=[];
         vm.selectSurveyUser= vm.user.clients;
 
 
@@ -393,13 +394,25 @@ var dashboard;
                 list.push(item);
         };
         vm.toggle2 = function (item) {
-            console.log(vm.selectSurveyUser);
+            //console.log(JSON.stringify(vm.user.clients));
+            //console.log(JSON.stringify(vm.selectSurveyUser));
+            var clients = [];
+            vm.user.clients.forEach(function (client) {
+                clients.push(client);
+            });
+            console.log(JSON.stringify(clients));
+
             var idx = vm.selectSurveyUser.indexOf(item);
             if (idx > -1){
                 vm.selectSurveyUser.splice(idx, 1);}
             else{
                 vm.selectSurveyUser.push(item);}
-            console.log(vm.selectSurveyUser);
+            //console.log(JSON.stringify(vm.selectSurveyUser));
+            //console.log(JSON.stringify(vm.user.clients));
+            console.log(JSON.stringify(clients));
+
+            vm.user.clients = clients;
+
 
         };
         vm.showClient = function (client) {

@@ -221,6 +221,7 @@
 <div class = "modal fade" id = "myModal" tabindex = "-1" role = "dialog"
      aria-labelledby = "myModalLabel" aria-hidden = "true">
 
+
     <div class = "modal-dialog">
         <div >
 
@@ -228,35 +229,106 @@
 
             <div class = "modal-body">
                 <div class="row" style=" position: fixed;
-  top: 50%;
-  left: 50%;
+  top: 100%;
+  left: 40%;
   /* bring your own prefixes */
-  transform: translate(-50%, -50%);">
+  transform: translate(-30%, -50%); width:600px; height: 600px; ">
                     <div class="row s12 m7">
+
+
+                            <div class="col s3">
+                                <div class="row"></div>
+                                <div class="row"></div>
+                                <div class="row"></div>
+                                <div class="row"></div>
+
+                                <div>
+                                <a class="" data-toggle="modal" data-target="#myModal2">Already have an account?</a>
+                                    </div>
+                                <!-- <div class="container" style="position: fixed; left: 400px; top:150px;">
+                                     <div class="row">
+                                         <div class="col-xs-12 col-md-2">
+
+                                         </div>
+                                         <div class="col-xs-12 col-md-2">
+                                             <div class="panel panel-success">
+                                                 <div class="cnrflash">
+                                                     <div class="cnrflash-inner">
+                                                 <span class="cnrflash-label">MOST
+                                                     <br>
+                                                     POPULR</span>
+                                                     </div>
+                                                 </div>
+                                                 <div class="panel-heading">
+                                                     <h3 class="panel-title">
+                                                         Silver</h3>
+                                                 </div>
+                                                 <div class="panel-body">
+                                                     <div class="the-price">
+                                                         <h1>
+                                                             $20<span class="subscript">/mo</span></h1>
+                                                     </div>
+                                                     <table class="table">
+                                                         <tr>
+                                                             <td>
+                                                                 2 Account
+                                                             </td>
+                                                         </tr>
+                                                         <tr class="active">
+                                                             <td>
+                                                                 5 Project
+                                                             </td>
+                                                         </tr>
+                                                         <tr>
+                                                             <td>
+                                                                 100K API Access
+                                                             </td>
+                                                         </tr>
+                                                         <tr class="active">
+                                                             <td>
+                                                                 200MB Storage
+                                                             </td>
+                                                         </tr>
+                                                         <tr>
+                                                             <td>
+                                                                 Custom Cloud Services
+                                                             </td>
+                                                         </tr>
+                                                         <tr class="active">
+                                                             <td>
+                                                                 Weekly Reports
+                                                             </td>
+                                                         </tr>
+                                                     </table>
+                                                 </div>
+                                                 <div class="panel-footer">
+                                                    <!-- <a href="http://www.jquery2dotnet.com" style="    pointer-events: none;"  class="btn btn-success" role="button">Select</a>
+                                             </div>
+                                         </div>
+
+
+                                     </div> -->
+                                <div class="row"></div>
+                                <div class="row"></div>
+                                <div class="row"></div>
+                                <div class="row"></div>
+
+                                <div>
+                                By clicking signup you are agreeing <a href="" >terms and conditions</a>
+                                </div>
+
+                            </div>
+
+
+
+                        <div class="col s6">
                         <div  style=" position: relative;
   margin: 0.5rem 0 1rem 0;
   background-color: #fff;
   transition: box-shadow .25s;
   border-radius: 2px;">
 
-                            <div class="row center-align" style="margin-bottom: 0px;" id="login-input-container">
-                                <ul class="collection">
-                                    <li class="collection-item avatar" class="left-align login-label">
-                                        <!-- <img src="../assets/img/willow.png" alt="" class="circle">-->
-                                        <!-- <span class="title">Title</span> -->
 
-                                        <% if(message.length > 0) { %>
-                                        <p class='left-align' style="margin-top: 20px;"><%= message %></p>
-                                        <% } else { %>
-                                        <p class='left-align' style="margin-top: 20px;">
-                                            Welcome To FitPath!
-                                        </p>
-                                        <% } %>
-
-                                        <!-- <a href="#!" class="secondary-content"><i class="material-icons" style="color: #444; margin-top: 15px">arrow_back</i></a> -->
-                                    </li>
-                                </ul>
-                            </div>
 
 
 
@@ -301,24 +373,9 @@
                                     <div class="row"></div>
                                     <div class="row"></div>
 
-                                    <div class="row"></div>
-
-                                    <div class="row"></div>
-
-                                    <div class="row"></div>
-                                    <div class="row"></div>
-                                    <div class="row"></div>
-                                    <div class="row"></div>
-                                    <div class="row"></div>
-                                    <div class="row"></div>
-                                    <div class="row"></div>
-                                    <div class="row"></div>
-                                    <div class="row"></div>
-                                    <div class="row"></div>
-                                    <div class="row"></div>
 
 
-                                    <div class="row" style="position: relative; right: -150px;">
+                                    <div class="row">
                                         <div class="btn-group" data-toggle="buttons">
                                             <label class="btn btn-primary active">
                                                 <input type="radio" name="options" id="option1"  value="test" autocomplete="off" checked> test
@@ -392,6 +449,7 @@
                                 </div>
 
 
+
                                 <div class="row">
                                     <div class="col s3">
                                         <label class="left-align login-label" id="login-input-container">
@@ -422,21 +480,72 @@
 
 
                         </div>
-                    </div>
-
-                    <div class="row" id="bottom-form-div" style="margin-right: 25px; margin-left: 25px;">
-                        <div class="row" >
-                            <a class="" data-toggle="modal" data-target="#myModal2">Log in</a>
                         </div>
-                    </div>
+                        <div class="col s3">
+
+
+                            <div class="row"></div>
+                            <div class="row"></div>
+                            <div class="row"></div>
+                            <div class="row">                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                            <div class="row"></div>
+                            <div class="row"></div>
+                            <div class="row"></div>
+
+                            <div class="row" id="bottom-form-div" style="margin-right: 25px; margin-left: 25px;">
+                                <div class="row">
+                                    <div>Cancel anytime during first 30 days and you won't get charged.</div>
+                                </div>
+                                <div class="row" >
+
+                                  after first month it's just CAD28.99/mon  <a class="" data-toggle="modal" data-target="#myModal2">Log in</a>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        </div>
+
 
 
 
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <div class="row"></div>
+                <div class="row"></div>
+                <div class="row"></div>
+
+
+
+
+
+    </div>
+            <div class="row"></div>
+            <div class="row"></div>
+            <div class="row"></div>
+            <div class="row"></div>
+            <div class="row"></div>
+            <div class="row"></div>
+
+                <div class="row">
+                    <div class="col s1">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s1">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col s1">
+                </div>
+                </div>
+
+
             </div>
+
 
 
 
@@ -583,7 +692,8 @@
 
             <a href="#about" class="btn btn-primary  page-scroll">Find Out More</a>
             <!-- Button trigger modal -->
-            <button type="button" class="btn  btn-primary  page-scroll" data-toggle="modal" data-target="#myModal">Signup</button>
+            <button type="button" class="btn  btn-primary  page-scroll" data-toggle="modal" data-target="#myModal">Get Your 1 Month Free Trial Today
+            </button>
 
 
 
@@ -686,29 +796,29 @@
             <div class="col-lg-3 col-md-6 text-center">
                 <div class="service-box">
                     <i class="fa fa-4x fa-diamond text-primary sr-icons"></i>
-                    <h3>Sturdy Templates</h3>
-                    <p class="text-muted">Our templates are updated regularly so they don't break.</p>
+                    <h3>Make More Money</h3>
+                    <p class="text-muted">Manage more clients. we specialize in client communication, business process implementation and automation. take your coaching to next level.</p>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6 text-center">
                 <div class="service-box">
                     <i class="fa fa-4x fa-paper-plane text-primary sr-icons"></i>
-                    <h3>Ready to Ship</h3>
-                    <p class="text-muted">You can use this theme as is, or you can make changes!</p>
+                    <h3>Save Time</h3>
+                    <p class="text-muted">Stop chasing clients for replies. Send automated reminders, workouts, nutrition, and surveys via text messages using your own custom built in content</p>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6 text-center">
                 <div class="service-box">
                     <i class="fa fa-4x fa-newspaper-o text-primary sr-icons"></i>
-                    <h3>Up to Date</h3>
-                    <p class="text-muted">We update dependencies to keep things fresh.</p>
+                    <h3>More Client Replies</h3>
+                    <p class="text-muted">Clients don't want an annoying app to download or an email to reply to! Text messages over emails has Seven times more reply rates.</p>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6 text-center">
                 <div class="service-box">
                     <i class="fa fa-4x fa-heart text-primary sr-icons"></i>
-                    <h3>Made with Love</h3>
-                    <p class="text-muted">You have to make your websites with love these days!</p>
+                    <h3>Powerful Dashboard</h3>
+                    <p class="text-muted">See all of your clients replies and feed back in one location.</p>
                 </div>
             </div>
         </div>
@@ -816,7 +926,14 @@
     <div class="container text-center">
         <div class="call-to-action">
             <h2>Start Your 1 Month Free Trial Now</h2>
-            <a href="/signup" class="btn btn-default sr-button">Download Now!</a>
+
+
+
+
+
+
+
+            <a href="" class="btn btn-default sr-button" data-toggle="modal" data-target="#myModal">Signup Now For Free</a>
         </div>
     </div>
 </aside>
@@ -827,7 +944,7 @@
             <div class="col-lg-8 col-lg-offset-2 text-center">
                 <h2 class="section-heading">Let's Get In Touch!</h2>
                 <hr class="primary">
-                <p>Ready to start your next project with us? That's great! Give us a call or send us an email and we will get back to you as soon as possible!</p>
+                <p>Ready to start keeping track of yourclientssign  with us? That's great! Give us a call or send us an email and we will get back to you as soon as possible!</p>
             </div>
             <div class="col-lg-4 col-lg-offset-2 text-center">
                 <i class="fa fa-phone fa-3x sr-contact"></i>
@@ -835,7 +952,7 @@
             </div>
             <div class="col-lg-4 text-center">
                 <i class="fa fa-envelope-o fa-3x sr-contact"></i>
-                <p><a href="mailto:your-email@your-domain.com">feedback@startbootstrap.com</a></p>
+                <p><a href="/contactUs" target="_blank" >Contact us</a></p>
             </div>
         </div>
     </div>

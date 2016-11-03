@@ -34,12 +34,30 @@ exports.addClient = function (message, callback) {
       callback(error);
     }
     else {
-      // console.log('find a ckient////////////////////////////////////////////////////////////////////');
-      //console.log(assignments);
-      var reminder ={title: message.body};
-      var assignment={specificDate: message.created, date:message.created};
-      var object = {client: obj, reminder:reminder,assignment: assignment}
-      callback(null ,object);
+      if(obj != null) {
+        // console.log('find a ckient////////////////////////////////////////////////////////////////////');
+        //console.log(assignments);
+        var reminder = {title: message.body};
+        var assignment = {specificDate: message.created, date: message.created};
+        var object = {client: obj, reminder: reminder, assignment: assignment}
+        callback(null, object);
+      }
+      else{
+        User.findOne({_id: message.sentBy}, function(err, obj) {
+          if (err) {
+            callback(error);
+          }
+          else {
+            var reminder = {title: message.body};
+            var assignment = {specificDate: message.created, date: message.created};
+            var object = {client: obj, reminder: reminder, assignment: assignment}
+            callback(null, object);
+
+          }
+        });
+        }
+
+
 
     }
   })

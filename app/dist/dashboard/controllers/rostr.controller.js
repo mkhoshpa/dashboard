@@ -244,14 +244,14 @@ var dashboard;
 
         vm.query = {
             filter: '',
-            order: 'client',
-            limit: 15,
+            order: 'assignment.specificDate ',
+            limit: 400,
             page: 1
         }
         vm.to = new Date();
         vm.from =  new Date();
         vm.to.setDate(vm.to.getDate()+7);
-        vm.from.setDate(vm.from.getDate()-1);
+        vm.from.setDate(vm.from.getDate()-100);
 
         //Used for the pipeline
         vm.pipelineOptions = [{type: "lead"}, {type: "trial"}, {type: "active-client"}, {type: "previous-client"}, {type: "archived"}, {type: "NA"}];
@@ -522,7 +522,7 @@ var dashboard;
                     });
                 });*/
                 _this.$http.get('/api/message/findByCoach/'+ vm.user._id).then(function (response) {
-                   // console.log(JSON.stringify(response.data));
+                    console.log(JSON.stringify(response.data));
 
                     _this.allAssignments = _this.allAssignments.concat(response.data);
 

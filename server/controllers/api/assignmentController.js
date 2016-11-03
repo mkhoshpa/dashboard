@@ -954,109 +954,124 @@ exports.convosNow = function(req, res) {
           var convos = [];
 
           for (var i = 0; i < assignments.length; i++) {
+              // added by megs to check if user has paid or not.
+              if (assignments[i].userId.active_until > now) {
 
-            //only gets sent if bot is on
+                  //only gets sent if bot is on
 
 
-            //TODO change ip
-            request({url: 'http://' + config.server.ip + ':12557/api/assignment/sent/update/' +  assignments[i]._id, method:"PUT"}, function(err, response){
-              console.log("sweet 2");
-              if(err){
-                console.log("error");
-                console.log(err);
-              }
-              else{
-                console.log('response');
-                console.log(response.statusCode);
-              }
-            })
+                  //TODO change ip
+                  request({
+                      url: 'http://' + config.server.ip + ':12557/api/assignment/sent/update/' + assignments[i]._id,
+                      method: "PUT"
+                  }, function (err, response) {
+                      console.log("sweet 2");
+                      if (err) {
+                          console.log("error");
+                          console.log(err);
+                      }
+                      else {
+                          console.log('response');
+                          console.log(response.statusCode);
+                      }
+                  })
 
-            //Creating a new assignment if repeat === true
-            if(assignments[i].repeat && assignments[i].type === "reminder" && assignments[i].userId){
-              console.log('in create');
+                  //Creating a new assignment if repeat === true
+                  if (assignments[i].repeat && assignments[i].type === "reminder" && assignments[i].userId) {
+                      console.log('in create');
 
-                var reminderUserAssign = {
-                  repeat: assignments[i].repeat,
-                  specificDate: nextWeek,
-                  year: yearNext,
-                  month: monthNext,
-                  date: dateNext,
-                  hours: hoursNext,
-                  minutes: minutesNext,
-                  userId: assignments[i].userId._id,
-                  reminderId: assignments[i].reminderId._id,
-                  type: 'reminder'
-                }
-                console.log(reminderUserAssign);
+                      var reminderUserAssign = {
+                          repeat: assignments[i].repeat,
+                          specificDate: nextWeek,
+                          year: yearNext,
+                          month: monthNext,
+                          date: dateNext,
+                          hours: hoursNext,
+                          minutes: minutesNext,
+                          userId: assignments[i].userId._id,
+                          reminderId: assignments[i].reminderId._id,
+                          type: 'reminder'
+                      }
+                      console.log(reminderUserAssign);
 
-                console.log("Im heading out");
-                //TODO change ip
-                request({url: 'http://' + config.server.ip + ':12557/api/assignment/create', method: "POST", headers: {"content-type": "application/json"}, json: reminderUserAssign}, function (err, response, body) {
-                  console.log("sweet");
-                  if(err){
-                    console.log("ERROR");
-                    console.log(err);
+                      console.log("Im heading out");
+                      //TODO change ip
+                      request({
+                          url: 'http://' + config.server.ip + ':12557/api/assignment/create',
+                          method: "POST",
+                          headers: {"content-type": "application/json"},
+                          json: reminderUserAssign
+                      }, function (err, response, body) {
+                          console.log("sweet");
+                          if (err) {
+                              console.log("ERROR");
+                              console.log(err);
+                          }
+                          else {
+                              console.log('response');
+                              console.log(response.statusCode);
+                          }
+                      });
+                  }
+
+                  //updating assignment to be completed
+                  //TODO change ip
+                  request({
+                      url: 'http://' + config.server.ip + ':12557/api/assignment/completed/update/' + assignments[i]._id,
+                      method: "PUT"
+                  }, function (err, response) {
+                      console.log("sweet 2");
+                      if (err) {
+                          console.log("error");
+                          console.log(err);
+                      }
+                      else {
+                          console.log('response');
+                          console.log(response.statusCode);
+                      }
+                  })
+
+                  //console.log(assignments[i]);
+                  var convo = new Object;
+                  convo.assignmentId = assignments[i]._id;
+
+                  convo.userId = assignments[i].userId._id;
+                  convo.userMedium = assignments[i].userId.defaultCommsMedium;
+                  convo.userContactInfo = {};
+                  convo.userContactInfo.phoneNumber = assignments[i].userId.phoneNumber;
+                  if (assignments[i].userId.slack_id) {
+                      console.log("getting slack_id");
+                      convo.userContactInfo.slack_Id = assignments[i].userId.slack_id;
                   }
                   else {
-                    console.log('response');
-                    console.log(response.statusCode);
+                      console.log("no slack_Id");
                   }
-                });
-            }
+                  //convo.questions  =  assignments[i].questions;
+                  convo.type = assignments[i].type;
 
-            //updating assignment to be completed
-            //TODO change ip
-            request({url: 'http://' + config.server.ip + ':12557/api/assignment/completed/update/'+  assignments[i]._id, method:"PUT"}, function(err, response){
-              console.log("sweet 2");
-              if(err){
-                console.log("error");
-                console.log(err);
+                  if (convo.type == "survey") {
+                      console.log("we got a survey over here");
+                      convo.questions = assignments[i].surveyTemplateId.questions;
+                      //      //get survey template id
+                      convo.surveyId = assignments[i].surveyTemplateId._id;
+                  } else if (convo.type == "reminder") {
+                      console.log("we got a reminder");
+                      convo.reminderId = assignments[i].reminderId._id;
+                      convo.questions = [
+                          {
+                              question: null
+                          }
+                      ];
+                      convo.questions[0].question = assignments[i].reminderId.title;
+                      console.log(convo);
+                  } else {
+
+                      console.error("invalid assignment type");
+                  }
+                  convos.push(convo);
               }
-              else{
-                console.log('response');
-                console.log(response.statusCode);
-              }
-            })
 
-            //console.log(assignments[i]);
-            var convo = new Object;
-            convo.assignmentId = assignments[i]._id;
-
-            convo.userId  =  assignments[i].userId._id;
-            convo.userMedium  =  assignments[i].userId.defaultCommsMedium;
-            convo.userContactInfo = {};
-            convo.userContactInfo.phoneNumber  =  assignments[i].userId.phoneNumber;
-            if(assignments[i].userId.slack_id){
-              console.log("getting slack_id");
-              convo.userContactInfo.slack_Id = assignments[i].userId.slack_id;
-            }
-            else{
-              console.log("no slack_Id");
-            }
-            //convo.questions  =  assignments[i].questions;
-            convo.type  =  assignments[i].type;
-
-            if(convo.type == "survey"){
-              console.log("we got a survey over here");
-              convo.questions = assignments[i].surveyTemplateId.questions;
-          //      //get survey template id
-              convo.surveyId = assignments[i].surveyTemplateId._id;
-            } else if (convo.type == "reminder"){
-                 console.log("we got a reminder");
-                 convo.reminderId = assignments[i].reminderId._id;
-                 convo.questions = [
-                   {
-                     question:null
-                   }
-                 ];
-                 convo.questions[0].question = assignments[i].reminderId.title;
-                 console.log(convo);
-            } else {
-
-                console.error("invalid assignment type");
-              }
-              convos.push(convo);
-            }
+          }
             res.json(convos);
           }
          else

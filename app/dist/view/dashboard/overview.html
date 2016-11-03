@@ -76,7 +76,7 @@
                         <thead md-head md-order="vm.query.order">
 
 
-                        <md-table-pagination md-limit="vm.query.limit" md-limit-options="[5, 10, 15, 50, 100]" md-page="vm.query.page" md-total="{{vm.allAssignments.length}}" md-page-select></md-table-pagination>
+                        <md-table-pagination md-limit="vm.query.limit" md-limit-options="[5, 10, 15, 50, 100, 400]" md-page="vm.query.page" md-total="{{vm.allAssignments.length}}" md-page-select></md-table-pagination>
 
 
 
@@ -95,10 +95,10 @@
 
 
 
-                        <tr  md-row md-auto-select="false" md-select="client" ng-repeat="r in vm.allAssignments| orderBy: vm.query.order | filter:vm.query.filter  | limitTo: vm.query.limit: (vm.query.page - 1) * vm.query.limit">
+                        <tr  md-row md-auto-select="false" md-select="client" ng-repeat="r in vm.allAssignments| orderBy: vm.query.order:true | filter:vm.query.filter  | limitTo: vm.query.limit: (vm.query.page - 1) * vm.query.limit">
 <div >
 <div ng-show="vm.selectSurveyUser.indexOf(r.client)>-1">
-                            <td md-cell  class = "md-cell" ng-init=" v = vm.newDate(r.assignment.date+'')" ng-show="v > vm.from && v < vm.to && vm.showClient(r.client)">
+                            <td md-cell  class = "md-cell" ng-init=" v = vm.newDate(r.assignment.date+'')" ng-show="v > vm.from && v < vm.to && vm.showClient(r.client)" >
                                 <md-card  md-whiteframe = "0"  >
 
                                     <div layout="row" >
@@ -128,7 +128,7 @@
                                                         {{r.client.firstName + " " + r.client.lastName}}
                                                     </md-card-content>
 
-                                                    <div layout = "column" style = "overflow: auto; height:100px;" flex="50"  layout-fix>
+                                                    <div layout = "column" style = "overflow: auto; height:100px;" flex="40"  layout-fix>
                                                     <md-card-content  layout = "column" flex="" >
                                                         <!--<h5>{{r.assignment.specificDate  |  date: 'medium'}} </h5>-->
                                                         <h4> {{r.reminder.title}} </h4>
@@ -137,7 +137,7 @@
                                                     </md-card-content>
                                                     </div>
 
-                                                    <div layout = "column" style = "overflow: auto; height:100px;" flex="10"  layout-fix>
+                                                    <div layout = "column" style = "overflow: auto; height:100px;" flex="20"  layout-fix>
                                                         <md-card-content  layout = "column" flex="" >
                                                             <!--<h5>{{r.assignment.specificDate  |  date: 'medium'}} </h5>-->
                                                             <h5>  response: </h5>
@@ -148,7 +148,7 @@
                                                     <div layout = "column" style = "overflow: auto; height:100px;" flex="40"  layout-fix>
                                                         <md-card-content  layout = "row" flex="" >
                                                             <!--<h5>{{r.assignment.specificDate  |  date: 'medium'}} </h5>-->
-                                                            {{" "+r.response.questions[0].answer}}
+                                                         <h5>{{" "+r.response.questions[0].answer}}</h5>
 
 
                                                         </md-card-content>
@@ -166,7 +166,7 @@
                                         <div layout="column" flex = "10">
 
                                         <md-card-content  layout = "column" flex="" layout-align="end right" >
-                                            {{r.assignment.specificDate |  date: 'shortDate'}}
+                                            {{r.assignment.specificDate |  date: 'EEE M/d/yy'}}
 
 
                                         </md-card-content>
@@ -196,7 +196,7 @@
 
                     </table>
                 </md-table-container>
-                <md-table-pagination md-limit="vm.query.limit" md-limit-options="[5, 10, 15, 50, 100]" md-page="vm.query.page" md-total="{{vm.allAssignments.length}}" md-page-select></md-table-pagination>
+                <md-table-pagination md-limit="vm.query.limit" md-limit-options="[5, 10, 15, 50, 100, 400]" md-page="vm.query.page" md-total="{{vm.allAssignments.length}}" md-page-select></md-table-pagination>
                 <!--Change md-total to survey cleints  -->
 
             </md-card-content>

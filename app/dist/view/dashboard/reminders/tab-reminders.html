@@ -14,47 +14,50 @@
     <div layout="row" >
 
 
-        <div layout="row" flex="20">
+      <div flex="30" layout="row" style="">
 
-            <!--<p>{{r}}</p>-->
-            <h3 flex="50" style="padding-right: 10px; overflow: auto;"> {{r.reminder.title+"  "}} </h3>
-            <p flex> {{r.reminder.hour + ':' + r.reminder.minute }}<p>
-
-
-        </div>
-
-      <div layout = "column" style = "overflow: auto; height:120px; max-height: 120px;" flex = "80" flex-grow  style="position: relative;">
+        <!--<p>{{r}}</p>-->
+        <h3 style="padding-right: 10px; overflow: auto;"> {{r.reminder.title+""}} </h3>
+        <p > {{r.reminder.hour + ':' + r.reminder.minute }}<p>
 
 
+      </div>
 
-            <div ng-repeat = "res in r.contentArray | orderBy :'ass.specificDate' " layout="row" flex="70" style="position: relative; max-height: 50px;">
-              <div layout = "row" style="padding-right: -25px;" flex="20">
-                <h5>{{res.ass.specificDate | date:'EEEE'}} </h5>
+      <div flex="60" layout = "column" style = "overflow: auto; height:150px; max-height: 200px;"  flex-grow  style="position: relative;">
 
-              </div>
-              <div layout = "row" flex="80">
-                <div flex="90" style="overflow:auto; " ng-show="res.res.questions[0].answer.length < 15">
-                  {{res.res.questions[0].answer}}
-                </div>
-                <div flex="90" style="overflow:auto; " ng-show="res.res.questions[0].answer.length > 14">
-                  {{res.res.questions[0].answer.substring(0,10)+"..."}}
-                </div>
-                  <div ng-show="res.res.questions[0].answer.length > 14" ng-click="vm.showMore($event,res.res.questions[0].answer)" style="color:blue;"> (more)</div>
 
-                <div>
 
-                  <md-button ng-click="vm.updateAssignment($event,res)">update</md-button>
-                </div>
+        <div ng-repeat = "res in r.contentArray | orderBy :'ass.specificDate' " layout="row" flex="70" style="position: relative; max-height: 50px;">
+          <div layout = "row" style="padding-right: -25px; padding-left: 5px;" flex="20">
+            <h5>{{res.ass.specificDate | date:'EEEE'}} </h5>
 
-              </div>
+          </div>
+          <div layout = "row" flex="80">
+            <div flex="90" style="overflow: visible; " ng-show="!res.res.questions[0].answer">
+              <h5>No Response Yet.</h5>
             </div>
+            <div flex="90" style="overflow:visible; " ng-show="res.res.questions[0].answer.length < 35">
+              <h5> {{res.res.questions[0].answer}}</h5>
+            </div>
+            <div flex="90" style="overflow:visible; " ng-show="res.res.questions[0].answer.length > 34">
+              <h5> {{res.res.questions[0].answer.substring(0,34)+"..."}}</h5>
+            </div>
+            <div ng-show="res.res.questions[0].answer.length > 34" ng-click="vm.showMore($event,res.res.questions[0].answer)" style="color:blue;"> <h5>(more)</h5></div>
+
+            <div>
+
+              <md-button ng-click="vm.updateAssignment($event,res)">update</md-button>
+            </div>
+
+          </div>
+        </div>
 
 
 
       </div>
 
 
-      <div layout="column" flex= "10">
+      <div flex="10" layout="column" >
         <md-card-actions flex="20" layout-align="end right">
           <md-button ng-click="vm.removeReminder($event, r.reminder)">Remove</md-button>
         </md-card-actions>

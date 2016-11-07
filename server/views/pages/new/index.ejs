@@ -603,7 +603,9 @@
                                         <div class="form-group">
                                             <label class="left-align login-label" for="password">PASSWORD</label>
                                             <input id="password" type="password" class="validate" name="password" style="height: 100%;">
-                                            <div class="help-block text-right"><a href="">Forget the password ?</a></div>
+                                            <div class="help-block text-right">
+                                                <a class="" data-toggle="modal" data-target="#myModal3">Forgot the Password</a>
+                                            </div>
                                         </div>
                                         <div class="form-group">
                                             <button type="submit" onclick="toast()" class="btn  btn btn-primary" style="padding: 14px 100px;">Sign in</button>
@@ -643,6 +645,89 @@
     </div><!-- /.modal-dialog -->
 
 </div><!-- /.modal -->
+<div class = "modal fade" id = "myModal3" tabindex = "-1" role = "dialog"
+     aria-labelledby = "myModalLabel" aria-hidden = "true">
+
+    <div class = "modal-dialog">
+        <div >
+
+
+
+            <div class = "modal-body">
+                <div class="row" style=" position: fixed;
+  top: 50%;
+  left: 35%;
+  /* bring your own prefixes */
+  transform: translate(-50%, -50%);">
+                    <div>
+                        <div  style=" position: relative;
+  margin: 0.5rem 0 1rem 0;
+  background-color: #666;
+  transition: box-shadow .25s;
+  border-radius: 2px;">
+
+
+
+
+
+
+                            <div>
+                                <div style="position: absolute; top:50%; padding-left: 40%; padding-right: 40%; width: 300px;" >
+
+                                    <form  style="width: 100%;" class="form" role="form" method="post" action="/forgot" accept-charset="UTF-8" id="login-nav">
+
+
+                                        <% if(message.length > 0) { %>
+                                        <p class='left-align' style="margin-top: 20px;width: 100%;"><%= message %></p>
+                                        <% } else { %>
+                                        <p class='left-align' style="margin-top: 20px;width: 100%;">
+                                            Welcome To FitPath!
+                                        </p>
+                                        <% } %>
+
+                                        <div class="form-group">
+                                            <label class="left-align login-label" for="email"style="width: 100%;">EMAIL</label>
+                                            <input id="email" type="email" class="validate" name="username" style="height: 100%;">
+                                        </div>
+
+
+
+
+                                        <div class="form-group">
+                                            <button type="submit" onclick="toast()" class="btn btn-primary " style="padding: 14px 50px;"><p>Reset the Password</p></button>
+                                        </div>
+
+                                    </form>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                    <div class="row" id="bottom-form-div" style="margin-right: 25px; margin-left: 25px;">
+                        <div class="row" >
+                            <a  href="/signin" class="btn waves-effect waves-light  blue-grey lighten-1" style="display: none;" type="submit"  style="width: 100%;" name="action">Already have an account?
+                            </a>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+
+
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+
+</div><!-- /.modal -->
+
 
 <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
     <div class="container-fluid">
@@ -836,21 +921,21 @@
                 <div class="service-box">
                     <i class="fa fa-4x fa-diamond text-primary sr-icons"></i>
                     <h3>Make More Money</h3>
-                    <p class="text-muted">Manage more clients. we specialize in client communication, business process implementation and automation. take your coaching to next level.</p>
+                    <p class="text-muted">Manage more clients. We specialize in client communication, business process implementation and automation. take your coaching to next the level.</p>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6 text-center">
                 <div class="service-box">
                     <i class="fa fa-4x fa-paper-plane text-primary sr-icons"></i>
                     <h3>Save Time</h3>
-                    <p class="text-muted">Stop chasing clients for replies. Send automated reminders, workouts, nutrition, and surveys via text messages using your own custom built in content</p>
+                    <p class="text-muted">Stop chasing clients for replies. Send automated reminders, workouts, nutrition, and surveys via text messages using your own custom built content</p>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6 text-center">
                 <div class="service-box">
                     <i class="fa fa-4x fa-newspaper-o text-primary sr-icons"></i>
                     <h3>More Client Replies</h3>
-                    <p class="text-muted">Clients don't want an annoying app to download or an email to reply to! Text messages over emails has Seven times more reply rates.</p>
+                    <p class="text-muted">Clients don't want an annoying app to download or an email to reply to! 99% of text messages sent out get replies</p>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6 text-center">

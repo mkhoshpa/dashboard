@@ -131,13 +131,19 @@
               {{vm.selected.firstName +" "+ vm.selected.lastName}}
               <md-button md-no-ink class="md-primary"  ng-click="vm.editUser($event)" >Edit User</md-button>
               <md-button class="md-raised md-warn" >delet user</md-button>
+
             -->
-              <img style="margin-left: 10px; order:1;"  width="60" height="60"  ng-src="{{vm.selected.imgUrl}}"></imgstyle>
-             <span class="user" style="margin-left: 10px;order:2; ">{{vm.selected.firstName +" "+ vm.selected.lastName}}</span>
+              <div>
+                  <img style="margin-left: 10px; order:1;"  width="60" height="60"  ng-src="{{vm.selected.imgUrl}}"></imgstyle>
+                  <span class="user" style="margin-left: 10px;order:2; ">{{vm.selected.firstName +" "+ vm.selected.lastName}}</span>
+              </div>
 
 
-              <md-button md-no-ink class="md-primary"  ng-click="vm.editUser($event)" style="order:3;margin-left: 10px; top:30px;" >Edit User</md-button>
-              <md-button class="md-raised md-warn" style=" top:30px; order:4;margin-left: 10px;" ng-click="vm.removeUser($event)">delete user</md-button>
+<div layout="row">
+    <md-button md-no-ink class="md-primary"  ng-click="vm.editUser($event)" style="order:3;margin-left: 10px; top:30px;" >Edit User</md-button>
+    <md-button class="md-raised md-warn" style=" top:30px; order:4;margin-left: 10px;" ng-click="vm.removeUser($event)">delete user</md-button>
+</div>
+
 
           </div>
 

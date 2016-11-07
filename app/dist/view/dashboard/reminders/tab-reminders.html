@@ -9,7 +9,7 @@
 
   <p  ng-if="!vm.convoReminderResponse">No reminders for  {{vm.selected.firstName +" " + vm.selected.lastName}}, yet.</p>
 
-  <div ng-repeat="r in vm.convoReminderResponse" >
+  <div ng-repeat="r in vm.convoReminderResponse| orderBy :'reminder.creationDate': true" >
 
     <div layout="row" >
 
@@ -28,21 +28,21 @@
 
 
         <div ng-repeat = "res in r.contentArray | orderBy :'ass.specificDate' " layout="row" flex="70" style="position: relative; max-height: 50px;">
-          <div layout = "row" style="padding-right: -25px; padding-left: 5px;" flex="20">
-            <h5>{{res.ass.specificDate | date:'EEEE'}} </h5>
+          <div layout = "row" style="padding-right: -25px; padding-left: 5px;" flex="10">
+            <h5>{{res.ass.specificDate | date:'EEE M/d'}} </h5>
 
           </div>
-          <div layout = "row" flex="80">
+          <div layout = "row" flex="90">
             <div flex="90" style="overflow: visible; " ng-show="!res.res.questions[0].answer">
               <h5>No Response Yet.</h5>
             </div>
-            <div flex="90" style="overflow:visible; " ng-show="res.res.questions[0].answer.length < 35">
+            <div flex="90" style="overflow:visible; " ng-show="res.res.questions[0].answer.length < 45">
               <h5> {{res.res.questions[0].answer}}</h5>
             </div>
-            <div flex="90" style="overflow:visible; " ng-show="res.res.questions[0].answer.length > 34">
-              <h5> {{res.res.questions[0].answer.substring(0,34)+"..."}}</h5>
+            <div flex="90" style="overflow:visible; " ng-show="res.res.questions[0].answer.length > 44">
+              <h5> {{res.res.questions[0].answer.substring(0,44)+"..."}}</h5>
             </div>
-            <div ng-show="res.res.questions[0].answer.length > 34" ng-click="vm.showMore($event,res.res.questions[0].answer)" style="color:blue;"> <h5>(more)</h5></div>
+            <div ng-show="res.res.questions[0].answer.length > 44" ng-click="vm.showMore($event,res.res.questions[0].answer)" style="color:blue;"> <h5>(more)</h5></div>
 
             <div>
 

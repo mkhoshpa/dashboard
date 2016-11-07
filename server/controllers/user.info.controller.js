@@ -14,6 +14,8 @@ var Reminder = require('../models/reminder.js');
 var Response = require('../models/response.js');
 var Assignment = require('../models/assignment.js');
 var stripe = require("stripe")("sk_test_jCXXYe0fyydEElNMFTXBw7ZL");
+var sendmail = require('sendmail')();
+
 
 
 /**
@@ -192,9 +194,11 @@ exports.forgot = function(req, res) {
   res.render('pages/reset', {
     message: req.flash('status')
   });
+
 }
 
 exports.reset = function(req,res,next) {
+  console.log("inside reset");
   async.waterfall([
     function(done) {
       crypto.randomBytes(20, function(err, buf) {
@@ -209,51 +213,47 @@ exports.reset = function(req,res,next) {
           req.flash('status', 'No user with that email was found!');
           return res.redirect('/forgot');
         }
-        console.log(user);
-        user.resetPasswordToken = token;
-        user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+        //console.log(user);
+       var resetPasswordToken = token;
+       var resetPasswordExpires = Date.now() + 3600000; // 1 hour
+            User.findOneAndUpdate({ username: req.body.username },{resetPasswordToken:resetPasswordToken,resetPasswordExpires :resetPasswordExpires }, function(err, user) {
+              done(err, token, user);
 
-        user.save(function(err) {
-          done(err, token, user);
-        });
+            });
+
       });
     },
     function(token, user, done) {
+      console.log("inside sendmail");
 
-      var transporter = nodemailer.createTransport(
-          smtpTransport({
-            service: 'gmail',
-            auth: {
-              user: 'fitpathmailer@gmail.com',
-              pass: 'fitpathmail'
-            }
-          })
-      );
-
-      var mailOptions = {
-        to: user.username, //user.username,
-        from: 'fitpathmailer@gmail.com',
+      sendmail({
+        from: 'no-reply@fitpath.tech',
+        to:  user.username,
         subject: 'Fitpath.me Password Reset',
-        text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
-          'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-          'http://' + req.headers.host + '/reset/' + token + '\n\n' +
-          'If you did not request this, please ignore this email and your password will remain unchanged.\n'
-      };
-
-      transporter.sendMail(mailOptions, function(err,info) {
+        html: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
+        'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+        'http://fitpath.techfa/reset/' + token + '\n\n' +
+        'If you did not request this, please ignore this email and your password will remain unchanged.\n',
+      }, function(err, reply) {
         if(err){
+
+          console.log(err);
           return winston.error(err);
         }
-        console.log('Message sent: ' + info.response);
+        console.log(err && err.stack);
+        console.dir(reply);
 
         req.flash('status', 'An e-mail has been dispatched!');
-        done(err, 'done');
+        return res.redirect('/');
+
+
       });
+
 
     }
   ], function(err) {
     if (err) return next(err);
-    res.redirect('/forgot');
+    res.redirect('/');
   });
 }
 

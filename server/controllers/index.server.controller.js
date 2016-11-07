@@ -25,7 +25,7 @@ exports.renderContactUs = function(req, res) {
     var html = req.body.text;
     sendmail({
       from: 'no-reply@fitpath.tech',
-      to: 'mkhoshpa@unb.ca',
+      to: 'me.khoshpasand@gmail.com',
       subject: 'from:'+from,
       html: html,
     }, function(err, reply) {

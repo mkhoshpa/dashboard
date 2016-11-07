@@ -211,7 +211,7 @@ var dashboard;
         vm.possibleColumns = [];
         //vm.contents = contents(vm.clients);
         vm.selected = [];
-        vm.se=[1];
+        vm.se=[0,1];
 
         vm.testResponses = ['Good', 'nice'];
         vm.selectSurveyUser=[];
@@ -250,7 +250,7 @@ var dashboard;
         }
         vm.to = new Date();
         vm.from =  new Date();
-        vm.to.setDate(vm.to.getDate()+7);
+        vm.to.setDate(vm.to.getDate());
         vm.from.setDate(vm.from.getDate()-100);
 
         //Used for the pipeline

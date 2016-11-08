@@ -52,7 +52,7 @@ var app;
                 var newuser={username: this.username,firstName:this.firstName,lastName:this.lastName,bio:this.bio,phoneNumber:this.phoneNumber,coaches: this.user._id, role: "user",imgUrl:'assets/img/'+this.username};
                     file.upload = self.Upload.upload({
                         url: '/api/photo',
-                        data: {username: this.username,firstName:this.firstName,lastName:this.lastName,bio:this.bio,phoneNumber:this.phoneNumber,coaches: this.user._id,
+                        data: {username: this.username,firstName:this.firstName,lastName:this.lastName,bio:this.bio,phoneNumber:'1'+this.phoneNumber,coaches: this.user._id,
                     role: "user", file: file},
                     });
 
@@ -74,7 +74,7 @@ var app;
 
 
 
-            AddUserDialogController.prototype.save1 = function () {
+            AddUserDialogController.prototype.save = function () {
                 //adding user
                 if(!this.edit) {
 
@@ -163,7 +163,7 @@ var app;
                         coaches: [this.user._id],
                         role: "user",
 
-                        imgUrl: '/assets/img/' + this.avatars[Math.floor(Math.random() * 3)],
+                       // imgUrl: '/assets/img/' + this.avatars[Math.floor(Math.random() * 3)],
                         phoneNumber: this.phoneNumber
                     }
                     console.log(user);

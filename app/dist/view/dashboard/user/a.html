@@ -1,0 +1,77 @@
+<md-dialog aria-label="Add User" flex = "50">
+    <form name="myForm">
+        <fieldset>
+            <legend>Upload on form submit</legend>
+            <div layout = "row" layout-padding>
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Username</label>
+                    <input ng-model="ctrl.username" name="username" required>
+                    <div ng-messages="userForm.username.$error">
+                        <div ng-message="required">This is required.</div>
+                    </div>
+                </md-input-container>
+            </div>
+            <div layout="row" layout-padding>
+                <!-- <div layout-gt-sm="row"> -->
+
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>First Name</label>
+                    <input ng-model="ctrl.firstName" name="firstName" required>
+                    <div ng-messages="userForm.firstName.$error">
+                        <div ng-message="required">This is required.</div>
+                    </div>
+                </md-input-container>
+
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Last Name</label>
+                    <input ng-model="ctrl.lastName" name="lastName" required>
+                    <div ng-messages="userForm.lastName.$error">
+                        <div ng-message="required">This is required.</div>
+                    </div>
+                </md-input-container>
+
+
+
+            </div>
+
+            <div layout = "row" layout-padding>
+
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Bio</label>
+                    <input ng-model="ctrl.bio" name="bio" />
+                </md-input-container>
+
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Phone Number</label>
+                    <input ng-model="ctrl.phoneNumber" name="phoneNumber" type="number" ng-minlength="7" ng-maxlength="10" required>
+                    <div ng-messages="userForm.phoneNumber.$error">
+                        <div ng-message="required">This is required.</div>
+                        <span ng-show="userForm.phoneNumber.$touched && userForm.phoneNumber.$invalid">Please enter a 7 digit or 10 digit valid phone number.</span>
+                    </div>
+                </md-input-container>
+
+
+            </div>
+
+            <i ng-show="myForm.userName.$error.required">*required</i>
+            <br>Photo:
+            <input type="file" ngf-select ng-model="ctrl.picFile" name="file"
+                   accept="image/*" ngf-max-size="2MB" required
+                   ngf-model-invalid="errorFile">
+            <i ng-show="myForm.file.$error.required">*required</i><br>
+            <i ng-show="myForm.file.$error.maxSize">File too large
+                {{errorFile.size / 1000000|number:1}}MB: max 2M</i>
+            <img ng-show="myForm.file.$valid" ngf-thumbnail="ctrl.picFile" class="thumb"> <button ng-click="ctrl.picFile = null" ng-show="ctrl.picFile">Remove</button>
+            <br>
+            <button ng-disabled="!myForm.$valid"
+                    ng-click="ctrl.uploadPic(ctrl.picFile)">Submit</button>
+            <span class="progress" ng-show="ctrl.picFile.progress >= 0">
+        <div style="width:{{picFile.progress}}%"
+             ng-bind="ctrl.picFile.progress + '%'"></div>
+      </span>
+            <span ng-show="ctrl.picFile.result">Upload Successful</span>
+            <span class="err" ng-show="ctrl.errorMsg">{{errorMsg}}</span>
+        </fieldset>
+        <br>
+    </form>
+</md-dialog>

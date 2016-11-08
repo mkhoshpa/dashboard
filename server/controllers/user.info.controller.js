@@ -236,6 +236,26 @@ exports.updateCoach = function(req, res){
   console.log('ima a saf');
   res.send(user);
 };
+exports.setPhoto= function(req, res){
+  User.findOne({ username: req.body.username }, function(err, user) {
+console.log("checkkkkkkkkkkkkkkkkkkkkkkkkkkk");
+    console.log(user);
+    fs.rename('./server/views/assets/img/' + req.body.username,'./server/views/assets/img/'+user._id);
+    var url='/assets/img/'+user._id;
+    User.findOneAndUpdate({ username: req.body.username },{imgUrl:url},function(err,user){
+      if(err){
+        res.send(err);
+      }else {
+        res.send(user)
+
+      }
+    })
+  });
+
+
+}
+
+
 exports.get= function(req, res){
   console.log(req.body);
   User.findOne({ username: req.body.username }, function(err, user) {

@@ -919,7 +919,34 @@ var app;
                       }
 
                     });*/
-                    _this.$http.post('/api/user/get',  user).then(function successCallback(err,client){
+
+                    _this.$http.post('/api/user/setPhoto',  user).then(function successCallback(err,client){
+                        //console.log(client);
+                        console.log(err);
+                        _this.$http.post('/api/user/get',  user).then(function successCallback(err,client) {
+                            console.log(client);
+                            if (!err) {
+                                self.user.clients.push(client);
+                                self.openToast('User added. ');
+
+                            }
+                            else {
+                                console.log(err);
+                                self.user.clients.push(err.data);
+
+                                self.openToast('User added. ');
+
+
+                            }
+                        })
+
+
+                    });
+
+
+
+
+                        /*_this.$http.post('/api/user/get',  user).then(function successCallback(err,client){
                         console.log(client);
                         if(!err){
                             self.user.clients.push(client);
@@ -934,7 +961,7 @@ var app;
 
 
                         }
-                    });
+                    });*/
 
 
                     }, function () {

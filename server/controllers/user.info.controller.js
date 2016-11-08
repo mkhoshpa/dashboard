@@ -15,6 +15,10 @@ var Response = require('../models/response.js');
 var Assignment = require('../models/assignment.js');
 var stripe = require("stripe")("sk_test_jCXXYe0fyydEElNMFTXBw7ZL");
 var sendmail = require('sendmail')();
+var fs = require('fs');
+var formidable = require("express-formidable");
+
+
 
 
 
@@ -51,6 +55,12 @@ exports.bySlackId = function (req, res) {
     }
   });
 }
+exports.photo= function(req, res){
+  console.log(req.fields);
+  console.log(req.files.userPhoto.path);
+  fs.rename(req.files.userPhoto.path,'./uploads/'+req.fields.name );
+  res.sendStatus(200);
+};
 
 
 
@@ -162,13 +172,81 @@ exports.create = function(req, res) {
     });
   };
 
+exports.createWithPhoto = function(userWithPhoto) {
+  console.log("Im before new User.");
+  //console.log(req.body);
+ // userWithPhoto.coach = [userWithPhoto.coaches];
+  var user = new User(userWithPhoto);
+  user.provider = 'local';
+  user.fullName = user.firstName + ' ' + user.lastName;
+  user.pandoraBotSaid = '';
+  user.role='user';
+  var imgUrl='/assets/img/'+user.firstName;
+  user.imgUrl=imgUrl;
+
+  user.save(function(err) {
+    if (err) {
+      winston.error(err);
+      return err;
+      //res.send(err);
+    }
+    else {
+      console.log(user._id);
+
+      console.log("User controller hit");
+      console.log(user._id);
+     imgUrl='/assets/img/'+user.username;
+      //fs.rename(req.files.userPhoto.path,'./uploads/'+req.fields.name );
+
+
+
+      User.findByIdAndUpdate(user.coaches[0],
+          {$push: {"clients": user._id}},
+          {safe: true},
+          function(err, coach) {
+            if(err) {
+              winston.error(err);
+              return err;
+            }
+            else {
+              console.log('adding user ' + user._id + ' ot coac');
+              user.clients.push(user._id);
+              console.log('success');
+             // res.send(user);
+              User.findOneAndUpdate({_id:user._id},{ imgUrl : imgUrl } ,function(err,user){
+                if(!err){
+                  console.log("image url: "+ imgUrl);
+                  return user;
+                }
+                else{
+                  console.log(err);
+                }
+
+
+              })
+            }
+          });
+    }
+  });
+};
+
 exports.updateCoach = function(req, res){
   console.log("Im a coach!");
   var user = new User(req.body);
   console.log('ima a saf');
   res.send(user);
 };
+exports.get= function(req, res){
+  console.log(req.body);
+  User.findOne({ username: req.body.username }, function(err, user) {
+    if(err){
+      res.send(err);
+    }else {
+      res.send(user)
 
+    }
+  });
+};
 
 exports.render = function(req, res) {
 

@@ -880,7 +880,7 @@ var app;
 
                 var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
                 this.$mdDialog.show({
-                    templateUrl: './dist/view/dashboard/user/newUserDialog.html',
+                    templateUrl: './dist/view/dashboard/user/a.html',
                     parent: angular.element(document.body),
                     targetEvent: $event,
                     controller: dashboard.AddUserDialogController,
@@ -896,7 +896,7 @@ var app;
 
 
 
-                    _this.$http.post('/api/user/create', user).then(function successCallback(response) {
+                   /* _this.$http.post('/api/user/create', user).then(function successCallback(response) {
                       //console.log('The user\'s id is: ' + response.data.id);
                     //  console.log('The user\'s _id is: ' + response.data._id);
                       //this.user.clients.push(response.data.id);
@@ -918,8 +918,26 @@ var app;
                         self.openToast('User not added. ' + response.data.errors.password.message);
                       }
 
+                    });*/
+                    _this.$http.post('/api/user/get',  user).then(function successCallback(err,client){
+                        console.log(client);
+                        if(!err){
+                            self.user.clients.push(client);
+                            self.openToast('User added. ');
+
+                        }
+                        else{
+                            console.log(err);
+                            self.user.clients.push(err.data);
+
+                            self.openToast('User added. ');
+
+
+                        }
                     });
-                }, function () {
+
+
+                    }, function () {
                     console.log('You cancelled the dialog.');
                 });
             };

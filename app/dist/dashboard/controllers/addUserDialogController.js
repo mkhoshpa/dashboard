@@ -4,12 +4,14 @@ var app;
     var dashboard;
     (function (dashboard) {
         var AddUserDialogController = (function () {
-            function AddUserDialogController($mdDialog, userService,selected) {
+            function AddUserDialogController($mdDialog,$scope, Upload, $timeout, userService,selected) {
                 this.$mdDialog = $mdDialog;
                 this.userService = userService;
                 this.selected = selected;
                 this.cc=0;
                 this.d="";
+                this.Upload=Upload;
+                this.$timeout=$timeout;
 
                                this.user = this.userService.get();
                 //console.log(this.user);
@@ -43,11 +45,36 @@ var app;
 
                 _this.image_source = event.target.result;
                 _this.cc=10;
-
-
-
             };
-            AddUserDialogController.prototype.save = function () {
+            AddUserDialogController.prototype.uploadPic = function(file) {
+                var self=this;
+                console.log('hit');
+                var newuser={username: this.username,firstName:this.firstName,lastName:this.lastName,bio:this.bio,phoneNumber:this.phoneNumber,coaches: this.user._id, role: "user",imgUrl:'assets/img/'+this.username};
+                    file.upload = self.Upload.upload({
+                        url: '/api/photo',
+                        data: {username: this.username,firstName:this.firstName,lastName:this.lastName,bio:this.bio,phoneNumber:this.phoneNumber,coaches: this.user._id,
+                    role: "user", file: file},
+                    });
+
+                    file.upload.then(function (response) {
+                        self.$timeout(function () {
+                            console.log(response.data);
+                            file.result = response.data;
+                           self.$mdDialog.hide(newuser);
+
+                        });
+                    }, function (response) {
+                        if (response.status > 0)
+                            this.errorMsg = response.status + ': ' + response.data;
+                    }, function (evt) {
+                        // Math.min is to fix IE which reports 200% sometimes
+                        file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
+                    });
+                };
+
+
+
+            AddUserDialogController.prototype.save1 = function () {
                 //adding user
                 if(!this.edit) {
 
@@ -144,7 +171,7 @@ var app;
                      this.$mdDialog.hide(user);
                 }
             };
-            AddUserDialogController.$inject = ['$mdDialog', 'userService','selected'];
+            AddUserDialogController.$inject = ['$mdDialog','$scope', 'Upload', '$timeout', 'userService','selected'];
 
             return AddUserDialogController;
         }());

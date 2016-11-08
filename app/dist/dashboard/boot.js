@@ -5,7 +5,7 @@ var app;
     var dashboard;
     (function (dashboard) {
         angular
-            .module('dashboard', ['ngMaterial', 'ngMdIcons', 'ngMessages', 'ngRoute',
+            .module('dashboard', ['ngMaterial', 'ngFileUpload', 'ngMdIcons', 'ngMessages', 'ngRoute',
             'users', 'md.data.table'])
             .service('responseService', dashboard.ResponseService)
 

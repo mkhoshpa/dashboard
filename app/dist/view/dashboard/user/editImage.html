@@ -1,0 +1,28 @@
+<md-dialog aria-label="Add User" flex = "50">
+    <form name="myForm">
+        <fieldset>
+            <legend>Please insert your clients new Image </legend>
+
+
+            <i ng-show="myForm.userName.$error.required">*required</i>
+            <br>Photo:
+            <input type="file" ngf-select ng-model="ctrl.picFile" name="file"
+                   accept="image/*" ngf-max-size="1MB" required
+                   ngf-model-invalid="errorFile">
+            <i ng-show="myForm.file.$error.required">*required</i><br>
+            <i ng-show="myForm.file.$error.maxSize">File too large
+                {{errorFile.size / 1000000|number:1}}MB: max 1M</i>
+            <img ng-show="myForm.file.$valid" ngf-thumbnail="ctrl.picFile" class="thumb"> <button ng-click="ctrl.picFile = null" ng-show="ctrl.picFile">Remove</button>
+            <br>
+            <button ng-disabled="!myForm.$valid"
+                    ng-click="ctrl.editPic(ctrl.picFile)">Submit</button>
+            <span class="progress" ng-show="ctrl.picFile.progress >= 0">
+        <div style="width:{{picFile.progress}}%"
+             ng-bind="ctrl.picFile.progress + '%'"></div>
+      </span>
+            <span ng-show="ctrl.picFile.result">Upload Successful</span>
+            <span class="err" ng-show="ctrl.errorMsg">{{errorMsg}}</span>
+        </fieldset>
+        <br>
+    </form>
+</md-dialog>

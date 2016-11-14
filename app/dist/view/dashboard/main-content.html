@@ -134,7 +134,7 @@
 
             -->
               <div>
-                  <img style="margin-left: 10px; order:1;"  width="60" height="60"  ng-src="{{vm.selected.imgUrl}}"></imgstyle>
+                  <img style="margin-left: 10px; order:1;"  width="60" height="60"  ng-click="vm.editImage($event)" ng-src="{{vm.selected.imgUrl}}"></imgstyle>
                   <span class="user" style="margin-left: 10px;order:2; ">{{vm.selected.firstName +" "+ vm.selected.lastName}}</span>
               </div>
 

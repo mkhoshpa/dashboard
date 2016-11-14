@@ -1,5 +1,5 @@
 'use strict';
-
+// npm install sharp
 var User = require('../models/user.js');
 var SurveyTemplate = require('../models/surveyTemplate.js');
 var async = require('async');
@@ -17,6 +17,8 @@ var stripe = require("stripe")("sk_test_jCXXYe0fyydEElNMFTXBw7ZL");
 var sendmail = require('sendmail')();
 var fs = require('fs');
 var formidable = require("express-formidable");
+var sharp = require('sharp');
+
 
 
 
@@ -62,7 +64,36 @@ exports.photo= function(req, res){
   res.sendStatus(200);
 };
 
+exports.editImage= function(req,res){
+  console.log(req.fields);
+  console.log(req.files.file.path);
+  fs.unlink('./server/views/assets/img/' + req.fields.id, function(err) {
+    if (err) {
+      return console.error(err);
+    }
+    console.log("File deleted successfully!");
+  });
 
+  //fs.rename(req.files.file.path,'./server/views/assets/img/'+req.fields.username );
+  sharp( req.files.file.path)
+      .resize(200, 200)
+      .toFile('./server/views/assets/img/' + req.fields.id, function(err) {
+        // output.jpg is a 200 pixels wide and 200 pixels high image
+        // containing a scaled and cropped version of input.jpg
+        var url='/assets/img/'+req.fields.id;
+        User.findOneAndUpdate({ _id: req.fields.id },{imgUrl:url},function(err,user){
+          if(err){
+            res.send(err);
+          }else {
+            res.send(user)
+
+          }
+        })
+      });
+
+
+
+};
 
 exports.updateMedium = function(req, res){
   console.log(req.body.text);
@@ -240,7 +271,19 @@ exports.setPhoto= function(req, res){
   User.findOne({ username: req.body.username }, function(err, user) {
 console.log("checkkkkkkkkkkkkkkkkkkkkkkkkkkk");
     console.log(user);
-    fs.rename('./server/views/assets/img/' + req.body.username,'./server/views/assets/img/'+user._id);
+    //fs.rename('./server/views/assets/img/' + req.body.username,'./server/views/assets/img/'+user._id);
+    sharp('./server/views/assets/img/' + req.body.username)
+        .resize(200, 200)
+        .toFile('./server/views/assets/img/'+user._id, function(err) {
+          // output.jpg is a 200 pixels wide and 200 pixels high image
+          // containing a scaled and cropped version of input.jpg
+          fs.unlink('./server/views/assets/img/' + req.body.username, function(err) {
+            if (err) {
+              return console.error(err);
+            }
+            console.log("File deleted successfully!");
+          });
+        });
     var url='/assets/img/'+user._id;
     User.findOneAndUpdate({ username: req.body.username },{imgUrl:url},function(err,user){
       if(err){
@@ -424,12 +467,21 @@ exports.update = function(req,res) {
 exports.delete = function(req, res){
   User.findOneAndRemove({_id: req.params.id}, function (err, obj) {
     if (!err) {
+      fs.unlink('./server/views/assets/img/' + req.params.id, function(err) {
+        if (err) {
+          return console.error(err);
+        }
+        console.log("File deleted successfully!");
+      });
+
       console.log(obj);
       Reminder.findOneAndRemove({assignee: req.params.id}, function(err, reminders){
         if(err){
           console.log(err);
         }
+
         else{
+
           console.log(reminders);
 
 

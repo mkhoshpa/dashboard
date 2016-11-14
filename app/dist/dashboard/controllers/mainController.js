@@ -786,6 +786,36 @@ var app;
             }
 
 
+            MainController.prototype.editImage = function ($event) {
+                var _this = this;
+                var self = this;
+                console.log(userSelected);
+
+                var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
+                this.$mdDialog.show({
+                    templateUrl: './dist/view/dashboard/user/editImage.html',
+                    parent: angular.element(document.body),
+                    targetEvent: $event,
+                    controller: dashboard.AddUserDialogController,
+                    controllerAs: "ctrl",
+                    clickOutsideToClose: true,
+                    fullscreen: useFullScreen,
+                    locals: {
+                        selected: userSelected
+                    }
+                }).then(function (user) {
+                    // Call user service
+                    //console.log('this is user' + JSON.stringify(user));
+
+
+                    self.openToast('image edited ');
+
+                }, function () {
+                    console.log('You cancelled the dialog.');
+                });
+            };
+
+
             MainController.prototype.editUser = function ($event) {
                 var _this = this;
                 var self = this;

@@ -72,6 +72,30 @@ var app;
                     });
                 };
 
+            AddUserDialogController.prototype.editPic = function(file) {
+                var self=this;
+                console.log('hit');
+                var newuser={username: this.username,firstName:this.firstName,lastName:this.lastName,bio:this.bio,phoneNumber:this.phoneNumber,coaches: this.user._id, role: "user",imgUrl:'assets/img/'+this.username};
+                file.upload = self.Upload.upload({
+                    url: '/api/editPhoto',
+                    data: {id:this.id , file: file},
+                });
+
+                file.upload.then(function (response) {
+                    self.$timeout(function () {
+                        console.log(response.data);
+                        file.result = response.data;
+                        self.$mdDialog.hide(newuser);
+
+                    });
+                }, function (response) {
+                    if (response.status > 0)
+                        this.errorMsg = response.status + ': ' + response.data;
+                }, function (evt) {
+                    // Math.min is to fix IE which reports 200% sometimes
+                    file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
+                });
+            };
 
 
             AddUserDialogController.prototype.save = function () {

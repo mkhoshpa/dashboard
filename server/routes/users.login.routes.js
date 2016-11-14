@@ -110,9 +110,9 @@ module.exports = function(app) {
 							 });
 						 }
 						 else {
-							 return res.redirect('/dashboard');
+							 return res.redirect('/dashboard#!/overview');
 						 }
-						 return res.redirect('/dashboard');
+						 return res.redirect('/dashboard#!/overview');
 					 });
 				// }
 			   // else{

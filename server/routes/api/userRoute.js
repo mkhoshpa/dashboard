@@ -4,6 +4,7 @@
 var user = require('../../controllers/user.info.controller.js');
 var formidable = require("express-formidable");
 var fs = require('fs');
+var sharp = require('sharp');
 
 
 // Define the routes module' method
@@ -53,6 +54,7 @@ module.exports = function(app) {
 
   });
 
+  app.post('/api/editPhoto', user.editImage);
 
 
 

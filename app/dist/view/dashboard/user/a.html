@@ -1,10 +1,10 @@
-bower install ng-file-upload --save
-
+<!--bower install ng-file-upload --save
+-->
 
 <md-dialog aria-label="Add User" flex = "50">
     <form name="myForm">
         <fieldset>
-            <legend>Upload on form submit</legend>
+            <legend>Please insert your clients information</legend>
             <div layout = "row" layout-padding>
                 <md-input-container class="md-block" flex-gt-sm>
                     <label>Username</label>
@@ -59,7 +59,7 @@ bower install ng-file-upload --save
             <i ng-show="myForm.userName.$error.required">*required</i>
             <br>Photo:
             <input type="file" ngf-select ng-model="ctrl.picFile" name="file"
-                   accept="image/*" ngf-max-size="2MB" required
+                   accept="image/*" ngf-max-size="1MB" required
                    ngf-model-invalid="errorFile">
             <i ng-show="myForm.file.$error.required">*required</i><br>
             <i ng-show="myForm.file.$error.maxSize">File too large

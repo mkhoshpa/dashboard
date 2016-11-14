@@ -9,6 +9,8 @@ var mongoose = require('./server/config/mongoose'),
 		express  = require('./server/config/express'),
 		passport = require('./server/config/passport'),
     winston = require('winston');
+var formidable = require("express-formidable");
+
 
 console.log(process.env.NODE_ENV);
 
@@ -18,6 +20,11 @@ var db = mongoose();
 //console.log(db);
 // Create a new Express application instance
 var app = express();
+app.use(formidable({
+	encoding: 'utf-8',
+	uploadDir: './uploads',
+	multiples: true, // req.files to be arrays of files
+}));
 
 // Configure the Passport middleware
 var passport = passport();

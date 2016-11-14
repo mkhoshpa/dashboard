@@ -807,8 +807,44 @@ var app;
                     // Call user service
                     //console.log('this is user' + JSON.stringify(user));
 
+                    _this.$http.post('/api/user/get',  user).then(function successCallback(err,client) {
+                        console.log(client);
+                        if (!err) {
+                            for(var i = 0; i < self.user.clients.length; i++) {
+                                var obj = self.user.clients[i];
+                                if(obj._id == client.id ){
+                                    var index =  self.user.clients.indexOf(obj);
+                                    self.user.clients.splice(index, 1);
+                                }
 
-                    self.openToast('image edited ');
+                            }
+
+
+                            self.user.clients.push(client);
+                            self.openToast('image edited ');
+
+                        }
+                        else {
+                            console.log(err);
+                            for(var i = 0; i < self.user.clients.length; i++) {
+                                var obj = self.user.clients[i];
+                                if(obj._id == err.data.id ){
+                                    var index =  self.user.clients.indexOf(obj);
+                                    self.user.clients.splice(index, 1);
+                                }
+
+                            }
+
+                            err.data.imgUrl = err.data.imgUrl + '?decache=' + Math.random();
+
+                            self.user.clients.push(err.data);
+                            self.openToast('image edited ');
+
+
+                        }
+                    })
+
+
 
                 }, function () {
                     console.log('You cancelled the dialog.');

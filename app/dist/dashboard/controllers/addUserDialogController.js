@@ -75,7 +75,7 @@ var app;
             AddUserDialogController.prototype.editPic = function(file) {
                 var self=this;
                 console.log('hit');
-                var newuser={username: this.username,firstName:this.firstName,lastName:this.lastName,bio:this.bio,phoneNumber:this.phoneNumber,coaches: this.user._id, role: "user",imgUrl:'assets/img/'+this.username};
+                var newuser={username: this.username,firstName:this.firstName,lastName:this.lastName,bio:this.bio,phoneNumber:this.phoneNumber,coaches: this.user._id, role: "user",imgUrl:'assets/img/'+this.id};
                 file.upload = self.Upload.upload({
                     url: '/api/editPhoto',
                     data: {id:this.id , file: file},
@@ -188,7 +188,7 @@ var app;
                         role: "user",
 
                        // imgUrl: '/assets/img/' + this.avatars[Math.floor(Math.random() * 3)],
-                        phoneNumber: this.phoneNumber
+                        phoneNumber: '+'+this.phoneNumber
                     }
                     console.log(user);
 

@@ -77,7 +77,7 @@ var app;
                 console.log('hit');
                 var newuser={username: this.username,firstName:this.firstName,lastName:this.lastName,bio:this.bio,phoneNumber:this.phoneNumber,coaches: this.user._id, role: "user",imgUrl:'assets/img/'+this.id};
                 file.upload = self.Upload.upload({
-                    url: '/api/editPhoto',
+                    url: '/api/editCoachPhoto',
                     data: {id:this.id , file: file},
                 });
 

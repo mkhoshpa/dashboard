@@ -72,6 +72,8 @@
 
             <md-card-content style="max-height: 30px;padding-top: 0px; background-color: white">
                 <md-table-container  >
+                    <md-progress-circular md-mode="indeterminate" ng-show="vm.isLoading" style="position: absolute; top: 50%; right: 50%;"></md-progress-circular>
+
                     <table md-table class="md-primary md-data-table" ng-model="vm.selected" id="client-table" >
                         <thead md-head md-order="vm.query.order">
 
@@ -80,8 +82,8 @@
 
 
 
-                            <th md-column  md-order-by="client.username">Client</th>
-                            <th md-column  md-order-by="assignment.specificDate  ">date</th>
+                        <th md-column  md-order-by="client.username">Client</th>
+                        <th md-column  md-order-by="assignment.specificDate  ">date</th>
 
 
 
@@ -96,98 +98,98 @@
 
 
                         <tr  md-row md-auto-select="false" md-select="client" ng-repeat="r in vm.allAssignments| orderBy: vm.query.order:true | filter:vm.query.filter  | limitTo: vm.query.limit: (vm.query.page - 1) * vm.query.limit">
-<div >
-<div ng-show="vm.selectSurveyUser.indexOf(r.client)>-1">
-                            <td md-cell  class = "md-cell" ng-init=" v = vm.newDate(r.assignment.date+'')" ng-show="v > vm.from && v < vm.to && vm.showClient(r.client)" >
-                                <md-card  md-whiteframe = "0"  >
+                            <div >
+                                <div ng-show="vm.selectSurveyUser.indexOf(r.client)>-1">
+                                    <td md-cell  class = "md-cell" ng-init=" v = vm.newDate(r.assignment.date+'')" ng-show="v > vm.from && v < vm.to && vm.showClient(r.client)" >
+                                        <md-card  md-whiteframe = "0"  >
 
-                                    <div layout="row" >
+                                            <div layout="row" >
 
-                                        <md-card-content  flex="1" >
-                                            <div >
+                                                <md-card-content  flex="1" >
+                                                    <div >
 
-                                                   <!-- <img ng-src="{{r.client.activityLevel}}" style="border-radius: 50%; width: 15px; margin: 10px;" >-->
-                                                    <img ng-src="{{r.client.imgUrl}}" style="border-radius: 50%; width: 50px; margin: 0px;left: 10px;"  >
-
-
-
-
-                                                    <!--<p>{{r}}</p>-->
+                                                        <!-- <img ng-src="{{r.client.activityLevel}}" style="border-radius: 50%; width: 15px; margin: 10px;" >-->
+                                                        <img ng-src="{{r.client.imgUrl}}" style="border-radius: 50%; width: 50px; margin: 0px;left: 10px;"  >
 
 
 
+
+                                                        <!--<p>{{r}}</p>-->
+
+
+
+
+                                                    </div>
+                                                </md-card-content>
+                                                <div  flex = "90">
+
+                                                    <md-list>
+
+                                                        <md-list-item style = " height:70px;"  >
+                                                            <md-card-content  layout = "column">
+                                                                {{r.client.firstName + " " + r.client.lastName}}
+                                                            </md-card-content>
+
+                                                            <div layout = "column" style = "overflow: auto; height:100px;" flex="40"  layout-fix>
+                                                                <md-card-content  layout = "column" flex="" >
+                                                                    <!--<h5>{{r.assignment.specificDate  |  date: 'medium'}} </h5>-->
+                                                                    <h4> {{r.reminder.title}} </h4>
+
+
+                                                                </md-card-content>
+                                                            </div>
+
+                                                            <div layout = "column" style = "overflow: auto; height:100px;" flex="20"  layout-fix>
+                                                                <md-card-content  layout = "column" flex="" >
+                                                                    <!--<h5>{{r.assignment.specificDate  |  date: 'medium'}} </h5>-->
+                                                                    <h5>  response: </h5>
+
+
+                                                                </md-card-content>
+                                                            </div>
+                                                            <div layout = "column" style = "overflow: auto; height:100px;" flex="40"  layout-fix>
+                                                                <md-card-content  layout = "row" flex="" >
+                                                                    <!--<h5>{{r.assignment.specificDate  |  date: 'medium'}} </h5>-->
+                                                                    <h5>{{" "+r.response.questions[0].answer}}</h5>
+
+
+                                                                </md-card-content>
+                                                            </div>
+
+
+
+                                                        </md-list-item>
+
+
+                                                    </md-list>
+                                                </div>
+
+
+                                                <div layout="column" flex = "10">
+
+                                                    <md-card-content  layout = "column" flex="" layout-align="end right" >
+                                                        {{r.assignment.specificDate |  date: 'EEE M/d/yy'}}
+
+
+                                                    </md-card-content>
+                                                </div>
+
+                                                <div layout="column" flex= "10" >
+                                                    <md-card-actions flex="20" layout-align="end right">
+                                                        <md-button ng-if="r.assignment.reminderId" ng-click="vm.removeReminder($event, r.reminder)">Remove</md-button>
+                                                    </md-card-actions>
+                                                    <md-card-actions flex="20" layout-align="end right">
+                                                        <md-button ng-if="r.assignment.reminderId" ng-click="vm.editReminder($event,r)">Edit</md-button>
+                                                    </md-card-actions>
+                                                </div>
 
                                             </div>
-                                        </md-card-content>
-                                        <div  flex = "90">
-
-                                            <md-list>
-
-                                                <md-list-item style = " height:70px;"  >
-                                                    <md-card-content  layout = "column">
-                                                        {{r.client.firstName + " " + r.client.lastName}}
-                                                    </md-card-content>
-
-                                                    <div layout = "column" style = "overflow: auto; height:100px;" flex="40"  layout-fix>
-                                                    <md-card-content  layout = "column" flex="" >
-                                                        <!--<h5>{{r.assignment.specificDate  |  date: 'medium'}} </h5>-->
-                                                        <h4> {{r.reminder.title}} </h4>
+                                        </md-card>
+                                    </td>
 
 
-                                                    </md-card-content>
-                                                    </div>
-
-                                                    <div layout = "column" style = "overflow: auto; height:100px;" flex="20"  layout-fix>
-                                                        <md-card-content  layout = "column" flex="" >
-                                                            <!--<h5>{{r.assignment.specificDate  |  date: 'medium'}} </h5>-->
-                                                            <h5>  response: </h5>
-
-
-                                                        </md-card-content>
-                                                    </div>
-                                                    <div layout = "column" style = "overflow: auto; height:100px;" flex="40"  layout-fix>
-                                                        <md-card-content  layout = "row" flex="" >
-                                                            <!--<h5>{{r.assignment.specificDate  |  date: 'medium'}} </h5>-->
-                                                         <h5>{{" "+r.response.questions[0].answer}}</h5>
-
-
-                                                        </md-card-content>
-                                                    </div>
-
-
-
-                                                </md-list-item>
-
-
-                                            </md-list>
-                                        </div>
-
-
-                                        <div layout="column" flex = "10">
-
-                                        <md-card-content  layout = "column" flex="" layout-align="end right" >
-                                            {{r.assignment.specificDate |  date: 'EEE M/d/yy'}}
-
-
-                                        </md-card-content>
-                                        </div>
-
-                                        <div layout="column" flex= "10" >
-                                            <md-card-actions flex="20" layout-align="end right">
-                                                <md-button ng-if="r.assignment.reminderId" ng-click="vm.removeReminder($event, r.reminder)">Remove</md-button>
-                                            </md-card-actions>
-                                            <md-card-actions flex="20" layout-align="end right">
-                                                <md-button ng-if="r.assignment.reminderId" ng-click="vm.editReminder($event,r)">Edit</md-button>
-                                            </md-card-actions>
-                                        </div>
-
-                                    </div>
-                                </md-card>
-                            </td>
-
-
-</div>
-    </div>
+                                </div>
+                            </div>
 
 
                         </tr>

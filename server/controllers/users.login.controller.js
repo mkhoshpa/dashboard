@@ -162,6 +162,7 @@ console.log("req.bodyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
 				var message = null;
 				// Set the user provider property
 				user.provider = 'local';
+				user.imgUrl= "/assets/img/no_image.gif";
 
 				// Try saving the new user document
 				user.save(function (err) {

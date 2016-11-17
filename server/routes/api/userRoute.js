@@ -55,6 +55,8 @@ module.exports = function(app) {
   });
 
   app.post('/api/editPhoto', user.editImage);
+  app.post('/api/editCoachPhoto', user.editCoachImage);
+
 
 
 

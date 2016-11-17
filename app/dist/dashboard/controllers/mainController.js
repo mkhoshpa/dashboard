@@ -850,6 +850,55 @@ var app;
                     console.log('You cancelled the dialog.');
                 });
             };
+            MainController.prototype.editCoachImage = function ($event) {
+                var _this = this;
+                var self = this;
+                console.log(userSelected);
+
+                var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
+                this.$mdDialog.show({
+                    templateUrl: './dist/view/dashboard/user/editImage.html',
+                    parent: angular.element(document.body),
+                    targetEvent: $event,
+                    controller: dashboard.AddUserDialogController,
+                    controllerAs: "ctrl",
+                    clickOutsideToClose: true,
+                    fullscreen: useFullScreen,
+                    locals: {
+                        selected: user
+                    }
+                }).then(function (user) {
+                    // Call user service
+                    //console.log('this is user' + JSON.stringify(user));
+
+                    _this.$http.post('/api/user/get',  user).then(function successCallback(err,client) {
+                        console.log(client);
+                        if (!err) {
+
+
+                            client.imgUrl = client.imgUrl+ '?decache=' + Math.random();
+                            self.user.imgUrl = client.imgUrl ;
+                            self.openToast('image edited ');
+
+                        }
+                        else {
+
+
+                            err.data.imgUrl = err.data.imgUrl + '?decache=' + Math.random();
+
+                            self.user.imgUrl = err.data.imgUrl;
+                            self.openToast('image edited ');
+
+
+                        }
+                    })
+
+
+
+                }, function () {
+                    console.log('You cancelled the dialog.');
+                });
+            };
 
 
             MainController.prototype.editUser = function ($event) {

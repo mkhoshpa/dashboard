@@ -94,6 +94,37 @@ exports.editImage= function(req,res){
 
 
 };
+exports.editCoachImage= function(req,res){
+  console.log(req.fields);
+  console.log(req.files.file.path);
+
+
+  //fs.rename(req.files.file.path,'./server/views/assets/img/'+req.fields.username );
+  sharp( req.files.file.path)
+      .resize(200, 200)
+      .toFile('./server/views/assets/img/' + req.fields.id, function(err) {
+        // output.jpg is a 200 pixels wide and 200 pixels high image
+        // containing a scaled and cropped version of input.jpg
+        fs.unlink( req.files.file.path, function(err) {
+          if (err) {
+            return console.error(err);
+          }
+          console.log("File deleted successfully!");
+        });
+        var url='/assets/img/'+req.fields.id;
+        User.findOneAndUpdate({ _id: req.fields.id },{imgUrl:url},function(err,user){
+          if(err){
+            res.send(err);
+          }else {
+            res.send(user)
+
+          }
+        })
+      });
+
+
+
+};
 
 exports.updateMedium = function(req, res){
   console.log(req.body.text);

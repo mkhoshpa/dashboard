@@ -267,6 +267,7 @@ exports.selectedByUser = function (req, res) {
 
 
 };
+
 exports.getTypeReminder = function (client, callback) {
     console.log("inside getInfoR");
     //console.log("clientID:");
@@ -435,8 +436,8 @@ exports.selectRemindersByAssignee = function(req, res) {
                                                         var returnObj = {reminder: reminder, assignment: assignment};
                                                         finalClients.forEach(function (client) {
                                                             if (client._id == assignment.userId) {
-                                                                returnObj.client = client;
-
+                                                                var retClient={username: client.username, _id:client._id, imgUrl:client.imgUrl, firstName:client.firstName,lastName:client.lastName , role:client.role};
+                                                                returnObj.client = retClient;
 
                                                             }
                                                         })
@@ -605,7 +606,8 @@ exports.selectSurveyByAssignee = function(req, res) {
                                                             if (client._id == assignment.userId) {
 
                                                                // console.log("yeeeeeeeeeeeeeeeeyyyyyyyyyyyyyyy")
-                                                                returnObj.client = client;
+                                                                var retClient={username: client.username, _id:client._id, imgUrl:client.imgUrl, firstName:client.firstName,lastName:client.lastName , role:client.role};
+                                                                returnObj.client = retClient;
 
                                                             }
                                                         })
@@ -743,7 +745,8 @@ exports.selectAllByAssignee = function(req, res) {
                                         var returnObj = {reminder: reminder, assignment: assignment};
                                         clients.forEach(function (client) {
                                             if(client._id == assignment.userId){
-                                                returnObj.client = client;
+                                                var retClient={username: client.username, _id:client._id, imgUrl:client.imgUrl, firstName:client.firstName,lastName:client.lastName , role:client.role};
+                                                returnObj.client = retClient;
                                             }
                                         })
                                         finalResponses.forEach(function (response) {
@@ -983,6 +986,8 @@ exports.convosNow = function(req, res) {
                       var reminderUserAssign = {
                           repeat: assignments[i].repeat,
                           specificDate: nextWeek,
+                         // selectedDates: assignments[i].reminderId.selectedDates,
+
                           year: yearNext,
                           month: monthNext,
                           date: dateNext,

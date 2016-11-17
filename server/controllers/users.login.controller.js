@@ -2,7 +2,7 @@
 
 // Load the module dependencies
 var User 		 = require('mongoose').model('User');
-var stripe = require("stripe")("sk_test_jCXXYe0fyydEElNMFTXBw7ZL");
+var stripe = require("stripe")("sk_live_qblaSo9uqcusNAEZmM6AEhqE");
 
 
 // Create a new error handling controller method

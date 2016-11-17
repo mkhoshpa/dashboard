@@ -7,7 +7,7 @@ var StripeWebhook = require('stripe-webhook-middleware'),
 var bodyParser = require('body-parser');
 
 var stripeWebhook = new StripeWebhook({
-  stripeApiKey:  "sk_test_jCXXYe0fyydEElNMFTXBw7ZL" ,
+  stripeApiKey:  "sk_live_qblaSo9uqcusNAEZmM6AEhqE" ,
   respond: true
 });
 // Define the routes module' method

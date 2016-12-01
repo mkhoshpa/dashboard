@@ -47,14 +47,14 @@
       </md-card>
     </div>
  </section> -->
-        <!-- <div md-whiteframe = "3"  flex = "15" layout = "column" style="background-color: #FFFFFF; margin: 5px;"  >
-          <div ng-if="vm.isCoach(vm.selected)">
-            <a class="secondary-content"><i class="material-icons" style="color:#FFFFFF; margin-top: 15px; font-size: 60px;">face</i></a>
-            <md-content style="background-color; #FFFFFF; margin: 5px;">
-              <h1>{{vm.selected.username}}</h1>
-            </md-content>
-          </div> -->
-          <!-- change this -->
+<!-- <div md-whiteframe = "3"  flex = "15" layout = "column" style="background-color: #FFFFFF; margin: 5px;"  >
+  <div ng-if="vm.isCoach(vm.selected)">
+    <a class="secondary-content"><i class="material-icons" style="color:#FFFFFF; margin-top: 15px; font-size: 60px;">face</i></a>
+    <md-content style="background-color; #FFFFFF; margin: 5px;">
+      <h1>{{vm.selected.username}}</h1>
+    </md-content>
+  </div> -->
+<!-- change this -->
 <!--
             <div ng-if="!vm.isCoach(vm.selected)">
               <img ng-src="{{vm.selected.imgUrl}}" class="avatar"></md-icon>
@@ -65,53 +65,53 @@
               </md-content>
             </div> -->
 
-          <!--<h1 ng-if="vm.isUser">{{vm.selected.username}}</h1>
-          -->
-        <!-- </div> -->
-        <!-- <div md-whiteframe = "3"  flex = "5" layout = "column" style = "background-color: #C3E1EE; margin: 5px;">
+<!--<h1 ng-if="vm.isUser">{{vm.selected.username}}</h1>
+-->
+<!-- </div> -->
+<!-- <div md-whiteframe = "3"  flex = "5" layout = "column" style = "background-color: #C3E1EE; margin: 5px;">
 
-            <md-icon md-font-set = "material-icons"> mail </md-icon>
+    <md-icon md-font-set = "material-icons"> mail </md-icon>
 
-            <md-icon md-font-set = "material-icons"> call </md-icon>
+    <md-icon md-font-set = "material-icons"> call </md-icon>
 
-            <md-icon md-font-set = "material-icons"> cake </md-icon>
+    <md-icon md-font-set = "material-icons"> cake </md-icon>
 
-            <md-icon md-font-set = "material-icons"> info </md-icon>
-        </div>
+    <md-icon md-font-set = "material-icons"> info </md-icon>
+</div>
 
-        <div  md-whiteframe = "3"  flex = "80" layout = "row" style = "background-color:#FFFFFF; margin: 5px;"  >
-          <md-content flex  layout style = "height: 200px; background-color:#FFFFFF;">
+<div  md-whiteframe = "3"  flex = "80" layout = "row" style = "background-color:#FFFFFF; margin: 5px;"  >
+  <md-content flex  layout style = "height: 200px; background-color:#FFFFFF;">
 
-            <md-input-container layout = "column" flex = "95" style = "height: 150px" >
-              <label>Biography</label>
-              <textarea ng-model="vm.selected.bio" md-select-on-focus ng-blur = "vm.addBio()"></textarea>
-            </md-input-container>
+    <md-input-container layout = "column" flex = "95" style = "height: 150px" >
+      <label>Biography</label>
+      <textarea ng-model="vm.selected.bio" md-select-on-focus ng-blur = "vm.addBio()"></textarea>
+    </md-input-container>
 
-            <md-input-container layout="column" flex="95" style="height: 150px">
-              <label>Phone Number</label>
-              <textarea ng-model="vm.selected.phoneNumber" md-select-on-focus ng-blur="vm.addPhoneNumber()"></textarea>
-            </md-input-container>
+    <md-input-container layout="column" flex="95" style="height: 150px">
+      <label>Phone Number</label>
+      <textarea ng-model="vm.selected.phoneNumber" md-select-on-focus ng-blur="vm.addPhoneNumber()"></textarea>
+    </md-input-container>
 
-            <md-input-container layout = "column" flex = "95" style = "height: 150px" >
-              <label>pipelineStage</label>
-              <md-select ng-model ="vm.selected.pipelineStage" md-select-on-focus ng-blur = "vm.addPipelineStage()" >
-                <md-option ng-repeat = "pipe in vm.pipelineOptions" ng-value = "pipe.type">{{pipe.type}}
+    <md-input-container layout = "column" flex = "95" style = "height: 150px" >
+      <label>pipelineStage</label>
+      <md-select ng-model ="vm.selected.pipelineStage" md-select-on-focus ng-blur = "vm.addPipelineStage()" >
+        <md-option ng-repeat = "pipe in vm.pipelineOptions" ng-value = "pipe.type">{{pipe.type}}
 
-                </md-option>
-              </md-select>
-
-
-                <!-- <label>Pipeline Stage</label>
-                <textarea ng-model="vm.selected.pipelineStage" md-select-on-focus ng-blur = "vm.addPipelineStage()"></textarea> -->
+        </md-option>
+      </md-select>
 
 
-
-            <!-- </md-input-container>
-
-          </md-content>
+        <!-- <label>Pipeline Stage</label>
+        <textarea ng-model="vm.selected.pipelineStage" md-select-on-focus ng-blur = "vm.addPipelineStage()"></textarea> -->
 
 
-        </div> -->
+
+<!-- </md-input-container>
+
+</md-content>
+
+
+</div> -->
 
 
 
@@ -122,35 +122,39 @@
 
     <div  layout = "row" layout-padding style="background-color: white; margin: 5px; display: flex;flex-direction: row; " >
 
-       <!--  <div md-whiteframe = "3"  flex = "20" layout = "column" style="background-color: #FFFFFF; margin: 5px; min-width: 700px;  max-height: 100px;">
-            -->
+        <!--  <div md-whiteframe = "3"  flex = "20" layout = "column" style="background-color: #FFFFFF; margin: 5px; min-width: 700px;  max-height: 100px;">
+             -->
 
 
-          <div ng-if="!vm.isCoach(vm.selected)" style="flex-grow:0;  display: flex;flex-direction: row; order:1; height:50px;"  >
-           <!-- <img width="80" height="80"  ng-src="{{vm.selected.imgUrl}}"></imgstyle>
-              {{vm.selected.firstName +" "+ vm.selected.lastName}}
-              <md-button md-no-ink class="md-primary"  ng-click="vm.editUser($event)" >Edit User</md-button>
-              <md-button class="md-raised md-warn" >delet user</md-button>
+        <div ng-if="!vm.isCoach(vm.selected)" style="flex-grow:0;  display: flex;flex-direction: row; order:1; height:50px;"  >
+            <!-- <img width="80" height="80"  ng-src="{{vm.selected.imgUrl}}"></imgstyle>
+               {{vm.selected.firstName +" "+ vm.selected.lastName}}
+               <md-button md-no-ink class="md-primary"  ng-click="vm.editUser($event)" >Edit User</md-button>
+               <md-button class="md-raised md-warn" >delet user</md-button>
 
-            -->
-              <div>
-                  <img style="margin-left: 10px; order:1;"  width="60" height="60"  ng-click="vm.editImage($event)" ng-src="{{vm.selected.imgUrl}}"></imgstyle>
-                  <span class="user" style="margin-left: 10px;order:2; ">{{vm.selected.firstName +" "+ vm.selected.lastName}}</span>
-              </div>
+             -->
+            <div layout="row">
+                <md-button hide-lg hide-md hide-sm class="menu" ng-click="vm.tester()" aria-label="Show User List">
+                  clients
 
-
-<div layout="row">
-    <md-button md-no-ink class="md-primary"  ng-click="vm.editUser($event)" style="order:3;margin-left: 10px; top:30px;" >Edit User</md-button>
-    <md-button class="md-raised md-warn" style=" top:30px; order:4;margin-left: 10px;" ng-click="vm.removeUser($event)">delete user</md-button>
-</div>
+                </md-button>
+                <img hide-xs style="margin-left: 10px; order:1;"  width="60" height="60"  ng-click="vm.editImage($event)" ng-src="{{vm.selected.imgUrl}}"></imgstyle>
+                <span class="user" style="margin-left: 10px;order:2; ">{{vm.selected.firstName +" "+ vm.selected.lastName}}</span>
+            </div>
 
 
-          </div>
+            <div layout="row">
+                <md-button md-no-ink class="md-primary" hide-xs ng-click="vm.editUser($event)" style="order:3;margin-left: 10px; top:30px;" >Edit User</md-button>
+                <md-button class="md-raised md-warn"  hide-xs style=" top:30px; order:4;margin-left: 10px;" ng-click="vm.removeUser($event)">delete user</md-button>
+            </div>
 
 
-       <!-- </div>-->
+        </div>
 
-      <div  ng-if="!vm.isCoach(vm.selected)" ng-include="'/dist/view/dashboard/notes/tab-notes.html' "  style="flex-grow:1;order:2; max-height: 160px; overflow: scroll;" >NOTES</div>
+
+        <!-- </div>-->
+
+        <div  ng-if="!vm.isCoach(vm.selected)" hide-xs ng-include="'/dist/view/dashboard/notes/tab-notes.html' "  style="flex-grow:1;order:2; max-height: 160px; overflow: scroll;" >NOTES</div>
 
 
 

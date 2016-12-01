@@ -2,7 +2,7 @@
 
 // Load the module dependencies
 var user = require('../../controllers/user.info.controller.js');
-var formidable = require("express-formidable");
+var formidable = require("formidable");
 var fs = require('fs');
 var sharp = require('sharp');
 
@@ -26,11 +26,6 @@ module.exports = function(app) {
   app.get('/api/user/unsub/:id', user.unsub);
   app.post('/api/user/sub', user.sub);
     app.post('/api/user/resub', user.resub);
-  app.use(formidable({
-    encoding: 'utf-8',
-    uploadDir: './server/views/assets/img',
-    multiples: true, // req.files to be arrays of files
-  }));
   app.post('/upload',function (req,res) {
     console.log(req.fields);
     console.log(req.files.file.path);
@@ -39,11 +34,16 @@ module.exports = function(app) {
   });
 
   app.post('/api/photo',function(req,res){
-    console.log(req.fields);
-    console.log(req.files.file.path);
-    fs.rename(req.files.file.path,'./server/views/assets/img/'+req.fields.username );
+    var form = new formidable.IncomingForm();
+    form.uploadDir = './server/views/assets/img';
+      form.parse(req, function(err, fields, files) {
+console.log('checkkkkkkkkkkkkkkkkk');
+          console.log(fields);
+          console.log(files.file.path);
+          fs.rename(files.file.path, './server/views/assets/img/' + fields.username);
 
-   res.send( user.createWithPhoto(req.fields));
+          res.send(user.createWithPhoto(fields));
+      });
 //res.sendStatus(200);
     /*upload(req.files,res,function(err) {
      if(err) {

@@ -1,6 +1,6 @@
 <md-virtual-repeat-container id="vertical-container" scroll-glue>
     <p ng-if="!vm.selected.messages.length">
-      No messages for {{vm.selected.firstName +" "+ vm.selected.lastName}}, yet.
+        No messages for {{vm.selected.firstName +" "+ vm.selected.lastName}}, yet.
     </p>
     <style>
         .time{
@@ -12,22 +12,22 @@
     </style>
     <p md-virtual-repeat="message in vm.selected.messages" class="repeated-item" flex>
       <span ng-if="message.sentTo === vm.selected._id">
-        Sent: {{message.body}} <span class="time">{{message.created |  date: 'medium'}}</span>
+        Sent: {{message.body}} <span class="time" hide-xs>{{message.created |  date: 'medium'}}</span>
       </span>
-      <span ng-if="message.sentTo != vm.selected._id">
-        Received: {{message.body}} <span class="time">{{message.created |  date: 'medium'}}</span>
+        <span ng-if="message.sentTo != vm.selected._id">
+        Received: {{message.body}} <span class="time" hide-xs>{{message.created |  date: 'medium'}}</span>
       </span>
     </p>
 </md-virtual-repeat-container>
 <form name="messageForm">
-  <md-input-container class="md-block" flex-gt-sm>
-    <label>Message</label>
-    <input ng-model="message.content" name="content" />
-  </md-input-container>
-  <md-button type="submit" class="md-primary md-raised" ng-disabled="!message.content" ng-click="vm.sendMessage(message.content); message.content=''">
-    Send (SMS)
-  </md-button>
-  <md-button type="submit" class="md-primary md-raised" ng-disabled="!message.content" ng-click="vm.sendFB(message.content); message.content=''">
-    Send (Messenger) -- Coming soon
-  </md-button>
+    <md-input-container class="md-block" flex-gt-sm>
+        <label>Message</label>
+        <input ng-model="message.content" name="content" />
+    </md-input-container>
+    <md-button type="submit" class="md-primary md-raised" ng-disabled="!message.content" ng-click="vm.sendMessage(message.content); message.content=''">
+        Send (SMS)
+    </md-button>
+    <md-button type="submit" class="md-primary md-raised" ng-disabled="!message.content" ng-click="vm.sendFB(message.content); message.content=''">
+        Send (Messenger) -- Coming soon
+    </md-button>
 </form>

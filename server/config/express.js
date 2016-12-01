@@ -2,6 +2,8 @@
 'use strict';
 
 // Load the module dependencies
+var formidable = require("formidable");
+
 var config = require('./config'),
 		express = require('express'),
     winston = require('winston'),
@@ -45,7 +47,9 @@ module.exports = function() {
 	app.use(bodyParser.urlencoded({
 		extended: true
 	}));
-	app.use(bodyParser.json());
+
+
+    app.use(bodyParser.json());
 	app.use(methodOverride());
 
 	//thom added this in to implement easy node authentincation setup
@@ -80,7 +84,9 @@ module.exports = function() {
   require('../routes/api/responseRoute.js')(app, passport);
 	require('../routes/api/facebook.routes.js')(app, passport);
 	require('../routes/api/userRoute.js')(app, passport);
-	require('../routes/api/bioRoute.js')(app, passport);
+    require('../routes/api/groupRoute.js')(app, passport);
+
+    require('../routes/api/bioRoute.js')(app, passport);
 	require('../routes/api/noteRoute.js')(app, passport);
 	require('../routes/api/messageRoute.js')(app, passport);
 	require('../routes/api/phoneRoute.js')(app, passport);

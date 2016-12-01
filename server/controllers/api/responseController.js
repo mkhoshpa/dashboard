@@ -3,11 +3,36 @@
 var User = require('../../models/user.js'),
 Response = require('../../models/response.js');
 var winston = require('winston');
+var twilio = require('twilio')('ACf83693e222a7ade08080159c4871c9e3', '20b36bd42a33cd249e0079a6a1e8e0dd');
+var config = require('../../config/env/development.js');
+
 
 exports.create = function(req, res) {
   var response = new Response(req.body);
   console.log("response controller");
   console.log(JSON.stringify(response));
+  User.findOne({_id:response.userId},function(err,user){
+    if(!err) {
+        var coachId = user.coaches[0];
+        User.findOne({_id: coachId}, function (err, coach) {
+          if(!err){
+            if(coach.phoneNumber){
+
+              twilio.sendMessage({
+                  to: coach.phoneNumber,
+                  from: config.phoneNumbers.messages,
+                  body: 'you got a message from '+user.username+' on fitpath'
+              }, function (err, responseData) {
+                  if (!err) {
+                      console.log(JSON.stringify(responseData));
+                  }
+              });
+            }
+
+          }
+        });
+    }
+      });
   response.save(function(err, response){
 
     if(err){

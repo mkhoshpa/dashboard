@@ -1,0 +1,81 @@
+<md-dialog aria-label="Group">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <div class="container-fluid">
+
+
+        <!-- <md-list-item>
+              <md-button ng-click="vm.selectUser(vm.user)">
+                <i class="material-icons avatar" style="color: #444;">face</i>
+                    <span>
+                      {{vm.user.username }}
+                    </span>
+
+
+              </md-button>
+               <md-divider></md-divider>
+            </md-list-item> -->
+        <div class="row">
+            <div class="col-sm-12 col-lg-12 col-m-12">
+               <h3>
+                   {{ctrl.selected.name}}
+               </h3>
+
+            </div>
+            <div class="col-sm-8">
+
+        <md-select  ng-model = "vm.userSurvey"  aria-label = "user" placeholder = "Add from All clients">
+
+
+            <md-list class="demo-select-all-checkboxes"  ng-value = "c" >
+                <md-checkbox layout = "row"  ng-repeat = "c in ctrl.coach.clients" ng-checked = "ctrl.exists(c, ctrl.selectedUsers) " ng-click = "ctrl.toggle2(c, ctrl.selectedUsers)">
+                    {{c.firstName  + " " + c.lastName}}
+                </md-checkbox>
+
+            </md-list>
+        </md-select>
+            </div>
+
+            <div class="col-sm-4">
+
+
+
+        <md-button class="md-fab" aria-label="Add" ng-click="ctrl.addToGroup($event)">
+            <ng-md-icon icon="add"></ng-md-icon>
+        </md-button>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-sm-8">
+
+                <md-select  ng-model = "vm.userSurvey"  aria-label = "user" placeholder = "Remove From Group">
+
+
+                    <md-list class="demo-select-all-checkboxes"  ng-value = "c" >
+                        <md-checkbox layout = "row"  ng-repeat = "c in ctrl.members" ng-checked = "ctrl.existsRemove(c, ctrl.selectedUsersToRemove) " ng-click = "ctrl.toggleRemove(c, ctrl.selectedUsersToRemove)">
+                            {{c.firstName  + " " + c.lastName}}
+                        </md-checkbox>
+
+                    </md-list>
+                </md-select>
+            </div>
+
+            <div class="col-sm-4">
+
+
+
+                <md-button class="md-fab" aria-label="Remove" ng-click="ctrl.removeFromGroup($event)">
+                    <span class="glyphicon glyphicon-minus"></span>
+                </md-button>
+            </div>
+
+        </div>
+
+
+
+        <Button class="btn btn-primary" ng-click="ctrl.addClientToGroup($event)"> Set Reminder for All </Button>
+        <Button  class="btn btn-primary"  ng-click="ctrl.addClientToGroup($event)"> Send Message to All </Button>
+    </div>
+
+</md-dialog>

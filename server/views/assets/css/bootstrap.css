@@ -4346,6 +4346,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   .navbar-nav .open .dropdown-menu > li > a,
   .navbar-nav .open .dropdown-menu .dropdown-header {
     padding: 5px 15px 5px 25px;
+    color: #00acc1;
   }
   .navbar-nav .open .dropdown-menu > li > a {
     line-height: 20px;

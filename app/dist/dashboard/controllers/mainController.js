@@ -27,6 +27,10 @@ var app;
                 this.surveyTemplates = [];
                 this.timeZoneFromGMT=-3;
                 this.show="show";
+                this.selectedShowGroups=false;
+                this.groupList=[];
+
+                this.showGroups= false;
                 //Survey stuff
                 this.questions1 = [
                  {
@@ -103,7 +107,8 @@ var app;
 
             MainController.prototype.testing = function () {
               console.log(this.changeSurvey);
-            }
+            };
+
 
             MainController.prototype.setFormScope = function (scope) {
                 this.formScope = scope;
@@ -152,9 +157,36 @@ var app;
               //need to refresh the page
               this.changeSurvey = "new";
               self.openToast("Editing Cancel");
-            }
+            };
+            MainController.prototype.groupss= function() {
+            this.selectedShowGroups=true;
 
-            MainController.prototype.saveChangeSurvey = function(){
+                MainController.prototype.groups();
+
+
+            };
+            MainController.prototype.selectedclients= function() {
+                this.selectedShowGroups=false;
+            };
+            MainController.prototype.groups1= function() {
+                this.selectedShowGroups=true;
+
+                console.log("test");
+                var _this=this;
+                _this.$http.get('/api/groups/list/'+_this.user._id).then(function successCallback(response) {
+
+                    _this.groupList= response.data;
+                    console.log("check groupsssssss");
+                });
+
+
+            };
+
+
+
+
+            //this.groups();
+                MainController.prototype.saveChangeSurvey = function(){
               var _this = this;
               var self = this;
               console.log("hey");
@@ -609,20 +641,30 @@ var app;
                     console.log(result);
                     if(result) {
                         userToBeDeleted = _this.selected;
-                        _this.$http.post('/api/user/delete/'+ userToBeDeleted._id).then(function successCallback(response) {
+                            _this.$http.post('/api/group/deleteUser/'+ userToBeDeleted._id).then(function successCallback(response1) {
+                                console.log('delete from group');
+                                console.log(response1);
+                                _this.$http.post('/api/user/delete/'+ userToBeDeleted._id).then(function successCallback(response) {
 
 
-                            if (response) {
-                                console.log("done");
-                                self.openToast('User deleted. ');
-                                self.selected = self.clients[0];
-                                self.clients.splice(self.clients.indexOf(userToBeDeleted),1);
+                                    if (response) {
 
-                            } else {
-                                self.openToast('User not deleted. ');
-                            }
 
-                        });
+
+                                        console.log("done");
+                                        self.openToast('User deleted. ');
+                                        self.selected = self.clients[0];
+                                        self.clients.splice(self.clients.indexOf(userToBeDeleted),1);
+
+                                    } else {
+                                        self.openToast('User not deleted. ');
+                                    }
+
+                                });
+
+                            });
+
+
 
                     }
                 });
@@ -1465,6 +1507,72 @@ var app;
 
                 });
             };
+            MainController.prototype.addGroup = function ($event) {
+
+                var _this = this;
+                var self = this;
+                console.log(this);
+                var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
+                this.$mdDialog.show({
+                    templateUrl: './dist/view/dashboard/groupModal.html',
+                    parent: angular.element(document.body),
+                    targetEvent: $event,
+                    controller: dashboard.NoteController,
+                    controllerAs: "ctrl",
+                    clickOutsideToClose: true,
+                    fullscreen: useFullScreen,
+                    locals: {
+                        selected: null
+                    }
+                }).then(function (group) {
+                    group.coach=_this.user.id;
+                    console.log(group);
+
+
+                    _this.$http.post('/api/group/create', group).then(function successCallback(response) {
+                        console.log(response);
+                        console.log(_this.groupList);
+                        console.log(response.data);
+                        _this.groupList.push(response.data);
+                    });
+
+                    self.openToast("group added");
+                }, function () {
+                    console.log('You cancelled the dialog.');
+
+                });
+            };
+            MainController.prototype.selectGroup = function ($event,group) {
+
+                var _this = this;
+                var self = this;
+                console.log(this);
+                //var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
+                this.$mdDialog.show({
+                    templateUrl: './dist/view/dashboard/user/group.html',
+                    parent: angular.element(document.body),
+                    targetEvent: $event,
+                    controller: dashboard.NoteController,
+                    controllerAs: "ctrl",
+                    clickOutsideToClose: true,
+                    fullscreen: true,
+                    locals: {
+                        selected: group,
+                        coach: _this.user
+                    }
+                }).then(function (group) {
+                    group.coach=_this.user.id;
+                    console.log(group);
+
+
+
+
+                }, function () {
+
+
+                });
+            };
+
 
             MainController.prototype.addNote = function ($event) {
 

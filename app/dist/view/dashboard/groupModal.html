@@ -1,0 +1,26 @@
+<md-dialog aria-label="Add Group">
+
+    <form name="userForm" ng-submit="ctrl.save()">
+
+        <div layout="column" layout-padding >
+            <div layout ="row">
+                <md-input-container accesskey="" flex ="grow" class="md-icon-float md-block"  style="width: 400px;" >
+                    <label>Add Group</label>
+                    <textarea ng-model="ctrl.groupName" type ="text" required></textarea>
+                </md-input-container>
+            </div>
+        </div>
+
+
+        <md-dialog-actions layout="row">
+            <md-button ng-click="ctrl.cancelGroup()" >
+                Cancel
+            </md-button>
+            <md-button ng-click="ctrl.saveGroup()" class="md-primary md-raised" ng-disabled="userForm.$invalid">
+                Save
+            </md-button>
+        </md-dialog-actions>
+
+    </form>
+
+</md-dialog>

@@ -83,7 +83,9 @@ var UserSchema = new Schema({
     },
     updated: {type: Date}
   },
-
+    groups: [
+        {type: mongoose.Schema.Types.Object, ref: 'Group'}
+    ],
   notes: [
     {type: mongoose.Schema.Types.Object, ref: 'Note'}
   ],

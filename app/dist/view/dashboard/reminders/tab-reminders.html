@@ -34,7 +34,7 @@
           </div>
           <div layout = "row" flex="90">
             <div flex="90" style="overflow: visible; " ng-show="!res.res.questions[0].answer">
-              <h5>No Response Yet.</h5>
+              <h5 hide-xs >No Response Yet.</h5>
             </div>
             <div flex="90" style="overflow:visible; " ng-show="res.res.questions[0].answer.length < 45">
               <h5> {{res.res.questions[0].answer}}</h5>
@@ -46,7 +46,7 @@
 
             <div>
 
-              <md-button ng-click="vm.updateAssignment($event,res)">update</md-button>
+              <md-button hide-xs ng-click="vm.updateAssignment($event,res)">update</md-button>
             </div>
 
           </div>
@@ -57,12 +57,20 @@
       </div>
 
 
-      <div flex="10" layout="column" >
+      <div hide-xs flex="10" layout="column" >
         <md-card-actions flex="20" layout-align="end right">
           <md-button ng-click="vm.removeReminder($event, r.reminder)">Remove</md-button>
         </md-card-actions>
         <md-card-actions flex="20" layout-align="end right">
           <md-button ng-click="vm.editReminder($event,r)">Edit</md-button>
+        </md-card-actions>
+      </div>
+      <div hide-md hide-lg hide-sm flex="20" layout="column" >
+        <md-card-actions flex="20" layout-align="end right">
+          <md-button ng-click="vm.removeReminder($event, r.reminder)">Remove</md-button>
+        </md-card-actions>
+        <md-card-actions flex="20" layout-align="end right">
+          <md-button ng-click="vm.editReminder($event,r)">Edit reminde</md-button>
         </md-card-actions>
       </div>
 

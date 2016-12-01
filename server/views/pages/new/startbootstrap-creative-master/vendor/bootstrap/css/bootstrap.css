@@ -4298,7 +4298,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   margin-top: 8px;
   margin-right: 15px;
   margin-bottom: 8px;
-  background-color: transparent;
+  background-color: red;
   background-image: none;
   border: 1px solid transparent;
   border-radius: 4px;
@@ -4334,7 +4334,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
     float: none;
     width: auto;
     margin-top: 0;
-    background-color: transparent;
+    background-color: white;
     border: 0;
     -webkit-box-shadow: none;
             box-shadow: none;
@@ -4342,6 +4342,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   .navbar-nav .open .dropdown-menu > li > a,
   .navbar-nav .open .dropdown-menu .dropdown-header {
     padding: 5px 15px 5px 25px;
+    color: blue;
   }
   .navbar-nav .open .dropdown-menu > li > a {
     line-height: 20px;
@@ -6755,3 +6756,16 @@ button.close {
   }
 }
 /*# sourceMappingURL=bootstrap.css.map */
+
+
+ul.nav li a, ul.nav li a:visited {
+  color:  burlywood;
+}
+
+ul.nav li a:hover, ul.nav li a:active {
+  color: burlywood;
+}
+
+ul.nav li.active a {
+  color: burlywood;
+}

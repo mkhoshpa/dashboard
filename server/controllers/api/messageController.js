@@ -14,6 +14,7 @@ var io = require('socket.io')(28104);
 var MessageController = require('./messageController.js');
 
 
+
 console.log('listening for websocket connections on *:' + config.messageSocketPort);
 
 // a list of currently connected sockets
@@ -214,6 +215,27 @@ exports.receiveSMS = function (req, res) {
                       console.log('The user with that phone number is: ' + user.fullName);
                       io.emit('message', message);
                       console.log('Message saved and pushed to user');
+                        var coachId = user.coaches[0];
+                        User.findOne({_id: coachId}, function (err, coach) {
+                            if(!err){
+                                if(coach.phoneNumber){
+
+                                    twilio.sendMessage({
+                                        to: coach.phoneNumber,
+                                        from: config.phoneNumbers.messages,
+                                        body: 'you got a message from '+user.username+' on fitpath '+ message + ' \n http://fitpath.tech'
+                                    }, function (err, responseData) {
+                                        if (!err) {
+                                            console.log(JSON.stringify(responseData));
+                                        }
+                                    });
+                                }
+
+                            }
+                        });
+
+
+
                     } else if (err) {
                       console.log("there is no user with that name");
 
@@ -244,6 +266,25 @@ exports.receiveSMS = function (req, res) {
                   console.log('The user with that phone number is: ' + user.fullName);
                   io.emit('message', message);
                   console.log('Message saved and pushed to user');
+                    var coachId = user.coaches[0];
+                    User.findOne({_id: coachId}, function (err, coach) {
+                        if(!err){
+                            if(coach.phoneNumber){
+
+                                twilio.sendMessage({
+                                    to: coach.phoneNumber,
+                                    from: config.phoneNumbers.messages,
+                                    body: 'you got a message from '+user.username+' on fitpath '+ message + ' \n http://fitpath.tech'
+                                }, function (err, responseData) {
+                                    if (!err) {
+                                        console.log(JSON.stringify(responseData));
+                                    }
+                                });
+                            }
+
+                        }
+                    });
+
                 } else if (err) {
                   console.log("there is no user with that name");
 
@@ -275,6 +316,25 @@ exports.receiveSMS = function (req, res) {
               console.log('The user with that phone number is: ' + user.fullName);
               io.emit('message', message);
               console.log('Message saved and pushed to user');
+                var coachId = user.coaches[0];
+                User.findOne({_id: coachId}, function (err, coach) {
+                    if(!err){
+                        if(coach.phoneNumber){
+
+                            twilio.sendMessage({
+                                to: coach.phoneNumber,
+                                from: config.phoneNumbers.messages,
+                                body: 'you got a message from '+user.username+' on fitpath '+ message + ' \n http://fitpath.tech'
+                            }, function (err, responseData) {
+                                if (!err) {
+                                    console.log(JSON.stringify(responseData));
+                                }
+                            });
+                        }
+
+                    }
+                });
+
             } else if (err) {
               console.log("there is no user with that name");
 

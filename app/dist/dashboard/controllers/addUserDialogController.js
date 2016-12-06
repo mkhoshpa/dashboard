@@ -4,14 +4,26 @@ var app;
     var dashboard;
     (function (dashboard) {
         var AddUserDialogController = (function () {
-            function AddUserDialogController($mdDialog,$scope, Upload, $timeout, userService,selected) {
+            function AddUserDialogController($mdDialog,$scope, Upload, $timeout, userService,selected,coach,$http) {
                 this.$mdDialog = $mdDialog;
                 this.userService = userService;
                 this.selected = selected;
+                this.$http=$http;
                 this.cc=0;
                 this.d="";
+                this.selectedGroups=[];
                 this.Upload=Upload;
                 this.$timeout=$timeout;
+                this.coach=coach;
+                this.groupList=[]
+                var _this=this;
+                this.$http.get('/api/groups/list/'+this.coach._id).then(function successCallback(response) {
+
+                    _this.groupList= response.data;
+                    console.log("check groupsssssss");
+                    console.log(_this.groupList);
+                });
+                this.currentGroups= selected.groups;
 
                                this.user = this.userService.get();
                 //console.log(this.user);
@@ -36,8 +48,51 @@ var app;
 
                 }
             }
+
             AddUserDialogController.prototype.cancel = function () {
                 this.$mdDialog.cancel();
+            };
+
+
+            AddUserDialogController.prototype.toggleGroup = function (item) {
+                var _this=this;
+               if(!(_this.currentGroups.indexOf(item._id+'')>-1 )){
+
+
+                   if(_this.selectedGroups.indexOf(item._id+'')> -1){
+                       var index = _this.selectedGroups.indexOf(item._id+'');
+                       _this.selectedGroups.splice(index,1);
+
+
+
+                   }else{
+                       _this.selectedGroups.push(item._id+'');
+
+                   }
+
+
+               }
+            };
+
+            AddUserDialogController.prototype.existGroup = function (item) {
+               return(this.currentGroups.indexOf(item._id)>-1 || this.selectedGroups.indexOf(item._id)>-1)
+            };
+            AddUserDialogController.prototype.showUserGroup = function ($event) {
+                this.$mdDialog.show({
+                    templateUrl: './dist/view/dashboard/user/groupUser.html',
+                    parent: angular.element(document.body),
+                    targetEvent: $event,
+                    controller: dashboard.NoteController,
+                    controllerAs: "ctrl",
+                    clickOutsideToClose: true,
+                    fullscreen: useFullScreen,
+                    locals: {
+                        selected: null,
+                        coach: this.coach,
+                    }
+                }).then(function (groups) {
+
+                });
             };
 
             AddUserDialogController.prototype.setFile = function() {
@@ -165,7 +220,17 @@ var app;
                      },
                      coaches: [this.user._id]
                      };*/
-                    var user = {
+
+
+                    var _this=this;
+                    _this.$http.post('/api/group/addFromUser/'+this.id,_this.selectedGroups).then(function successCallback(response) {
+
+
+
+
+                    });
+
+                        var user = {
                         _id : this.id,
                         newUser : false,
                         firstName: this.firstName,
@@ -195,10 +260,12 @@ var app;
                      this.$mdDialog.hide(user);
                 }
             };
-            AddUserDialogController.$inject = ['$mdDialog','$scope', 'Upload', '$timeout', 'userService','selected'];
+            AddUserDialogController.$inject = ['$mdDialog','$scope', 'Upload', '$timeout', 'userService','selected','coach','$http'];
 
             return AddUserDialogController;
         }());
+
+
         dashboard.AddUserDialogController = AddUserDialogController;
     })(dashboard = app.dashboard || (app.dashboard = {}));
 })(app || (app = {}));

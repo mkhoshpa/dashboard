@@ -1,7 +1,6 @@
 'use strict';
 
 var assignment = require('../../controllers/api/assignmentController.js');
-var memberful = require('../../controllers/api/memberful.controller.js');
 
 module.exports = function(app) {
 

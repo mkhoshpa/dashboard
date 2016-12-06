@@ -50,6 +50,20 @@
                     </div>
 
                 </md-input-container>
+                <div >
+                    <md-select  ng-model = "vm.userSurvey"  aria-label = "user" placeholder = "set Groups">
+
+
+                        <md-list class="demo-select-all-checkboxes"  ng-value = "c" >
+                            <md-checkbox layout = "row"  ng-repeat = "c in ctrl.groupList" ng-checked = "ctrl.existGroup(c) " ng-click = "ctrl.toggleGroup(c)" >
+                                {{c.name}}
+                            </md-checkbox>
+
+                        </md-list>
+                    </md-select>
+
+
+                </div>
 
             </div>
 

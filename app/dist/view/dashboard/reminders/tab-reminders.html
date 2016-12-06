@@ -28,11 +28,11 @@
 
 
         <div ng-repeat = "res in r.contentArray | orderBy :'ass.specificDate' " layout="row" flex="70" style="position: relative; max-height: 50px;">
-          <div layout = "row" style="padding-right: -25px; padding-left: 5px;" flex="10">
+          <div layout = "row" style="padding-right: -25px; padding-left: 5px;" flex="15">
             <h5>{{res.ass.specificDate | date:'EEE M/d'}} </h5>
 
           </div>
-          <div layout = "row" flex="90">
+          <div layout = "row" flex="85">
             <div flex="90" style="overflow: visible; " ng-show="!res.res.questions[0].answer">
               <h5 hide-xs >No Response Yet.</h5>
             </div>

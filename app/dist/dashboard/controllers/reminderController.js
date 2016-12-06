@@ -5,7 +5,7 @@ var app;
     var dashboard;
     (function (dashboard) {
         var ReminderController = (function () {
-            function ReminderController($mdDialog, userService, selected) {
+            function ReminderController($mdDialog, userService, selected,group) {
                 this.$mdDialog = $mdDialog;
                 this.userService = userService;
                 this.selected = selected;
@@ -34,6 +34,13 @@ var app;
                         this.time.setMilliseconds(0);
                         this.time.setSeconds(0);
                     this.repeat = selected.repeat;
+                }
+                if(group){
+
+                    this.group=group;
+                    this.author=this.group.coach;
+                    this.repeat=false;
+
                 }
             }
             // selectedDays reminder
@@ -178,7 +185,107 @@ var app;
                 //console.log(reminder);
                 this.$mdDialog.hide(object);
             };
-            ReminderController.$inject = ['$mdDialog', 'userService', 'selected'];
+            ReminderController.prototype.saveGroup = function () {
+                var _this=this;
+                console.log(_this.selectedDays);
+                //console.log("r" + this.selected);
+                //console.log("hello select: " +this.selected.responses);
+                //console.log(this.time);
+                var dates = {
+                    monday: false,
+                    tuesday: false,
+                    wednesday: false,
+                    thursday: false,
+                    friday: false,
+                    saturday: false,
+                    sunday: false
+                };
+
+                var days = [];
+                var hour = _this.time.getHours();
+                var minute = _this.time.getMinutes();
+                var day = _this.time.getDay();
+                console.log(_this.time);
+                console.log(day);
+
+                var dateToday = new Date();
+                dateToday.setHours(hour);
+                dateToday.setMinutes(minute);
+                dateToday.setSeconds('00');
+                //dateToday.set
+                console.log("today date")
+
+                console.log(dateToday);
+
+
+
+
+
+                if (this.selectedDays.indexOf('Sun') != -1) {
+                    dates.sunday = true;
+                    days.splice(this.days.length,0,0);
+                }
+                if (this.selectedDays.indexOf('Mon') != -1) {
+                    dates.monday = true;
+                    days.splice(this.days.length,0,1);
+                }
+                if (this.selectedDays.indexOf('Tues') != -1) {
+                    dates.tuesday = true;
+                    days.splice(this.days.length,0,2);
+                }
+                if (this.selectedDays.indexOf('Wed') != -1) {
+                    dates.wednesday = true;
+                    days.splice(this.days.length,0,3);
+                }
+                if (this.selectedDays.indexOf('Thurs') != -1) {
+                    dates.thursday = true;
+                    days.splice(this.days.length,0,4);
+                }
+                if (this.selectedDays.indexOf('Fri') != -1) {
+                    dates.friday = true;
+                    days.splice(this.days.length,0,5);
+                }
+                if (this.selectedDays.indexOf('Sat') != -1) {
+                    dates.saturday = true;
+                    days.splice(this.days.length,0,6);
+                }
+                console.log(_this.group.memebers);
+                _this.groupReminders=[];
+
+                _this.group.memebers.forEach(function (member) {
+                    console.log(member);
+                    var object = {
+                        title: _this.reminder,
+                        days: days,
+                        repeat: _this.repeat,
+                        // Will this be set to server time or user's local time?
+                        //toLocaleTimeString(),
+                        timeOfDay: dateToday,
+                        hour: hour,
+                        minute: minute,
+                        // array of numbers from 0 to 6 that shows days that we should creat  assignments
+                        selectedDates: _this.selectedDays,
+                        daysOfTheWeek: dates,
+                        author: _this.author,
+                        assignee: member,
+
+                    };
+                    _this.groupReminders.push(object);
+                    console.log(_this.time);
+                    console.log('check time');
+                    console.log(object.timeOfDay);
+                    console.log('check assingee');
+                    console.log(object);
+                });
+
+
+               console.log(_this.groupReminders);
+
+                //console.log(reminder);
+                this.$mdDialog.hide(_this.groupReminders);
+            };
+
+            ReminderController.$inject = ['$mdDialog', 'userService', 'selected','group'];
             return ReminderController;
         }());
         dashboard.ReminderController = ReminderController;

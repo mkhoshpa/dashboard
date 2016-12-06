@@ -14,6 +14,7 @@ module.exports = function(app) {
     app.post('/api/group/deleteUser/:id', group.deleteClient);
     app.post('/api/group/removeFromGroup/:id',group.removeFromGroup );
     app.post('/api/group/create', group.create);
+    app.post('/api/group/addFromUser/:id', group.addFromUser);
 
 
 };

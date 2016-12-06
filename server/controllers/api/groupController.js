@@ -22,6 +22,34 @@ exports.create = function(req, res) {
 };
 
 
+exports.addFromUser = function(req, res) {
+    console.log('addFromUser hit');
+
+    var groupsToBeAdded = req.body;
+    console.log(groupsToBeAdded);
+    groupsToBeAdded.forEach(function (group) {
+        User.findOneAndUpdate({_id:req.params.id}, {$push: {"groups": group }},function (err,user) {
+            if(!err){
+                console.log('added to user');
+            }
+
+
+        });
+
+        Group.findOneAndUpdate({_id:group},{$push:{"memebers": req.params.id}},function (err,g) {
+            if(!err) {
+                console.log('added to group');
+            }
+
+        })
+
+    });
+    res.sendStatus(200);
+
+
+};
+
+
 exports.removeFromGroup = function(req, res) {
     console.log('removeFromGroup hit');
     var listToBeDeleted = req.body;

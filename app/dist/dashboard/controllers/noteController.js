@@ -14,6 +14,7 @@ var app;
                 this.selectedUsers=[];
                 this.selectedUsersToRemove=[];
                 this.coach=coach;
+                this.message="";
                 console.log(this.coach);
 
                 if(selected){
@@ -95,6 +96,128 @@ var app;
 
 
                 };
+
+
+           NoteController.prototype.addGroupReminder = function ($event) {
+                var _this = this;
+                var self = this;
+                this.$mdDialog.show({
+                    templateUrl: './dist/view/dashboard/reminders/GroupModal.html',
+                    parent: angular.element(document.body),
+                    targetEvent: $event,
+                    controller: dashboard.ReminderController,
+                    controllerAs: "ctrl",
+                    clickOutsideToClose: true,
+                    locals: {
+                        selected: null,
+                        group:_this.selected,
+                    }
+                }).then(function (reminders) {
+                    console.log(reminders);
+                    // First step, create the reminder and save it on the db
+                   /* var reminder = {
+                        _id: object._id,
+                        title: object.title,
+                        days: object.days,
+                        hour: object.hour,
+                        minute: object.minute,
+                        creationDate: new Date(),
+                        selectedDates: object.selectedDates,
+                        daysOfTheWeek: object.dates,
+                        author: object.author,
+                        assignee: object.assignee,
+                        repeat: object.repeat
+                    }
+                    JSON.stringify(reminder);
+                    console.log(reminder);
+
+
+                    var date = new Date();
+                    var today = date.getDay();
+                    console.log("timeOfDay");
+                    console.log(object.timeOfDay);
+                    console.log("date");
+                    console.log(date);
+                    */
+                   reminders.forEach(function (reminder) {
+
+                       console.log(reminder);
+                       _this.$http.post('/api/reminder/createReminderAndAssignments', reminder).then(function successCallback(response) {
+                           console.log("im a reminder" + JSON.stringify(response.data.reminder));
+                           //_this.getRemindersResponses();
+                           //console.log( JSON.stringify( _this.convoReminderResponse));
+                          // self.openToast("Reminder added");
+                       });
+
+                   });
+
+
+
+
+                }, function () {
+                    console.log('You cancelled the dialog.');
+                });
+            };
+
+            NoteController.prototype.sendMessageToGroup= function ($event) {
+                var _this = this;
+                var self = this;
+                console.log("Here");
+                this.$mdDialog.show({
+                    templateUrl: './dist/view/dashboard/messages/groupMessageModal.html',
+                    parent: angular.element(document.body),
+                    targetEvent: $event,
+                    controller: dashboard.NoteController,
+                    controllerAs: "ctrl",
+                    clickOutsideToClose: true,
+                    locals: {
+                        selected: _this.selected,
+                        coach: _this.coach,
+                    }
+                }).then(function (messages) {
+                    console.log(messages);
+
+                  //  _this.messagesArray=[];
+
+
+                   // _this.selected.memebers.forEach(function(memberId){
+                        //console.log(memberId);
+                        //console.log(message);
+
+                       // _this.messagesArray.push(message);
+
+
+
+
+
+                   // });
+                    //console.log(_this.messagesArray);
+                   // var arr=_this.messagesArray;
+                    //for(var i=0;i<_this.messagesArray.length;i++){
+                       // console.log(i);
+                      //  console.log(_this.selected.memebers[i]);
+                       // arr[i].sentTo = _this.selected.memebers[i];
+                      //  console.log(arr[i].sentTo);
+
+
+
+                   // }
+                   // console.log(_this.messagesArray);
+                    //console.log(arr);
+                        messages.forEach(function (mess) {
+
+
+                             _this.$http.post('/api/message/sendsms/', mess).then(function (response) {
+                                 console.log('response.data for sendinf sms is ' + JSON.stringify(response.data));
+                                 console.log('_this.selected.messages is: ' + JSON.stringify(_this.selected.messages));
+
+                            });
+
+
+                         })
+
+                    });
+            };
 
             NoteController.prototype.toggleRemove = function (item) {
                 //console.log(JSON.stringify(vm.user.clients));
@@ -205,6 +328,27 @@ var app;
               }
               console.log(note);
               this.$mdDialog.hide(note);
+            };
+            NoteController.prototype.saveMessage = function () {
+                console.log("saving message");
+                var _this=this;
+                var messages=[];
+                _this.selected.memebers.forEach(function (member) {
+                    var message = {
+                        sentBy:_this.coach._id,
+                        body: _this.message,
+                        sentTo: member
+
+                    };
+                    messages.push(message);
+
+
+
+                });
+
+
+                console.log(messages);
+                this.$mdDialog.hide(messages);
             };
             NoteController.prototype.cancelGroup = function () {
                 this.$mdDialog.cancel();

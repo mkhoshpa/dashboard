@@ -843,7 +843,8 @@ var app;
                     clickOutsideToClose: true,
                     fullscreen: useFullScreen,
                     locals: {
-                        selected: userSelected
+                        selected: userSelected,
+                        coach: _this.user,
                     }
                 }).then(function (user) {
                     // Call user service
@@ -958,7 +959,8 @@ var app;
                     clickOutsideToClose: true,
                     fullscreen: useFullScreen,
                     locals: {
-                        selected: userSelected
+                        selected: userSelected,
+                        coach: _this.user,
                     }
                 }).then(function (user) {
                     // Call user service
@@ -1330,7 +1332,8 @@ var app;
                     clickOutsideToClose: true,
                     fullscreen: useFullScreen,
                     locals: {
-                        selected: null
+                        selected: null,
+                        group:null,
                     }
                 }).then(function (object) {
                     console.log(object);
@@ -1625,7 +1628,8 @@ var app;
                     clickOutsideToClose: true,
                     fullscreen: useFullScreen,
                     locals: {
-                        selected: reminder
+                        selected: reminder,
+                        group:null,
                     }
                 }).then(function (reminder) {
                     console.log(reminder.responses);

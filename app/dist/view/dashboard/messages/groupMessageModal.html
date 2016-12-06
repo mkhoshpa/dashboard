@@ -1,0 +1,26 @@
+<md-dialog aria-label="Add Note">
+
+    <form name="userForm" ng-submit="ctrl.saveMessage()">
+
+        <div layout="column" layout-padding >
+            <div layout ="row">
+                <md-input-container accesskey="" flex ="grow" class="md-icon-float md-block"  style="width: 400px;" >
+                    <label>Your Message</label>
+                    <textarea ng-model="ctrl.message" type ="text" required></textarea>
+                </md-input-container>
+            </div>
+        </div>
+
+
+        <md-dialog-actions layout="row">
+            <md-button ng-click="ctrl.cancel()" >
+                Cancel
+            </md-button>
+            <md-button type="submit" class="md-primary md-raised" ng-disabled="userForm.$invalid">
+                Save
+            </md-button>
+        </md-dialog-actions>
+
+    </form>
+
+</md-dialog>

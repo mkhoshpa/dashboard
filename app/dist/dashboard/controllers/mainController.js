@@ -45,7 +45,7 @@ var app;
                      display:"Written Answer",
                      value:"WRITTEN"
                 }];
-
+                this.selectWorkoutUser=[];
                 //this.questions1 = [{type: "Yes/No"},{type:"Scale from 1 to 5"},{type:"Written Answer"}];
                 this.counter = 0;
                 this.now =new Date();
@@ -88,6 +88,15 @@ var app;
                   }
                   ]
                 };
+                var self=this;
+                this.$http.get('/api/workout/list/'+this.user._id , this.newWorkout).then(function (response){
+                    self.workouts=response.data;
+                    console.log("workout " + JSON.stringify(response.data));
+                });
+                this.newWorkout={
+                    author:this.user,
+                    day:[]
+                };
 
 
 
@@ -102,7 +111,17 @@ var app;
             //create a different controller
             MainController.prototype.testing = function () {
               console.log(this.changeSurvey);
-            }
+            };
+            MainController.prototype.sendOutWorkout = function () {
+                console.log('sending out the workout');
+                var self=this;
+
+               self.$http.post('/api/workout/assign/'+self.selectedWorkout._id , self.selectWorkoutUser).then(function (response){
+                    console.log("workout " + JSON.stringify(response.data));
+                });
+
+
+            };
 
 
             MainController.prototype.testing = function () {
@@ -112,6 +131,44 @@ var app;
 
             MainController.prototype.setFormScope = function (scope) {
                 this.formScope = scope;
+            };
+
+            MainController.prototype.anotherAssignment = function(workoutDay){
+                var _this = this;
+                var self = this;
+                console.log("here");
+                console.log(workoutDay);
+                var assignment = {
+                    title:null,
+                    time:null
+
+                };
+                //does both for newSurvey and changeSurvey
+                workoutDay.assignments.push(assignment);
+
+                console.log(workoutDay.assignments);
+                self.openToast("Added Assignment");
+            };
+            MainController.prototype.changeWorkout = function(workout) {
+                var self=this;
+                if(workout != null){
+                    self.newWorkout=workout;
+                }
+            };
+            MainController.prototype.anotherDay = function(workout){
+                var _this = this;
+                var self = this;
+                console.log("here");
+                console.log(workout);
+                var day = {
+                    assignments:[]
+
+                };
+                //does both for newSurvey and changeSurvey
+                workout.day.push(day);
+
+                console.log(workout);
+                self.openToast("Added day");
             };
 
 
@@ -145,8 +202,44 @@ var app;
               console.log(survey.questions);
               self.openToast("Removed Question");
             }
+            MainController.prototype.removeAssignment= function (index, workoutDay) {
+                var _this = this;
+                var self = this;
+                console.log("here");
+                console.log(workoutDay);
+                //does both remove for newSurvey and changeSurvey
+                if(index > -1){
+                    workoutDay.assignments.splice(index, 1);
+                }
 
+                console.log(workoutDay);
+                self.openToast("Removed assignment");
+            }
+            MainController.prototype.removeWorkoutDay= function (index, workout) {
+                var _this = this;
+                var self = this;
+                console.log("here");
+                console.log(workout);
+                //does both remove for newSurvey and changeSurvey
+                if(index > -1){
+                    workout.day.splice(index, 1);
+                }
 
+                console.log(workout);
+                self.openToast("Removed assignment");
+            }
+            MainController.prototype.saveWorkout= function () {
+                var _this = this;
+                var self = this;
+                console.log("save");
+                console.log(self.newWorkout);
+                //does both remove for newSurvey and changeSurvey
+                _this.$http.post('/api/workout/create' , self.newWorkout).then(function (response){
+                    console.log("workout " + JSON.stringify(response.data));
+                });
+
+                self.openToast("saved");
+            }
 
 
 
@@ -1525,7 +1618,8 @@ var app;
                     clickOutsideToClose: true,
                     fullscreen: useFullScreen,
                     locals: {
-                        selected: null
+                        selected: null,
+                        coach: _this.user,
                     }
                 }).then(function (group) {
                     group.coach=_this.user.id;

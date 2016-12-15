@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Workout</title>
+
+</head>
+<body>
+
+<section >
+    <div md-whiteframe = "8">
+        <h1>Select a workout to send out:</h1>
+
+        <md-input-container>
+
+            <md-select ng-model = "vm.selectedWorkout" >
+                <label> Workouts </label>
+                <md-option ng-repeat = "st in vm.workouts" ng-value = "st">
+                    {{st.title}}
+                </md-option>
+            </md-select>
+
+        </md-input-container>
+
+        <md-content md-whiteframe = "3" layout-padding >
+            <md-card  layout-padding ng-if ="vm.selectedWorkout">
+
+                <div layout = "row">
+                    <h1>{{vm.selectedWorkout.title}}</h1>
+                    <!-- Currently broken so commented out -->
+                    <!--<md-button ng-click = "vm.previewSurvey(vm.selectedSurvey)"  layout-padding>
+                      Preview Survey
+                    </md-button>-->
+                    <md-select  ng-model = "vm.userWorkout"  aria-label = "user" placeholder = "Select Users">
+
+                        <md-checkbox aria-label="Select All"
+                                     ng-checked="vm.isChecked()"
+                                     md-indeterminate="vm.isIndeterminate()"
+                                     ng-click="vm.toggleAll()">
+                            <span ng-if="vm.isChecked()">Un-</span>Select All
+                        </md-checkbox>
+                        <md-list class="demo-select-all-checkboxes"  ng-value = "c" >
+                            <md-checkbox layout = "row"  ng-repeat = "c in vm.user.clients" ng-checked = "vm.exists(c, vm.selectWorkoutUser) " ng-click = "vm.toggle(c, vm.selectWorkoutUser)">
+                                {{c.firstName  + " " + c.lastName}}
+                            </md-checkbox>
+
+                        </md-list>
+                    </md-select>
+                    <!-- disable when no user is enter -->
+                    <md-button ng-click = "vm.sendOutWorkout()">
+                        Assign The Workout
+                    </md-button>
+
+                </div>
+                <div layout = "row">
+                    <div ng-repeat = "u in vm.selectWorkoutUser">
+                        <p> {{u.firstName + " " + u.lastName + ","}} <br><p>
+                    </div>
+                </div>
+            </md-card>
+        </md-content>
+
+
+
+
+
+</div>
+</section>
+</body>
+</html>

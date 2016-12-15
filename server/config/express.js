@@ -93,9 +93,11 @@ module.exports = function() {
 	require('../routes/api/surveyTemplateRoute.js')(app, passport);
 	require('../routes/api/pipelineStageroute.js')(app, passport);
 	require('../routes/api/stripeRoute.js')(app, passport);
+    require('../routes/api/workoutRoute.js')(app, passport);
 
 
-	// Configure static file serving
+
+    // Configure static file serving
   app.use(express.static(__dirname + '/../../app'));
   app.use(express.static(__dirname + '/../views'));
 	app.use(express.static(__dirname + '/../../app/dist/triangular'));

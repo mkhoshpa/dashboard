@@ -53,8 +53,8 @@ var app;
             }).when("/overview",{
                 templateUrl: "/dist/view/dashboard/overview.html",
                 controller: "ClientOverviewController as vm"
-            }).when("/surveysBuilder",{
-                templateUrl: "/dist/view/dashboard/surveys/builder.html",
+            }).when("/workoutBuilder",{
+                templateUrl: "/dist/view/dashboard/allworkout.html",
                 controller: "MainController as vm"
             }).when("/profile",{
                 templateUrl: "/dist/view/dashboard/profile.html",

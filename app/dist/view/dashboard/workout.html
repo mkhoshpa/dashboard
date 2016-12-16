@@ -10,12 +10,12 @@
 <section flex  layout-padding  style = >
     <md-toolbar md-whiteframe= "3">
         <div class = "md-toolbar-tools">
-            <md-select ng-model = "vm.changeSurvey" placeholder = "Options" ng-blur = "vm.testing()" >
+            <md-select ng-model = "vm.workoutToChange" placeholder = "Options" ng-blur = "vm.testing()" >
                 <md-option ng-repeat = "s in vm.workouts" ng-value = "s" ng-click="vm.changeWorkout(s)">
                     {{s.title}}
                 </md-option>
                 <md-option ng-value = "new" ng-click="vm.changeWorkout(null)">
-                    New Survey
+                    New workout
                 </md-option>
             </md-select>
         </div>

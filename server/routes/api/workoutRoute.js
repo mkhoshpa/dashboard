@@ -12,6 +12,8 @@ module.exports = function(app) {
 
 
     app.post('/api/workout/create', workout.create);
+    app.post('/api/workout/edit', workout.edit);
+
     app.get('/api/workout/list/:id', workout.list);
     app.post('/api/workout/assign/:id', workout.assign);
 

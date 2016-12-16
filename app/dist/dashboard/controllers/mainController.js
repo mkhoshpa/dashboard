@@ -29,6 +29,7 @@ var app;
                 this.show="show";
                 this.selectedShowGroups=false;
                 this.groupList=[];
+                this.workoutToChange={title:'n'};
 
                 this.showGroups= false;
                 //Survey stuff
@@ -94,6 +95,7 @@ var app;
                     console.log("workout " + JSON.stringify(response.data));
                 });
                 this.newWorkout={
+                    title:'new',
                     author:this.user,
                     day:[]
                 };
@@ -150,9 +152,20 @@ var app;
                 self.openToast("Added Assignment");
             };
             MainController.prototype.changeWorkout = function(workout) {
+                console.log(this.workoutToChange);
                 var self=this;
                 if(workout != null){
                     self.newWorkout=workout;
+                    self.newWorkout.day.forEach(function (day) {
+                        day.assignments.forEach(function (assignment) {
+
+                            var dayIndex=self.newWorkout.day.indexOf(day);
+                            var assignmetnIndex = self.newWorkout.day[dayIndex].assignments.indexOf(assignment);
+                            assignment.time=new Date(workout.day[dayIndex].assignments[assignmetnIndex].time);
+
+                        })
+
+                    })
                 }
             };
             MainController.prototype.anotherDay = function(workout){
@@ -168,6 +181,7 @@ var app;
                 workout.day.push(day);
 
                 console.log(workout);
+                console.log(self.workoutToChange);
                 self.openToast("Added day");
             };
 
@@ -229,17 +243,30 @@ var app;
                 self.openToast("Removed assignment");
             }
             MainController.prototype.saveWorkout= function () {
+
                 var _this = this;
                 var self = this;
-                console.log("save");
-                console.log(self.newWorkout);
-                //does both remove for newSurvey and changeSurvey
-                _this.$http.post('/api/workout/create' , self.newWorkout).then(function (response){
-                    console.log("workout " + JSON.stringify(response.data));
-                });
+                if(self.workoutToChange.title=='n') {
+                    console.log("save");
+                    console.log(self.newWorkout);
+                    _this.$http.post('/api/workout/create', self.newWorkout).then(function (response) {
+                        console.log("workout " + JSON.stringify(response.data));
+                    });
 
-                self.openToast("saved");
-            }
+                    self.openToast("saved");
+                }else{
+                    console.log("edit");
+                    console.log(self.newWorkout);
+                   _this.$http.post('/api/workout/edit', self.newWorkout).then(function (response) {
+                        console.log("workout " + JSON.stringify(response.data));
+                   });
+
+                    self.openToast("edited");
+
+
+                }
+
+            };
 
 
 

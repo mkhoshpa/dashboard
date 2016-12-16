@@ -27,9 +27,26 @@ exports.create = function(req, res) {
 
 
 };
+exports.edit = function(req, res) {
+    console.log("workout edit hit");
+    var id = req.body._id;
+    var newWorkout = req.body;
+    Workout.findOneAndUpdate({_id: id},{title:newWorkout.title,day:newWorkout.day},function (err,workout) {
+        if(!err){
+            console.log("workout edited");
+            res.send(workout);
+        }
+        else{
+            console.log(err);
+            res.send(err);
+        }
+    })
+
+
+};
 
 exports.list = function(req, res) {
-    console.log('inside listvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv');
+    console.log('inside list');
     var coach = req.params.id;
     console.log(coach);
     Workout.find({author:coach},function (err,workouts) {

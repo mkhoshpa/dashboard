@@ -94,6 +94,8 @@ module.exports = function() {
 	require('../routes/api/pipelineStageroute.js')(app, passport);
 	require('../routes/api/stripeRoute.js')(app, passport);
     require('../routes/api/workoutRoute.js')(app, passport);
+    require('../routes/api/newsLetterRoute.js')(app, passport);
+
 
 
 

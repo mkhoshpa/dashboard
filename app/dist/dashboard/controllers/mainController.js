@@ -28,6 +28,7 @@ var app;
                 this.timeZoneFromGMT=-3;
                 this.show="show";
                 this.selectedShowGroups=false;
+                this.showDelete = false;
                 this.groupList=[];
                 this.workoutToChange={title:'n'};
 
@@ -71,10 +72,12 @@ var app;
                         console.log("empty");
                     }
                 }
+                console.log(this.user.clients);
                 self.userService.selectedUser = self.selected;
                 userSelected = self.userService.selectedUser;
                 scope = $scope;
                 this._ = window['_'];
+                this.newsLetter={title:"", body:"" , author:this.user._id};
 
 
                 this.newSurvey = {
@@ -89,18 +92,25 @@ var app;
                   }
                   ]
                 };
+
                 var self=this;
                 this.$http.get('/api/workout/list/'+this.user._id , this.newWorkout).then(function (response){
                     self.workouts=response.data;
                     console.log("workout " + JSON.stringify(response.data));
                 });
-                this.newWorkout={
+                this.$http.get('/api/newsletter/list/'+this.user._id).then(function (response){
+                    self.newsLettersList=response.data;
+                    console.log("newsLettersList " + JSON.stringify(response.data));
+                });
+
+                    this.newWorkout={
                     title:'new',
                     author:this.user,
                     day:[]
                 };
 
-
+                console.log(this.user);
+                console.log(this.clients);
 
 
             }
@@ -118,9 +128,11 @@ var app;
                 console.log('sending out the workout');
                 var self=this;
 
+
                self.$http.post('/api/workout/assign/'+self.selectedWorkout._id , self.selectWorkoutUser).then(function (response){
                     console.log("workout " + JSON.stringify(response.data));
-                });
+
+               });
 
 
             };
@@ -129,10 +141,86 @@ var app;
             MainController.prototype.testing = function () {
               console.log(this.changeSurvey);
             };
+            MainController.prototype.changeNewsLetter = function (newsLetter) {
+                console.log(this.newsLetterToChange);
+                console.log(newsLetter);
+                this.showDelete = true;
+
+                this.newsLetter=newsLetter;
+                this.newsLetter.time= new Date(this.newsLetter.time);
+                this.newsLetter.date= new Date(this.newsLetter.date);
+            };
+            MainController.prototype.deleteNewsLetter = function () {
+                var self=this;
+                console.log("deleting newsLetter");
+                self.$http.get('/api/newsLetter/remove/'+self.newsLetter._id).then(function (response){
+                    console.log("newsLetter deleted " + JSON.stringify(response.data));
+                    self.openToast("NewsLetter deleted");
+
+
+                });
+
+            };
+            MainController.prototype.saveNewsLetter = function () {
+                var self=this;
+                if(this.showDelete == false) {
+
+                    console.log(this.newsLetter);
+                    if(!this.newsLetter.clients){
+                        self.$http.post('/api/user/get', self.user).then(function (response) {
+                            console.log("user: " + JSON.stringify(response.data));
+                            var cl = response.data.clients;
+                            console.log(cl);
+                            self.newsLetter.clients = cl;
+                            self.$http.post('/api/newsLetter/create', self.newsLetter).then(function (response) {
+                                console.log("newsletter" + JSON.stringify(response.data));
+                                self.openToast("NewsLetter created");
+                                self.newsLettersList.push(response.data);
+                                self.newsLetter = {title:"", body:"" , author:this.user._id};
+
+
+                            });
+
+
+                        });
+
+                    }
+                    else {
+
+                        self.$http.post('/api/newsLetter/create', self.newsLetter).then(function (response) {
+                            console.log("newsletter" + JSON.stringify(response.data));
+                            self.openToast("NewsLetter created");
+                            self.newsLettersList.push(response.data);
+                            self.newsLetter = {title:"", body:"" , author:this.user._id};uyt
+
+
+                        });
+                    }
+                }
+                else{
+                    var self = this;
+
+                    console.log(this.newsLetter);
+
+                    self.$http.post('/api/newsLetter/update/'+self.newsLetter._id, self.newsLetter).then(function (response) {
+                        console.log("newsletter " + JSON.stringify(response.data));
+                        self.openToast("NewsLetter update");
+
+                    });
+
+
+                }
+
+
+            };
 
 
             MainController.prototype.setFormScope = function (scope) {
                 this.formScope = scope;
+            };
+            MainController.prototype.changeGroup = function (group) {
+                var self=this;
+                self.newsLetter.clients=group.memebers;
             };
 
             MainController.prototype.anotherAssignment = function(workoutDay){
@@ -296,11 +384,13 @@ var app;
                 _this.$http.get('/api/groups/list/'+_this.user._id).then(function successCallback(response) {
 
                     _this.groupList= response.data;
+                    console.log(response.data);
                     console.log("check groupsssssss");
                 });
 
 
             };
+
 
 
 

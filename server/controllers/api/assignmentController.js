@@ -1,5 +1,8 @@
 'use strict'
-
+var config = require('../../config/env/development.js');
+var twilio = require('twilio')('ACf83693e222a7ade08080159c4871c9e3', '20b36bd42a33cd249e0079a6a1e8e0dd');
+var twiml = require('twilio');
+var NewsLetter = require('../../models/newsLetter.js');
 var User = require('../../models/user.js'),
 Assignment = require('../../models/assignment.js'),
 Reminder = require('../../models/reminder.js'),
@@ -936,6 +939,25 @@ exports.convosNow = function(req, res) {
 
 
     //Assignment.find({year: yearNow, month: monthNow, date: dateNow})
+    NewsLetter.find({date: now},function (err,newsLetters) {
+        newsLetters.forEach(function (newsLetter) {
+            newsLetter.clients.forEach(function (client) {
+               User.findOne({_id:client._id},function (err,user) {
+                   twilio.sendMessage({
+                       to: user.phoneNumber,
+                       from: config.phoneNumbers.messages,
+                       body: newsLetter.body
+                   }, function (err, responseData) {
+                       if (!err) {
+                           console.log(JSON.stringify(responseData));
+                       }
+                   });
+               })
+            });
+        })
+
+    });
+
 
     Assignment.find({specificDate: now})
 

@@ -86,6 +86,9 @@ var UserSchema = new Schema({
     groups: [
         {type: mongoose.Schema.Types.Object, ref: 'Group'}
     ],
+    newsLetters: [
+        {type: mongoose.Schema.Types.ObjectId, ref: 'NewsLetter'}
+    ],
   notes: [
     {type: mongoose.Schema.Types.Object, ref: 'Note'}
   ],

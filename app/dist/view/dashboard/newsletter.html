@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Workout</title>
+
+</head>
+<body>
+
+<section flex  layout-padding  style = >
+    <md-toolbar md-whiteframe= "3">
+        <div class = "md-toolbar-tools">
+            <md-select ng-model = "vm.newsLetterToChange" placeholder = "Options" ng-blur = "vm.testing()" >
+                <md-option ng-repeat = "s in vm.newsLettersList" ng-value = "s" ng-click="vm.changeNewsLetter(s)">
+                    {{s.title}}
+                </md-option>
+                <md-option ng-value = "new" ng-click="vm.changeNewsLetter(null)">
+                    New NewsLetter
+                </md-option>
+            </md-select>
+        </div>
+    </md-toolbar>
+
+
+
+
+
+
+    <md-content layout-padding="">
+        <md-input-container  class = "md-block" flex = "30">
+            <label>title</label>
+            <input ng-model = "vm.newsLetter.title" required>
+        </md-input-container>
+
+
+
+
+                    <div layout ="row" >
+
+
+                        <md-input-container  class = "md-block" flex = "40">
+                            <label>Body</label>
+                            <textarea maxlength="320" rows="1" cols="50" ng-model = "vm.newsLetter.body" required>
+
+
+
+                             </textarea>
+                            <p flex="15">
+                            {{vm.newsLetter.body.length}} of 320 character is used.
+                            </p>
+
+                        </md-input-container>
+
+
+
+
+
+
+                        <md-input-container class = "form-input-container padded-input md-block" flex = "15" >
+                            <label>Time</label>
+                            <input required ng-model="vm.newsLetter.time" type="time">
+
+                        </md-input-container>
+
+                        <md-input-container class = "form-input-container padded-input md-block" flex = "20" >
+
+
+                            <label>Date</label>
+                            <md-datepicker flex="10" ng-model="vm.newsLetter.date" md-placeholder="Enter date"
+                                           md-min-date="minDate" md-max-date="maxDate"></md-datepicker>
+
+
+                            <div class ="errors" ng-messages="questionForm.type.$error" ng-if = "questionForm.$dirty">
+                                <div ng-message="required">Required</div>
+                            </div>
+                        </md-input-container>
+                        <md-input-container class = "form-input-container padded-input md-block" flex = "20" >
+
+                        <md-select ng-model = "vm.newsLetterToChange" placeholder = "Groups" ng-blur = "vm.testing()" >
+                            <md-option ng-repeat = "s in vm.groupList" ng-value = "s.name" ng-click="vm.changeGroup(s)">
+                                {{s.name}}
+                            </md-option>
+                            <md-option ng-value = "all" ng-click="vm.changeNewsLetter(vm.user.clients)">
+                               All Clients
+                            </md-option>
+                        </md-select>
+                        </md-input-container>
+
+
+                    </div>
+        <div>   <md-button   ng-click = "vm.saveNewsLetter()" >
+            save
+        </md-button>
+            <md-button ng-show="vm.showDelete"  ng-click = "vm.deleteNewsLetter()" >
+               delete
+            </md-button>
+        </div>
+
+    </md-content>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</section>
+</body>
+</html>
